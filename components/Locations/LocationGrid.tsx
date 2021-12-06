@@ -1,5 +1,5 @@
 import {LocationOfInterestCalculated} from '../types/LocationOfInterestCalculated'
-import { dateFormatX, dateFormatY,  detailedLongTimeToNZ, metersToKmsString, shortDayMonthToNZ, shortTimeWithHourMinToNZ, sortFormatToNZ } from '../utils/utils'
+import { dateFormatX, dateFormatY,  detailedLongTimeToNZ, longDayToNZ, metersToKmsString, shortDayMonthToNZ, shortTimeWithHourMinToNZ, sortFormatToNZ } from '../utils/utils'
 import _ from 'lodash'
 
 import { useState } from 'react';
@@ -84,7 +84,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
             <div key={`${d}_S`} className="">
                 <div className="bg-gray-300 grid grid-cols-8 border-b-1 border-blue-800 italic">
                     <div className="border col-span-3">{locationCount} Locations</div>
-                    <div className="border col-span-5">{shortDayMonthToNZ.format(firstStartTime)}</div>
+                    <div className="border col-span-5">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>
                 </div>
             </div>
         )

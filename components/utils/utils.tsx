@@ -32,8 +32,8 @@ export const shortDayShortMonthToNZ = new Intl.DateTimeFormat("en",  {month:'sho
 //export const shortDayLongMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
 export const shortDayLongMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric'}) 
 
-
-
+export const longDayToNZ = new Intl.DateTimeFormat("en",  {weekday:'long'}) 
+export const shortDateToNZ = new Intl.DateTimeFormat("en",  { dateStyle:"medium"}) 
 
 export const shortTimeWithHourMinToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short'})
 

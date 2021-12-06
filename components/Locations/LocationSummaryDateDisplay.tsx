@@ -1,14 +1,15 @@
 import { LocationOfInterest } from "../types/LocationOfInterest";
-import { shortDayLongMonthToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
+import { longDayToNZ, shortDateToNZ, shortDayLongMonthToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
 
 type LocationSummaryDateDisplayProps = {
     loi: LocationOfInterest
+    isOpen: boolean
 }
 
-const LocationSummaryDateDisplay = ({loi}:LocationSummaryDateDisplayProps) => {
+const LocationSummaryDateDisplay = ({loi,isOpen}:LocationSummaryDateDisplayProps) => {
 
-    const startDay = shortDayLongMonthToNZ.format(loi.start);
-    const endDay = shortDayLongMonthToNZ.format(loi.end);
+    const startDay = `${shortDateToNZ.format(loi.start)}` //`${longDayToNZ.format(loi.start)}`
+    const endDay = `${longDayToNZ.format(loi.end)} ${shortDateToNZ.format(loi.end)}`
     const startTime = shortTimeWithHourMinToNZ.format(loi.start);
     const endTime = shortTimeWithHourMinToNZ.format(loi.end);
 
