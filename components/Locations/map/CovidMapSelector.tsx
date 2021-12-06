@@ -138,14 +138,12 @@ function CovidMapSelector({
     // Its to ensure the active circles are rendered correctly onload
     useEffect(() => {
 
-        console.log('111 MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESHMAP REFRESHMAP REFRESHMAP REFRESHMAP REFRESH')
         resizeCircleBasedOnMapSize(map);
         
         reloadVisibleLocations(map);
     },[map]);
 
     useEffect(() => {
-        console.log('222 MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESHMAP REFRESHMAP REFRESHMAP REFRESHMAP REFRESH')
 
         // Gross... This is due to the current "two run" nature of refreshVisibleLocations()
         // It allows selections of the time peroid outside of the map
@@ -166,8 +164,6 @@ function CovidMapSelector({
     const MAP_RESIZE_PERCENTAGE = 0.60
     const MAX_CIRCLE_SIZE = 1000000
     function resizeCircleBasedOnMapSize(map:any){
-        console.log('MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESH MAP REFRESHMAP REFRESHMAP REFRESHMAP REFRESHMAP REFRESH')
-
         if(activeCircleRef.current && map){
             var mapCenter = map.getCenter();
             var eastPoint = new LatLng(mapCenter.lat, map?.getBounds().getEast());
@@ -441,12 +437,12 @@ function CovidMapSelector({
                         >
                             <TileLayer
                                 noWrap={true}
-                                    zIndex={1}
-                                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    updateWhenIdle={true}
-                                    updateWhenZooming={!false}
-                                />{/*
+                                zIndex={1}
+                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                updateWhenIdle={true}
+                                updateWhenZooming={!false}
+                            />{/*
                             <LayersControl position="topright">
                                 <LayersControl.BaseLayer checked name="Normal">
                                     
@@ -476,10 +472,7 @@ function CovidMapSelector({
                                     onAdded={(inCircle:boolean, e:any) => {
                                         // TODO: need to debounce this update
                                         if(inCircle){
-                                             console.log('yes');
-                                              reloadVisibleLocations(map);
-                                        }else{
-                                            console.log('not');
+                                            reloadVisibleLocations(map);
                                         }
                                     }}
                                 >

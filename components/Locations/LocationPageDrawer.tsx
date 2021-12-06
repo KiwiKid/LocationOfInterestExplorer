@@ -1,24 +1,17 @@
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
-import { detailedLongTimeToNZ, getDateInPastByXDays, shortDayLongMonthToNZ } from "../utils/utils";
+import { getDateInPastByXDays, shortDayLongMonthToNZ } from "../utils/utils";
 import LocationGridContainer from "./LocationGridContainer";
 import Question from "./Questions";
 // @ts-ignore
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable'
 import Controls from "./Controls";
 import { useEffect, useMemo, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import ShareBar from "../utils/ShareBar";
-import { templateSettings } from "lodash";
 import { WhatToDo } from "./MohAdvice";
 import ExternalLink from "../utils/ExternalLink";
-import ClipboardCopy from '../utils/CopyBox';
 import InternalLink from "../utils/InternalLink";
 import Toggle from "../utils/Toggle";
-import { LineUtil } from "leaflet";
 import Summary from '../utils/Summary'
 import { Sort } from "../types/Sort";
-
-
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -50,7 +43,7 @@ export default function LocationPageDrawer({
 
 
     const PX_FROM_TOP = 200
-    const PX_FROM_BOTTOM = 150
+    const PX_FROM_BOTTOM = 200
 
     const CLOSED_DRAW_POS = -40
 

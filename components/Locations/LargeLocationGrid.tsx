@@ -21,7 +21,7 @@ export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, t
                     <div className={`bg-gray-100 grid grid-cols-5 content-center align-middle `} onClick={(evt) => toggleOpenLocation(l.loi.id)}>
                         <div className="text-center">{l.loi.city}</div>
                         <div className="col-span-2">{l.loi.event}</div>
-                        <LocationSummaryDateDisplay loi={l.loi} isOpen={isOpen}/>
+                        <LocationSummaryDateDisplay loi={l.loi} includeDate={isOpen}/>
                         {isOpen !== undefined ? 
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }

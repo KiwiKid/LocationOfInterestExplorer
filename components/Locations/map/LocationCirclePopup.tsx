@@ -12,7 +12,7 @@ function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLo
                     <div className={`bg-gray-200 grid grid-cols-1 text-center`} >
                         <div className="font-bold">{l.loi.event}</div>
                         <div className="font-bold">{l.loi.city}</div>
-                        <LocationSummaryDateDisplay loi={l.loi}/>
+                        <LocationSummaryDateDisplay loi={l.loi} includeDate={true} />
                         <div><LocationTypeDisplay detailed={false} locationType={l.loi.locationType}/></div>
                     </div>
                 </div>

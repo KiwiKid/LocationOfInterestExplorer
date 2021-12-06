@@ -47,7 +47,6 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                 
 
                 
-                console.log(sortFormatToNZ.format(l.loi.start)+''+day+ '    '+day.substring(0,10));
                 return Object.assign(l, { day: day.substring(0,8) })})
             .groupBy("day")
             .value();

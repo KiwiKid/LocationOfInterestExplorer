@@ -3,10 +3,10 @@ import { longDayToNZ, shortDateToNZ, shortDayLongMonthToNZ, shortTimeWithHourMin
 
 type LocationSummaryDateDisplayProps = {
     loi: LocationOfInterest
-    isOpen: boolean
+    includeDate: boolean
 }
 
-const LocationSummaryDateDisplay = ({loi,isOpen}:LocationSummaryDateDisplayProps) => {
+const LocationSummaryDateDisplay = ({loi,includeDate}:LocationSummaryDateDisplayProps) => {
 
     const startDay = `${shortDateToNZ.format(loi.start)}` //`${longDayToNZ.format(loi.start)}`
     const endDay = `${longDayToNZ.format(loi.end)} ${shortDateToNZ.format(loi.end)}`
@@ -15,9 +15,10 @@ const LocationSummaryDateDisplay = ({loi,isOpen}:LocationSummaryDateDisplayProps
 
     const startEndSameDate = startDay === endDay;
     return (
-        <>
-            {startDay} - {startTime} to {endTime} {startEndSameDate && `(${endDay})`}
-        </>
+        <div className="grid grid-cols-1">
+            <div>{startTime} to {endTime} </div>
+            {includeDate && <div>{`${startDay}`} {startEndSameDate && includeDate && `(${endDay})`}</div>}
+        </div>
     )
 };
 
