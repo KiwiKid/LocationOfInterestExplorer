@@ -1,7 +1,7 @@
 import { useState } from "react";
 import InternalLink from "../utils/InternalLink";
 import Summary from "../utils/Summary"
-import { getDateInPastByXDays, shortDayLongMonth } from "../utils/utils";
+import { getDateInPastByXDays, shortDayLongMonthToNZ } from "../utils/utils";
 
 type ActiveDateSelection = {
     days: number
@@ -41,7 +41,7 @@ const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHide
             onChange={(evt) => setNewDateSelection(+evt.target.value)} name="activeDateFilter" 
             className="m-1 form-select text-center text-black block w-full h-12 border-blue-400 border-b-4 bg-blue-200 rounded-lg focus:shadow-outline hover:bg-blue-400">
             {activeDateSelections.map((ads:ActiveDateSelection) => (
-                <option value={ads.days} key={ads.days}>In the last {ads.display} (since {shortDayLongMonth.format(getDateInPastByXDays(ads.days))})</option>
+                <option value={ads.days} key={ads.days}>In the last {ads.display} (since {shortDayLongMonthToNZ.format(getDateInPastByXDays(ads.days))})</option>
             ))}
         </select>
         <InternalLink 

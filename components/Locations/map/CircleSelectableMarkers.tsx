@@ -1,11 +1,5 @@
 import { LatLng, LeafletEvent } from "leaflet"
-import { useRef } from "react"
-
-import { Pane, useMapEvents } from "react-leaflet"
 import { CircleMarker } from "react-leaflet"
-import { shortTimeWithHourMin } from "../../utils/utils"
-import LocationTypeDisplay from "../LocationTypeDisplay"
-import AutoHidePopup from "./AutoHidePopup"
 
 
 

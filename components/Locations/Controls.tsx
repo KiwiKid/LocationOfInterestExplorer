@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { shortDayLongMonth, getDateInPastByXDays } from "../utils/utils";
+import { shortDayLongMonthToNZ, getDateInPastByXDays } from "../utils/utils";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import Summary from '../utils/Summary'
 
@@ -17,7 +17,7 @@ export default function Controls({
 
     const dateAfter = getDateInPastByXDays(daysInPastShown);
 
-    const noLocations = `No Locations of interest in the circle since ${shortDayLongMonth.format(dateAfter)} `;
+    const noLocations = `No Locations of interest in the circle since ${shortDayLongMonthToNZ.format(dateAfter)} `;
    // const shortLocations = `${locationCount} locations in the Circle (showing since ${shortDayLongMonth.format(dateAfter)})`
 
     return (
