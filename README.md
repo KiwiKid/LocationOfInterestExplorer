@@ -34,3 +34,7 @@ On the radar:
 - Map navigation performance improvements (see refreshVisibleLocations()). Especially with large number of locations.
 
 Open to PR's!
+
+
+# Trigger automatic builds:
+set VERCEL_REBUILD_URL as a github secret. The "deploy-prod" action will call the Vercel deploy Hook url on "main" and get any new locations each hour.
