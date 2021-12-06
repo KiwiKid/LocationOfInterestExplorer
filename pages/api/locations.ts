@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import  {parse} from 'csv-parse'
 import get, { AxiosResponse } from 'axios'
 import { LocationOfInterest } from '../../components/types/LocationOfInterest';
+import { PRESET_LOCATIONS } from '../../components/Locations/PresetLocations';
 
 async function queryAllLocations(onSuccess:any, onError:any):Promise<void>{
   try{
@@ -39,6 +40,17 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 } 
 
 const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationOfInterest => {
+
+    let locationType = getLocationTypeFromAdvice(row.publicAdvice);
+    let aproxLatLng = PRESET_LOCATIONS.filter((t) => t.title === row.location.city)[0];
+    let approxCity;
+    if(!row.location.latitude || !row.location.longitude){
+        if(aproxLatLng != null){
+            approxCity = aproxLatLng;
+            // Keep an "High" location types
+            locationType = locationType === "Standard" ? "approx" : locationType
+        }
+    }
     let res = {
       id: row.eventId,
       added: row.publishedAt,
@@ -48,10 +60,18 @@ const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationO
       start: new Date(row.startDateTime),
       end: new Date(row.endDateTime),
       advice: row.publicAdvice,
-      lat: row.location.latitude,
-      lng: row.location.longitude,
+      lat: row.location.latitude !== 0 ? row.location.latitude : approxCity?.lat || 0,
+      lng: row.location.longitude !== 0 ? row.location.longitude : approxCity?.lng || 0 ,
       updated: row.updatedAt,
-      locationType: 'Standard'
+      locationType: locationType
+    }
+
+    if(!row.location.latitude && !row.location.longitude){
+        res.locationType = getLocationTypeFromAdvice(row.publicAdvice);
     }
   return res;
 }
+
+function getLocationTypeFromAdvice(advice:string){
+    return advice.toLowerCase().indexOf('immediately') > -1 ? 'High' : 'Standard'
+  }

@@ -12,6 +12,8 @@ import InternalLink from "../utils/InternalLink";
 import Toggle from "../utils/Toggle";
 import Summary from '../utils/Summary'
 import { Sort } from "../types/Sort";
+import { SendFeedback } from "../utils/SendFeedback";
+import { PRESET_LOCATIONS } from "./PresetLocations";
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -69,83 +71,10 @@ export default function LocationPageDrawer({
     }
 
     const [selectPresetLocation, setSelectPresetLocation] = useState<PresetLocation|undefined>(undefined);
-    const PRESET_LOCATIONS = [
-      { 
-      title: "Auckland",
-      lat: -36.8500,
-      lng: 174.7833,
-      zoom: 9
-    },{
-      title: "Wellington",
-      lat: -41.2889,
-      lng: 174.7772,
-      zoom: 11
-    },{
-      title: "Hamilton",
-      lat: -37.7833,
-      lng: 175.2833,
-      zoom: 11
-    },{
-      title: "Tauranga",
-      lat: -37.6858,
-      lng: 176.1667,
-      zoom: 11
-    },{
-      title: "Palmerston North",
-      lat: -40.3549,
-      lng: 175.6095,
-      zoom: 11
-    },{
-      title:"Whangarei",
-      lat: -35.7250,
-      lng: 174.3236,
-      zoom: 12
-    },{
-      title: "Napier",
-      lat: -39.4833,
-      lng: 176.9167,
-      zoom: 12
-    },{
-      title: "Rotorua",
-      lat: -38.1378,
-      lng: 176.2514,
-      zoom: 12
-    },{
-      title: "Dunedin",
-      lat: -45.8667,
-      lng: 170.5000,
-      zoom: 12
-    },  {
-      title: "Christchurch",
-      lat: -43.5309,
-      lng: 172.6365,
-      zoom: 11
-    },{
-      title: "Invercargill",
-      lat: -46.4290,
-      lng: 168.3620,
-      zoom: 11
-    },{
-      title: "Nelson",
-      lat: -41.2931,
-      lng: 173.2381,
-      zoom: 12
-    },{
-      title: "Whanganui",
-      lat: -39.9333,
-      lng: 175.0500,
-      zoom: 12
-    }]
     
-    type PresetLocation = {
-      title:string
-      lat:number
-      lng:number
-      zoom:number
-    }
+
     const goToLocation = (pl:PresetLocation) => {
       setSelectPresetLocation(pl);
-      
     }
 
     useEffect(() => {
@@ -271,12 +200,9 @@ export default function LocationPageDrawer({
                     <p className="text-gray-800"> I&apos;ll do my best, but i&apos;m just a guy with a keyboard in a relatively dark room.</p>
                     <div className="md:w-3/5 m-auto">
                     <p className="text-center"> Any technical issues, questions, or suggestions/feedback, please:
-                      
+                      <SendFeedback />
                     </p>
-                    {process.env.NEXT_PUBLIC_FEEDBACK_URL && <ExternalLink 
-                          title="Send Feedback"
-                          href={process.env.NEXT_PUBLIC_FEEDBACK_URL}
-                      />}
+                    
                   </div>
                 </div>
               </Toggle>
@@ -295,7 +221,7 @@ export default function LocationPageDrawer({
               <>
                 <Summary>Use these buttons to re-position the map at a specific location</Summary>
                 <div className="grid grid-cols-2">
-                  {PRESET_LOCATIONS.sort((a,b) => a.lat > b.lat ? -1 : 1).map((pl) => 
+                  {PRESET_LOCATIONS.filter((p) => !!p.zoom).sort((a,b) => a.lat > b.lat ? -1 : 1).map((pl) => 
                     <div key={pl.title} className="w-full">
                       <div className="w-4/5 m-auto p-3">
                         <InternalLink 
@@ -341,7 +267,7 @@ export default function LocationPageDrawer({
                       </Question>
                       <Question title={`What does "Not an Official Ministry of Health Service" mean?`}>
                           <p>This is not endorsed by or in anyway affiliated with the Ministry of Health.</p>
-                          <p>The MoH publishes the Locations of Interests and this service publishes that information.</p>
+                          <p>The MoH provides the Locations of Interests and this service publishes that information.</p>
                       </Question>
                       <Question className="bg-blue-100" title="Why are locations not published in Auckland?">
                         <span className="text-gray-600">(sourced directly from the MoH)</span>
@@ -363,10 +289,7 @@ export default function LocationPageDrawer({
                       </Question>     
                       {process.env.NEXT_PUBLIC_FEEDBACK_URL && <Question className="bg-blue-100" title="X is does not work, is broken, or unclear?">
                         <div className="md:w-3/5 m-auto">
-                          <ExternalLink 
-                            title="Send Feedback"
-                            href={process.env.NEXT_PUBLIC_FEEDBACK_URL}
-                          />
+                          <SendFeedback />
                         </div>
                       </Question>}
                       <Question title="How up to date is this?">

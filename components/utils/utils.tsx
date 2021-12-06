@@ -49,7 +49,11 @@ export function metersToKmsString(meters:number, decimalPlaces:number = 0):strin
 }
 
 export function getDateInPastByXDays(days:number):Date{
-    return new Date(new Date().getTime()+(-days*24*60*60*1000));
+    let date = new Date(new Date().getTime()+(-days*24*60*60*1000));
+
+    date.setHours(0);
+    date.setMinutes(0);
+    return date;
 }
 
 export const scrollToRef = (ref:any, manaulOffset:number = 0) => {

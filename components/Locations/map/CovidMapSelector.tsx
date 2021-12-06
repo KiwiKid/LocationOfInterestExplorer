@@ -391,7 +391,8 @@ function CovidMapSelector({
         }
 
         .leaflet-container{
-            height: 85vh;
+            height: 95vh;
+            width: 100wh;
         }
 
         `}
@@ -424,19 +425,19 @@ function CovidMapSelector({
                         </div>
                     </div>
                 </div> : null}
-                <div>
+                <div >
                     <MapContainer 
                         center={activeLocation}
                         zoom={activeZoom}
                         zoomControl={true}
                         whenCreated={(m) => { onMapLoad(m); } }
-                        style={{ height: "85vh"}}
+                        style={{ height: "85vh",}}
                         preferCanvas={true}
                         scrollWheelZoom='center'
                         className="z-1"
                         >
                             <TileLayer
-                                noWrap={true}
+                                noWrap={false}
                                 zIndex={1}
                                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

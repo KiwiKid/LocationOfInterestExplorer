@@ -1,6 +1,6 @@
 {
     "short_name": "Location Of Interest Explorer",
-    "name": "Explore Offical Locations of Interest published by the Ministry of Health (NZ)",
+    "name": "Explore Official Locations of Interest published by the Ministry of Health (NZ)",
     "icons": [
       {
         "src": "/icons/covid19/icon-512x512.png",
@@ -18,9 +18,9 @@
         "sizes": "512x512"
       }
     ],
-    "start_url": "/covid/locations",
+    "start_url": "/",
     "background_color": "#3367D6",
     "display": "standalone",
-    "scope": "/covid",
+    "scope": "/",
     "theme_color": "#FFAA12"
   }

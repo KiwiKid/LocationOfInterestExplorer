@@ -9,10 +9,12 @@ type ActiveDateSelection = {
 }
 
 const activeDateSelections:ActiveDateSelection[] = [
-    //{ display: 'DAY', days: 1 },
-    { display: 'WEEK', days: 7 }
-    ,{ display: 'FORTNIGHT', days: 14}
-    ,{ display: 'MONTH', days: 30}
+    { display: '1 day', days: 1}
+    ,{ display: '3 Days', days: 3}
+    ,{ display: '6 days', days: 6}
+    ,{ display: '9 days', days: 9}
+    ,{ display: '12 days', days: 12}
+    ,{ display: '14 days', days: 14}
 ];
 
 type ActiveDateSelectionProps = {
@@ -31,7 +33,7 @@ const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHide
         <label htmlFor="dateSelection" className="col-span-3 sm:col-span-4 text-lg">
                 <div className="text-center">
                     <div>
-                        Only show locations:
+                        Only show locations with a start date in the last:
                     </div>
                 </div>
             </label>   
@@ -41,7 +43,7 @@ const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHide
             onChange={(evt) => setNewDateSelection(+evt.target.value)} name="activeDateFilter" 
             className="m-1 form-select text-center text-black block w-full h-12 border-blue-400 border-b-4 bg-blue-200 rounded-lg focus:shadow-outline hover:bg-blue-400">
             {activeDateSelections.map((ads:ActiveDateSelection) => (
-                <option value={ads.days} key={ads.days}>In the last {ads.display} (since {shortDayLongMonthToNZ.format(getDateInPastByXDays(ads.days))})</option>
+                <option value={ads.days} key={ads.days}>{ads.display} (since {shortDayLongMonthToNZ.format(getDateInPastByXDays(ads.days))})</option>
             ))}
         </select>
         <InternalLink 
