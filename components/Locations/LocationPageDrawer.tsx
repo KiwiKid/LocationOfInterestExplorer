@@ -70,12 +70,12 @@ export default function LocationPageDrawer({
 
     const [selectPresetLocation, setSelectPresetLocation] = useState<PresetLocation|undefined>(undefined);
     const PRESET_LOCATIONS = [
-      /*{ 
+      { 
       title: "Auckland",
       lat: -36.8500,
       lng: 174.7833,
       zoom: 9
-    },*/{
+    },{
       title: "Wellington",
       lat: -41.2889,
       lng: 174.7772,
