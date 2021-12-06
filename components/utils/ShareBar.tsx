@@ -1,4 +1,4 @@
-import { withRouter } from 'next/router';
+import { useRouter, withRouter } from 'next/router';
 import { Children, useEffect, useState } from 'react';
 import {
     FacebookShareCount,
@@ -16,15 +16,19 @@ import {
 
 type ShareBarProps = {
     children?: any
-    //circleURL: string
+    url: string
 }
 
-function ShareBar({children}:ShareBarProps) {
-    const shareUrl = 'https://gregc.dev/covid/locations';
-    const title = 'Find Locations of Interest';
+function ShareBar({children, url}:ShareBarProps) {
+
+    const router = useRouter();
+
+    const shareUrl = url //'https://gregc.dev/covid/locations';
+    const title = 'Locations of Interest Explorer';
 
     return (
-        <>
+      <>{!url.length ? <div>Loading</div> :
+      <>
         {children}
         <div className="grid grid-flow-col pt-4">
             <div className="Demo__some-network">
@@ -105,8 +109,9 @@ function ShareBar({children}:ShareBarProps) {
           <div className="Demo__some-network__share-count">&nbsp;</div>
             </div>
     </div>
+      </>}
     </>)
 }
 
 
-export default withRouter(ShareBar);
+export default ShareBar;

@@ -14,6 +14,8 @@ import Summary from '../utils/Summary'
 import { Sort } from "../types/Sort";
 import { SendFeedback } from "../utils/SendFeedback";
 import { PRESET_LOCATIONS } from "./PresetLocations";
+import ShareBar from "../utils/ShareBar";
+import CopyBox from '../utils/CopyBox';
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -27,6 +29,8 @@ type LocationPageDrawerProps = {
     sortField: Sort
     showSortFieldPopup: boolean
     setShowSortFieldPopup: any
+    mapIsLocated: boolean
+    circleParams: string
 }
 
 export default function LocationPageDrawer({
@@ -40,7 +44,9 @@ export default function LocationPageDrawer({
     setShowDateInPastPopup,
     sortField,
     showSortFieldPopup,
-    setShowSortFieldPopup
+    setShowSortFieldPopup,
+    mapIsLocated, 
+    circleParams
   }:LocationPageDrawerProps){
 
 
@@ -54,7 +60,7 @@ export default function LocationPageDrawer({
     const [drawPositionY, setDrawPositionY] = useState(CLOSED_DRAW_POS);
     const [lastDrawPositionY, setLastDrawPositionY] = useState(CLOSED_DRAW_POS)
 
-
+    const [url, setUrl] = useState<string>('');
 
     const handleClickEnd = (e:DraggableEvent, d:DraggableData) => {
       e.stopPropagation();
@@ -152,6 +158,12 @@ export default function LocationPageDrawer({
       }
     ];
 
+    useEffect(() => {
+      if(window.location.origin){
+        setUrl(window.location.origin);
+      }
+    }, [])
+
   return (
     <Draggable 
       handle=".handle"
@@ -242,18 +254,18 @@ export default function LocationPageDrawer({
               <Toggle title="Share" id="share" extendClassName="border-gray-800 border-b-4">
                 <>
                   <Summary>Share this page via url or through social media</Summary>
-                  {/* <ShareBar url={process.env.NEXT_PUBLIC}>
+                  <ShareBar url={url}>
                       <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 border border-black p-2">
                         <div className="">
-                          <ClipboardCopy copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
+                          <CopyBox copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
                             {mapIsLocated ? <div>🚨 This link includes your current location 🚨</div>: null}
-                          </ClipboardCopy>
+                          </CopyBox>
                         </div>
                         <div className="">
-                          <ClipboardCopy copyText={`${url}/covid/locations`} successText="Copy link to page" promptText="Link copied" />
+                          <CopyBox copyText={`${url}`} successText="Copy link to page" promptText="Link copied" />
                         </div>
                       </div>
-                  </ShareBar>*/}
+                  </ShareBar>
                 </>
               </Toggle>
               

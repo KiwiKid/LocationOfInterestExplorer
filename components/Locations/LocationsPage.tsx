@@ -51,7 +51,9 @@ export default function LocationsPage({locations, startingSettings}:LocationsPag
     const [showDateInPastPopup, setShowDateInPastPopup] = useState(false);
     const [sortField, setSortField] = useState(Sort.Start);
     const [showSortFieldPopup, setShowSortFieldPopup] = useState(false);
-    const [showDraw, setShowDraw] = useState(false);
+    const [mapIsLocated, setMapIsLocated] = useState(false);
+
+    const [circleParams, setCircleParams] = useState('');
       
     function changeActiveLocationDate(daysInPast:number){
         // TODO: Maybe the source of day troubles?
@@ -97,6 +99,8 @@ export default function LocationsPage({locations, startingSettings}:LocationsPag
                   daysInPastShown={daysInPastShown}
                   setMap={setMap}
                   map={map}
+                  setCircleParams={setCircleParams}
+                  setMapIsLocated={setMapIsLocated}
                 />
               </div>
             <div>
@@ -112,6 +116,8 @@ export default function LocationsPage({locations, startingSettings}:LocationsPag
                 sortField={sortField}
                 showSortFieldPopup={showSortFieldPopup}
                 setShowSortFieldPopup={setShowSortFieldPopup}
+                mapIsLocated={mapIsLocated}
+                circleParams={circleParams}
               />
             </div>
         </div>

@@ -86,6 +86,8 @@ type CovidMapSelectorProps = {
     daysInPastShown: number
     map: any
     setMap: any
+    setCircleParams: any
+    setMapIsLocated: any
 }
 
 function CovidMapSelector({
@@ -95,6 +97,8 @@ function CovidMapSelector({
     , daysInPastShown
     , map
     , setMap
+    , setCircleParams
+    , setMapIsLocated
 }:CovidMapSelectorProps) {
 
     const router = useRouter();
@@ -122,7 +126,6 @@ function CovidMapSelector({
 
 
     const [allowedLocationRestore, setAllowedLocationRestore] = useState(false);
-    const [circleParams, setCircleParams] = useState<string>()
     // Maintain a copy to allow for external components to trigger map events (i.e. find my location)
     
     // Reset size of ref array
@@ -267,6 +270,14 @@ function CovidMapSelector({
             }
         }
     }
+    function triggerLocation(){
+        setLocationPromptVisible(false);
+        if(map){
+            // @ts-ignore
+            map.locate();
+            setMapIsLocated(true);
+        }
+    }
 
     function onLocate(point:LatLng, map:any){
         if(map){
@@ -274,13 +285,7 @@ function CovidMapSelector({
         }
     }
 
-    function triggerLocation(){
-        setLocationPromptVisible(false);
-        if(map){
-            // @ts-ignore
-            map.locate();
-        }
-    }
+
 /*
     function toggleLocationData(newShowLocationValue:boolean){
         if(newShowLocationValue){
@@ -314,6 +319,7 @@ function CovidMapSelector({
     const onMove = (m:any) =>{
         clearUrl();
         refreshMap(m);
+        setMapIsLocated(false);
         //if(window.pageYOffset != mapContainerRef.current.offsetTop){
         //    scrollToRef(mapContainerRef);
         //}

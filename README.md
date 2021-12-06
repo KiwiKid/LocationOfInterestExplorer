@@ -22,12 +22,13 @@ Theres some untidy compromises made in the interests of time, such as:
 
 
 Features Ideas (in order of perceived value - open to ideas here!)
+- Improve Drawer render performance
 - Search filter input box
 - Other date field sort/groupings (Added/Updated)
 - Display location age:
   - Use opacity
   - categorization (i.e. 3 day blocks)
-
+- Improve navigation between drawers and map (and vice-versa)
 
 On the radar:
 - Map navigation performance improvements (see refreshVisibleLocations()). Especially with large number of locations.
