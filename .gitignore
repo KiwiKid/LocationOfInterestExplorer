@@ -35,3 +35,10 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+/public/robots.txt
+/.vscode/settings.json
+/public/sw.js
+/public/sw.js.map
+/public/workbox-*.js*
+/.vscode/*

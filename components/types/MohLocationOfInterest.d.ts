@@ -5,15 +5,16 @@ type MohLocationOfInterest = {
     endDateTime: Date;
     publicAdvice: string;
     visibleInWebform: boolean;
-    updatedAt: Date | null;
+    publishedAt: Date;
+    updatedAt?: Date | undefined;
     exposureType: string;
     location: MohLocationOfInterestLocation;
 }
 
 
 type MohLocationOfInterestLocation = {
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     suburb: string;
     city: string;
     address: string
