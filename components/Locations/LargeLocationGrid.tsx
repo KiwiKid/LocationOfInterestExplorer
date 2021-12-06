@@ -1,6 +1,8 @@
+import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import ExternalLink from "../utils/ExternalLink";
-import { shortTimeWithHourMin, metersToKmsString, shortDayLongMonth } from "../utils/utils";
+import {metersToKmsString, detailedLongTimeToNZ } from "../utils/utils";
+import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay";
 import LocationTypeDisplay from "./LocationTypeDisplay";
 
 
@@ -12,13 +14,14 @@ type LargeLocationGridProps = {
     toggleOpenLocation: any
 }
 
+
 export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, toggleOpenLocation}:LargeLocationGridProps) {
     return ( <div key={`${l.loi.id}_L`}>
                 <div>
                     <div className={`bg-gray-100 grid grid-cols-5 content-center align-middle `} onClick={(evt) => toggleOpenLocation(l.loi.id)}>
                         <div className="text-center">{l.loi.city}</div>
                         <div className="col-span-2">{l.loi.event}</div>
-                        <div>{shortTimeWithHourMin.format(new Date(l.loi.start))} to {shortTimeWithHourMin.format(new Date(l.loi.end))} - {shortDayLongMonth.format(new Date(l.loi.start))}</div>
+                        <LocationSummaryDateDisplay loi={l.loi}/>
                         {isOpen !== undefined ? 
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
@@ -29,6 +32,9 @@ export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, t
                     <div className={`grid grid-cols-4`}>
                         <div className="text-center">{l.loi.location}</div>
                         {showDistance && <div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div>}
+                        {l.loi.added && <div className="col-span-1 pt-4">added: {detailedLongTimeToNZ.format(l.loi.added)}</div>}
+                        {l.loi.updated && <div className="col-span-1 pt-4">updated: {detailedLongTimeToNZ.format(l.loi.updated)}</div>}
+                    
                         <div className="col-span-3 text-center">{l.loi.advice}</div>
                     </div>
                     <div className="grid grid-cols-1">

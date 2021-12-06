@@ -1,5 +1,5 @@
 import {LocationOfInterestCalculated} from '../types/LocationOfInterestCalculated'
-import { dateFormatX, dateFormatY, detailedLongTime, detailedLongTimeToNZ, metersToKmsString, shortDayMonth, shortTimeWithHourMin, shortTimeWithHourMinToNZ } from '../utils/utils'
+import { dateFormatX, dateFormatY,  detailedLongTimeToNZ, metersToKmsString, shortDayMonthToNZ, shortTimeWithHourMinToNZ, sortFormatToNZ } from '../utils/utils'
 import _ from 'lodash'
 
 import { useState } from 'react';
@@ -22,13 +22,13 @@ export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
 
         switch(sortField){
             case Sort.Added: 
-                return detailedLongTimeToNZ.format(loi.added);
+                return sortFormatToNZ.format(loi.added);
             case Sort.Start: 
-                return detailedLongTimeToNZ.format(loi.start);
+                return sortFormatToNZ.format(loi.start);
             case Sort.End: 
-                return detailedLongTimeToNZ.format(loi.end);
+                return sortFormatToNZ.format(loi.end);
             case Sort.Updated: 
-                return detailedLongTimeToNZ.format(loi.updated);
+                return sortFormatToNZ.format(loi.updated);
             default:
                 throw 'invalid sort'
         }
@@ -47,8 +47,8 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                 
 
                 
-                console.log(detailedLongTimeToNZ.format(l.loi.start)+''+day+ '    '+day.substring(0,10));
-                return Object.assign(l, { day: day.substring(0,10) })})
+                console.log(sortFormatToNZ.format(l.loi.start)+''+day+ '    '+day.substring(0,10));
+                return Object.assign(l, { day: day.substring(0,8) })})
             .groupBy("day")
             .value();
 
@@ -84,7 +84,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
             <div key={`${d}_S`} className="">
                 <div className="bg-gray-300 grid grid-cols-8 border-b-1 border-blue-800 italic">
                     <div className="border col-span-3">{locationCount} Locations</div>
-                    <div className="border col-span-5">{shortDayMonth.format(new Date(firstStartTime))}</div>
+                    <div className="border col-span-5">{shortDayMonthToNZ.format(firstStartTime)}</div>
                 </div>
             </div>
         )
@@ -103,8 +103,6 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                     
                     <div className="text-left">{l.loi.city} - {l.loi.event}</div>
                     <div className="text-right row-span-2 ">{shortTimeWithHourMinToNZ.format(l.loi.start)} to {shortTimeWithHourMinToNZ.format(l.loi.end)}</div>
-                    
-                    NZ: {detailedLongTimeToNZ.format(l.loi.start)} ===== {detailedLongTimeToNZ.format(l.loi.end)}
                     <div className="text-left col-span-2"><LocationTypeDisplay detailed={isOpen} locationType={l.loi.locationType}/></div>
                     <div className="md:text-lg col-span-2 text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
                 </div>
@@ -113,7 +111,8 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                     <div>{l.loi.location}</div>
                     {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
                     <div className="col-span-2 pt-4">{l.loi.advice}</div>
-                    <div className="col-span-1 pt-4">|||added:  </div>
+                    {l.loi.added && <div className="col-span-1 pt-4">added: {detailedLongTimeToNZ.format(l.loi.added)}</div>}
+                    {l.loi.updated && <div className="col-span-1 pt-4">updated: {detailedLongTimeToNZ.format(l.loi.updated)}</div>}
                     
                     <div className="col-span-2 py-2 ">
                         <div className="m-auto">
@@ -122,7 +121,6 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                             title="I was here! (Official MoH link)"
                         />
                     </div>
-                    <div className="col-span-full">[recordadded: ]</div>
                     {/*<a target="_blank" 
                         rel="noreferrer"
                         href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}>

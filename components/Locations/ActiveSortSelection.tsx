@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Sort } from "../types/Sort";
 import InternalLink from "../utils/InternalLink";
 import Summary from "../utils/Summary"
-import { getDateInPastByXDays, shortDayLongMonth } from "../utils/utils";
+import { getDateInPastByXDays } from "../utils/utils";
 
 
 type ActiveSortFieldSelectionProps = {

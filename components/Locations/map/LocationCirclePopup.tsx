@@ -1,4 +1,5 @@
-import { shortDayShortMonth, shortTimeWithHourMin } from "../../utils/utils";
+import { shortTimeWithHourMinToNZ } from "../../utils/utils";
+import LocationSummaryDateDisplay from "../LocationSummaryDateDisplay";
 import LocationTypeDisplay from "../LocationTypeDisplay";
 import AutoHidePopup from "./AutoHidePopup";
 
@@ -11,7 +12,7 @@ function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLo
                     <div className={`bg-gray-200 grid grid-cols-1 text-center`} >
                         <div className="font-bold">{l.loi.event}</div>
                         <div className="font-bold">{l.loi.city}</div>
-                        <div>{shortTimeWithHourMin.format(new Date(l.loi.start))} to {shortTimeWithHourMin.format(new Date(l.loi.end))} - {shortDayShortMonth.format(new Date(l.loi.start))}</div>
+                        <LocationSummaryDateDisplay loi={l.loi}/>
                         <div><LocationTypeDisplay detailed={false} locationType={l.loi.locationType}/></div>
                     </div>
                 </div>

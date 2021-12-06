@@ -20,24 +20,26 @@ export const ShortDayFormat = {
     , day: '2-digit'
 }
 
-export const shortDayMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
+export const sortFormatToNZ = new Intl.DateTimeFormat("en", { timeStyle: "long", dateStyle:'short' })
+
+//export const shortDayMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
 export const shortDayMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric',}) 
 
 // Nov 9
-export const shortDayShortMonth = new Intl.DateTimeFormat("en",  {month:'short', day:'numeric', timeZone: 'UTC'}) 
+//export const shortDayShortMonth = new Intl.DateTimeFormat("en",  {month:'short', day:'numeric', timeZone: 'UTC'}) 
 export const shortDayShortMonthToNZ = new Intl.DateTimeFormat("en",  {month:'short', day:'numeric'}) 
 
-export const shortDayLongMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
+//export const shortDayLongMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
 export const shortDayLongMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric'}) 
 
 
 
 
-export const shortTimeWithHourMinToNZ = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric'})
+export const shortTimeWithHourMinToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short'})
 
-export const shortTimeWithHourMin = new Intl.DateTimeFormat("en", {month:'long', day:'numeric', timeZone: 'UTC'}) 
+//export const shortTimeWithHourMin = new Intl.DateTimeFormat("en", {timeStyle:'short', timeZone: 'UTC'}) 
 
-export const detailedLongTime =  new Intl.DateTimeFormat("en", { timeStyle: "medium", dateStyle:'medium', timeZone: 'UTC' }) 
+//export const detailedLongTime =  new Intl.DateTimeFormat("en", { timeStyle: "medium", dateStyle:'medium', timeZone: 'UTC' }) 
 
 export const detailedLongTimeToNZ =  new Intl.DateTimeFormat("en", { timeStyle: "medium", dateStyle:'medium' }) 
 

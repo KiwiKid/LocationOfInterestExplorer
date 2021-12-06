@@ -39,7 +39,6 @@ export default function LocationsPage({locations, startingSettings}:LocationsPag
     }
 
     const handleVisibleLocationsChange = (locs:LocationOfInterestCalculated[]) => {
-      debugger;
       setVisibleLocations(locs);
     }
 
@@ -64,7 +63,7 @@ export default function LocationsPage({locations, startingSettings}:LocationsPag
     return (
         <>
        <div className="flex flex-col h-screen text-left font-medium w-screen">
-       <Script
+       {process.env.NEXT_PUBLIC_GA_ID && <><Script
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
           strategy="afterInteractive"
         />
@@ -76,7 +75,7 @@ export default function LocationsPage({locations, startingSettings}:LocationsPag
   
               gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
             `}
-          </Script>
+          </Script></>}
         <main className="align-middle md:max-w-full">
           {showDateInPastPopup && <ActiveDateSelection 
             daysInPastShown={daysInPastShown} 

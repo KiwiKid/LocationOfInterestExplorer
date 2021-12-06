@@ -24,7 +24,7 @@ export default function useLocations() {
       start: new Date(rec.start),
       end: new Date(rec.end),
       updated: rec.updated ? new Date(rec.updated) : undefined,
-      added: rec.added,
+      added: new Date(rec.added),
       advice: rec.advice,
       lat: +rec.lat,
       lng: +rec.lng,

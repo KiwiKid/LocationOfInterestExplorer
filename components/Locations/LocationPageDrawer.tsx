@@ -1,5 +1,5 @@
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
-import { detailedLongTimeToNZ, getDateInPastByXDays, shortDayLongMonth, shortDayShortMonth } from "../utils/utils";
+import { detailedLongTimeToNZ, getDateInPastByXDays, shortDayLongMonthToNZ } from "../utils/utils";
 import LocationGridContainer from "./LocationGridContainer";
 import Question from "./Questions";
 // @ts-ignore
@@ -251,7 +251,7 @@ export default function LocationPageDrawer({
           </div>
           <div className="overflow-auto overflow-y-scroll max-h-screen">
           <div className="w-full text-center">            
-              <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonth.format(getDateInPastByXDays(daysInPastShown))}</span> in the circle
+              <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the circle
           </div>
           
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >

@@ -9,8 +9,8 @@ async function queryAllLocations(onSuccess:any, onError:any):Promise<void>{
     if(!process.env.MOH_LOCATIONS_URL){
         onError('No Location Query set');
         return;
-      }
-    get({url: process.env.MOH_LOCATIONS_URL})
+    }
+    await get({url: process.env.MOH_LOCATIONS_URL})
     .then(async (response:any) => {
         onSuccess(response.data.items);
     });
@@ -54,5 +54,4 @@ const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationO
       locationType: 'Standard'
     }
   return res;
-
 }

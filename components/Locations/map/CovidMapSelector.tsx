@@ -14,16 +14,10 @@ import 'leaflet/dist/leaflet.css';
 import {useRouter} from 'next/router'
 import L, { DoneCallback, LatLng, LatLngBounds, LatLngBoundsExpression, Layer, LeafletEvent } from "leaflet";
 
-import LocationGrid from '../LocationGrid'
-import LocationGridContainer from "../LocationGridContainer";
 import CenteredCircle from './CenteredCircle'
 import { LocationOfInterest } from "../../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated";
-import LargeLocationGrid from "../LargeLocationGrid";
-import { getDateInPastByXDays, metersToKmsString, scrollToRef, shortDayShortMonth, shortTimeWithHourMin} from '../../utils/utils'
-import Scroller from "../../utils/Scroller";
 import _, { debounce } from "lodash";
-import LocationTypeDisplay from "../LocationTypeDisplay";
 import { StartingSettings } from "../../types/StartingSettings";
 import InternalLink from "../../utils/InternalLink";
 import { Pane } from "react-leaflet";
@@ -505,7 +499,7 @@ function CovidMapSelector({
                             >
                                 <Pane name="click_auckland" style={{zIndex: 499 }}>
                                     <AutoHidePopup keepInView={false} autoPan={false} className="" >
-                                        <div className="text-lg italic text-center bg-gray-200 rounded-lg">Locations in Auckland are currently not published by the MoH.<br/> See FAQ for details</div>
+                                        <div className="text-lg italic text-center bg-gray-200 rounded-lg">Most Locations in Auckland are not currently published by the MoH.<br/> See FAQ for details</div>
                                     </AutoHidePopup>
                                 </Pane>
                             </Circle>
