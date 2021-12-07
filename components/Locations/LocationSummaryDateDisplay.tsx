@@ -8,16 +8,15 @@ type LocationSummaryDateDisplayProps = {
 
 const LocationSummaryDateDisplay = ({loi,includeDate}:LocationSummaryDateDisplayProps) => {
 
-    const startDay = `${shortDateToNZ.format(loi.start)}` //`${longDayToNZ.format(loi.start)}`
-    const endDay = `${longDayToNZ.format(loi.end)} ${shortDateToNZ.format(loi.end)}`
+    const startDay = `${shortDayLongMonthToNZ.format(loi.start)}` //`${longDayToNZ.format(loi.start)}`
+    const endDay = `${shortDayLongMonthToNZ.format(loi.end)}` //${shortDayLongMonthToNZ.format(loi.end)} 
     const startTime = shortTimeWithHourMinToNZ.format(loi.start);
     const endTime = shortTimeWithHourMinToNZ.format(loi.end);
 
     const startEndSameDate = startDay === endDay;
     return (
         <div className="grid grid-cols-1">
-            <div>{startTime} to {endTime} </div>
-            {includeDate && <div>{`${startDay}`} {startEndSameDate && includeDate && `(${endDay})`}</div>}
+            {startTime} to {endTime} {includeDate && <>- {`${startDay}`} {!startEndSameDate && includeDate && `(${endDay})`}</>}
         </div>
     )
 };

@@ -30,11 +30,16 @@ export const shortDayMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', d
 export const shortDayShortMonthToNZ = new Intl.DateTimeFormat("en",  {month:'short', day:'numeric'}) 
 
 //export const shortDayLongMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
+// December 7
 export const shortDayLongMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric'}) 
 
+// Thursday
 export const longDayToNZ = new Intl.DateTimeFormat("en",  {weekday:'long'}) 
+
+// Dec 7, 2021
 export const shortDateToNZ = new Intl.DateTimeFormat("en",  { dateStyle:"medium"}) 
 
+// 1:13 PM
 export const shortTimeWithHourMinToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short'})
 
 //export const shortTimeWithHourMin = new Intl.DateTimeFormat("en", {timeStyle:'short', timeZone: 'UTC'}) 

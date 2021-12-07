@@ -3,11 +3,22 @@
 
 ## Getting Started
 
-First, run the development server:
+First time? run:
+```bash
+yarn install
+```
 
+To run the development server:
 ```bash
 yarn dev
 ```
+
+## Prerequisites
+
+Enviroment variables:
+
+MOH_LOCATIONS_URL=https://api.integration.covid19.health.nz/locations/v1/current-locations-of-interest
+(the current location of the MoH api)
 
 The page consists of navigable map with a Drawer at the bottom.
 The drawer contains details of the items in the center of the circle.

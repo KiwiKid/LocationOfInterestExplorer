@@ -20,8 +20,8 @@ export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, t
                 <div>
                     <div className={`bg-gray-100 grid grid-cols-5 content-center align-middle `} onClick={(evt) => toggleOpenLocation(l.loi.id)}>
                         <div className="text-center">{l.loi.city}</div>
-                        <div className="col-span-2">{l.loi.event}</div>
-                        <LocationSummaryDateDisplay loi={l.loi} includeDate={isOpen}/>
+                        <div className="col-span-2">{l.loi.event}</div>                        
+                        <LocationSummaryDateDisplay loi={l.loi} includeDate={true} />
                         {isOpen !== undefined ? 
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
@@ -31,14 +31,11 @@ export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, t
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
                         <div className="text-center">{l.loi.location}</div>
-                        {showDistance && <div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div>}
-                        {l.loi.added && <div className="col-span-1 pt-4">added: {detailedLongTimeToNZ.format(l.loi.added)}</div>}
-                        {l.loi.updated && <div className="col-span-1 pt-4">updated: {detailedLongTimeToNZ.format(l.loi.updated)}</div>}
-                    
+                        {showDistance && <div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div>}                    
                         <div className="col-span-3 text-center">{l.loi.advice}</div>
                     </div>
-                    <div className="grid grid-cols-1">
-                        <div className="w-full">
+                    <div className="grid grid-cols-2">
+                        <div className="w-full col-span-2">
                             <div className="w-64 m-auto">
                                 <ExternalLink
                                     href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}
@@ -55,6 +52,8 @@ export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, t
                                 </div>
                             </a>
                         </div>}
+                        <div className="col-span-1">Added: {detailedLongTimeToNZ.format(l.loi.added)}</div>
+                        {l.loi.updated && <div className="col-span-1 pt-4">(Updated: {detailedLongTimeToNZ.format(l.loi.updated)})</div>}
                     </div>
                     </>}
                 </div>
