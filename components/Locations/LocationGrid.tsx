@@ -119,9 +119,9 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                             title="I was here! (Official MoH link)"
                         />
                     </div>
-                    <div className="col-span-1 pt-4">
-                            added: {detailedLongTimeToNZ.format(l.loi.added)}<br/>
-                            {l.loi.updated && `updated: ${detailedLongTimeToNZ.format(l.loi.updated)}`}
+                    <div className="col-span-1 pt-4 italic">
+                            Added: {detailedLongTimeToNZ.format(l.loi.added)}<br/>
+                            {l.loi.updated && `Updated: ${detailedLongTimeToNZ.format(l.loi.updated)}`}
                     </div>
                     {/*<a target="_blank" 
                         rel="noreferrer"
