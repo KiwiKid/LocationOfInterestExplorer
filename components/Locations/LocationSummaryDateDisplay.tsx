@@ -14,11 +14,20 @@ const LocationSummaryDateDisplay = ({loi,includeDate}:LocationSummaryDateDisplay
     const endTime = shortTimeWithHourMinToNZ.format(loi.end);
 
     const startEndSameDate = startDay === endDay;
+
+  
+
+    
     return (
-        <div className="grid grid-cols-1">
-            {startTime} to {endTime} {includeDate && <>- {`${startDay}`} {!startEndSameDate && includeDate && `(${endDay})`}</>}
-        </div>
+        <>{startEndSameDate ? <div className="grid grid-cols-1">
+        {startTime} to {endTime} {includeDate && <>- {`${startDay}`}</>}
+    </div> : <div className="grid grid-cols-1">
+        {startTime} ({includeDate && <>{`${startDay}`}</>}) to {endTime} {includeDate && `(${endDay})`}
+    </div>}
+    </>
     )
+
+
 };
 
 export default LocationSummaryDateDisplay;

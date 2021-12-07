@@ -27,11 +27,13 @@ export const shortDayMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', d
 
 // Nov 9
 //export const shortDayShortMonth = new Intl.DateTimeFormat("en",  {month:'short', day:'numeric', timeZone: 'UTC'}) 
-export const shortDayShortMonthToNZ = new Intl.DateTimeFormat("en",  {month:'short', day:'numeric'}) 
+export const shortDayShortMonthToNZ = new Intl.DateTimeFormat("en",  {month:'numeric', day:'numeric'}) 
 
 //export const shortDayLongMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
 // December 7
 export const shortDayLongMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric'}) 
+
+export const shortNormalFormat = new Intl.DateTimeFormat("en-NZ",  {})
 
 // Thursday
 export const longDayToNZ = new Intl.DateTimeFormat("en",  {weekday:'long'}) 
@@ -41,6 +43,8 @@ export const shortDateToNZ = new Intl.DateTimeFormat("en",  { dateStyle:"medium"
 
 // 1:13 PM
 export const shortTimeWithHourMinToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short'})
+
+export const shortTimeWithHourMin24ToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short', hour12: false })
 
 //export const shortTimeWithHourMin = new Intl.DateTimeFormat("en", {timeStyle:'short', timeZone: 'UTC'}) 
 

@@ -1,5 +1,5 @@
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
-import { getDateInPastByXDays, shortDayLongMonthToNZ, shortDayMonthToNZ, shortDayShortMonthToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
+import { getDateInPastByXDays, shortDayLongMonthToNZ, shortDayMonthToNZ, shortDayShortMonthToNZ, shortNormalFormat, shortTimeWithHourMin24ToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
 import LocationGridContainer from "./LocationGridContainer";
 import Question from "./Questions";
 // @ts-ignore
@@ -183,7 +183,7 @@ export default function LocationPageDrawer({
               <>
                 <div className="text-sm font-light">Not an Official Ministry of Health Service. <br className="sm:hidden"/>Drag or Click this bar to see FAQ below </div>
                 {!!publishTime ? 
-                  <div className="text-sm font-extralight">updated@{`${shortTimeWithHourMinToNZ.format(publishTime)} ${shortDayShortMonthToNZ.format(publishTime)}`}</div> 
+                  <div className="text-sm font-extralight">updated@{`${shortTimeWithHourMin24ToNZ.format(publishTime)} ${shortNormalFormat.format(publishTime)}`}</div> 
                   : <div>{publishTime}</div>}
               </>
             </div>
