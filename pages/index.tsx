@@ -66,7 +66,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={title} />
-      <meta property='og:url' content={`${hardcodedURL}/covid/locations`} />
+      <meta property='og:url' content={`${hardcodedURL}/`} />
       <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
@@ -82,9 +82,9 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
         {isLoading ? <div>Loading...</div> 
         : isError ? <div>An Error occurred.</div> 
         : <LocationsPage
-          locations={locations || []}
-          startingSettings={settings}
-          publishTime={new Date(publishTimeUTC)}
+            locations={locations || []}
+            startingSettings={settings}
+            publishTime={new Date(publishTimeUTC)}
         />
         }
       </>
