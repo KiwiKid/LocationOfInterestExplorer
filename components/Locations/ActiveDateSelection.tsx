@@ -49,7 +49,6 @@ const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHide
         <InternalLink 
             onClick={() => changeActiveLocationDate(newDateSelection)}
             title="Load new locations"
-            linkDisabled={daysInPastShown === newDateSelection}
         />
         <InternalLink 
             onClick={setHideActiveDateSelection}

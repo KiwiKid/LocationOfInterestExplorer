@@ -5,8 +5,8 @@ export default function handler(req:NextApiRequest, res:NextApiResponse) {
         if(req.method === 'GET'){
             return res.status(200).send(`User-agent: *
             Allow: /
-            Sitemap: https//gregc.dev/sitemap.xml
-            Host: https//gregc.dev`);
+            Sitemap: https://location-of-interest-explorer.vercel.app/sitemap.xml
+            Host: https://location-of-interest-explorer.vercel.app`);
         }else{
             return res.status(405).end(`Method ${req.method} Not Allowed`)
         }

@@ -16,6 +16,7 @@ import { SendFeedback } from "../utils/SendFeedback";
 import { PRESET_LOCATIONS } from "./PresetLocations";
 import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
+import useWindowSize from "../utils/useWindowSize";
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -55,12 +56,18 @@ export default function LocationPageDrawer({
     const PX_FROM_TOP = 200
     const PX_FROM_BOTTOM = 60
 
+
+    const [width, height] = useWindowSize();
     const CLOSED_DRAW_POS = -60
+    let openDrawPosition = -height*0.85
 
     const drawerRef = useRef(null);
 
     const [drawPositionY, setDrawPositionY] = useState(CLOSED_DRAW_POS);
     const [lastDrawPositionY, setLastDrawPositionY] = useState(CLOSED_DRAW_POS)
+
+    const [topDrawPosition, setTopDrawPosition] = useState(null);
+
 
     const [url, setUrl] = useState<string>('');
 
@@ -69,9 +76,8 @@ export default function LocationPageDrawer({
       if(lastDrawPositionY !== d.y){
         setDrawPositionY(d.y);
       }else{
-        var windowHeight = window.document.body.clientHeight
-        if(drawPositionY > -windowHeight*0.4){
-          setDrawPositionY(-windowHeight*0.8);
+        if(drawPositionY > -height*0.4){
+          setDrawPositionY(openDrawPosition);
         }else{
           setDrawPositionY(CLOSED_DRAW_POS);
         }
@@ -164,12 +170,13 @@ export default function LocationPageDrawer({
       if(window.location.origin){
         setUrl(window.location.origin);
       }
+      
     }, [])
 
   return (
     <Draggable 
       handle=".handle"
-      bounds={{top: -window.document.body.clientHeight+PX_FROM_TOP, bottom: -PX_FROM_BOTTOM}} 
+      bounds={{top: openDrawPosition, bottom: -PX_FROM_BOTTOM}} 
       axis="y"
       nodeRef={drawerRef}
       position={{x: 0, y: drawPositionY}}
@@ -177,18 +184,18 @@ export default function LocationPageDrawer({
       onStop={handleClickEnd}
       >
       <div ref={drawerRef} style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-1300 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
-      <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl">
-            <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
-            <div className="m-auto italic text-gray-700  text-center">
-              <>
-                <div className="text-sm font-light">Not an Official Ministry of Health Service. <br className="sm:hidden"/>Drag or Click this bar to see FAQ below </div>
-                {!!publishTime ? 
-                  <div className="text-sm font-extralight">updated@{`${shortTimeWithHourMin24ToNZ.format(publishTime)} ${shortNormalFormat.format(publishTime)}`}</div> 
-                  : <div>{publishTime}</div>}
-              </>
-            </div>
+        <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl">
+        <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
+          <div className="m-auto italic text-gray-700  text-center">
+            <>
+              <div className="text-sm font-light">Drag or Click this bar to see FAQ below <br/> Not an Official Ministry of Health Service.  </div>
+              {!!publishTime ? 
+                <div className="text-sm font-extralight">updated@{`${shortTimeWithHourMin24ToNZ.format(publishTime)} ${shortNormalFormat.format(publishTime)}`}</div> 
+                : <div>{publishTime}</div>}
+            </>
           </div>
-          <div className="overflow-auto overflow-y-scroll max-h-screen">
+        </div>
+        <div className="overflow-auto overflow-y-scroll max-h-screen">
           <div className="w-full text-center">            
               <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the circle
           </div>

@@ -19,7 +19,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
   const settings = useSettings();
   
   const title = "Location of Interest Explorer"
-  const description =  "Explore Locations of Interest published by the Ministry of Health"
+  const description =  "Explore Locations of Interest published by the Ministry of Health. This mobile friendly tool allows people to better understand Covid-19 spread in New Zealand"
 
   return (
     <>
@@ -66,7 +66,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={title} />
-      <meta property='og:url' content={`${hardcodedURL}/`} />
+      <meta property='og:url' content={`${hardcodedURL}`} />
       <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
@@ -79,7 +79,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
       <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
     </Head>
       <>
-        {isLoading ? <div>Loading...</div> 
+        {isLoading ? <div className="w-full h-full"><div className="m-auto">Loading Latest Locations of Interest...</div> </div>
         : isError ? <div>An Error occurred.</div> 
         : <LocationsPage
             locations={locations || []}
@@ -96,8 +96,8 @@ export const getStaticProps:GetStaticProps = async (context:any) => {
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
-      // Hardcoded urls - WARNING - Only works on prod/preview domains - Needed to support web crawlers in prod/preview
-      // (Because vercel will deploy the same build to multiple locations resulting in incorrect urls)
+      // Hardcoded urls - WARNING - Only works on prod/preview domains - This is to support web crawlers in prod/preview
+      // Vercel will deploy the same build to multiple locations, causing any query of the runtime url to be "baked in" and not worked correctly)
       hardcodedURL: process.env.VERCEL_ENV === 'production' ? 'https://location-of-interest-explorer.vercel.app' : 
         process.env.VERCEL_ENV === 'staging' ? 'https://location-of-interest-explorer-git-staging-kiwikid.vercel.app' :
         process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000' : 'INVALID_URL_ENVIRONMENT'
