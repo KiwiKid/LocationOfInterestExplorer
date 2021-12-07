@@ -96,7 +96,7 @@ export const getStaticProps:GetStaticProps = async (context:any) => {
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
-      url: process.env.VERCEL_ENV || 'Nah'
+      url: process.env.VERCEL_URL || 'Nah'
      }
   }
 }
