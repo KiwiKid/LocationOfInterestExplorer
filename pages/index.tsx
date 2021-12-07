@@ -96,7 +96,12 @@ export const getStaticProps:GetStaticProps = async (context:any) => {
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
-      url: process.env.VERCEL_URL || 'Nah'
+      // Hardcoded urls - WARNING - Only works on prod/preview domains - Needed to support web crawlers in prod/preview
+      // (Because vercel will deploy the same build to multiple locations resulting in incorrect urls)
+      hardcodedURL: 
+        process.env.VERCEL_ENV === 'production' ? 'https://location-of-interest-explorer.vercel.app' : 
+        process.env.VERCEL_ENV === 'staging' ? 'https://location-of-interest-explorer-git-staging-kiwikid.vercel.app' :
+        process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000' : 'INVALID_URL_ENVIRONMENT'
      }
   }
 }
