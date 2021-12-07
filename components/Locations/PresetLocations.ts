@@ -68,4 +68,8 @@ export const PRESET_LOCATIONS:PresetLocation[] = [
     title: 'Te Puke',
     lat: -37.766667,
     lng: 176.316667
+  },{
+    title: "Turangi",
+    lat: -38.988889,
+    lng: 175.808333
   }]

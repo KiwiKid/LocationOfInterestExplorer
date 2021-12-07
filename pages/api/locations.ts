@@ -42,13 +42,13 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationOfInterest => {
 
     let locationType = getLocationTypeFromAdvice(row.publicAdvice);
-    let aproxLatLng = PRESET_LOCATIONS.filter((t) => t.title === row.location.city)[0];
+    let approxLatLng = PRESET_LOCATIONS.filter((t) => t.title === row.location.city)[0];
     let approxCityOverride;
 
     try{
         if(!row.location.latitude || !row.location.longitude){
-            if(aproxLatLng != null){
-                approxCityOverride = aproxLatLng;
+            if(approxLatLng != null){
+                approxCityOverride = approxLatLng;
                 // Keep any "High" location types
                 locationType = locationType === "Standard" ? "approx" : locationType
             }

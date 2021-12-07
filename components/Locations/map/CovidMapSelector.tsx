@@ -389,16 +389,13 @@ function CovidMapSelector({
             padding-bottom: 40px !important;
             padding-top: 10px !important;
         }
-        .reactour__popover{
-            padding:0.5rem;
-        }
-        .reactour__popover>div[class*="-Navigation"]{
-            padding-top: 0.1rem !important;
-        }
-
         .leaflet-container{
             height: 95vh;
             width: 100wh;
+        }
+
+        .leaflet-popup-content {
+            margin: 10px;
         }
 
         `}

@@ -6,17 +6,17 @@ import AutoHidePopup from "./AutoHidePopup";
 function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLocationCount}:any){
     return (
         <AutoHidePopup >
-            <div  className="margin-auto p-1 text-lg w-80">
-            <div key={`${l.loi.id}_L`}>
-                <div>
-                    <div className={`bg-gray-200 grid grid-cols-1 text-center`} >
-                        <div className="font-bold">{l.loi.event}</div>
-                        <div className="font-bold">{l.loi.city}</div>
-                        <LocationSummaryDateDisplay loi={l.loi} includeDate={true} />
-                        <div><LocationTypeDisplay detailed={false} locationType={l.loi.locationType}/></div>
+            <div className="text-lg break-words" style={{width: '300px'}}>
+                <div key={`${l.loi.id}_L`}>
+                    <div>
+                        <div className={`grid grid-cols-1 text-center`} >
+                            <div className="font-bold">{l.loi.event}</div>
+                            <div className="font-bold">{l.loi.city}</div>
+                            <LocationSummaryDateDisplay loi={l.loi} includeDate={true} />
+                            <div><LocationTypeDisplay detailed={false} locationType={l.loi.locationType}/></div>
+                        </div>
                     </div>
                 </div>
-            </div>
                 <div className="grid grid-cols-1">
                     {/*<button onClick={() => moveMapToLocation(al)}  type="button" className="border-b-1 border-green-900 bg-green-600 w-full h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800">
                         Center Map here
