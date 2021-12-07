@@ -46,7 +46,6 @@ const ActiveSortSelection = ({sortField, changeSortField, setHideSortFieldSelect
         <InternalLink 
             onClick={() => changeSortField(newSortSelection)}
             title="Load new locations"
-            linkDisabled={sortField === newSortSelection}
         />
         <InternalLink 
             onClick={setHideSortFieldSelection}

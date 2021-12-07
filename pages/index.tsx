@@ -10,10 +10,10 @@ import styles from '../styles/Home.module.css'
 
 type HomePageProps = {
   publishTimeUTC: string // Allow for native next.js props usage
-  url: string
+  hardcodedURL: string
 }
 
-const Home: NextPage<HomePageProps> = ({publishTimeUTC, url}) => {
+const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
 
   const { locations, isLoading, isError } = useLocations();
   const settings = useSettings();
@@ -57,17 +57,17 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, url}) => {
       <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' />
           
       <meta name='twitter:card' content='summary' />
-      <meta name='twitter:url' content={url} />
+      <meta name='twitter:url' content={hardcodedURL} />
       <meta name='twitter:title' content={title} />
       <meta name='twitter:description' content={description} />
-      <meta name='twitter:image' content={`${url}/icons/covid19/android-chrome-192x192.png`} />
+      <meta name='twitter:image' content={`${hardcodedURL}/icons/covid19/android-chrome-192x192.png`} />
       <meta name='twitter:creator' content='GregC' />
       <meta property='og:type' content='website' />
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={title} />
-      <meta property='og:url' content={`${url}/covid/locations`} />
-      <meta property='og:image' content={`${url}/img/preview.png`} key='ogimg' />
+      <meta property='og:url' content={`${hardcodedURL}/covid/locations`} />
+      <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
       <link rel='apple-touch-startup-image' href='/images/apple_splash_2048.png' sizes='2048x2732' />
@@ -98,8 +98,7 @@ export const getStaticProps:GetStaticProps = async (context:any) => {
       publishTimeUTC: new Date().toUTCString(),
       // Hardcoded urls - WARNING - Only works on prod/preview domains - Needed to support web crawlers in prod/preview
       // (Because vercel will deploy the same build to multiple locations resulting in incorrect urls)
-      hardcodedURL: 
-        process.env.VERCEL_ENV === 'production' ? 'https://location-of-interest-explorer.vercel.app' : 
+      hardcodedURL: process.env.VERCEL_ENV === 'production' ? 'https://location-of-interest-explorer.vercel.app' : 
         process.env.VERCEL_ENV === 'staging' ? 'https://location-of-interest-explorer-git-staging-kiwikid.vercel.app' :
         process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000' : 'INVALID_URL_ENVIRONMENT'
      }
