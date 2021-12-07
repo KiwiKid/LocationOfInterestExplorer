@@ -347,7 +347,7 @@ function CovidMapSelector({
         setCircleParams(createURLParamsString(centerLat, centerLng, zoom, daysInPastShown));
     }
     function createURLParamsString(centerLat:number, centerLng:number, activeZoom:number, daysInPastShown:number){
-        return `/covid/locations?lat=${centerLat.toFixed(5)}&lng=${centerLng.toFixed(5)}&zoom=${activeZoom}&daysInPastShown=${daysInPastShown}`;
+        return `?lat=${centerLat.toFixed(5)}&lng=${centerLng.toFixed(5)}&zoom=${activeZoom}&daysInPastShown=${daysInPastShown}`;
     }
 
     function saveMapState(map:any){

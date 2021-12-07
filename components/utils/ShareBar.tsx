@@ -23,7 +23,6 @@ function ShareBar({children, url}:ShareBarProps) {
 
     const router = useRouter();
 
-    const shareUrl = url //'https://gregc.dev/covid/locations';
     const title = 'Locations of Interest Explorer';
 
     return (
@@ -33,14 +32,14 @@ function ShareBar({children, url}:ShareBarProps) {
         <div className="grid grid-flow-col pt-4">
             <div className="Demo__some-network">
                 <FacebookShareButton
-                    url={shareUrl}
+                    url={url}
                     quote={title}
                     className="Demo__some-network__share-button"
                 >
                     <FacebookIcon size={32} round />
                 </FacebookShareButton>
             <div>
-                <FacebookShareCount url={shareUrl} className="Demo__some-network__share-count">
+                <FacebookShareCount url={url} className="Demo__some-network__share-count">
                 {count => count}
                 </FacebookShareCount>
             </div>
@@ -48,7 +47,7 @@ function ShareBar({children, url}:ShareBarProps) {
 
         <div className="Demo__some-network">
           <FacebookMessengerShareButton
-            url={shareUrl}
+            url={url}
             appId="521270401588372"
             className="Demo__some-network__share-button"
           >
@@ -58,7 +57,7 @@ function ShareBar({children, url}:ShareBarProps) {
 
         <div className="Demo__some-network">
           <TwitterShareButton
-            url={shareUrl}
+            url={url}
             title={title}
             className="Demo__some-network__share-button"
           >
@@ -72,7 +71,7 @@ function ShareBar({children, url}:ShareBarProps) {
 
         <div className="Demo__some-network">
           <EmailShareButton
-            url={shareUrl}
+            url={url}
             subject={title}
             body="body"
             className="Demo__some-network__share-button"
@@ -98,7 +97,7 @@ function ShareBar({children, url}:ShareBarProps) {
 
         <div className="Demo__some-network">
           <WhatsappShareButton
-            url={shareUrl}
+            url={url}
             title={title}
             separator=":: "
             className="Demo__some-network__share-button"

@@ -43,14 +43,18 @@ const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationO
 
     let locationType = getLocationTypeFromAdvice(row.publicAdvice);
     let aproxLatLng = PRESET_LOCATIONS.filter((t) => t.title === row.location.city)[0];
-    let approxCity;
+    let approxCityOverride;
     if(!row.location.latitude || !row.location.longitude){
         if(aproxLatLng != null){
-            approxCity = aproxLatLng;
-            // Keep an "High" location types
+            approxCityOverride = aproxLatLng;
+            // Keep any "High" location types
             locationType = locationType === "Standard" ? "approx" : locationType
         }
     }
+
+    let lat = (!!approxCityOverride ? approxCityOverride?.lat : row.location.latitude);
+    let lng = (!!approxCityOverride ? approxCityOverride?.lng  : row.location.longitude);
+    
     let res = {
       id: row.eventId,
       added: row.publishedAt,
@@ -60,8 +64,8 @@ const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationO
       start: new Date(row.startDateTime),
       end: new Date(row.endDateTime),
       advice: row.publicAdvice,
-      lat: row.location.latitude !== 0 ? row.location.latitude : approxCity?.lat || 0,
-      lng: row.location.longitude !== 0 ? row.location.longitude : approxCity?.lng || 0 ,
+      lat: !!lat ? lat : 0,
+      lng: !!lng ? lng : 0,
       updated: row.updatedAt,
       locationType: locationType
     }
