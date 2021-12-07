@@ -44,12 +44,17 @@ const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationO
     let locationType = getLocationTypeFromAdvice(row.publicAdvice);
     let aproxLatLng = PRESET_LOCATIONS.filter((t) => t.title === row.location.city)[0];
     let approxCityOverride;
-    if(!row.location.latitude || !row.location.longitude){
-        if(aproxLatLng != null){
-            approxCityOverride = aproxLatLng;
-            // Keep any "High" location types
-            locationType = locationType === "Standard" ? "approx" : locationType
+
+    try{
+        if(!row.location.latitude || !row.location.longitude){
+            if(aproxLatLng != null){
+                approxCityOverride = aproxLatLng;
+                // Keep any "High" location types
+                locationType = locationType === "Standard" ? "approx" : locationType
+            }
         }
+    }catch(err){
+        console.error(err);
     }
 
     let lat = (!!approxCityOverride ? approxCityOverride?.lat : row.location.latitude);
