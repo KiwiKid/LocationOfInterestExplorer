@@ -13,11 +13,12 @@ import LocationPageDrawer from "./LocationPageDrawer";
 type LocationsPageProps ={
     locations: LocationOfInterest[]
     startingSettings: StartingSettings
+    publishTime: Date
   }
 
   
 
-export default function LocationsPage({locations, startingSettings}:LocationsPageProps){
+export default function LocationsPage({locations, startingSettings, publishTime}:LocationsPageProps){
 
     const CovidMapSelector = useMemo(() => dynamic(
         () => import("./map/CovidMapSelector")
@@ -118,6 +119,7 @@ export default function LocationsPage({locations, startingSettings}:LocationsPag
                 setShowSortFieldPopup={setShowSortFieldPopup}
                 mapIsLocated={mapIsLocated}
                 circleParams={circleParams}
+                publishTime={publishTime}
               />
             </div>
         </div>

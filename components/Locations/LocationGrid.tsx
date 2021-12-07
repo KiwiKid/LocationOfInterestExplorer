@@ -8,6 +8,8 @@ import LargeLocationGrid from './LargeLocationGrid';
 import LocationTypeDisplay from './LocationTypeDisplay';
 import ExternalLink from '../utils/ExternalLink';
 import { Sort } from '../types/Sort';
+import { loadGetInitialProps } from 'next/dist/shared/lib/utils';
+import LocationSummaryDateDisplay from './LocationSummaryDateDisplay';
 
 type Props = {
     locations: LocationOfInterestCalculated[] //LocationOfInterest[]
@@ -101,24 +103,25 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                         onClick={(evt) => toggleOpenLocation(l.loi.id)}>
                     
                     <div className="text-left">{l.loi.city} - {l.loi.event}</div>
-                    <div className="text-right row-span-2 ">{shortTimeWithHourMinToNZ.format(l.loi.start)} to {shortTimeWithHourMinToNZ.format(l.loi.end)}</div>
+                    <LocationSummaryDateDisplay loi={l.loi} includeDate={true}/>
                     <div className="text-left col-span-2"><LocationTypeDisplay detailed={isOpen} locationType={l.loi.locationType}/></div>
                     <div className="md:text-lg col-span-2 text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
                 </div>
                 {isOpen ? 
                 <div className="grid grid-cols-1 text-center">
-                    <div>{l.loi.location}</div>
+                    <div className="">{l.loi.location}</div>
                     {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
                     <div className="col-span-2 pt-4">{l.loi.advice}</div>
-                    {l.loi.added && <div className="col-span-1 pt-4">added: {detailedLongTimeToNZ.format(l.loi.added)}</div>}
-                    {l.loi.updated && <div className="col-span-1 pt-4">updated: {detailedLongTimeToNZ.format(l.loi.updated)}</div>}
-                    
                     <div className="col-span-2 py-2 ">
                         <div className="m-auto">
                             <ExternalLink
                             href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}
                             title="I was here! (Official MoH link)"
                         />
+                    </div>
+                    <div className="col-span-1 pt-4">
+                            added: {detailedLongTimeToNZ.format(l.loi.added)}<br/>
+                            {l.loi.updated && `updated: ${detailedLongTimeToNZ.format(l.loi.updated)}`}
                     </div>
                     {/*<a target="_blank" 
                         rel="noreferrer"

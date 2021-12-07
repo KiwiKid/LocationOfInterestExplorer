@@ -8,7 +8,11 @@ import { useSettings } from '../components/Locations/useSettings'
 import styles from '../styles/Home.module.css'
 
 
-const Home: NextPage = () => {
+type HomePageProps = {
+  publishTimeUTC: string // Allow for native next.js props usage
+}
+
+const Home: NextPage<HomePageProps> = ({publishTimeUTC}) => {
 
   const { locations, isLoading, isError } = useLocations();
   const settings = useSettings();
@@ -27,6 +31,7 @@ const Home: NextPage = () => {
         : <LocationsPage
           locations={locations || []}
           startingSettings={settings}
+          publishTime={new Date(publishTimeUTC)}
         />
         }
       </>
@@ -36,7 +41,9 @@ const Home: NextPage = () => {
 
 export const getStaticProps:GetStaticProps = async (context:any) => {
   return {
-    props:{ }
+    props:{
+      publishTimeUTC: new Date().toUTCString()
+     }
   }
 }
 

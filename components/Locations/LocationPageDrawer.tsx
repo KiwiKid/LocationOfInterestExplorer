@@ -1,5 +1,5 @@
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
-import { getDateInPastByXDays, shortDayLongMonthToNZ } from "../utils/utils";
+import { getDateInPastByXDays, shortDayLongMonthToNZ, shortDayMonthToNZ, shortDayShortMonthToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
 import LocationGridContainer from "./LocationGridContainer";
 import Question from "./Questions";
 // @ts-ignore
@@ -31,6 +31,7 @@ type LocationPageDrawerProps = {
     setShowSortFieldPopup: any
     mapIsLocated: boolean
     circleParams: string
+    publishTime: Date
 }
 
 export default function LocationPageDrawer({
@@ -46,7 +47,8 @@ export default function LocationPageDrawer({
     showSortFieldPopup,
     setShowSortFieldPopup,
     mapIsLocated, 
-    circleParams
+    circleParams,
+    publishTime
   }:LocationPageDrawerProps){
 
 
@@ -179,7 +181,10 @@ export default function LocationPageDrawer({
             <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
             <div className="m-auto italic text-gray-700  text-center">
               <>
-                <div className="text-sm font-extralight">Not an Official Ministry of Health Service. <br className="sm:hidden"/>Drag or Click this bar to see FAQ below</div>
+                <div className="text-sm font-light">Not an Official Ministry of Health Service. <br className="sm:hidden"/>Drag or Click this bar to see FAQ below </div>
+                {!!publishTime ? 
+                  <div className="text-sm font-extralight">updated@{`${shortTimeWithHourMinToNZ.format(publishTime)} ${shortDayShortMonthToNZ.format(publishTime)}`}</div> 
+                  : <div>{publishTime}</div>}
               </>
             </div>
           </div>
