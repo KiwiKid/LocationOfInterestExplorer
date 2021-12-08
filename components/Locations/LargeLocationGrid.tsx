@@ -31,7 +31,6 @@ export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, t
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
                         <div className="text-center">{l.loi.location}</div>
-                        {showDistance && <div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div>}                    
                         <div className="col-span-3 text-center">{l.loi.advice}</div>
                     </div>
                     <div className="grid grid-cols-2">

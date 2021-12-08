@@ -10,6 +10,8 @@ import ExternalLink from '../utils/ExternalLink';
 import { Sort } from '../types/Sort';
 import { loadGetInitialProps } from 'next/dist/shared/lib/utils';
 import LocationSummaryDateDisplay from './LocationSummaryDateDisplay';
+import Location from './Location';
+
 
 type Props = {
     locations: LocationOfInterestCalculated[] //LocationOfInterest[]
@@ -91,52 +93,6 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
         )
     }
 
-    type LocationProps = {
-        l: LocationOfInterestCalculated
-        isOpen: boolean
-    }
-
-    function Location({l,isOpen}:LocationProps){
-        return (
-            <div key={`${l.loi.id}_S`} className="p-1" >
-                <div className={`rounded-lg grid grid-cols-2`} 
-                        onClick={(evt) => toggleOpenLocation(l.loi.id)}>
-                    
-                    <div className="text-left">{l.loi.city} - {l.loi.event}</div>
-                    <LocationSummaryDateDisplay loi={l.loi} includeDate={true}/>
-                    <div className="text-left col-span-2"><LocationTypeDisplay detailed={isOpen} locationType={l.loi.locationType}/></div>
-                    <div className="md:text-lg col-span-2 text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
-                </div>
-                {isOpen ? 
-                <div className="grid grid-cols-1 text-center">
-                    <div className="">{l.loi.location}</div>
-                    {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
-                    <div className="col-span-2 pt-4">{l.loi.advice}</div>
-                    <div className="col-span-2 py-2 ">
-                        <div className="m-auto">
-                            <ExternalLink
-                            href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}
-                            title="I was here! (Official MoH link)"
-                        />
-                    </div>
-                    <div className="col-span-1 pt-4 italic">
-                            Added: {detailedLongTimeToNZ.format(l.loi.added)}<br/>
-                            {l.loi.updated && `Updated: ${detailedLongTimeToNZ.format(l.loi.updated)}`}
-                    </div>
-                    {/*<a target="_blank" 
-                        rel="noreferrer"
-                        href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}>
-                        <div className="pt-2 text-center align-middle border-b-1 border-green-900 border-b-4 bg-green-600 w-full h-10 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800">
-                            I was here! ↗️ (Official MoH link)
-                        </div>
-                     </a>*/}
-                </div>
-            </div> : null}
-        </div>
-        )
-    }
-
-
     return (
     <div className="mt-3 text-center pb-3">
         {Object.keys(groupedLocations).sort().reverse().map((d) => {
@@ -147,7 +103,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                             return (
                                 <div key={`${l.loi.id}_C`} className="border-b border-black">
                                     <div key={`${l.loi.id}_SS`} className="lg:hidden">
-                                        <Location  l={l} isOpen={isOpen(l.loi)}/>
+                                        <Location loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={() => toggleOpenLocation(l.loi.id)} />
                                     </div>
                                     <div key={`${l.loi.id}_SL`} className="hidden lg:block border-b border-black">
                                         <LargeLocationGrid  l={l} isOpen={isOpen(l.loi)} showDistance={false} showHeader={false} toggleOpenLocation={toggleOpenLocation}/>

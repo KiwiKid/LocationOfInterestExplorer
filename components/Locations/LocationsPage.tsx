@@ -10,6 +10,7 @@ import ActiveDateSelection from "./ActiveDateSelection";
 import ActiveSortSelection from "./ActiveSortSelection";
 import LocationPageDrawer from "./LocationPageDrawer";
 
+
 type LocationsPageProps ={
     locations: LocationOfInterest[]
     startingSettings: StartingSettings
@@ -62,6 +63,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
           
     }
 
+    
 
     return (
         <>
@@ -90,7 +92,6 @@ export default function LocationsPage({locations, startingSettings, publishTime}
             changeSortField={setSortField}
             setHideSortFieldSelection={() => setShowSortFieldPopup(false)}
           />}
-        
             <div id="centerDiv" className="w-full">
               <div className={`font-bold rounded-lg text-center mx-auto`}>
                 <CovidMapSelector

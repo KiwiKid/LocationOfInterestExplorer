@@ -1,0 +1,59 @@
+import { debounce } from "lodash"
+import { useEffect, useMemo } from "react"
+import { LocationOfInterest } from "../types/LocationOfInterest"
+import ExternalLink from "../utils/ExternalLink"
+import { dateIsRecent, detailedLongTimeToNZ } from "../utils/utils"
+import LocationMetaDataSummary from "./LocationMetaDataSummary"
+import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay"
+import LocationTypeDisplay from "./LocationTypeDisplay"
+
+
+
+    type LocationProps = {
+        loi: LocationOfInterest
+        isOpen: boolean
+        toggleOpenLocation: any
+    }
+
+
+
+    export default function Location({loi,isOpen, toggleOpenLocation}:LocationProps){
+
+        const addedDateIsRecent = dateIsRecent(loi.added);
+
+        return (
+            <div key={`${loi.id}_S`} className="p-1" >
+                <div className={`rounded-lg grid grid-cols-2`} 
+                        onClick={(evt) => toggleOpenLocation(loi.id)}>
+                    
+                    <div className="text-left">{loi.city} - {loi.event}</div>
+                    <LocationSummaryDateDisplay loi={loi} includeDate={true}/>
+                    <div className="text-left col-span-2"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
+                    <div className="md:text-lg col-span-2 text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
+                    {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi}/>}
+                </div>
+                {isOpen ? 
+                <div className="grid grid-cols-1 text-center">
+                    <div className="">{loi.location}</div>
+                    {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
+                    <div className="col-span-2 pt-4">{loi.advice}</div>
+                    <div className="col-span-2 py-2 ">
+                        <div className="m-auto">
+                            <ExternalLink
+                            href={`https://tracing.covid19.govt.nz/loi?eventId=${loi.id}`}
+                            title="I was here! (Official MoH link)"
+                        />
+                    </div>
+                    {!addedDateIsRecent && <LocationMetaDataSummary loi={loi}/>}
+                    {/*<a target="_blank" 
+                        rel="noreferrer"
+                        href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}>
+                        <div className="pt-2 text-center align-middle border-b-1 border-green-900 border-b-4 bg-green-600 w-full h-10 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800">
+                            I was here! ↗️ (Official MoH link)
+                        </div>
+                     </a>*/}
+                </div>
+            </div> : null}
+        </div>
+        )
+    }

@@ -14,6 +14,7 @@ const LocationSummaryDateDisplay = ({loi,includeDate}:LocationSummaryDateDisplay
     const endTime = shortTimeWithHourMinToNZ.format(loi.end);
 
     const startEndSameDate = startDay === endDay;
+    
 
     return (
         <>{startEndSameDate ? 

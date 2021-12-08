@@ -27,6 +27,7 @@ import { CircleSelectableMarkers, setCircleSelected } from './CircleSelectableMa
 
 
 
+
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
 const MAP_HEIGHT_MOBILE =  '700px';
 const MAP_HEIGHT_DESKTOP = '700px';
@@ -126,6 +127,8 @@ function CovidMapSelector({
 
 
     const [allowedLocationRestore, setAllowedLocationRestore] = useState(false);
+
+
     // Maintain a copy to allow for external components to trigger map events (i.e. find my location)
     
     // Reset size of ref array
@@ -219,7 +222,6 @@ function CovidMapSelector({
             if(locations.length > 0){
                 activeMarkerPoints = locations
                     .filter((al) => isValidLocation(al))
-                    
                     .map((al:LocationOfInterest) => {
                         // This method runs twice during initialization
                         // ==== First run ====- put the circles on the map
@@ -233,13 +235,10 @@ function CovidMapSelector({
                         // We can avoid a bunch geojson complexity/slowness and use the "ref" objects to using the in-built leaflet distanceTo method:
                         let refObj:any = activeLocationMarkerRefs.current
                                     .filter((amr:any) => amr.key === al.id)[0];
-                        let distanceToCenter = 0;
 
 
                         let isInCircle = false;
                         if(refObj && refObj.ref){
-                            
-                            
                             //var pointOnMap = getPointFromRef(refObj.ref)
                             //distanceToCenter = pointOnMap.distanceTo(centerPoint);
                             isInCircle = setCircleSelected(refObj.ref, centerPoint, centerRadius);
@@ -248,7 +247,6 @@ function CovidMapSelector({
                         return {
                             loi: al
                             , latLng: markerLatLng
-                            , distanceToCenter: distanceToCenter
                             , isInCircle: isInCircle
                             , ref: refObj ? refObj.ref : null
                         }

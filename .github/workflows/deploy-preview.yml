@@ -1,4 +1,4 @@
-name: "Deploy Prod during waking hours"
+name: "Preview - Scheduled Deploy"
 
 on:
   schedule:
@@ -10,5 +10,5 @@ jobs:
     - name: Trigger Vercel Build
       uses: fjogeleit/http-request-action@master
       with:
-        url: ${{ secrets.VERCEL_REBUILD_URL }}
+        url: ${{ secrets.VERCEL_REBUILD_URL_PREVIEW }}
         method: 'POST'

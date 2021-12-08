@@ -53,6 +53,11 @@ export const shortTimeWithHourMin24ToNZ = new Intl.DateTimeFormat("en",  {timeSt
 export const detailedLongTimeToNZ =  new Intl.DateTimeFormat("en", { timeStyle: "medium", dateStyle:'medium' }) 
 
 
+const ADDED_RECENTLY_HOURS = 48;
+export const dateIsRecent = (date:Date) => {
+    return Math.floor((Math.abs(new Date(date).getTime() - new Date().getTime())/1000/60/60)) < ADDED_RECENTLY_HOURS;
+}
+
 export function metersToKmsString(meters:number, decimalPlaces:number = 0):string{
     return `${(meters/1000).toFixed(decimalPlaces)} kms`;
 }
