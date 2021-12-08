@@ -101,24 +101,24 @@ const environments:environment[] = [
         key: 'location-of-interest-explorer',
         prodUrl: 'https://location-of-interest-explorer.vercel.app',
         stagingUrl: 'https://location-of-interest-explorer-staging.vercel.app',
-    },
-    {
-        key: 'localhost',
-        prodUrl: 'https://localhost:3000',
-        stagingUrl: 'https://localhost:3000',
     }
 ]
+
+const localEnv:environment = {
+    key: 'localhost',
+    prodUrl: 'https://localhost:3000',
+    stagingUrl: 'https://localhost:3000'
+}
 
 // TODO: this is gross..find a better way...
 export const getHardCodedUrl = () => {
 
-    const environment = environments.find((e) => !!process.env.VERCEL_URL && process.env.VERCEL_URL.indexOf(e.key));
+    let environment = environments.find((e) => !!process.env.VERCEL_URL && process.env.VERCEL_URL.indexOf(e.key));
 
     if(environment == undefined){
-        throw 'No Environment found. Set VERCEL_ENV to development to run locally'
+        environment = localEnv;
     }
 
     return process.env.VERCEL_ENV === 'production' ? environment.prodUrl: 
-        process.env.VERCEL_ENV === 'preview' ? environment.stagingUrl :
-        process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000' : 'https://localhost:3000'
+        process.env.VERCEL_ENV === 'preview' ? environment.stagingUrl : 'NoEnvFound'
 }
