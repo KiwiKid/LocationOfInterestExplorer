@@ -9,11 +9,14 @@ module.exports = WithPWA({
         source: '/robots.txt',
         destination: '/api/robots',
         permanent: true
-      },{
+      }
+      /*
+      Uncomment when there is more than one url
+      ,{
         source: '/sitemap.xml',
         destination: '/api/sitemap',
         permanent: true
-      }
+      }*/
     ]
   }
 });
