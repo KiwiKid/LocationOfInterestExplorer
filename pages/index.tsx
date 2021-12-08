@@ -30,7 +30,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&amp;display=swap" rel="stylesheet" />
 
       <meta name="description" content={title} />
-
+      <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG} />
       <meta name='application-name' content={title}/>
       <meta name='apple-mobile-web-app-capable' content='yes' />
       <meta name='apple-mobile-web-app-status-bar-style' content='default' />

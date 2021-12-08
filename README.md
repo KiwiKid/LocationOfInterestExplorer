@@ -51,19 +51,12 @@ Given Covid rather rapid spread, there are some untidy compromises made in the i
 - [ ] Zoom button styling (esp when moving drawer)
 
 
-TODO: document:
-  VERCEL_REBUILD_URL
-  VERCEL_REBUILD_URL_PREVIEW
-
-
-
-Features Ideas (in order of perceived value - 
-
-
 On the radar:
 - Map navigation performance improvements (see refreshVisibleLocations()). Especially with large number of locations.
 
 
+set the meta tag for verifying domain ownership with google
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG 
 
 
 # Trigger automatic builds:
