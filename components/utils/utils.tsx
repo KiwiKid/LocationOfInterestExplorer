@@ -54,8 +54,8 @@ export const detailedLongTimeToNZ =  new Intl.DateTimeFormat("en", { timeStyle: 
 
 
 const ADDED_RECENTLY_HOURS = 48;
-export const dateIsRecent = (date:Date) => {
-    return Math.floor((Math.abs(new Date(date).getTime() - new Date().getTime())/1000/60/60)) < ADDED_RECENTLY_HOURS;
+export const getHoursAgo = (date:Date) => {
+    return Math.floor((Math.abs(new Date(date).getTime() - new Date().getTime())/1000/60/60))
 }
 
 export function metersToKmsString(meters:number, decimalPlaces:number = 0):string{

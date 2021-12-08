@@ -34,6 +34,7 @@ Feature Ideas (open to ideas here!)
 - [ ]  Other date field sort/groupings in the Drawer
 - [ ]  Highlight new locations when a user returns
 - [ ]  "Play" button to give a "feel" for Covid spread and be more engaging
+- [ ]  Add day.js (or similar) to improve date formatting
 
 
 Tech Debt

@@ -1,7 +1,7 @@
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import ExternalLink from "../utils/ExternalLink";
-import {metersToKmsString, detailedLongTimeToNZ, dateIsRecent } from "../utils/utils";
+import {metersToKmsString, detailedLongTimeToNZ, getHoursAgo } from "../utils/utils";
 import LocationMetaDataSummary from "./LocationMetaDataSummary";
 import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay";
 import LocationTypeDisplay from "./LocationTypeDisplay";
@@ -18,7 +18,7 @@ type LargeLocationGridProps = {
 
 export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen, toggleOpenLocation}:LargeLocationGridProps) {
 
-    const addedDateIsRecent = dateIsRecent(loi.added);
+    const addedDateIsRecent = getHoursAgo(loi.added) < 24;
 
     return ( <div key={`${loi.id}_L`}>
                 <div>

@@ -2,7 +2,7 @@ import { debounce } from "lodash"
 import { useEffect, useMemo } from "react"
 import { LocationOfInterest } from "../types/LocationOfInterest"
 import ExternalLink from "../utils/ExternalLink"
-import { dateIsRecent, detailedLongTimeToNZ } from "../utils/utils"
+import { detailedLongTimeToNZ, getHoursAgo } from "../utils/utils"
 import LocationMetaDataSummary from "./LocationMetaDataSummary"
 import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay"
 import LocationTypeDisplay from "./LocationTypeDisplay"
@@ -19,7 +19,7 @@ import LocationTypeDisplay from "./LocationTypeDisplay"
 
     export default function Location({loi,isOpen, toggleOpenLocation}:LocationProps){
 
-        const addedDateIsRecent = dateIsRecent(loi.added);
+        const addedDateIsRecent = getHoursAgo(loi.added) < 24;
 
         return (
             <div key={`${loi.id}_S`} className="p-1" >
