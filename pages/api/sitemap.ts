@@ -4,9 +4,7 @@ import { SitemapStream } from 'sitemap'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getHardCodedUrl } from '../../components/utils/utils'
 
-const STATIC_URLS = [
-  '/'
-]
+const STATIC_URLS:any = []
 
 const sitemapApi = async (req:NextApiRequest, res:NextApiResponse) => {
   // ensure response is XML & gzip encoded
@@ -21,9 +19,9 @@ const sitemapApi = async (req:NextApiRequest, res:NextApiResponse) => {
   const pipeline = sitemapStream.pipe(createGzip())
 
   // write static pages to sitemap
-  //STATIC_URLS.forEach((url) => {
-  //  sitemapStream.write({ url })
-  //})
+  STATIC_URLS.forEach((url:string) => {
+    sitemapStream.write({ url })
+  })
 
   sitemapStream.write({ url: getHardCodedUrl()});
 

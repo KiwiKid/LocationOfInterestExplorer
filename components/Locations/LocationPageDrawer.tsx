@@ -17,6 +17,7 @@ import { PRESET_LOCATIONS } from "./PresetLocations";
 import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
+import Link from "next/link";
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -374,11 +375,9 @@ export default function LocationPageDrawer({
                         </Question>*/}
                         </div>
                     </Toggle>
-              {/*TODO:P1 <div className="text-center mt-4">
-                  Website by Greg C. - 
-                  version@{process.env.NEXT_PUBLIC_VERSION_NUMBER} {detailedLongTimeToNZ.format(new Date(updateDate))} - {lastCommitMessage}
-                  <a target="_blank" rel="noreferrer" className="underline cursor-default px-2" href={feedbackUrl}>Send Feedback</a>
-                </div>*/}
+                <div className="text-center mt-4">
+                  Website by Greg C. - <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code</Link>
+                </div>
               <div style={{height: window.document.body.clientHeight*0.5}}>
                           
             </div>

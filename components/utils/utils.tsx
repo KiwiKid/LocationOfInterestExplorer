@@ -119,6 +119,7 @@ export const getHardCodedUrl = () => {
         environment = localEnv;
     }
 
-    return process.env.VERCEL_ENV === 'production' ? environment.prodUrl: 
-        process.env.VERCEL_ENV === 'preview' ? environment.stagingUrl : 'NoEnvFound'
+    return process.env.VERCEL_ENV === 'production' ? environment.prodUrl
+        : process.env.VERCEL_ENV === 'preview' ? environment.stagingUrl 
+        : localEnv.prodUrl
 }
