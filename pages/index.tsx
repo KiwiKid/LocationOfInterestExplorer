@@ -97,7 +97,6 @@ export const getStaticProps:GetStaticProps = async (context:any) => {
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
-
       hardcodedURL: getHardCodedUrl()
      }
   }

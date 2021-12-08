@@ -84,13 +84,42 @@ export const scrollToRef = (ref:any, manaulOffset:number = 0) => {
 // Hardcoded urls - WARNING - Only works on prod/preview domains and is NOT preferred to window.location where possible - This is to support web crawlers in prod/preview
 // Vercel will deploy the same build to multiple locations, causing any query of the runtime url to be "baked in" and not work correctly - this is not true if the 
 // url is queried on the front-end
+
+type environment = {
+    key: string,
+    prodUrl: string
+    stagingUrl: string
+}
+
+const environments:environment[] = [
+    {
+        key: 'c19locations',
+        prodUrl: 'https://c19locations.vercel.app',
+        stagingUrl: 'https://c19locations-staging.vercel.app'
+    },
+    {
+        key: 'location-of-interest-explorer',
+        prodUrl: 'https://location-of-interest-explorer.vercel.app',
+        stagingUrl: 'https://location-of-interest-explorer-staging.vercel.app',
+    },
+    {
+        key: 'localhost',
+        prodUrl: 'https://localhost:3000',
+        stagingUrl: 'https://localhost:3000',
+    }
+]
+
+// TODO: this is gross..find a better way...
 export const getHardCodedUrl = () => {
 
-    const prodUrl = process.env.VERCEL_URL && process.env.VERCEL_URL.indexOf('c19locations') > -1 ? 'https://c19locations.vercel.app' : 'https://location-of-interest-explorer.vercel.app'
-    const stagingUrl = process.env.VERCEL_URL && process.env.VERCEL_URL.indexOf('c19locations') > -1 ? 'https://c19locations-staging.vercel.app' : 'https://location-of-interest-explorer-staging.vercel.app'
+    const environment = environments.find((e) => !!process.env.VERCEL_URL && process.env.VERCEL_URL.indexOf(e.key));
 
-    return process.env.VERCEL_ENV === 'production' ? prodUrl : 
-        process.env.VERCEL_ENV === 'staging' ? stagingUrl :
+    if(environment == undefined){
+        throw 'No Environment found. Set VERCEL_ENV to development to run locally'
+    }
+
+    return process.env.VERCEL_ENV === 'production' ? environment.prodUrl: 
+        process.env.VERCEL_ENV === 'staging' ? environment.stagingUrl :
         process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000'
-         : 'INVALID_URL_ENVIRONMENT'
+         : 'https://localhost:3000'
 }
