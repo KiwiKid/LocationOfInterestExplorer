@@ -30,7 +30,7 @@ import LocationTypeDisplay from "./LocationTypeDisplay"
                     <LocationSummaryDateDisplay loi={loi} includeDate={true}/>
                     <div className="text-left col-span-2"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
                     <div className="md:text-lg col-span-2 text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
-                    {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi}/>}
+                    {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>}
                 </div>
                 {isOpen ? 
                 <div className="grid grid-cols-1 text-center">
@@ -44,7 +44,7 @@ import LocationTypeDisplay from "./LocationTypeDisplay"
                             title="I was here! (Official MoH link)"
                         />
                     </div>
-                    {!addedDateIsRecent && <LocationMetaDataSummary loi={loi}/>}
+                    {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
                     {/*<a target="_blank" 
                         rel="noreferrer"
                         href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}>

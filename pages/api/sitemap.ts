@@ -2,6 +2,7 @@ import { createGzip } from 'zlib'
 // @ts-ignore
 import { SitemapStream } from 'sitemap'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { getHardCodedUrl } from '../../components/utils/utils'
 
 const STATIC_URLS = [
   '/'
@@ -20,9 +21,11 @@ const sitemapApi = async (req:NextApiRequest, res:NextApiResponse) => {
   const pipeline = sitemapStream.pipe(createGzip())
 
   // write static pages to sitemap
-  STATIC_URLS.forEach((url) => {
-    sitemapStream.write({ url })
-  })
+  //STATIC_URLS.forEach((url) => {
+  //  sitemapStream.write({ url })
+  //})
+
+  sitemapStream.write({ url: getHardCodedUrl()});
 
   // write user-generated pages to sitemap
  // userGenPageUrls.forEach((url) => {

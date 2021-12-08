@@ -30,7 +30,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
                         <div className="text-center col-span-full"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
-                        {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi}/>}
+                        {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>}
                     </div>
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
@@ -46,7 +46,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                                 />
                             </div>
                         </div>
-                        {!addedDateIsRecent && <LocationMetaDataSummary loi={loi}/>}
+                        {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
                         {false && <div className="m-auto">
                             <a target="_blank"
                                 rel="noreferrer"
