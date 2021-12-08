@@ -1,13 +1,14 @@
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import ExternalLink from "../utils/ExternalLink";
-import {metersToKmsString, detailedLongTimeToNZ } from "../utils/utils";
+import {metersToKmsString, detailedLongTimeToNZ, dateIsRecent } from "../utils/utils";
+import LocationMetaDataSummary from "./LocationMetaDataSummary";
 import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay";
 import LocationTypeDisplay from "./LocationTypeDisplay";
 
 
 type LargeLocationGridProps = {
-    l: LocationOfInterestCalculated
+    loi: LocationOfInterest
     showDistance: boolean
     showHeader: boolean
     isOpen: boolean
@@ -15,33 +16,37 @@ type LargeLocationGridProps = {
 }
 
 
-export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, toggleOpenLocation}:LargeLocationGridProps) {
-    return ( <div key={`${l.loi.id}_L`}>
+export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen, toggleOpenLocation}:LargeLocationGridProps) {
+
+    const addedDateIsRecent = dateIsRecent(loi.added);
+
+    return ( <div key={`${loi.id}_L`}>
                 <div>
-                    <div className={`bg-gray-100 grid grid-cols-5 content-center align-middle `} onClick={(evt) => toggleOpenLocation(l.loi.id)}>
-                        <div className="text-center">{l.loi.city}</div>
-                        <div className="col-span-2">{l.loi.event}</div>                        
-                        <LocationSummaryDateDisplay loi={l.loi} includeDate={true} />
+                    <div className={`bg-gray-100 grid grid-cols-5 content-center align-middle `} onClick={(evt) => toggleOpenLocation(loi.id)}>
+                        <div className="text-center">{loi.city}</div>
+                        <div className="col-span-2">{loi.event}</div>                        
+                        <LocationSummaryDateDisplay loi={loi} includeDate={true} />
                         {isOpen !== undefined ? 
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
-                        <div className="text-center col-span-full"><LocationTypeDisplay detailed={isOpen} locationType={l.loi.locationType}/></div>
-
+                        <div className="text-center col-span-full"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
+                        {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi}/>}
                     </div>
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
-                        <div className="text-center">{l.loi.location}</div>
-                        <div className="col-span-3 text-center">{l.loi.advice}</div>
+                        <div className="text-center">{loi.location}</div>
+                        <div className="col-span-3 text-center">{loi.advice}</div>
                     </div>
                     <div className="grid grid-cols-2">
                         <div className="w-full col-span-2">
                             <div className="w-64 m-auto">
                                 <ExternalLink
-                                    href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}
+                                    href={`https://tracing.covid19.govt.nz/loi?eventId=${loi.id}`}
                                     title="I was here! (Official MoH link)"
                                 />
                             </div>
                         </div>
+                        {!addedDateIsRecent && <LocationMetaDataSummary loi={loi}/>}
                         {false && <div className="m-auto">
                             <a target="_blank"
                                 rel="noreferrer"
@@ -51,8 +56,9 @@ export default function LargeLocationGrid({l,showDistance, showHeader, isOpen, t
                                 </div>
                             </a>
                         </div>}
-                        <div className="col-span-1 italic">Added: {detailedLongTimeToNZ.format(l.loi.added)}</div>
-                        {l.loi.updated && <div className="col-span-1 italic">(Updated: {detailedLongTimeToNZ.format(l.loi.updated)})</div>}
+                        
+                        <div className="col-span-1 italic">AddedLARGE: {detailedLongTimeToNZ.format(loi.added)}</div>
+                        {loi.updated && <div className="col-span-1 italic">(Updated: {detailedLongTimeToNZ.format(loi.updated)})</div>}
                     </div>
                     </>}
                 </div>

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import LocationsPage from '../components/Locations/LocationsPage'
 import useLocations from '../components/Locations/useLocations'
 import { useSettings } from '../components/Locations/useSettings'
+import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
 
 
@@ -96,11 +97,8 @@ export const getStaticProps:GetStaticProps = async (context:any) => {
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
-      // Hardcoded urls - WARNING - Only works on prod/preview domains - This is to support web crawlers in prod/preview
-      // Vercel will deploy the same build to multiple locations, causing any query of the runtime url to be "baked in" and not worked correctly)
-      hardcodedURL: process.env.VERCEL_ENV === 'production' ? 'https://location-of-interest-explorer.vercel.app' : 
-        process.env.VERCEL_ENV === 'staging' ? 'https://location-of-interest-explorer-git-staging-kiwikid.vercel.app' :
-        process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000' : 'INVALID_URL_ENVIRONMENT'
+
+      hardcodedURL: getHardCodedUrl()
      }
   }
 }

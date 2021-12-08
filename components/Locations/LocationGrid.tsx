@@ -106,7 +106,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                                         <Location loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={() => toggleOpenLocation(l.loi.id)} />
                                     </div>
                                     <div key={`${l.loi.id}_SL`} className="hidden lg:block border-b border-black">
-                                        <LargeLocationGrid  l={l} isOpen={isOpen(l.loi)} showDistance={false} showHeader={false} toggleOpenLocation={toggleOpenLocation}/>
+                                        <LargeLocationGrid loi={l.loi} isOpen={isOpen(l.loi)} showDistance={false} showHeader={false} toggleOpenLocation={toggleOpenLocation}/>
                                     </div>
                                 </div>
                         )})}

@@ -80,3 +80,17 @@ export const scrollToRef = (ref:any, manaulOffset:number = 0) => {
         behavior: 'smooth',
     });
 };
+
+// Hardcoded urls - WARNING - Only works on prod/preview domains and is NOT preferred to window.location where possible - This is to support web crawlers in prod/preview
+// Vercel will deploy the same build to multiple locations, causing any query of the runtime url to be "baked in" and not work correctly - this is not true if the 
+// url is queried on the front-end
+export const getHardCodedUrl = () => {
+
+    const prodUrl = process.env.VERCEL_URL && process.env.VERCEL_URL.indexOf('c19locations') > -1 ? 'https://c19locations.vercel.app' : 'https://location-of-interest-explorer.vercel.app'
+    const stagingUrl = process.env.VERCEL_URL && process.env.VERCEL_URL.indexOf('c19locations') > -1 ? 'https://c19locations-staging.vercel.app' : 'https://location-of-interest-explorer-staging.vercel.app'
+
+    return process.env.VERCEL_ENV === 'production' ? prodUrl : 
+        process.env.VERCEL_ENV === 'staging' ? stagingUrl :
+        process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000'
+         : 'INVALID_URL_ENVIRONMENT'
+}
