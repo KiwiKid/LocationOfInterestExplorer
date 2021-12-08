@@ -119,7 +119,6 @@ export const getHardCodedUrl = () => {
     }
 
     return process.env.VERCEL_ENV === 'production' ? environment.prodUrl: 
-        process.env.VERCEL_ENV === 'staging' ? environment.stagingUrl :
-        process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000'
-         : 'https://localhost:3000'
+        process.env.VERCEL_ENV === 'preview' ? environment.stagingUrl :
+        process.env.VERCEL_ENV === 'development' ? 'https://localhost:3000' : 'https://localhost:3000'
 }
