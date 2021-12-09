@@ -343,7 +343,7 @@ export default function LocationPageDrawer({
                     </div>
                   </Toggle>
                 <div className="text-center mt-4">
-                  <span className="underline"><Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link></span> - Website by Greg C. - <Link href="https://gregc.dev/about">View source code on github</Link>
+                  <span className="underline"><Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link></span> - Website by Greg C. - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
                 </div>
               <div style={{height: window.document.body.clientHeight*0.5}}>
                           
