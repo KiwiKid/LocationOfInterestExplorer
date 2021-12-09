@@ -251,8 +251,7 @@ export default function LocationPageDrawer({
                       <div className="w-4/5 m-auto p-3">
                         <InternalLink 
                           onClick={(evt:any) => goToLocation(pl)}
-                          title={pl.title}
-                        />
+                        >{pl.title}</InternalLink>
                       </div>
                     </div>
                   )}

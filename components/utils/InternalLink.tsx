@@ -1,22 +1,23 @@
 import Link from 'next/link'
+import { Children } from 'react'
 
 type  InternalLinkProps = {
-    title: string
+    children: string | JSX.Element
     href?: string | object | null
     onClick?: any | null
-    colorOverrideClass?: string
+    linkClassName?: string
     linkDisabled?: boolean
 }
 
 const InternalLink = ({
-    title
+    children
     , href = null
     , onClick
-    , colorOverrideClass = 'text-green-100 border-green-800 bg-green-500 hover:bg-green-700'
+    , linkClassName = 'text-green-100 border-green-800 bg-green-500 hover:bg-green-700'
     , linkDisabled = false
 }:InternalLinkProps) =>{
 
-    const linkStyle = `text-black pt-2 text-center align-middle border-b-1  border-b-4  w-full h-10 transition-colors duration-150 rounded-lg focus:shadow-outline ${colorOverrideClass}`
+    const linkStyle = `text-black pt-2 text-center align-middle border-b-1  border-b-4 w-full min-h-12 transition-colors duration-150 rounded-lg focus:shadow-outline ${linkClassName}`
 
     const disabledCheckOnClick = () => { 
         if(!linkDisabled){
@@ -27,12 +28,12 @@ const InternalLink = ({
     return (
         href != null ? 
         <Link href={href} passHref={true} >
-            <div className={linkStyle}>
-                {title}
+            <div className={`${linkStyle} ${linkDisabled ? 'opacity-30' : ''}`}>
+                {children}
             </div>
         </Link> :
         <div onClick={disabledCheckOnClick} className={`${linkStyle} ${linkDisabled ? 'opacity-30' : ''}`}>
-            {title}
+            {children}
         </div>
     )
 }

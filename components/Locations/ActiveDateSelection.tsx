@@ -48,13 +48,11 @@ const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHide
         </select>
         <InternalLink 
             onClick={() => changeActiveLocationDate(newDateSelection)}
-            title="Load new locations"
-        />
+        >Load new locations</InternalLink>
         <InternalLink 
             onClick={setHideActiveDateSelection}
-            title="Close"
-            colorOverrideClass="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
-        />
+            linkClassName="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
+        >Close</InternalLink>
     </div>
 </div>
 )

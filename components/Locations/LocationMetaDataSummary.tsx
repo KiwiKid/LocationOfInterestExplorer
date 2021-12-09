@@ -22,7 +22,7 @@ function LocationMetaDataSummary({loi, showUpdated}:LocationProps){
     const addedAgoHours = getHoursAgo(loi.added);
     const updatedAgoHours = loi.updated != null ? getHoursAgo(loi.updated) : null 
 
-    return (<div className="col-span-full pt-4 italic w-full">
+    return (<div className="col-span-full italic w-full">
                <div className="w-64 m-auto">
                     <div className={`${getDaysAgoClassName(addedAgoHours)} rounded-lg`}>Added: {addedAgoHours} hours ago</div>
                     {showUpdated && updatedAgoHours != null ? <div className={`${getDaysAgoClassName(updatedAgoHours)} rounded-lg`}>Updated: {updatedAgoHours} hours ago</div> :null}
