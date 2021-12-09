@@ -25,7 +25,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const CovidMapSelector = useMemo(() => dynamic(
         () => import("./map/CovidMapSelector")
         , {
-           loading: Object.assign(() => <div className="h-96 w-full"><p>Loading Latest Locations of Interest...</p></div>, {displayName: 'Loading'}),
+           loading: Object.assign(() => <div className="h-96 w-full"><p>Loading Latest Covid-19 Locations of Interest...</p></div>, {displayName: 'Loading'}),
            ssr: false
         })
     ,[]);
@@ -96,7 +96,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
             changeSortField={setSortField}
             setHideSortFieldSelection={() => setShowSortFieldPopup(false)}
           />}
-            <div id="centerDiv" className="">
+          <div id="centerDiv" className="">
               {showHelpPopup && <HelpPopup closePopup={() => setShowHelpPopup(false)}  />}
               <div className={`font-bold rounded-lg text-center mx-auto`}>
                 <CovidMapSelector
@@ -110,26 +110,26 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   setMapIsLocated={setMapIsLocated}
                 />
               </div>
-            <div>
-              <LocationPageDrawer 
-                openLocations={openLocations}
-                setOpenLocations={setOpenLocations}
-                visibleLocations={visibleLocations}
-                changeActiveLocationDate={changeActiveLocationDate}
-                daysInPastShown={daysInPastShown}
-                map={map}
-                showDateInPastPopup={showDateInPastPopup}
-                setShowDateInPastPopup={setShowDateInPastPopup}
-                sortField={sortField}
-                showSortFieldPopup={showSortFieldPopup}
-                setShowSortFieldPopup={setShowSortFieldPopup}
-                mapIsLocated={mapIsLocated}
-                circleParams={circleParams}
-                publishTime={publishTime}
-              />
+              <div>
+                <LocationPageDrawer 
+                  openLocations={openLocations}
+                  setOpenLocations={setOpenLocations}
+                  visibleLocations={visibleLocations}
+                  changeActiveLocationDate={changeActiveLocationDate}
+                  daysInPastShown={daysInPastShown}
+                  map={map}
+                  showDateInPastPopup={showDateInPastPopup}
+                  setShowDateInPastPopup={setShowDateInPastPopup}
+                  sortField={sortField}
+                  showSortFieldPopup={showSortFieldPopup}
+                  setShowSortFieldPopup={setShowSortFieldPopup}
+                  mapIsLocated={mapIsLocated}
+                  circleParams={circleParams}
+                  publishTime={publishTime}
+                />
+              </div>
             </div>
-        </div>
-        </main>
+          </main>
         </div>
       </>)
 }
