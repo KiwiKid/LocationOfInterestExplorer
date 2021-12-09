@@ -396,7 +396,7 @@ function CovidMapSelector({
     </style>
         <div className="col-span-10" ref={(ref) => containerRef.current = ref}>
             <div>
-            <div id="use-my-location" className="fixed top-0 -right-6 z-4000">
+            <div id="use-my-location" className="fixed top-0 -right-0 z-4000">
                 <label className="h-4 hidden" htmlFor="activeDateFilter">Request GPS location:</label>
                 <InternalLink
                      onClick={() => setLocationPromptVisible(true)}  

@@ -19,6 +19,7 @@ import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
 import { getDaysAgoClassName, tailwindClassToHex } from "../utils/Styling";
+import { NiceTimeFromNow } from "./DateHandling";
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -191,9 +192,7 @@ export default function LocationPageDrawer({
           <div className="m-auto italic text-gray-700  text-center">
             <>
               <div className="text-sm font-light"><span className="bold font-base">Drag</span> or <span className="bold font-base">Click</span> this bar <br/> Not an Official Ministry of Health Service.</div>
-              {!!publishTime ? 
-                <div className="text-sm font-extralight">updated@{`${shortTimeWithHourMin24ToNZ.format(publishTime)} ${shortNormalFormat.format(publishTime)}`}</div> 
-                : <div>{publishTime}</div>}
+              
             </>
           </div>
         </div>
@@ -205,10 +204,8 @@ export default function LocationPageDrawer({
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
-                  {false && <div className="w-full text-center">            
-                    <span className="text-xl">Locations are ordered by </span><span onClick={() => setShowSortFieldPopup(!showSortFieldPopup)} className="text-xl underline">{sortField} date</span> 
-                  </div>}
-                </Summary>
+                    last updated <NiceTimeFromNow date={publishTime}/>
+              </Summary>
               <LocationGridContainer 
                     showLocationData={false}
                     locations={visibleLocations}

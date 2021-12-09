@@ -1,5 +1,6 @@
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { longDayToNZ, shortDateToNZ, shortDayLongMonthToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
+import { NiceDate } from "./DateHandling";
 
 type LocationSummaryDateDisplayProps = {
     loi: LocationOfInterest
