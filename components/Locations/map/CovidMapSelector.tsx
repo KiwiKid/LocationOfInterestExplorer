@@ -470,11 +470,10 @@ function CovidMapSelector({
                                         // TODO: need to debounce this update
                                         let maxPossibleHours = 14*24;
                                         let hoursAgo = getHoursAgo(al.loi.start)
-                                        let circleOpacity = hoursAgo/maxPossibleHours;
-                                        e.target.setStyle({opacity: circleOpacity});
+                                        let circleOpacity = (1-(hoursAgo/maxPossibleHours));
+                                        e.target.setStyle({opacity: Math.max(circleOpacity, 0.6) });
                                         if(hoursAgo < 48){
                                             e.target.setStyle({fillColor: tailwindClassToHex(getDaysAgoClassName(hoursAgo/24)) });
-                                            console.log('its yello! '+hoursAgo);
                                         }
                                     }}
                                 >
