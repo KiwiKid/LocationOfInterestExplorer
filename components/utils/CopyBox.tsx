@@ -33,8 +33,7 @@ export default function CopyBox({ copyText, successText, promptText, children}:a
           <input className="shadow appearance-none border rounded w-full mb-1 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-gray-700" type="text" value={copyText} readOnly />
           <InternalLink
             onClick={handleCopyClick}
-            title={isCopied ? promptText : successText}
-            />
+            >{isCopied ? promptText : successText}</InternalLink>
           </div>
           {children}
       </div>

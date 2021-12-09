@@ -57,9 +57,6 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                                 </div>
                             </a>
                         </div>}
-                        
-                        <div className="col-span-1 italic">Added: {detailedLongTimeToNZ.format(loi.added)}</div>
-                        {loi.updated && <div className="col-span-1 italic">(Updated: {detailedLongTimeToNZ.format(loi.updated)})</div>}
                     </div>
                     </>}
                 </div>
