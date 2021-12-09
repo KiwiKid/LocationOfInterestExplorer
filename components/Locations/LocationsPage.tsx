@@ -56,7 +56,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const [showSortFieldPopup, setShowSortFieldPopup] = useState(false);
     const [mapIsLocated, setMapIsLocated] = useState(false);
     
-    const [showHelpPopup, setShowHelpPopup] = useState(true);
+    const [showHelpPopup, setShowHelpPopup] = useState(false);
 
     const [circleParams, setCircleParams] = useState('');
     
