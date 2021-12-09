@@ -6,9 +6,10 @@ import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalcula
 import { Sort } from "../types/Sort";
 import { StartingSettings } from "../types/StartingSettings";
 import { getDateInPastByXDays } from "../utils/utils";
-import ActiveDateSelection from "./ActiveDateSelection";
+import HelpPopup from "./HelpPopup";
 import ActiveSortSelection from "./ActiveSortSelection";
 import LocationPageDrawer from "./LocationPageDrawer";
+import ActiveDateSelection from "./ActiveDateSelection";
 
 
 type LocationsPageProps ={
@@ -54,8 +55,11 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const [sortField, setSortField] = useState(Sort.Start);
     const [showSortFieldPopup, setShowSortFieldPopup] = useState(false);
     const [mapIsLocated, setMapIsLocated] = useState(false);
+    
+    const [showHelpPopup, setShowHelpPopup] = useState(true);
 
     const [circleParams, setCircleParams] = useState('');
+    
       
     function changeActiveLocationDate(daysInPast:number){
         // TODO: Maybe the source of day troubles?
@@ -92,7 +96,8 @@ export default function LocationsPage({locations, startingSettings, publishTime}
             changeSortField={setSortField}
             setHideSortFieldSelection={() => setShowSortFieldPopup(false)}
           />}
-            <div id="centerDiv" className="w-full">
+            <div id="centerDiv" className="">
+              {showHelpPopup && <HelpPopup closePopup={() => setShowHelpPopup(false)}  />}
               <div className={`font-bold rounded-lg text-center mx-auto`}>
                 <CovidMapSelector
                   locations={locationsAfterDate}

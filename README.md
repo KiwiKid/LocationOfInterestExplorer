@@ -14,9 +14,11 @@ To run the development server:
 yarn dev
 ```
 
+Given Covid's rather rapid spread across NZ, there are some untidy compromises made in the interests of time. (See "Tech Debt" for more details - open to collaboration here!)
+
 ## Prerequisites
 
-Enviroment variables:
+Environment variables:
 
 MOH_LOCATIONS_URL=https://api.integration.covid19.health.nz/locations/v1/current-locations-of-interest
 (the current location of the MoH api)
@@ -37,16 +39,13 @@ Feature Ideas (open to ideas here!)
 - [ ]  Add day.js (or similar) to improve date formatting
 
 
-Tech Debt
-Given Covid rather rapid spread, there are some untidy compromises made in the interests of time, such as: 
 
-- A poorly written readme :)
 - Merge LargeLocationGrid and LocationGrid components
-
-- [ ] Loose typing (any ftw...)
+Tech Debt
+- [ ] Loose typing ("any" ftw...)
 - [ ] Average Drawer render performance
 - [ ] Average Map render performance
-     (relating to circle relcalculations. This could become a greater risk Covid progresses and more locations of interest are added)
+     (relating to circle recalculations. This could become a greater risk Covid progresses and more locations of interest are added)
     - Location circle Clustering?
 - [ ] The "LocationOfInterest" type is based on the original CSV item and could be replaced by MohLocationOfInterest). 
 - [ ] Zoom button styling (esp when moving drawer)
@@ -62,6 +61,6 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG
 
 # Trigger automatic builds:
 set VERCEL_REBUILD_URL as a github secret. The "deploy-prod" action will call the Vercel deploy Hook url on "main" and get any new locations each hour.
-(VERCEL_REBUILD_URL_PREVIEW) is the alternative for staging enviroments
+(VERCEL_REBUILD_URL_PREVIEW) is the alternative for staging environments
 
 Open to PR's!

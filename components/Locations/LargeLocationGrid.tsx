@@ -23,6 +23,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
     return ( <div key={`${loi.id}_L`}>
                 <div>
                     <div className={`bg-gray-100 grid grid-cols-5 content-center align-middle `} onClick={(evt) => toggleOpenLocation(loi.id)}>
+                        {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>}
                         <div className="text-center">{loi.city}</div>
                         <div className="col-span-2">{loi.event}</div>                        
                         <LocationSummaryDateDisplay loi={loi} includeDate={true} />
@@ -30,7 +31,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
                         <div className="text-center col-span-full"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
-                        {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>}
+                        
                     </div>
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
@@ -57,7 +58,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                             </a>
                         </div>}
                         
-                        <div className="col-span-1 italic">AddedLARGE: {detailedLongTimeToNZ.format(loi.added)}</div>
+                        <div className="col-span-1 italic">Added: {detailedLongTimeToNZ.format(loi.added)}</div>
                         {loi.updated && <div className="col-span-1 italic">(Updated: {detailedLongTimeToNZ.format(loi.updated)})</div>}
                     </div>
                     </>}
