@@ -85,9 +85,12 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
     function LocationGroupHeader({d, firstStartTime, locationCount}:any){
         return ( 
             <div key={`${d}_S`} className="">
-                <div className="bg-gray-300 grid grid-cols-8 border-b-1 border-blue-800 italic">
-                    <div className="border col-span-3">{locationCount} Locations</div>
-                    <div className="border col-span-5">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>
+                <div className="bg-gray-300 grid grid-cols-2 md:grid-cols-5 lg:grid-cols-6 border-b-1 border-blue-800 italic">
+                    <div className="border col-span-full">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>
+                    <div className="border col-span-1 md:col-span-2 lg:col-span-2">{locationCount} Locations</div>
+                    <div className="border md:col-span-1 lg:col-span-2">Time period</div> 
+                    <div className="border col-span-2 lg:col-span-1 hidden md:block">Added</div> 
+                    <div className="border col-span-1 hidden lg:block"></div>
                 </div>
             </div>
         )

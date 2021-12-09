@@ -22,16 +22,17 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
 
     return ( <div key={`${loi.id}_L`}>
                 <div>
-                    <div className={`bg-gray-100 grid grid-cols-5 content-center align-middle `} onClick={(evt) => toggleOpenLocation(loi.id)}>
-                        {addedDateIsRecent &&  <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>}
+                    <div className={`bg-gray-100 grid grid-cols-6 content-center align-middle `} onClick={(evt) => toggleOpenLocation(loi.id)}>
                         <div className="text-center">{loi.city}</div>
-                        <div className="col-span-2">{loi.event}</div>                        
-                        <LocationSummaryDateDisplay loi={loi} includeDate={true} />
+                        <div className="">{loi.event}</div>       
+                        <div className="col-span-2">
+                            <LocationSummaryDateDisplay loi={loi} includeDate={isOpen} />
+                        </div>
+                        <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>
                         {isOpen !== undefined ? 
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
                         <div className="text-center col-span-full"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
-                        
                     </div>
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
@@ -47,7 +48,6 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                                 />
                             </div>
                         </div>
-                        {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
                         {false && <div className="m-auto">
                             <a target="_blank"
                                 rel="noreferrer"

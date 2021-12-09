@@ -19,11 +19,11 @@ const LocationSummaryDateDisplay = ({loi,includeDate}:LocationSummaryDateDisplay
 
     return (
         <>{startEndSameDate ? 
-            <div className="grid grid-cols-1">
-                {startTime} to {endTime} {includeDate && <>- {`${startDay}`}</>}
+            <div className="whitespace-nowrap text-center">
+                {startTime} to {endTime} {includeDate && <><br className="lg:hidden"/><span className="whitespace-nowrap"> {`${startDay}`}</span></>}
             </div> 
-        : <div className="grid grid-cols-1">
-            {startTime} ({includeDate && <>{`${startDay}`}</>}) to <br/> {endTime} {includeDate && `(${endDay})`}
+        : <div className="whitespace-nowrap text-center">
+            {startTime} ({startDay}) to <br/>{endTime} ({endDay})
         </div>}
         </>
     )

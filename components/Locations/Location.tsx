@@ -25,11 +25,12 @@ import LocationTypeDisplay from "./LocationTypeDisplay"
             <div key={`${loi.id}_S`} className="p-1" >
                 <div className={`rounded-lg grid grid-cols-2`} 
                         onClick={(evt) => toggleOpenLocation(loi.id)}>
-                    {addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>}
+                    {addedDateIsRecent && <div className="col-span-full"><LocationMetaDataSummary loi={loi} showUpdated={isOpen}/></div>}
                     <div className="text-left">{loi.city} - {loi.event}</div>
-                    <LocationSummaryDateDisplay loi={loi} includeDate={true}/>
-                    <div className="text-left col-span-2"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
-                    <div className="md:text-lg col-span-2 text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
+                    <LocationSummaryDateDisplay loi={loi} includeDate={isOpen}/>
+                    <div className="md:text-lg col-span-full text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
+                    <div className="text-left col-span-full"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
+
                 </div>
                 {isOpen ? 
                 <div className="grid grid-cols-1 text-center">

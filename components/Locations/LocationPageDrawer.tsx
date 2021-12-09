@@ -278,11 +278,11 @@ export default function LocationPageDrawer({
                   <Question title="What to do if you have been at a location on the map?">
                     <WhatToDo/>
                   </Question>
-                  <Question title={`What does "Not an Official Ministry of Health Service" mean?`}>
+                  <Question  title={`What does "Not an Official Ministry of Health Service" mean?`}>
                     <p>This is not endorsed by or in anyway affiliated with the Ministry of Health.</p>
                     <p>The MoH provides the Locations of Interests and this service publishes that information.</p>
                   </Question>
-                  <Question className="bg-blue-100" title="Why are locations not published in Auckland?">
+                  <Question className="" title="Why are locations not published in Auckland?">
                     <span className="text-gray-600">(sourced directly from the MoH)</span>
                     <p>Where exposure events that do not involve the general public occur the affected people are contacted directly by contact tracers.</p>
                     <p>Auckland:</p>
@@ -290,7 +290,7 @@ export default function LocationPageDrawer({
                     <p>For the rest of New Zealand:</p>
                     <p>We’ll continue to publish both high and low exposure events in other parts of New Zealand because there are currently much fewer of these. It’s very important that people to continue to use the COVID Tracer App so contact tracers have access to your digital diary which speeds up the contact tracing process.</p>
                   </Question>
-                  <Question className="bg-blue-100" title="Why do you want me to install!?!">
+                  <Question   title="Why do you want me to install!?!">
                     {/*<p>The {`"Add to Home screen"`} button allows the app to be more accessible.</p>*/}
                     <p>(Google Chrome only at this stage) Alot of people struggled to return to the app or add a shortcut to their home page.</p>
                     <p>For all practical purposes, it just acts as a shortcut</p>
@@ -300,7 +300,7 @@ export default function LocationPageDrawer({
                       Your location is only used to position the map.<br/>It is not stored.<br/>
                       If you would like, you can use the link in the {`"Share"`} section to restore the same view you left off with.
                     </Question>     
-                    {process.env.NEXT_PUBLIC_FEEDBACK_URL && <Question className="bg-blue-100" title="X is does not work, is broken, or unclear?">
+                    {process.env.NEXT_PUBLIC_FEEDBACK_URL && <Question   title="X is does not work, is broken, or unclear?">
                       <div className="md:w-3/5 m-auto">
                         <SendFeedback />
                       </div>
@@ -322,11 +322,11 @@ export default function LocationPageDrawer({
                             />
                         </div>
                     </Question>
-                    <Question className="bg-blue-100" title="What does this do differently to the MoH?">
+                    <Question title="What does this do differently to the MoH?">
                         <p>Locations are categorized in 4 groups: Standard, High, Bus, Flight</p>
                         <p>The {`"High"`} status is based on the advice containing the word {`"Immediately"`}. {`"Flights" and "Buses"`} are placed in the center of the city (destination city in the case of {`"Flights"`})</p>
                     </Question>
-                    <Question className="bg-blue-100" title="Why are you doing this?">
+                    <Question   title="Why are you doing this?">
                         <p>I want provide people with the best possible understanding of the locations of interest. Hopefully this tool provides some comfort to people.
                         We are facing a period of greater uncertainty and, I strongly believe, we can make a difference through tools and services like these.<br/>
                         Over the years myself and my family have been supported by the tireless, friendly, hardworking and unrelenting work of the heros within the NZ Health system. <br/>
