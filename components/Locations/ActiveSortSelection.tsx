@@ -45,13 +45,11 @@ const ActiveSortSelection = ({sortField, changeSortField, setHideSortFieldSelect
         </select>
         <InternalLink 
             onClick={() => changeSortField(newSortSelection)}
-            title="Load new locations"
-        />
+        >Load new locations</InternalLink>
         <InternalLink 
             onClick={setHideSortFieldSelection}
-            title="Close"
-            colorOverrideClass="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
-        />
+            linkClassName="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
+        >Close</InternalLink>
     </div>
 </div>
 )
