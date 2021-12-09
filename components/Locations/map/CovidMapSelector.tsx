@@ -12,7 +12,7 @@ import { MapContainer
 import 'leaflet/dist/leaflet.css';
 
 import {useRouter} from 'next/router'
-import L, { DoneCallback, LatLng, LatLngBounds, LatLngBoundsExpression, Layer, LeafletEvent } from "leaflet";
+import L, { circle, DoneCallback, LatLng, LatLngBounds, LatLngBoundsExpression, Layer, LeafletEvent } from "leaflet";
 
 import CenteredCircle from './CenteredCircle'
 import { LocationOfInterest } from "../../types/LocationOfInterest";
@@ -23,7 +23,9 @@ import InternalLink from "../../utils/InternalLink";
 import { Pane } from "react-leaflet";
 import AutoHidePopup from "./AutoHidePopup";
 import LocationCirclePopup from "./LocationCirclePopup";
-import { CircleSelectableMarkers, setCircleSelected } from './CircleSelectableMarkers'
+import { CircleSelectableMarkers, updateCircleSelectedStatus } from './CircleSelectableMarkers'
+import { getHoursAgo } from "../../utils/utils";
+import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
 
 
 
@@ -50,23 +52,26 @@ type MapEventHandlerProps = {
    // onNewLocation:any
     onZoomEnd:any
     onLocate:any
-    onMove:any
+    onDragEnd: any
     onMoveDebounced:any
 }
 
-const MapEventHandler = ({onZoomEnd, onLocate, onMove, onMoveDebounced}:MapEventHandlerProps) => {
+const MapEventHandler = ({onZoomEnd, onLocate,onDragEnd, onMoveDebounced}:MapEventHandlerProps) => {
 
     var onMoveDebouncer = _.debounce((map) => {
         if (map) {
             onMoveDebounced(map);
         }
-      }, 500);
+      }, 250);
 
     const map = useMapEvents({
         move: () => {
             onMoveDebouncer(map);
-            onMove(map);
+            //onMove(map);
            //onNewLocation(map.getCenter());
+        },
+        dragend:() => {
+            onDragEnd(map);
         },
         zoomend: () => {
             onZoomEnd(map);
@@ -140,6 +145,7 @@ function CovidMapSelector({
     const onNewLocation = (location:LatLng) => {
         setActiveLocation(location);
     }
+
     // Not sure if i can include the "map" here.
     // Its to ensure the active circles are rendered correctly onload
     useEffect(() => {
@@ -150,22 +156,8 @@ function CovidMapSelector({
     },[map]);
 
     useEffect(() => {
-
-        // Gross... This is due to the current "two run" nature of refreshVisibleLocations()
-        // It allows selections of the time peroid outside of the map
         reloadVisibleLocations(map);
-       // reloadVisibleLocations(map);
-    }   ,[daysInPastShown])
-
-   // useEffect(() => {
-       
-        // On some poor browsers, the map can take a long time to load, ensure the ciricle size is set correctly once it does (bit of a hack)
-       // var reallyEnsureCircleResizeBasedOnMapSize = setInterval(function(){
-       //     resizeCircleBasedOnMapSize();
-       //     clearInterval(reallyEnsureCircleResizeBasedOnMapSize);
-       // },2000);
-
-    //},[]);
+    },[daysInPastShown]);
 
     const MAP_RESIZE_PERCENTAGE = 0.60
     const MAX_CIRCLE_SIZE = 1000000
@@ -241,7 +233,7 @@ function CovidMapSelector({
                         if(refObj && refObj.ref){
                             //var pointOnMap = getPointFromRef(refObj.ref)
                             //distanceToCenter = pointOnMap.distanceTo(centerPoint);
-                            isInCircle = setCircleSelected(refObj.ref, centerPoint, centerRadius);
+                            isInCircle = updateCircleSelectedStatus(refObj.ref, centerPoint, centerRadius);
                         }
 
                         return {
@@ -279,7 +271,12 @@ function CovidMapSelector({
 
     function onLocate(point:LatLng, map:any){
         if(map){
-            map.flyTo(point, ONLOCATE_ZOOM_LEVEL)
+            map.flyTo(point, ONLOCATE_ZOOM_LEVEL);
+            // Give the map 3 seconds to move
+            setTimeout(() => {
+                setMapIsLocated(true);
+            }, 3000)
+            
         }
     }
 
@@ -316,8 +313,7 @@ function CovidMapSelector({
 
     const onMove = (m:any) =>{
         clearUrl();
-        refreshMap(m);
-        setMapIsLocated(false);
+        //refreshMap(m);
         //if(window.pageYOffset != mapContainerRef.current.offsetTop){
         //    scrollToRef(mapContainerRef);
         //}
@@ -472,8 +468,13 @@ function CovidMapSelector({
                                     onSelected={() => null}
                                     onAdded={(inCircle:boolean, e:any) => {
                                         // TODO: need to debounce this update
-                                        if(inCircle){
-                                            reloadVisibleLocations(map);
+                                        let maxPossibleHours = 14*24;
+                                        let hoursAgo = getHoursAgo(al.loi.start)
+                                        let circleOpacity = hoursAgo/maxPossibleHours;
+                                        e.target.setStyle({opacity: circleOpacity});
+                                        if(hoursAgo < 48){
+                                            e.target.setStyle({fillColor: tailwindClassToHex(getDaysAgoClassName(hoursAgo/24)) });
+                                            console.log('its yello! '+hoursAgo);
                                         }
                                     }}
                                 >
@@ -510,8 +511,9 @@ function CovidMapSelector({
                         <MapEventHandler
                             onZoomEnd={onZoomEnd}
                             onLocate={onLocate}
-                            onMove={onMove}
-                            onMoveDebounced={saveMapState}
+                            //onMove={onMove}
+                            onDragEnd={reloadVisibleLocations}
+                            onMoveDebounced={onMove}
                             //onLoad={onMapLoad}
                             />
                             

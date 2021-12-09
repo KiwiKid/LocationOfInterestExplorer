@@ -18,7 +18,7 @@ type LargeLocationGridProps = {
 
 export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen, toggleOpenLocation}:LargeLocationGridProps) {
 
-    const addedDateIsRecent = getHoursAgo(loi.added) < 24;
+    const addedDateIsRecent = getHoursAgo(loi.added) < 48;
 
     return ( <div key={`${loi.id}_L`}>
                 <div>

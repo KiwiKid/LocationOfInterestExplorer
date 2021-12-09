@@ -1,16 +1,10 @@
 import { LocationOfInterest } from "../types/LocationOfInterest"
+import { getDaysAgoClassName } from "../utils/Styling";
 import { detailedLongTimeToNZ, getHoursAgo } from "../utils/utils"
 
 
 
-function getDaysAgoClassName(hours:number):string{
-    return hours < 6 ? "bg-yellow-500" : 
-    hours < 12 ? "bg-yellow-400" : 
-    hours < 24 ? "bg-yellow-300" : 
-    hours < 36 ? "bg-yellow-200" : 
-    hours < 48 ? "bg-yellow-100" : ''
 
-}
 
 type LocationProps = {
     loi: LocationOfInterest

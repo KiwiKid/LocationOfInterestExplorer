@@ -3,7 +3,7 @@ import { useEffect, useMemo } from "react"
 import { LocationOfInterest } from "../types/LocationOfInterest"
 import ExternalLink from "../utils/ExternalLink"
 import { detailedLongTimeToNZ, getHoursAgo } from "../utils/utils"
-import LocationMetaDataSummary from "./LocationMetaDataSummary"
+import LocationMetaDataSummary  from "./LocationMetaDataSummary"
 import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay"
 import LocationTypeDisplay from "./LocationTypeDisplay"
 
@@ -19,7 +19,7 @@ import LocationTypeDisplay from "./LocationTypeDisplay"
 
     export default function Location({loi,isOpen, toggleOpenLocation}:LocationProps){
 
-        const addedDateIsRecent = getHoursAgo(loi.added) < 24;
+        const addedDateIsRecent = getHoursAgo(loi.added) < 48;
 
         return (
             <div key={`${loi.id}_S`} className="p-1" >
