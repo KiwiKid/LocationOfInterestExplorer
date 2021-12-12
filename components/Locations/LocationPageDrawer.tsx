@@ -148,12 +148,12 @@ export default function LocationPageDrawer({
         href: "https://www.rnz.co.nz/news/in-depth/450874/covid-19-data-visualisations-nz-in-numbers"
       },
       {
-        title: "Case Projections (Chris Billington)",
-        description: "Detailed case projections",
+        title: "Projections",
+        description: "Detailed case and R-0 projections by Chris Billington",
         href: "https://chrisbillington.net/COVID_NZ.html"
       },
       {
-        title: "Stats NZ - Covid 19 Data Portal",
+        title: "Stats NZ - Data Portal",
         description: "Stats NZ - Covid 19 Data Portal",
         href: "https://www.stats.govt.nz/experimental/covid-19-data-portal"
       },
@@ -163,8 +163,8 @@ export default function LocationPageDrawer({
         description: <><p>Environmental Science and Research Institute (ESR) - Covid Dashboard:</p><p>(created in partnership with the MoH)</p></>
       },
       {
-        title: "Covid-19 science focused subreddit",
-        description: "Reddit",
+        title: "Covid-19",
+        description: "Reddit - Covid-19 science focused subreddit",
         href: "https://reddit.com/r/covid19"
       }
     ];
@@ -187,7 +187,7 @@ export default function LocationPageDrawer({
       onStop={handleClickEnd}
       >
       <div ref={drawerRef} style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-1300 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
-        <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl">
+        <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl"><DisplayUser/>
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
           <div className="m-auto italic text-gray-700  text-center">
             <>
