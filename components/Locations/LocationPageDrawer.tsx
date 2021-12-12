@@ -42,7 +42,7 @@ type LocationPageDrawerProps = {
 
 const CLOSED_DRAW_POS = -60
 
-const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.82
+const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.80
 
 const LocationPageDrawer = ({
     visibleLocations,
@@ -68,8 +68,8 @@ const LocationPageDrawer = ({
     const PX_FROM_BOTTOM = 60
 
 
-    const [width, height] = useWindowSize();
-    let openDrawPosition = getOpenDrawPosition(height)
+    const [width, windowHeight] = useWindowSize();
+    let openDrawPosition = getOpenDrawPosition(windowHeight)
 
     const drawerRef = useRef(null);
 
@@ -82,20 +82,28 @@ const LocationPageDrawer = ({
 
     const handleClickEnd = (e:DraggableEvent, d:DraggableData) => {
       e.stopPropagation();
-      // Drag
-      console.log(`drawPositionY: ${drawPositionY} ${lastDrawPositionY}!`)
-
-      if(lastDrawPositionY > d.y){
-        setDrawPositionY(openDrawPosition);
-      }else if(lastDrawPositionY < d.y){
-        setDrawPositionY(CLOSED_DRAW_POS);
-      } else {
-        // Click
-        console.log(`drawPositionY: ${drawPositionY} height*0.4: ${height*0.4}!`)
-
-        if(-drawPositionY < height*0.4){
+       
+      // Click (or nearly a click)
+      if(lastDrawPositionY < d.y+10 && lastDrawPositionY > d.y-10){
+        console.log(`click ${windowHeight}`);
+        if(-drawPositionY < windowHeight*0.4){
           setDrawPositionY(openDrawPosition);
         }else{
+          setDrawPositionY(CLOSED_DRAW_POS);
+        }
+        return;
+      }
+      console.log(`drawPositionY: ${drawPositionY} ${lastDrawPositionY}!`)
+      
+      // Drag 
+      // Lots of vertical space? - Move drawer anywhere
+      if(windowHeight > 1000){
+        setDrawPositionY(d.y);
+      }else{
+        // no vertical space? - Lock top/bottom
+        if(lastDrawPositionY > d.y){
+          setDrawPositionY(openDrawPosition);
+        }else if(lastDrawPositionY < d.y){
           setDrawPositionY(CLOSED_DRAW_POS);
         }
       }
@@ -155,6 +163,12 @@ const LocationPageDrawer = ({
         title: "Book your vaccine (Vaxx.nz)",
         description: "Book your vaccine",
         href: "https://vaxx.nz/"
+      },
+      
+      {
+        title: "Traffic Light map",
+        description: "A map of the current regions alert levels",
+        href: "https://covid19.govt.nz/traffic-lights/traffic-lights-map/"
       },
       {
         title: "RNZ - Data Visualisations",
@@ -250,7 +264,8 @@ const LocationPageDrawer = ({
                   {PRESET_LOCATIONS.filter((p) => !!p.zoom).sort((a,b) => a.lat > b.lat ? -1 : 1).map((pl) => 
                     <div key={pl.title} className="w-full">
                       <div className="w-4/5 m-auto p-3">
-                        <InternalLink 
+                        <InternalLink
+                          id="FastTravel"
                           onClick={(evt:any) => goToLocation(pl)}
                         >{pl.title}</InternalLink>
                       </div>
@@ -298,11 +313,9 @@ const LocationPageDrawer = ({
                   </Question>
                   <Question className="" title="Why are locations not published in Auckland?">
                     <span className="text-gray-600">(sourced directly from the MoH)</span>
-                    <p>Where exposure events that do not involve the general public occur the affected people are contacted directly by contact tracers.</p>
-                    <p>Auckland:</p>
-                    <p>Low risk exposure events (for example drive throughs and supermarkets) are no longer being published as the public health risk is very low. Analysis by the Ministry of Health of exposure events to date confirm no positive cases have occurred from these sorts of locations. Transmission of the virus is very low in these settings and vaccination is adding another layer of protection for communities. We will continue to publish higher risk exposure events in public spaces when they occur.</p>
-                    <p>For the rest of New Zealand:</p>
-                    <p>We’ll continue to publish both high and low exposure events in other parts of New Zealand because there are currently much fewer of these. It’s very important that people to continue to use the COVID Tracer App so contact tracers have access to your digital diary which speeds up the contact tracing process.</p>
+                    <p>Locations of interest are linked to public exposure events. We will not always publish low risk locations for regions that are at Red. We will publish high risk locations for all regions. Follow the health instructions if you were at a location on the same date and time shown.</p>
+
+                    <p>If you were at a private exposure event you will be contacted by a district health board, the Ministry of Health or a district health board public health unit. Make sure you please follow their advice.</p>
                   </Question>
                   <Question   title="Why do you want me to install!?!">
                     {/*<p>The {`"Add to Home screen"`} button allows the app to be more accessible.</p>*/}

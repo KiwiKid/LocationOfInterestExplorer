@@ -405,15 +405,18 @@ function CovidMapSelector({
         <div className="col-span-10" ref={(ref) => containerRef.current = ref}>
             <div>
             <div id="use-my-location" className="fixed top-0 -right-0 z-3000">
-                <label className="h-4 hidden" htmlFor="activeDateFilter">Request GPS location:</label>
+            <label className="h-4 hidden" htmlFor="ViewAllButton">Request GPS location:</label>
                 <InternalLink
-                     onClick={() => setLocationPromptVisible(true)}  
-                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
-                     >Near Me</InternalLink>
-                <InternalLink
+                    id="ViewAllButton"
                      onClick={() => triggerViewAll()}  
                      linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
                      >View All</InternalLink>
+                <label className="h-4 hidden" htmlFor="NearMeButton">Request GPS location:</label>
+                <InternalLink
+                    id="NearMeButton"
+                    onClick={() => setLocationPromptVisible(true)}  
+                    linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
+                >Near Me</InternalLink>
             </div>
             <div id="mapContainer">
                 {locationPromptVisible ? 
@@ -423,10 +426,12 @@ function CovidMapSelector({
                             <p className="text-lg">Your location will never be stored by this page</p>
                             <div className="p-3 space-y-2">
                                 <InternalLink 
+                                    id="LocationPromptVisible"
                                     onClick={() => setLocationPromptVisible(false)}
                                     linkClassName="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
                                 >Nah, not keen.</InternalLink>
                                 <InternalLink 
+                                    id="MoveMap"
                                     onClick={triggerLocation}
                                 >Move the map!</InternalLink>
                             </div>

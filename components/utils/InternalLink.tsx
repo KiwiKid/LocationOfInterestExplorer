@@ -3,6 +3,7 @@ import { Children } from 'react'
 
 type  InternalLinkProps = {
     children: string | JSX.Element
+    id: string
     href?: string | object | null
     onClick?: any | null
     linkClassName?: string
@@ -11,6 +12,7 @@ type  InternalLinkProps = {
 
 const InternalLink = ({
     children
+    , id
     , href = null
     , onClick
     , linkClassName = 'text-green-100 border-green-800 bg-green-500 hover:bg-green-700'
@@ -27,12 +29,12 @@ const InternalLink = ({
 
     return (
         href != null ? 
-        <Link href={href} passHref={true} >
-            <div className={`${linkStyle} ${linkDisabled ? 'opacity-30' : ''}`}>
+        <Link  href={href} passHref={true} >
+            <div id={id} className={`${linkStyle} ${linkDisabled ? 'opacity-30' : ''}`}>
                 {children}
             </div>
         </Link> :
-        <div onClick={disabledCheckOnClick} className={`${linkStyle} ${linkDisabled ? 'opacity-30' : ''}`}>
+        <div id={id} onClick={disabledCheckOnClick} className={`${linkStyle} ${linkDisabled ? 'opacity-30' : ''}`}>
             {children}
         </div>
     )
