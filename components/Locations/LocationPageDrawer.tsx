@@ -62,7 +62,7 @@ export default function LocationPageDrawer({
 
     const [width, height] = useWindowSize();
     const CLOSED_DRAW_POS = -60
-    let openDrawPosition = -height*0.85
+    let openDrawPosition = -height*0.82
 
     const drawerRef = useRef(null);
 
@@ -76,10 +76,18 @@ export default function LocationPageDrawer({
 
     const handleClickEnd = (e:DraggableEvent, d:DraggableData) => {
       e.stopPropagation();
-      if(lastDrawPositionY !== d.y){
-        setDrawPositionY(d.y);
-      }else{
-        if(drawPositionY > -height*0.4){
+      // Drag
+      console.log(`drawPositionY: ${drawPositionY} ${lastDrawPositionY}!`)
+
+      if(lastDrawPositionY > d.y){
+        setDrawPositionY(openDrawPosition);
+      }else if(lastDrawPositionY < d.y){
+        setDrawPositionY(CLOSED_DRAW_POS);
+      } else {
+        // Click
+        console.log(`drawPositionY: ${drawPositionY} height*0.4: ${height*0.4}!`)
+
+        if(-drawPositionY < height*0.4){
           setDrawPositionY(openDrawPosition);
         }else{
           setDrawPositionY(CLOSED_DRAW_POS);
