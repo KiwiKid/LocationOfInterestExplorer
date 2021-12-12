@@ -187,7 +187,7 @@ export default function LocationPageDrawer({
       onStop={handleClickEnd}
       >
       <div ref={drawerRef} style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-1300 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
-        <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl"><DisplayUser/>
+        <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl">
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
           <div className="m-auto italic text-gray-700  text-center">
             <>
