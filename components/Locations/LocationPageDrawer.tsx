@@ -36,9 +36,15 @@ type LocationPageDrawerProps = {
     mapIsLocated: boolean
     circleParams: string
     publishTime: Date
+    drawPositionY: number
+    setDrawPositionY: any
 }
 
-export default function LocationPageDrawer({
+const CLOSED_DRAW_POS = -60
+
+const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.82
+
+const LocationPageDrawer = ({
     visibleLocations,
     openLocations,
     setOpenLocations,
@@ -52,8 +58,10 @@ export default function LocationPageDrawer({
     setShowSortFieldPopup,
     mapIsLocated, 
     circleParams,
-    publishTime
-  }:LocationPageDrawerProps){
+    publishTime,
+    drawPositionY,
+    setDrawPositionY
+  }:LocationPageDrawerProps) => {
 
 
     const PX_FROM_TOP = 200
@@ -61,12 +69,10 @@ export default function LocationPageDrawer({
 
 
     const [width, height] = useWindowSize();
-    const CLOSED_DRAW_POS = -60
-    let openDrawPosition = -height*0.82
+    let openDrawPosition = getOpenDrawPosition(height)
 
     const drawerRef = useRef(null);
 
-    const [drawPositionY, setDrawPositionY] = useState(CLOSED_DRAW_POS);
     const [lastDrawPositionY, setLastDrawPositionY] = useState(CLOSED_DRAW_POS)
 
     const [topDrawPosition, setTopDrawPosition] = useState(null);
@@ -194,7 +200,7 @@ export default function LocationPageDrawer({
       onStart={(e:DraggableEvent,d:DraggableData) => { e.stopPropagation(); setLastDrawPositionY(d.y); } }
       onStop={handleClickEnd}
       >
-      <div ref={drawerRef} style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-1300 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
+      <div ref={drawerRef} style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-4000 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
         <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl">
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
           <div className="m-auto italic text-gray-700  text-center">
@@ -359,3 +365,5 @@ export default function LocationPageDrawer({
         </Draggable>
     )
 }
+
+export {LocationPageDrawer, getOpenDrawPosition, CLOSED_DRAW_POS}

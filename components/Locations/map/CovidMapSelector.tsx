@@ -94,6 +94,7 @@ type CovidMapSelectorProps = {
     setMap: any
     setCircleParams: any
     setMapIsLocated: any
+    openDrawer: any
 }
 
 function CovidMapSelector({
@@ -105,6 +106,7 @@ function CovidMapSelector({
     , setMap
     , setCircleParams
     , setMapIsLocated
+    , openDrawer
 }:CovidMapSelectorProps) {
 
     const router = useRouter();
@@ -266,6 +268,7 @@ function CovidMapSelector({
             // @ts-ignore
             map.locate();
             setMapIsLocated(true);
+            openDrawer();
         }
     }
 
@@ -361,6 +364,11 @@ function CovidMapSelector({
         }
     }
 
+    function triggerViewAll(){
+        map.flyTo(NZ_CENTER, 3);
+        openDrawer();
+    }
+
     return (<>
     <div className="" >
     <style>{`
@@ -396,16 +404,20 @@ function CovidMapSelector({
     </style>
         <div className="col-span-10" ref={(ref) => containerRef.current = ref}>
             <div>
-            <div id="use-my-location" className="fixed top-0 -right-0 z-4000">
+            <div id="use-my-location" className="fixed top-0 -right-0 z-3000">
                 <label className="h-4 hidden" htmlFor="activeDateFilter">Request GPS location:</label>
                 <InternalLink
                      onClick={() => setLocationPromptVisible(true)}  
                      linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
-                     >Use my Location</InternalLink>
+                     >Near Me</InternalLink>
+                <InternalLink
+                     onClick={() => triggerViewAll()}  
+                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
+                     >View All</InternalLink>
             </div>
             <div id="mapContainer">
                 {locationPromptVisible ? 
-                <div className="top-24 right-10 absolute z-4000">
+                <div className="top-24 right-10 absolute z-5000">
                     <div className="w-4/5 m-auto content-center bg-blue-200 rounded-xl">
                         <div className="max-w-2xl m-auto">
                             <p className="text-lg">Your location will never be stored by this page</p>
@@ -416,7 +428,7 @@ function CovidMapSelector({
                                 >Nah, not keen.</InternalLink>
                                 <InternalLink 
                                     onClick={triggerLocation}
-                                >All good with me - Move the map</InternalLink>
+                                >Move the map!</InternalLink>
                             </div>
                         </div>
                     </div>

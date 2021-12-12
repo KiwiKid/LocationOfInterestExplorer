@@ -8,8 +8,9 @@ import { StartingSettings } from "../types/StartingSettings";
 import { getDateInPastByXDays } from "../utils/utils";
 import HelpPopup from "./HelpPopup";
 import ActiveSortSelection from "./ActiveSortSelection";
-import LocationPageDrawer from "./LocationPageDrawer";
+import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
+import useWindowSize from "../utils/useWindowSize";
 
 
 type LocationsPageProps ={
@@ -19,6 +20,7 @@ type LocationsPageProps ={
   }
 
   
+const CLOSED_DRAW_POS = -60;
 
 export default function LocationsPage({locations, startingSettings, publishTime}:LocationsPageProps){
 
@@ -59,15 +61,20 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const [showHelpPopup, setShowHelpPopup] = useState(false);
 
     const [circleParams, setCircleParams] = useState('');
-    
-      
+
+    const [windowWidth, windowHeight] = useWindowSize();
+
+    const [drawPositionY, setDrawPositionY] = useState(CLOSED_DRAW_POS);
+    const openDrawer = () => {
+      setDrawPositionY(getOpenDrawPosition(windowHeight));
+    }
+
+
     function changeActiveLocationDate(daysInPast:number){
         // TODO: Maybe the source of day troubles?
         setDaysInPastShown(daysInPast);
           
     }
-
-    
 
     return (
         <>
@@ -108,6 +115,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   map={map}
                   setCircleParams={setCircleParams}
                   setMapIsLocated={setMapIsLocated}
+                  openDrawer={openDrawer}
                 />
               </div>
               <div>
@@ -126,6 +134,8 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   mapIsLocated={mapIsLocated}
                   circleParams={circleParams}
                   publishTime={publishTime}
+                  drawPositionY={drawPositionY}
+                  setDrawPositionY={setDrawPositionY}
                 />
               </div>
             </div>
