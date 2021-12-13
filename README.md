@@ -51,15 +51,15 @@ Tech Debt
 - [ ] Average Drawer render performance
 - [ ] Average Map render performance
      (relating to circle recalculations. This could become a greater risk Covid progresses and more locations of interest are added). 
-   - (Update: This has been mitigated through only updating the circle at he end of the drag. Might even need to debounce that update as some users are "peckers", for lack of a better work, when moving the map).
+   - (Update: This has been mitigated through only updating the circle at he end of the drag. Might even need to debounce that update as some users are "peckers", for lack of a better word, when moving the map).
     - Could do Location circle Clustering?
 - [ ] Zoom button styling (esp when moving drawer)
-- [ ] The useEffects are pretty funky in places
+- [ ] The useEffects are pretty funky in places (esp around map updates)
 
 Wildcard ideas
 - [ ] A guessing game for where new locations of interests will be and providing a leaderboard that will reset weekly.
 The goal would be to rise awareness and make understanding Locations of Interests in the community more engaging.
-- [ ] A game where you fly a mini plane shooting bullets vaccines at Locations of Interests. Leaderboards for the quickest time to destroy them all.
+- [ ] A game where you fly a mini plane shooting bullets vaccines at Locations of Interests. Leaderboard for the quickest time to destroy them all.
 
 
 set the meta tag for verifying domain ownership with google
