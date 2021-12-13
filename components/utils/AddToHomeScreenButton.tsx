@@ -123,7 +123,7 @@ const AddToHomeScreenButton = () => {
             {addStage === AddHomeScreenStage.iOSNotInstalled && <div className="text-gray-400">Install this webapp on your iPhone: tap <Image src={"/img/iOS_bookmark.jpg"} width={10} height={10} alt={"iOS bookmark icon"}/> and then Add to Homescreen </div>}
             {addStage === AddHomeScreenStage.WaitingForEvent && <div className="text-gray-400">Add to Home Screen loading...</div>}
             {addStage === AddHomeScreenStage.Prompting &&  <div>Accept prompt to continue</div>}
-            {addStage === AddHomeScreenStage.Available && <InternalLink onClick={triggerAddToHomeScreen}>Add to Home Screen</InternalLink>}
+            {addStage === AddHomeScreenStage.Available && <InternalLink id="addToHome" onClick={triggerAddToHomeScreen}>Add to Home Screen</InternalLink>}
             {addStage === AddHomeScreenStage.Accepted || addStage === AddHomeScreenStage.Installed && <div className="">(App Installed)</div>}
             {addStage === AddHomeScreenStage.NotAvailable && 
                 <div className="text-gray-400">
