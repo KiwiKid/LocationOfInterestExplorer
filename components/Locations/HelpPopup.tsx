@@ -15,6 +15,7 @@ const HelpPopup = ({closePopup}:HelpPopupProps) => {
                     </div>
                     <div className="w-20 h-20">
                         <InternalLink 
+                            id="dismissHelp"
                             onClick={closePopup}
                             linkClassName="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200 w-32"
                             ><>Dismiss <br/>Help</>

@@ -43,10 +43,12 @@ const ActiveSortSelection = ({sortField, changeSortField, setHideSortFieldSelect
                 <option value={sf} key={sf}>{sf}</option>
             ))}
         </select>
-        <InternalLink 
+        <InternalLink
+            id="sortField"
             onClick={() => changeSortField(newSortSelection)}
         >Load new locations</InternalLink>
-        <InternalLink 
+        <InternalLink
+            id="hideSortField"
             onClick={setHideSortFieldSelection}
             linkClassName="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
         >Close</InternalLink>

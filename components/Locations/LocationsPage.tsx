@@ -52,7 +52,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const locationsAfterDate = locations.filter(inActiveDateRange);
 
     // State
-    const [map, setMap] = useState(null);
+    const [map, setMap] = useState(undefined);
     const [showDateInPastPopup, setShowDateInPastPopup] = useState(false);
     const [sortField, setSortField] = useState(Sort.Start);
     const [showSortFieldPopup, setShowSortFieldPopup] = useState(false);

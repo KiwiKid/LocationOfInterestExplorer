@@ -12,7 +12,7 @@ import { MapContainer
 import 'leaflet/dist/leaflet.css';
 
 import {useRouter} from 'next/router'
-import L, { circle, DoneCallback, LatLng, LatLngBounds, LatLngBoundsExpression, Layer, LeafletEvent } from "leaflet";
+import L, { circle, DoneCallback, LatLng, LatLngBounds, LatLngBoundsExpression, Layer, LeafletEvent, Map } from "leaflet";
 
 import CenteredCircle from './CenteredCircle'
 import { LocationOfInterest } from "../../types/LocationOfInterest";
@@ -37,39 +37,16 @@ const MAP_HEIGHT_DESKTOP = '700px';
 const ONLOCATE_ZOOM_LEVEL = 9;
 const ONLOCATE_RADIUS = 25000;
 
-// Ensure the height is set on the correct react-leaflet container class
-function SetMapHeight(){
-    const map = useMap()
-    if(L.Browser.mobile){
-        //map.getContainer().style.height = `${window.document.body.clientHeight*0.5}px` //MAP_HEIGHT_MOBILE
-    }else{
-        //map.getContainer().style.height = `${window.document.body.clientHeight*0.5}px`
-    }
-    return null
-}
-
 type MapEventHandlerProps = {
    // onNewLocation:any
-    onZoomEnd:any
-    onLocate:any
-    onDragEnd: any
-    onMoveDebounced:any
+    onZoomEnd?:any
+    onLocate?:any
+    onDragEnd?: any
 }
 
-const MapEventHandler = ({onZoomEnd, onLocate,onDragEnd, onMoveDebounced}:MapEventHandlerProps) => {
-
-    var onMoveDebouncer = _.debounce((map) => {
-        if (map) {
-            onMoveDebounced(map);
-        }
-      }, 250);
+const MapEventHandler = ({onZoomEnd, onLocate,onDragEnd}:MapEventHandlerProps) => {
 
     const map = useMapEvents({
-        move: () => {
-            onMoveDebouncer(map);
-            //onMove(map);
-           //onNewLocation(map.getCenter());
-        },
         dragend:() => {
             onDragEnd(map);
         },
@@ -79,9 +56,6 @@ const MapEventHandler = ({onZoomEnd, onLocate,onDragEnd, onMoveDebounced}:MapEve
         locationfound: (e:any) => {
             onLocate(e.latlng, map);
         },
-        moveend: (e:any) => { 
-           // onMoveEnd(map)
-        },
     });
     return null;
 }
@@ -90,7 +64,7 @@ type CovidMapSelectorProps = {
     onNewLocations: any
     startingSettings:StartingSettings
     daysInPastShown: number
-    map: any
+    map?: Map
     setMap: any
     setCircleParams: any
     setMapIsLocated: any
@@ -109,22 +83,10 @@ function CovidMapSelector({
     , openDrawer
 }:CovidMapSelectorProps) {
 
-    const router = useRouter();
-
-    //var startingSettings:StartingSettings = //processQueryString(router.query);
-    
-    //var startingLoc:L.LatLng = router.query.lat && router.query.lng ? new L.LatLng(+router.query.lat,+router.query.lng): NZ_CENTER;
     const [activeLocation, setActiveLocation] = useState(startingSettings.startingLocation);
-    // Note "Radius" is a secret override param
-    //const [activeRadius, setActiveRadius] = useState<number>(startingSettings.radius ? startingSettings.radius : getLocationCircleRadius(startingSettings.zoom));
     const [activeZoom, setActiveZoom] = useState(startingSettings.zoom);
 
-    
-    // convert this to save the days in the past directly (to allow for re-select box population)
-    //router.query.dateAfter ? new Date(router.query.dateAfter).toISOString() : '2021-11-4:00:00.000Z'
-
-
-    const activeCircleRef = useRef<any>(null);
+        const activeCircleRef = useRef<any>(null);
     const activeLocationMarkerRefs = useRef<any>([]);
     const containerRef = useRef<any>();
 
@@ -266,7 +228,8 @@ function CovidMapSelector({
         setLocationPromptVisible(false);
         if(map){
             // @ts-ignore
-            map.locate();
+            map.locate({watch: false});
+            
             setMapIsLocated(true);
             openDrawer();
         }
@@ -278,8 +241,7 @@ function CovidMapSelector({
             // Give the map 3 seconds to move
             setTimeout(() => {
                 setMapIsLocated(true);
-            }, 3000)
-            
+            }, 3000);
         }
     }
 
@@ -314,22 +276,8 @@ function CovidMapSelector({
             },3000);
     }
 
-    const onMove = (m:any) =>{
-        clearUrl();
-        //refreshMap(m);
-        //if(window.pageYOffset != mapContainerRef.current.offsetTop){
-        //    scrollToRef(mapContainerRef);
-        //}
-    }
-
-    const clearUrl = () => {
-        if(router.asPath.indexOf('?') > 0){
-            router.push(router.route, undefined, { shallow: true });
-        }
-    }
 
     const onZoomEnd = (map:any) => {
-        clearUrl();
         setActiveZoom(map.getZoom());
         refreshMap(map);
         saveMapState(map);
@@ -365,8 +313,10 @@ function CovidMapSelector({
     }
 
     function triggerViewAll(){
-        map.flyTo(NZ_CENTER, 3);
-        openDrawer();
+        if(map != undefined){
+            map.flyTo(NZ_CENTER, 3);
+            openDrawer();
+        }
     }
 
     return (<>
@@ -472,7 +422,7 @@ function CovidMapSelector({
 
                         {/*TODO: onClick to take to locations postion in list */}
                         <Pane name="click" style={{zIndex: 499 }}>
-                            {allVisibleLocations.map((al, i) => (
+                            {allVisibleLocations !== undefined && allVisibleLocations.map((al, i) => (
                                 <CircleSelectableMarkers 
                                     key={al.loi.id}
                                     id={al.loi.id}
@@ -515,24 +465,18 @@ function CovidMapSelector({
                                 </Pane>
                             </Circle>
                         </Pane>
-
                         <Pane name="noclick" style={{zIndex: 450 }}>
                             <CenteredCircle 
                                 color="blue"
                                 circleRef={activeCircleRef} 
                                 startingPos={activeLocation}
-                                />
+                            />
                         </Pane>
-                        <SetMapHeight/>
                         <MapEventHandler
                             onZoomEnd={onZoomEnd}
                             onLocate={onLocate}
-                            //onMove={onMove}
                             onDragEnd={reloadVisibleLocations}
-                            onMoveDebounced={onMove}
-                            //onLoad={onMapLoad}
                             />
-                            
                     </MapContainer>
                 </div>
             </div>

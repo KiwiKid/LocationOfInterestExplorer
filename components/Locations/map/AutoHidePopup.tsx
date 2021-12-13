@@ -17,7 +17,7 @@ const AutoHidePopup = ({children}:any) => {
         zoomstart: hideElement
     })
 
-    return <Popup ref={popupElRef} keepInView={false} autoPan={false} closeOnClick={true} closeButton={false}>{children}</Popup>
+    return <Popup className="z-5000" ref={popupElRef} keepInView={false} autoPan={false} closeOnClick={true} closeButton={false}>{children}</Popup>
 
 }
 

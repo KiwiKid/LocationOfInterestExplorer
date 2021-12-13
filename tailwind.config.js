@@ -25,11 +25,13 @@ module.exports = {
         '14': '14px'
       }
     },
+    // React Leaflet uses some really high z-indexes
     zIndex:{
       '1300': 2000,
       '3000': 3000,
-      '4000': 4000,
-      '5000': 5000,
+      '4000': 4000, // Less that this is all map elements
+      '5000': 5000, // Drawer
+      '6000': 6000, // Popups
     }
     
   },

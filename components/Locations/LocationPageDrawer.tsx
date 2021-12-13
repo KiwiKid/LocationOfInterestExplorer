@@ -42,7 +42,7 @@ type LocationPageDrawerProps = {
 
 const CLOSED_DRAW_POS = -60
 
-const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.80
+const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.79
 
 const LocationPageDrawer = ({
     visibleLocations,
@@ -82,10 +82,10 @@ const LocationPageDrawer = ({
 
     const handleClickEnd = (e:DraggableEvent, d:DraggableData) => {
       e.stopPropagation();
-       
+
+
       // Click (or nearly a click)
       if(lastDrawPositionY < d.y+10 && lastDrawPositionY > d.y-10){
-        console.log(`click ${windowHeight}`);
         if(-drawPositionY < windowHeight*0.4){
           setDrawPositionY(openDrawPosition);
         }else{
@@ -93,19 +93,17 @@ const LocationPageDrawer = ({
         }
         return;
       }
-      console.log(`drawPositionY: ${drawPositionY} ${lastDrawPositionY}!`)
-      
+
+      const probablyMobile = screen.width <= 480;
       // Drag 
-      // Lots of vertical space? - Move drawer anywhere
-      if(windowHeight > 1000){
-        setDrawPositionY(d.y);
-      }else{
-        // no vertical space? - Lock top/bottom
+      if(probablyMobile){
         if(lastDrawPositionY > d.y){
           setDrawPositionY(openDrawPosition);
         }else if(lastDrawPositionY < d.y){
           setDrawPositionY(CLOSED_DRAW_POS);
         }
+      }else{
+        setDrawPositionY(d.y);
       }
     }
 
@@ -280,12 +278,12 @@ const LocationPageDrawer = ({
                   <ShareBar url={url}>
                       <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 border border-black p-2">
                         <div className="">
-                          <CopyBox copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
-                            {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: null}
+                          <CopyBox id="locatedCopy" copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
+                            {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: undefined}
                           </CopyBox>
                         </div>
                         <div className="">
-                          <CopyBox copyText={`${url}`} successText="Copy link to page" promptText="Link copied" />
+                          <CopyBox id="basicCopy" copyText={`${url}`} successText="Copy link to page" promptText="Link copied" />
                         </div>
                       </div>
                   </ShareBar>

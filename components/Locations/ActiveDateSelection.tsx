@@ -28,7 +28,7 @@ const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHide
     const [newDateSelection, setNewDateSelection] = useState(daysInPastShown);
 
     return ( 
-<div className="top-24 right-10 absolute z-4000 bg-gray-300 rounded-lg">
+<div className="top-24 right-10 absolute z-5000 bg-gray-300 rounded-lg">
     <div className="m-auto p-2">
         <label htmlFor="dateSelection" className="col-span-3 sm:col-span-4 text-lg">
                 <div className="text-center">
@@ -46,10 +46,12 @@ const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHide
                 <option value={ads.days} key={ads.days}>{ads.display} (since {shortDayLongMonthToNZ.format(getDateInPastByXDays(ads.days))})</option>
             ))}
         </select>
-        <InternalLink 
+        <InternalLink
+            id="activeDate"
             onClick={() => changeActiveLocationDate(newDateSelection)}
         >Load new locations</InternalLink>
         <InternalLink 
+            id="closeActiveDate"
             onClick={setHideActiveDateSelection}
             linkClassName="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
         >Close</InternalLink>
