@@ -1,10 +1,7 @@
 import { LatLng, LeafletEvent } from "leaflet"
 import { CircleMarker } from "react-leaflet"
 
-
-
-
-const updateCircleSelectedStatus = (target:any, centerPoint:LatLng, centerRadius:number, onSelected:any = null):boolean => {
+const updateAndReturnCircleSelectedStatus = (target:any, centerPoint:LatLng, centerRadius:number, onSelected:any = null):boolean => {
     try{
         let distanceToCenter = target._latlng.distanceTo(centerPoint);
 
@@ -39,7 +36,7 @@ type CircleSelectableMarkersProps = {
 const CircleSelectableMarkers = ({id, center, setRef, radius, selectingCircleRef, onAdded, onSelected = null , children}:CircleSelectableMarkersProps) => {
 
     const onCircleAdded = (e:LeafletEvent) => {
-        onAdded(updateCircleSelectedStatus(
+        onAdded(updateAndReturnCircleSelectedStatus(
                 e.target
                 , selectingCircleRef.current.getLatLng()
                 , selectingCircleRef.current.getRadius()
@@ -58,4 +55,4 @@ const CircleSelectableMarkers = ({id, center, setRef, radius, selectingCircleRef
         >{children}</CircleMarker>
     )
 }
-export {updateCircleSelectedStatus, CircleSelectableMarkers}
+export {updateAndReturnCircleSelectedStatus, CircleSelectableMarkers}

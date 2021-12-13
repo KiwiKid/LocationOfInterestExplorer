@@ -12,33 +12,27 @@ import { MapContainer
 import 'leaflet/dist/leaflet.css';
 
 import {useRouter} from 'next/router'
-import L, { circle, DoneCallback, LatLng, LatLngBounds, LatLngBoundsExpression, Layer, LeafletEvent, Map } from "leaflet";
+import {LatLng, Map } from "leaflet";
 
 import CenteredCircle from './CenteredCircle'
 import { LocationOfInterest } from "../../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated";
-import _, { debounce } from "lodash";
+import _ from "lodash";
 import { StartingSettings } from "../../types/StartingSettings";
 import InternalLink from "../../utils/InternalLink";
 import { Pane } from "react-leaflet";
 import AutoHidePopup from "./AutoHidePopup";
 import LocationCirclePopup from "./LocationCirclePopup";
-import { CircleSelectableMarkers, updateCircleSelectedStatus } from './CircleSelectableMarkers'
+import { CircleSelectableMarkers, updateAndReturnCircleSelectedStatus } from './CircleSelectableMarkers'
 import { getHoursAgo } from "../../utils/utils";
 import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
 
 
-
-
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
-const MAP_HEIGHT_MOBILE =  '700px';
-const MAP_HEIGHT_DESKTOP = '700px';
 
 const ONLOCATE_ZOOM_LEVEL = 9;
-const ONLOCATE_RADIUS = 25000;
 
 type MapEventHandlerProps = {
-   // onNewLocation:any
     onZoomEnd?:any
     onLocate?:any
     onDragEnd?: any
@@ -86,42 +80,32 @@ function CovidMapSelector({
     const [activeLocation, setActiveLocation] = useState(startingSettings.startingLocation);
     const [activeZoom, setActiveZoom] = useState(startingSettings.zoom);
 
-        const activeCircleRef = useRef<any>(null);
+    const activeCircleRef = useRef<any>(null);
     const activeLocationMarkerRefs = useRef<any>([]);
     const containerRef = useRef<any>();
-
-
+    const [isViewingAll, setIsViewingAll] = useState(false);
+    const [mapIsLocating, setMapIsLocating] = useState(false);
     const [locationPromptVisible, setLocationPromptVisible] = useState(false);
     const [allVisibleLocations, setAllVisibleLocations] = useState<LocationOfInterestCalculated[]>([]);
 
 
     const [allowedLocationRestore, setAllowedLocationRestore] = useState(false);
 
-
-    // Maintain a copy to allow for external components to trigger map events (i.e. find my location)
-    
-    // Reset size of ref array
+    // Ensure the marker ref array size remains correct
     useEffect(() => {
             activeLocationMarkerRefs.current = activeLocationMarkerRefs.current.slice(0, allVisibleLocations.length);
-    }, [locations]);
+    }, [locations, allVisibleLocations]);
 
 
     const onNewLocation = (location:LatLng) => {
         setActiveLocation(location);
     }
 
-    // Not sure if i can include the "map" here.
-    // Its to ensure the active circles are rendered correctly onload
     useEffect(() => {
-
-        resizeCircleBasedOnMapSize(map);
-        
-        reloadVisibleLocations(map);
-    },[map]);
-
-    useEffect(() => {
-        reloadVisibleLocations(map);
-    },[daysInPastShown]);
+        if(map){
+            reloadInCircleLocations(map);
+        }
+    },[daysInPastShown, map]);
 
     const MAP_RESIZE_PERCENTAGE = 0.60
     const MAX_CIRCLE_SIZE = 1000000
@@ -165,7 +149,7 @@ function CovidMapSelector({
     const IN_CIRCLE_STYLES = {color: "red"};
     const OUT_CIRCLE_STYLES = {color: "blue"};
 
-    const reloadVisibleLocations = (map:any) => {
+    function reloadInCircleLocations(map:Map) {
         if(map == null){
             return;
         }
@@ -178,26 +162,19 @@ function CovidMapSelector({
             if(locations.length > 0){
                 activeMarkerPoints = locations
                     .filter((al) => isValidLocation(al))
-                    .map((al:LocationOfInterest) => {
-                        // This method runs twice during initialization
-                        // ==== First run ====- put the circles on the map
+                        .map((al:LocationOfInterest) => {
                         if(!isValidLocationType(al.locationType)){
                             console.error('Not Valid location Type: ('+al.locationType+') for '+al.id);
                         }
                     
                         let markerLatLng = new LatLng(al.lat, al.lng);
-
-                        // ==== Second run ====  - Now we have circles on the map
-                        // We can avoid a bunch geojson complexity/slowness and use the "ref" objects to using the in-built leaflet distanceTo method:
+                        
+                        // ==== Second run ====  - Now we have circles on the map - Are they in the Circle?
+                        let isInCircle = false;
                         let refObj:any = activeLocationMarkerRefs.current
                                     .filter((amr:any) => amr.key === al.id)[0];
-
-
-                        let isInCircle = false;
                         if(refObj && refObj.ref){
-                            //var pointOnMap = getPointFromRef(refObj.ref)
-                            //distanceToCenter = pointOnMap.distanceTo(centerPoint);
-                            isInCircle = updateCircleSelectedStatus(refObj.ref, centerPoint, centerRadius);
+                            isInCircle = updateAndReturnCircleSelectedStatus(refObj.ref, centerPoint, centerRadius);
                         }
 
                         return {
@@ -207,58 +184,28 @@ function CovidMapSelector({
                             , ref: refObj ? refObj.ref : null
                         }
                     })
-/*
-                activeMarkerPoints.filter((amp) => !!amp.ref).forEach((al) => {
-                    try{
-                        // If the marker is in the current circle;
-                        
-                        al.ref.setStyle(al.isInCircle ?  IN_CIRCLE_STYLES : OUT_CIRCLE_STYLES);
-                    }catch(err){
-                        // TODO: log this?
-                        // 
-                        console.error('CODE: ACTIVE MARKER FAILED TO STYLE' + err);
-                    }
-                });*/
                 onNewLocations(activeMarkerPoints.filter((amp) => amp.isInCircle));
                 setAllVisibleLocations(activeMarkerPoints);
             }
         }
     }
+
     function triggerLocation(){
         setLocationPromptVisible(false);
         if(map){
-            // @ts-ignore
+            setMapIsLocating(true);
             map.locate({watch: false});
-            
+            // Provides warning on Share URL
             setMapIsLocated(true);
-            openDrawer();
         }
     }
 
     function onLocate(point:LatLng, map:any){
         if(map){
             map.flyTo(point, ONLOCATE_ZOOM_LEVEL);
-            // Give the map 3 seconds to move
-            setTimeout(() => {
-                setMapIsLocated(true);
-            }, 3000);
+            setMapIsLocated(true);
         }
     }
-
-
-/*
-    function toggleLocationData(newShowLocationValue:boolean){
-        if(newShowLocationValue){
-            if(locationGridButtonRef.current){
-                scrollToRef(locationGridButtonRef);
-            }
-        }else{
-            if(containerRef.current){
-                scrollToRef(containerRef, -10);
-            }
-        }
-        setShowLocationData(newShowLocationValue);
-    }*/
 
     const onMapLoad = (m:any) => {
         setMap(m);
@@ -268,24 +215,32 @@ function CovidMapSelector({
         // This ensure that the circle resizes and hightlights the circles, even in adverse conditions.
         var ensureLocationsInCircleActive = setInterval(function(){
             refreshMap(m);
-              clearInterval(ensureLocationsInCircleActive);
-          },1500);
+            clearInterval(ensureLocationsInCircleActive);
+        },1500);
 
           var reallyReallyEnsureCircleResizeBasedOnMapSize = setInterval(function(){
-               clearInterval(reallyReallyEnsureCircleResizeBasedOnMapSize);
+                refreshMap(m);
+                clearInterval(reallyReallyEnsureCircleResizeBasedOnMapSize);
             },3000);
     }
 
 
-    const onZoomEnd = (map:any) => {
+    const onZoomEnd = (map:Map) => {
+        if(isViewingAll || mapIsLocating){
+            setTimeout(() => {
+                
+            })
+            openDrawer();
+            setIsViewingAll(false);
+        }
         setActiveZoom(map.getZoom());
         refreshMap(map);
         saveMapState(map);
     }
 
-    function refreshMap(map:any){
+    function refreshMap(map:Map){
         resizeCircleBasedOnMapSize(map);
-        reloadVisibleLocations(map);
+        reloadInCircleLocations(map);
     }
 
     function refreshShareUrl(centerLat:number, centerLng:number, zoom:number, daysInPastShown:number){
@@ -295,14 +250,14 @@ function CovidMapSelector({
         return `?lat=${centerLat.toFixed(5)}&lng=${centerLng.toFixed(5)}&zoom=${activeZoom}&daysInPastShown=${daysInPastShown}`;
     }
 
-    function saveMapState(map:any){
+    function saveMapState(map:Map){
         let center = map.getCenter();
         let zoom = map.getZoom();
         
-        saveMapSettingsLocally(center.lat, center.lng, zoom, daysInPastShown);
+  //      saveMapSettingsLocally(center.lat, center.lng, zoom, daysInPastShown);
         refreshShareUrl(center.lat, center.lng, zoom, daysInPastShown);
     }
-
+/*
     function saveMapSettingsLocally(centerLat:number, centerLng:number, zoom:number, daysInPastShown:number){
         if(allowedLocationRestore){
             localStorage.setItem("lat", centerLat.toString());
@@ -311,11 +266,11 @@ function CovidMapSelector({
             localStorage.setItem("daysInPastShown", daysInPastShown.toString());
         }
     }
-
+*/
     function triggerViewAll(){
+        setIsViewingAll(true);
         if(map != undefined){
             map.flyTo(NZ_CENTER, 3);
-            openDrawer();
         }
     }
 
@@ -475,7 +430,7 @@ function CovidMapSelector({
                         <MapEventHandler
                             onZoomEnd={onZoomEnd}
                             onLocate={onLocate}
-                            onDragEnd={reloadVisibleLocations}
+                            onDragEnd={reloadInCircleLocations}
                             />
                     </MapContainer>
                 </div>
