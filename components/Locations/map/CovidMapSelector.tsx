@@ -88,21 +88,15 @@ function CovidMapSelector({
     const [locationPromptVisible, setLocationPromptVisible] = useState(false);
     const [allVisibleLocations, setAllVisibleLocations] = useState<LocationOfInterestCalculated[]>([]);
 
-
-    const [allowedLocationRestore, setAllowedLocationRestore] = useState(false);
-
     // Ensure the marker ref array size remains correct
-    useEffect(() => {
+   /* useEffect(() => {
             activeLocationMarkerRefs.current = activeLocationMarkerRefs.current.slice(0, allVisibleLocations.length);
-    }, [locations, allVisibleLocations]);
+    }, [locations, allVisibleLocations]);*/
 
-
-    const onNewLocation = (location:LatLng) => {
-        setActiveLocation(location);
-    }
 
     useEffect(() => {
         if(map){
+            console.log('Reloading! for this:'+daysInPastShown);
             reloadInCircleLocations(map);
         }
     },[daysInPastShown, map]);
@@ -123,11 +117,6 @@ function CovidMapSelector({
 
     const inCircleLocations = allVisibleLocations.filter(avl => avl.isInCircle);
 
-    function getPointFromRef(ref:any){
-        //TODO: add city logic when no Lat Long
-        return ref ? ref.getLatLng() : NZ_CENTER
-    }
-
     function isValidLocation(location:LocationOfInterest){
         let valid = location.lat
             && location.lng
@@ -146,10 +135,7 @@ function CovidMapSelector({
         return validTypes.some((ty) => ty === locationType);
     }
 
-    const IN_CIRCLE_STYLES = {color: "red"};
-    const OUT_CIRCLE_STYLES = {color: "blue"};
-
-    function reloadInCircleLocations(map:Map) {
+       function reloadInCircleLocations(map:Map) {
         if(map == null){
             return;
         }
@@ -218,20 +204,21 @@ function CovidMapSelector({
             clearInterval(ensureLocationsInCircleActive);
         },1500);
 
-          var reallyReallyEnsureCircleResizeBasedOnMapSize = setInterval(function(){
-                refreshMap(m);
-                clearInterval(reallyReallyEnsureCircleResizeBasedOnMapSize);
-            },3000);
+        var reallyReallyEnsureCircleResizeBasedOnMapSize = setInterval(function(){
+            refreshMap(m);
+            clearInterval(reallyReallyEnsureCircleResizeBasedOnMapSize);
+        },3000);
     }
 
 
     const onZoomEnd = (map:Map) => {
         if(isViewingAll || mapIsLocating){
             setTimeout(() => {
-                
-            })
-            openDrawer();
+                openDrawer();
+            }, 1000);
+            
             setIsViewingAll(false);
+            setMapIsLocating(false);
         }
         setActiveZoom(map.getZoom());
         refreshMap(map);
@@ -404,7 +391,7 @@ function CovidMapSelector({
                                         </Pane>
                                 </CircleSelectableMarkers>
                             ))}
-                            <Circle
+                            {/*<Circle
                                 key={'auckland'} 
                                 center={[-36.8, 174.8]}
                                 radius={50000}
@@ -418,7 +405,7 @@ function CovidMapSelector({
                                         <div className="text-lg italic text-center bg-gray-200 rounded-lg">Most Locations in Auckland are not currently published by the MoH.<br/> See FAQ for details</div>
                                     </AutoHidePopup>
                                 </Pane>
-                            </Circle>
+                            </Circle>*/}
                         </Pane>
                         <Pane name="noclick" style={{zIndex: 450 }}>
                             <CenteredCircle 
