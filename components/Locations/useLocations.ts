@@ -4,7 +4,7 @@ import { LocationOfInterest } from "../types/LocationOfInterest";
 import fetcher from "../utils/fetcher"
 
 export default function useLocations() {
-    const { data, error } = useSWR<LocationAPIResponse>(`/api/locations/`, fetcher)
+    const { data, error } = useSWR<LocationAPIResponse>(`/api/locations/`, {fetcher: fetcher, refreshInterval: 60000*10} )
 
     const formattedLocations = data?.locations.map(mapLocationRecordToLocation);
 
