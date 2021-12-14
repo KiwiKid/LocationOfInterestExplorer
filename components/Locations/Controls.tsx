@@ -5,12 +5,12 @@ import Summary from '../utils/Summary'
 
 type ControlsProps = {
     daysInPastShown: any
-    changeActiveLocationDate: any
+    changeDaysInPastShown: any
     locationCount: number
 }
 export default function Controls({
      daysInPastShown
-    , changeActiveLocationDate
+    , changeDaysInPastShown
     , locationCount
 }:ControlsProps){
 

@@ -14,7 +14,6 @@ export default function Scroller({children, refArray, onScrolledDown, onScrolled
        return (ref.current.offsetTop*(1-PERCENT_ALLOWED_IN_ELEMENT)) > window.pageYOffset
       }).sort((ref:any) => ref.current.OffsetTop).reverse()[0]
 
-      //console.log('next sections: '+)
       if(nextSections){
         scrollToRef(nextSections, -5)
       }else{

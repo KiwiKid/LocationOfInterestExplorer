@@ -58,6 +58,7 @@ type CovidMapSelectorProps = {
     onNewLocations: any
     startingSettings:StartingSettings
     daysInPastShown: number
+    changeDaysInPastShown: any
     map?: Map
     setMap: any
     setCircleParams: any
@@ -70,6 +71,7 @@ function CovidMapSelector({
     , locations
     , onNewLocations
     , daysInPastShown
+    , changeDaysInPastShown
     , map
     , setMap
     , setCircleParams
@@ -93,11 +95,16 @@ function CovidMapSelector({
             activeLocationMarkerRefs.current = activeLocationMarkerRefs.current.slice(0, allVisibleLocations.length);
     }, [locations, allVisibleLocations]);*/
 
-
+    
     useEffect(() => {
         if(map){
-            console.log('Reloading! for this:'+daysInPastShown);
+            // Gross... This is due to the current "two run" nature of reloadInCircleLocations()
+            // It allows selections of the time period outside of the map (i.e. without moving the map)
             reloadInCircleLocations(map);
+            // This setTimeout reduces the chance of daysInPastShown updates not being applied to the Location Grid display
+            setTimeout(() => {
+                reloadInCircleLocations(map);
+            }, 100);
         }
     },[daysInPastShown, map]);
 
@@ -256,6 +263,7 @@ function CovidMapSelector({
 */
     function triggerViewAll(){
         setIsViewingAll(true);
+        changeDaysInPastShown(14);
         if(map != undefined){
             map.flyTo(NZ_CENTER, 3);
         }

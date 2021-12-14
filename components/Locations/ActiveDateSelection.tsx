@@ -9,19 +9,19 @@ type ActiveDateSelection = {
 }
 
 const activeDateSelections:ActiveDateSelection[] = [
-    { display: '6 days', days: 6}
-    ,{ display: '9 days', days: 9}
-    ,{ display: '12 days', days: 12}
+    { display: '1 days', days: 1}
+    ,{ display: '4 days', days: 4}
+    ,{ display: '7 days', days: 7}
     ,{ display: '14 days', days: 14}
 ];
 
 type ActiveDateSelectionProps = {
     daysInPastShown: number
-    changeActiveLocationDate: any
+    changeDaysInPastShown: any
     setHideActiveDateSelection: any
 }
 
-const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHideActiveDateSelection}:ActiveDateSelectionProps) => {
+const ActiveDateSelection = ({daysInPastShown, changeDaysInPastShown, setHideActiveDateSelection}:ActiveDateSelectionProps) => {
     
     const [newDateSelection, setNewDateSelection] = useState(daysInPastShown);
 
@@ -46,7 +46,7 @@ const ActiveDateSelection = ({daysInPastShown, changeActiveLocationDate, setHide
         </select>
         <InternalLink
             id="activeDate"
-            onClick={() => changeActiveLocationDate(newDateSelection)}
+            onClick={() => changeDaysInPastShown(newDateSelection)}
         >Load new locations</InternalLink>
         <InternalLink 
             id="closeActiveDate"

@@ -37,7 +37,6 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const [openLocations, setOpenLocations] = useState([]);
 
     const [daysInPastShown, setDaysInPastShown] = useState(startingSettings.daysInPastShown);
-    const [allowLocationRestore, setAllowLocationRestore] = useState(false);
 
     const inActiveDateRange = (location:LocationOfInterest) => {
       var dateFrom = getDateInPastByXDays(daysInPastShown)
@@ -47,8 +46,6 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const handleVisibleLocationsChange = (locs:LocationOfInterestCalculated[]) => {
       setVisibleLocations(locs);
     }
-
-
 
     const locationsAfterDate = locations.filter(inActiveDateRange);
 
@@ -70,9 +67,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
       setDrawPositionY(getOpenDrawPosition(windowHeight));
     }
 
-
-    function changeActiveLocationDate(daysInPast:number){
-        // TODO: Maybe the source of day troubles?
+    function changeDaysInPastShown(daysInPast:number){
         setDaysInPastShown(daysInPast);
     }
 
@@ -95,7 +90,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
         <main className="align-middle md:max-w-full">
           {showDateInPastPopup && <ActiveDateSelection 
             daysInPastShown={daysInPastShown} 
-            changeActiveLocationDate={changeActiveLocationDate}
+            changeDaysInPastShown={changeDaysInPastShown}
             setHideActiveDateSelection={() => setShowDateInPastPopup(false)} />
           }
           {showSortFieldPopup && false && <ActiveSortSelection 
@@ -116,6 +111,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   setCircleParams={setCircleParams}
                   setMapIsLocated={setMapIsLocated}
                   openDrawer={openDrawer}
+                  changeDaysInPastShown={changeDaysInPastShown}
                 />
               </div>
               <div>
@@ -123,7 +119,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   openLocations={openLocations}
                   setOpenLocations={setOpenLocations}
                   visibleLocations={visibleLocations}
-                  changeActiveLocationDate={changeActiveLocationDate}
+                  changeDaysInPastShown={changeDaysInPastShown}
                   daysInPastShown={daysInPastShown}
                   map={map}
                   showDateInPastPopup={showDateInPastPopup}

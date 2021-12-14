@@ -26,7 +26,7 @@ type LocationPageDrawerProps = {
     openLocations: any;
     setOpenLocations: any;
     daysInPastShown: number;
-    changeActiveLocationDate:any;
+    changeDaysInPastShown:any;
     map: any
     showDateInPastPopup: boolean
     setShowDateInPastPopup: any
@@ -49,7 +49,7 @@ const LocationPageDrawer = ({
     openLocations,
     setOpenLocations,
     daysInPastShown,
-    changeActiveLocationDate,
+    changeDaysInPastShown,
     map,
     showDateInPastPopup,
     setShowDateInPastPopup,
@@ -294,7 +294,7 @@ const LocationPageDrawer = ({
                   <Summary>Details on using the page</Summary>
                   <Controls
                       daysInPastShown={daysInPastShown}
-                      changeActiveLocationDate={changeActiveLocationDate}
+                      changeDaysInPastShown={changeDaysInPastShown}
                       locationCount={visibleLocations.length}
                       key={'controls'}
                   />
