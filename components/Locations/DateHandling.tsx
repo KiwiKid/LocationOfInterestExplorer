@@ -1,21 +1,23 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import calendar from 'dayjs/plugin/calendar'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-type NiceTimeFromNowProps = {
+type DateProps = {
     date: Date
 }
 
 
 dayjs.extend(relativeTime);
 dayjs.extend(calendar);
+dayjs.extend(localizedFormat);
 
-const NiceTimeFromNow = ({date}:NiceTimeFromNowProps):JSX.Element => {
+const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
     return <>{dayjs().to(dayjs(date))}</>
 }
 
 
-const NiceDate = ({date}:NiceTimeFromNowProps):JSX.Element => {
+const NiceDate = ({date}:DateProps):JSX.Element => {
 
     return <>{dayjs(date).calendar(null,{
         
@@ -23,6 +25,10 @@ const NiceDate = ({date}:NiceTimeFromNowProps):JSX.Element => {
 }
 
 
+const groupingFormat = (date:Date) => {
+    return dayjs(date).startOf('day').format();
+}
 
 
-export {NiceTimeFromNow, NiceDate}
+
+export {NiceTimeFromNow, NiceDate, groupingFormat}

@@ -40,7 +40,8 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const [allowLocationRestore, setAllowLocationRestore] = useState(false);
 
     const inActiveDateRange = (location:LocationOfInterest) => {
-        return location.start > getDateInPastByXDays(daysInPastShown);
+      var dateFrom = getDateInPastByXDays(daysInPastShown)
+        return location.start > dateFrom;
     }
 
     const handleVisibleLocationsChange = (locs:LocationOfInterestCalculated[]) => {
@@ -73,7 +74,6 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     function changeActiveLocationDate(daysInPast:number){
         // TODO: Maybe the source of day troubles?
         setDaysInPastShown(daysInPast);
-          
     }
 
     return (

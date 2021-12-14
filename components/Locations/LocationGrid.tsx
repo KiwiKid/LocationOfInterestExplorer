@@ -11,6 +11,7 @@ import { Sort } from '../types/Sort';
 import { loadGetInitialProps } from 'next/dist/shared/lib/utils';
 import LocationSummaryDateDisplay from './LocationSummaryDateDisplay';
 import Location from './Location';
+import { groupingFormat } from './DateHandling';
 
 
 type Props = {
@@ -22,6 +23,7 @@ type Props = {
 }
 
 export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
+    return groupingFormat(loi.start);
     try{
 
         switch(sortField){
@@ -47,12 +49,9 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
 
     var groupedLocations = _.chain(locations)
             .map((l:LocationOfInterestCalculated) => {
-                let day = getSortDayString(sortField, l.loi);
-                
-
-                
-                return Object.assign(l, { day: day.substring(0,8) })})
-            .groupBy("day")
+                return l
+            })
+            .groupBy((lc) => groupingFormat(lc.loi.start))
             .value();
 
     function isOpen(loc:LocationOfInterest){
@@ -67,17 +66,6 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
             setOpenLocations(openLocations.concat(id));
         }else{
             setOpenLocations(newOpenLocations);
-        }
-    }
-
-    const toggleLocationGroup = (day:string) => {
-        var allInGroup = groupedLocations[day].map((gl) => gl.loi.id);
-
-        var isClosing = allInGroup.every((inG) => openLocations.some((ol) => ol === inG));
-        if(isClosing){
-            setOpenLocations(openLocations.filter((ol) => allInGroup.indexOf(ol) == -1));
-        }else{
-            setOpenLocations(openLocations.concat(allInGroup));
         }
     }
 

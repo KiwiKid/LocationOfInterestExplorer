@@ -9,9 +9,7 @@ type ActiveDateSelection = {
 }
 
 const activeDateSelections:ActiveDateSelection[] = [
-    { display: '1 day', days: 1}
-    ,{ display: '3 Days', days: 3}
-    ,{ display: '6 days', days: 6}
+    { display: '6 days', days: 6}
     ,{ display: '9 days', days: 9}
     ,{ display: '12 days', days: 12}
     ,{ display: '14 days', days: 14}
