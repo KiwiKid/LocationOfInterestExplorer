@@ -22,7 +22,7 @@ interface IBeforeInstallPromptEvent extends Event {
   }
 
 
-const GIVE_UP_TIMEOUT = 20000
+const GIVE_UP_TIMEOUT = 5000
 const AddToHomeScreenButton = () => {
 
     const [addStage, setAddStage] = useState(AddHomeScreenStage.WaitingForEvent);
