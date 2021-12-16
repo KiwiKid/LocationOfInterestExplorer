@@ -68,7 +68,7 @@ const LocationPageDrawer = ({
 
 
     const PX_FROM_TOP = 200
-    const PX_FROM_BOTTOM = 60
+    const PX_FROM_BOTTOM = 80
 
 
     const [width, windowHeight] = useWindowSize();
