@@ -64,6 +64,7 @@ type CovidMapSelectorProps = {
     setCircleParams: any
     setMapIsLocated: any
     openDrawer: any
+    resetDrawerScroll: any
 }
 
 function CovidMapSelector({
@@ -77,6 +78,7 @@ function CovidMapSelector({
     , setCircleParams
     , setMapIsLocated
     , openDrawer
+    , resetDrawerScroll
 }:CovidMapSelectorProps) {
 
     const [activeLocation, setActiveLocation] = useState(startingSettings.startingLocation);
@@ -216,6 +218,10 @@ function CovidMapSelector({
         },3000);
     }
 
+    const onDragEnd = (map:Map) => { 
+        refreshMap(map);
+        resetDrawerScroll();
+    }
 
     const onZoomEnd = (map:Map) => {
         if(isViewingAll || mapIsLocating){
@@ -424,7 +430,7 @@ function CovidMapSelector({
                         <MapEventHandler
                             onZoomEnd={onZoomEnd}
                             onLocate={onLocate}
-                            onDragEnd={refreshMap}
+                            onDragEnd={onDragEnd}
                             />
                     </MapContainer>
                 </div>

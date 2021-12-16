@@ -1,6 +1,6 @@
 {
     "short_name": "NZ Covid Map",
-    "name": "Explore Official Locations of Interest published by the Ministry of Health (NZ)",
+    "name": "Explorer Locations of Interest published by the Ministry of Health (NZ)",
     "icons": [
       {
         "src": "/icons/covid19/icon-512x512.png",

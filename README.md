@@ -1,4 +1,4 @@
-# Location of Interest Explorer
+# Location of Interest Explorer (nzcovidmap)
 
 The circle based selection method allows for the best in class view of the Covid-19 Locations of Interest (published by the MoH).
 

@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Script from "next/script";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import { Sort } from "../types/Sort";
@@ -49,6 +49,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     }
 
     const locationsAfterDate = locations.filter(inActiveDateRange);
+    const drawerRef = useRef<Element>(null);
 
     // State
     const [map, setMap] = useState(undefined);
@@ -70,6 +71,12 @@ export default function LocationsPage({locations, startingSettings, publishTime}
 
     function changeDaysInPastShown(daysInPast:number){
         setDaysInPastShown(daysInPast);
+    }
+
+    const resetDrawerScroll = () => {
+      if(drawerRef !== null && drawerRef.current !== null && drawerRef.current.scrollTop != 0) { 
+          drawerRef.current.scrollTo(0, 0);
+      }
     }
 
     return (
@@ -114,6 +121,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   setMapIsLocated={setMapIsLocated}
                   openDrawer={openDrawer}
                   changeDaysInPastShown={changeDaysInPastShown}
+                  resetDrawerScroll={resetDrawerScroll}
                 />
               </div>
               <div>
@@ -134,6 +142,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   publishTime={publishTime}
                   drawPositionY={drawPositionY}
                   setDrawPositionY={setDrawPositionY}
+                  drawerRef={drawerRef}
                 />
               </div>
             </div>

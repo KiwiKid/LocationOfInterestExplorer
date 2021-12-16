@@ -39,6 +39,7 @@ type LocationPageDrawerProps = {
     publishTime: Date
     drawPositionY: number
     setDrawPositionY: any
+    drawerRef: any
 }
 
 const CLOSED_DRAW_POS = -60
@@ -61,7 +62,8 @@ const LocationPageDrawer = ({
     circleParams,
     publishTime,
     drawPositionY,
-    setDrawPositionY
+    setDrawPositionY, 
+    drawerRef
   }:LocationPageDrawerProps) => {
 
 
@@ -72,7 +74,6 @@ const LocationPageDrawer = ({
     const [width, windowHeight] = useWindowSize();
     let openDrawPosition = getOpenDrawPosition(windowHeight)
 
-    const drawerRef = useRef(null);
 
     const [lastDrawPositionY, setLastDrawPositionY] = useState(CLOSED_DRAW_POS)
 
@@ -208,12 +209,12 @@ const LocationPageDrawer = ({
       handle=".handle"
       bounds={{top: openDrawPosition, bottom: -PX_FROM_BOTTOM}} 
       axis="y"
-      nodeRef={drawerRef}
+   //   nodeRef={drawerRef}
       position={{x: 0, y: drawPositionY}}
       onStart={(e:DraggableEvent,d:DraggableData) => { e.stopPropagation(); setLastDrawPositionY(d.y); } }
       onStop={handleClickEnd}
       >
-      <div ref={drawerRef} style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-4000 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
+      <div  style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-4000 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
         <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl">
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
           <div className="m-auto italic text-gray-700  text-center">
@@ -223,11 +224,10 @@ const LocationPageDrawer = ({
             </>
           </div>
         </div>
-        <div className="overflow-auto overflow-y-scroll max-h-screen">
+        <div ref={drawerRef} id="drawer-content" className="overflow-auto overflow-y-scroll max-h-screen">
           <div className="w-full text-center">            
               <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
           </div>
-          
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
