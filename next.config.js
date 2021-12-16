@@ -4,6 +4,9 @@ const {InjectManifest} = require('workbox-webpack-plugin');
 
 module.exports = WithPWA({
   reactStrictMode: true,
+  pwa: {
+    dest: 'public'
+  },
   async redirects(){
     return [
       {
