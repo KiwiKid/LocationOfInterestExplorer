@@ -1,4 +1,5 @@
-const WithPWA = require('next-pwa')
+const WithPWA = require('next-pwa');
+const {InjectManifest} = require('workbox-webpack-plugin');
 /** @type {import('next').NextConfig} */
 
 module.exports = WithPWA({
@@ -15,5 +16,10 @@ module.exports = WithPWA({
         permanent: true
       }
     ]
-  }
+  },
+  plugins: [
+    new InjectManifest({
+      swSrc: './lib/sw.js',
+    })
+  ]
 });
