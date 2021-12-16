@@ -288,12 +288,6 @@ const LocationPageDrawer = ({
                 </div>
               </>
              </Toggle>
-             <Toggle title="Share" id="share" extendClassName="border-gray-800 border-b-4">
-                <>
-                  <Summary>Share this page via url or through social media</Summary>
-
-                </>
-              </Toggle>
               <Toggle id="controls" title="Controls" extendClassName="border-gray-800 border-b-4">
                 <>
                   <Summary>Details on using the page</Summary>
