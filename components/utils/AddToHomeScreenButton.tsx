@@ -124,9 +124,8 @@ const AddToHomeScreenButton = () => {
             {addStage === AddHomeScreenStage.Prompting &&  <div>Accept prompt to continue</div>}
             {addStage === AddHomeScreenStage.Available && <InternalLink id="addToHome" onClick={triggerAddToHomeScreen}>Add Shortcut</InternalLink>}
             {addStage === AddHomeScreenStage.Accepted || addStage === AddHomeScreenStage.Installed && <div className="">(App Installed)</div>}
-            {addStage === AddHomeScreenStage.NotAvailable && null}
-                {<div className="">
-                    
+            {addStage === AddHomeScreenStage.NotAvailable &&
+                <div className="">
                     <div className="text-base">Cannot Add Shortcut Automatically - This my be because the application is not being run in a traditional web browser. <br/>(Add Shortcut works best in Google Chrome.)</div>
                     <div className="text-black bg-green-200">You can still bookmark this page or create a shortcut for the following URLs:</div>
                 </div>}

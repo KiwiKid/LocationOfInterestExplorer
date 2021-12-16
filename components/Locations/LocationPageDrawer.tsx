@@ -257,8 +257,8 @@ const LocationPageDrawer = ({
                 </div>
             </Toggle>
             <Toggle title="Add shortcut" id="a2hs" defaultOpen={true} extendClassName="border-gray-800 border-b-4">
-              <AddToHomeScreenButton />
               <ShareBar url={url}>
+                <AddToHomeScreenButton /> 
                       <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 border border-black p-2">
                         <div className="">
                           <CopyBox id="locatedCopy" copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
