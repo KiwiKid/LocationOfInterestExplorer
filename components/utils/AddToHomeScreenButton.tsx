@@ -26,7 +26,6 @@ const GIVE_UP_TIMEOUT = 5000
 const AddToHomeScreenButton = () => {
 
     const [addStage, setAddStage] = useState(AddHomeScreenStage.WaitingForEvent);
-    const [showAddToHomeEvt, setShowAddToHomeEvt] = useState<IBeforeInstallPromptEvent | null>(null);
 
     const isIos = () => {
         const userAgent = window.navigator.userAgent.toLowerCase();
@@ -66,7 +65,8 @@ const AddToHomeScreenButton = () => {
                 localStorage.setItem('AppInstalled', '1');
                 setAddStage(AddHomeScreenStage.Accepted);
                 clearTimeout(giveUpTimeout)
-            } else if(showAddToHomeEvt == null){
+            //@ts-ignore
+            } else if(window.addToHomeScreenEvt == null){
 
                 const installed = (e: IBeforeInstallPromptEvent) => {
                     e.preventDefault();
@@ -78,7 +78,7 @@ const AddToHomeScreenButton = () => {
                 const ready = (e: IBeforeInstallPromptEvent) => {
                     e.preventDefault();
                     localStorage.setItem('AppInstalled', '0');
-                    setShowAddToHomeEvt(e);
+                    //setShowAddToHomeEvt(e);
                     // @ts-ignore
                     window.addToHomeScreenEvt = e;
                     setAddStage(AddHomeScreenStage.Available);
@@ -122,12 +122,11 @@ const AddToHomeScreenButton = () => {
             {addStage === AddHomeScreenStage.iOSNotInstalled && <div className="text-gray-400">Install this webapp on your iPhone: tap <Image src={"/img/iOS_bookmark.jpg"} width={10} height={10} alt={"iOS bookmark icon"}/> and then Add to Homescreen </div>}
             {addStage === AddHomeScreenStage.WaitingForEvent && <div className="text-gray-400">Add Shortcut loading...</div>}
             {addStage === AddHomeScreenStage.Prompting &&  <div>Accept prompt to continue</div>}
-            {addStage === AddHomeScreenStage.Available && <InternalLink id="addToHome" onClick={triggerAddToHomeScreen}>Add Shortcut</InternalLink>}
+            {addStage === AddHomeScreenStage.Available && <div className="max-w-2xl w-4/5"><InternalLink id="addToHome" onClick={triggerAddToHomeScreen}>Add Shortcut</InternalLink></div>}
             {addStage === AddHomeScreenStage.Accepted || addStage === AddHomeScreenStage.Installed && <div className="">(App Installed)</div>}
             {addStage === AddHomeScreenStage.NotAvailable &&
                 <div className="">
-                    <div className="text-base">Cannot Add Shortcut Automatically - This my be because the application is not being run in a traditional web browser. <br/>(Add Shortcut works best in Google Chrome.)</div>
-                    <div className="text-black bg-green-200">You can still bookmark this page or create a shortcut for the following URLs:</div>
+                    <div className="text-black bg-green-200">Bookmark this page or create a shortcut for the following URLs:</div>
                 </div>}
         </div>
     </>
