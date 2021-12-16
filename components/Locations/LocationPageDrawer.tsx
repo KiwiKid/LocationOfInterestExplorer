@@ -242,20 +242,6 @@ const LocationPageDrawer = ({
                 />
             </>
           </Toggle>
-          <Toggle title="🚨 Disclaimer 🚨" id="disclaimer" defaultOpen={true} extendClassName="border-gray-800 border-b-4">
-                <div className="text-center w-full">
-                    <p className="">
-                      This service is not affiliated with the New Zealand Government or the Ministry of Health. It provides no guarantees of correctness or timeliness.
-                    </p>
-                    <p className=""> I&apos;ll do my best, but i&apos;m just a guy with a keyboard in a relatively dark room.</p>
-                    <div className="md:w-3/5 m-auto">
-                    <p className="text-center"> Any technical issues, questions, or suggestions/feedback, please:
-                      <SendFeedback />
-                    </p>
-                    
-                  </div>
-                </div>
-            </Toggle>
             <ShareBar url={url}>
                       <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 border border-black p-2">
                         <div className="col-span-full">
@@ -270,7 +256,21 @@ const LocationPageDrawer = ({
                           <CopyBox id="basicCopy" copyText={`${url}`} successText="Copy link to page" promptText="Link copied" />
                         </div>
                       </div>
-            </ShareBar>            
+            </ShareBar>   
+            <Toggle title="🚨 Disclaimer 🚨" id="disclaimer" defaultOpen={true} extendClassName="border-gray-800 border-b-4">
+                <div className="text-center w-full">
+                    <p className="">
+                      This service is not affiliated with the New Zealand Government or the Ministry of Health. It provides no guarantees of correctness or timeliness.
+                    </p>
+                    <p className=""> I&apos;ll do my best, but i&apos;m just a guy with a keyboard in a relatively dark room.</p>
+                    <div className="md:w-3/5 m-auto">
+                    <p className="text-center"> Any technical issues, questions, or suggestions/feedback, please:
+                      <SendFeedback />
+                    </p>
+                    
+                  </div>
+                </div>
+            </Toggle>         
             <Toggle id="fastTravel" title="Move map to:" extendClassName="border-gray-800 border-b-4">
               <>
                 <Summary>Use these buttons to re-position the map at a specific location</Summary>
