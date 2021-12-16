@@ -258,8 +258,10 @@ const LocationPageDrawer = ({
             </Toggle>
             <Toggle title="Add shortcut" id="a2hs" defaultOpen={true} extendClassName="border-gray-800 border-b-4">
               <ShareBar url={url}>
-                <AddToHomeScreenButton /> 
                       <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 border border-black p-2">
+                        <div className="col-span-full">
+                          <AddToHomeScreenButton /> 
+                        </div>
                         <div className="">
                           <CopyBox id="locatedCopy" copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
                             {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: undefined}
@@ -269,7 +271,8 @@ const LocationPageDrawer = ({
                           <CopyBox id="basicCopy" copyText={`${url}`} successText="Copy link to page" promptText="Link copied" />
                         </div>
                       </div>
-              </ShareBar>            </Toggle>
+              </ShareBar>            
+            </Toggle>
             <Toggle id="fastTravel" title="Move map to:" extendClassName="border-gray-800 border-b-4">
               <>
                 <Summary>Use these buttons to re-position the map at a specific location</Summary>
