@@ -203,7 +203,6 @@ function CovidMapSelector({
     const onMapLoad = (m:any) => {
         setMap(m);
         refreshMap(m);
-        saveMapState(m);
         // On some older browsers the circle marker layers take longer than the map to load.
         // This ensure that the circle resizes and hightlights the circles, even in adverse conditions.
         var ensureLocationsInCircleActive = setInterval(function(){
@@ -229,12 +228,12 @@ function CovidMapSelector({
         }
         setActiveZoom(map.getZoom());
         refreshMap(map);
-        saveMapState(map);
     }
 
     function refreshMap(map:Map){
         resizeCircleBasedOnMapSize(map);
         reloadInCircleLocations(map);
+        saveMapState(map);
     }
 
     function refreshShareUrl(centerLat:number, centerLng:number, zoom:number, daysInPastShown:number){
@@ -425,7 +424,7 @@ function CovidMapSelector({
                         <MapEventHandler
                             onZoomEnd={onZoomEnd}
                             onLocate={onLocate}
-                            onDragEnd={reloadInCircleLocations}
+                            onDragEnd={refreshMap}
                             />
                     </MapContainer>
                 </div>
