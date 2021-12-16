@@ -11,6 +11,7 @@ import ActiveSortSelection from "./ActiveSortSelection";
 import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
+import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 
 
 type LocationsPageProps ={
@@ -98,6 +99,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
             changeSortField={setSortField}
             setHideSortFieldSelection={() => setShowSortFieldPopup(false)}
           />}
+          
           <div id="centerDiv" className="">
               {showHelpPopup && <HelpPopup closePopup={() => setShowHelpPopup(false)}  />}
               <div className={`font-bold rounded-lg text-center mx-auto`}>

@@ -20,6 +20,7 @@ import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
 import { getDaysAgoClassName, tailwindClassToHex } from "../utils/Styling";
 import { NiceTimeFromNow } from "./DateHandling";
+import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -254,7 +255,21 @@ const LocationPageDrawer = ({
                     
                   </div>
                 </div>
-              </Toggle>
+            </Toggle>
+            <Toggle title="Add shortcut" id="a2hs" defaultOpen={true} extendClassName="border-gray-800 border-b-4">
+              <AddToHomeScreenButton />
+              <ShareBar url={url}>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 border border-black p-2">
+                        <div className="">
+                          <CopyBox id="locatedCopy" copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
+                            {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: undefined}
+                          </CopyBox>
+                        </div>
+                        <div className="">
+                          <CopyBox id="basicCopy" copyText={`${url}`} successText="Copy link to page" promptText="Link copied" />
+                        </div>
+                      </div>
+              </ShareBar>            </Toggle>
             <Toggle id="fastTravel" title="Move map to:" extendClassName="border-gray-800 border-b-4">
               <>
                 <Summary>Use these buttons to re-position the map at a specific location</Summary>
@@ -275,18 +290,7 @@ const LocationPageDrawer = ({
              <Toggle title="Share" id="share" extendClassName="border-gray-800 border-b-4">
                 <>
                   <Summary>Share this page via url or through social media</Summary>
-                  <ShareBar url={url}>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 border border-black p-2">
-                        <div className="">
-                          <CopyBox id="locatedCopy" copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
-                            {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: undefined}
-                          </CopyBox>
-                        </div>
-                        <div className="">
-                          <CopyBox id="basicCopy" copyText={`${url}`} successText="Copy link to page" promptText="Link copied" />
-                        </div>
-                      </div>
-                  </ShareBar>
+
                 </>
               </Toggle>
               <Toggle id="controls" title="Controls" extendClassName="border-gray-800 border-b-4">
@@ -312,7 +316,6 @@ const LocationPageDrawer = ({
                   <Question className="" title="Why are locations not published in Auckland?">
                     <span className="text-gray-600">(sourced directly from the MoH)</span>
                     <p>Locations of interest are linked to public exposure events. We will not always publish low risk locations for regions that are at Red. We will publish high risk locations for all regions. Follow the health instructions if you were at a location on the same date and time shown.</p>
-
                     <p>If you were at a private exposure event you will be contacted by a district health board, the Ministry of Health or a district health board public health unit. Make sure you please follow their advice.</p>
                   </Question>
                   <Question   title="Why do you want me to install!?!">

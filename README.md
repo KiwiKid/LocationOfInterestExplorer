@@ -39,11 +39,11 @@ This is really only Mobile-Friendly i could find of allowing the user to explore
 
 
 Feature Ideas (open to ideas here!)
+- [ ] Ensure latest data is always shown (https://swr.vercel.app/docs/with-nextjs)
 - [ ] "Subscribe to a circle" (Notifications) [InProg - GC]
 - [ ] Search text filter input box in Drawer
 - [ ] Improve navigation between drawers and map (and vice-versa)
 - [ ] Its verrry Mobile-First. The Desktop view could use some love
-
 Tech Debt
 - [ ] Loose typing (so much "any"...)
   - [ ] The "LocationOfInterest" type is based on the original CSV item and could be replaced by MohLocationOfInterest).

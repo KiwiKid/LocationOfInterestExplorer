@@ -93,6 +93,11 @@ type environment = {
 
 const environments:environment[] = [
     {
+        key: 'nzcovidmap',
+        prodUrl: 'https://nzcovidmap.org',
+        stagingUrl: 'https://c19locations-staging.vercel.app'
+    },
+    {
         key: 'c19locations',
         prodUrl: 'https://c19locations.vercel.app',
         stagingUrl: 'https://c19locations-staging.vercel.app'

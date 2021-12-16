@@ -19,7 +19,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
   const { locations, isLoading, isError } = useLocations();
   const settings = useSettings();
   
-  const title = "Location of Interest Explorer"
+  const title = "NZ Covid Map"
   const description =  "Explore Locations of Interest published by the Ministry of Health. This mobile friendly tool allows people to better understand Covid-19 spread in New Zealand"
 
   return (

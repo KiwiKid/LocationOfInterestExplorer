@@ -28,7 +28,6 @@ const AddToHomeScreenButton = () => {
     const [addStage, setAddStage] = useState(AddHomeScreenStage.WaitingForEvent);
     const [showAddToHomeEvt, setShowAddToHomeEvt] = useState<IBeforeInstallPromptEvent | null>(null);
 
-
     const isIos = () => {
         const userAgent = window.navigator.userAgent.toLowerCase();
         return /iphone|ipad|ipod/.test( userAgent );
@@ -103,7 +102,7 @@ const AddToHomeScreenButton = () => {
 
     function triggerAddToHomeScreen(){
         setAddStage(AddHomeScreenStage.Prompting);
-    //@ts-ignore        
+        //@ts-ignore        
         if(window.addToHomeScreenEvt != null){
             //@ts-ignore
             window.addToHomeScreenEvt.prompt();
@@ -121,15 +120,15 @@ const AddToHomeScreenButton = () => {
     return (<>
         <div className="text-center py-2">
             {addStage === AddHomeScreenStage.iOSNotInstalled && <div className="text-gray-400">Install this webapp on your iPhone: tap <Image src={"/img/iOS_bookmark.jpg"} width={10} height={10} alt={"iOS bookmark icon"}/> and then Add to Homescreen </div>}
-            {addStage === AddHomeScreenStage.WaitingForEvent && <div className="text-gray-400">Add to Home Screen loading...</div>}
+            {addStage === AddHomeScreenStage.WaitingForEvent && <div className="text-gray-400">Add Shortcut loading...</div>}
             {addStage === AddHomeScreenStage.Prompting &&  <div>Accept prompt to continue</div>}
-            {addStage === AddHomeScreenStage.Available && <InternalLink id="addToHome" onClick={triggerAddToHomeScreen}>Add to Home Screen</InternalLink>}
+            {addStage === AddHomeScreenStage.Available && <InternalLink id="addToHome" onClick={triggerAddToHomeScreen}>Add Shortcut</InternalLink>}
             {addStage === AddHomeScreenStage.Accepted || addStage === AddHomeScreenStage.Installed && <div className="">(App Installed)</div>}
-            {addStage === AddHomeScreenStage.NotAvailable && 
-                <div className="text-gray-400">
-                    Cannot Add to Home Screen
-                    <div className="text-base">This may be because the application is not being run in a traditional web browser. <br/>Add to Home screen works best in Google Chrome. <br/>If you think this was an error, I would really appreciate sending feedback with details of your browser and how you navigated to the app (link at bottom).</div>
-                    <div className="text-black bg-green-200">You can still bookmark this page or create a shortcut for the link in the {`"Share"`} section below</div>
+            {addStage === AddHomeScreenStage.NotAvailable && null}
+                {<div className="">
+                    
+                    <div className="text-base">Cannot Add Shortcut Automatically - This my be because the application is not being run in a traditional web browser. <br/>(Add Shortcut works best in Google Chrome.)</div>
+                    <div className="text-black bg-green-200">You can still bookmark this page or create a shortcut for the following URLs:</div>
                 </div>}
         </div>
     </>

@@ -21,7 +21,8 @@ const InternalLink = ({
 
     const linkStyle = `text-black pt-2 text-center align-middle border-b-1  border-b-4 w-full min-h-12 transition-colors duration-150 rounded-lg focus:shadow-outline ${linkClassName}`
 
-    const disabledCheckOnClick = () => { 
+    const disabledCheckOnClick = (evt:any) => { 
+        evt.preventDefault();
         if(!linkDisabled){
             onClick();
         }

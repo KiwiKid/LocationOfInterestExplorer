@@ -9,6 +9,10 @@ module.exports = WithPWA({
         source: '/robots.txt',
         destination: '/api/robots',
         permanent: true
+      },{
+        source: '/sitemap.xml',
+        destination: '/api/sitemap',
+        permanent: true
       }
     ]
   }
