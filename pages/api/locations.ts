@@ -42,7 +42,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationOfInterest => {
 
     let locationType = getLocationTypeFromAdvice(row.publicAdvice);
-    let approxLatLng = PRESET_LOCATIONS.filter((t) => t.title === row.location.city)[0];
+    let approxLatLng = null;// PRESET_LOCATIONS.filter((t) => t.title === row.location.city)[0];
     let approxCityOverride;
 
     try{
