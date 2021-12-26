@@ -7,7 +7,7 @@ export default function useLocations() {
     const { data, error } = useSWR<LocationAPIResponse>(`/api/locations/`, {fetcher: fetcher, refreshInterval: 60000*30} )
 
     const formattedLocations = data?.locations
-      .filter((loc) => loc.id != 'a0l4a0000006NKf') 
+       .filter((loc) => loc.eventId != 'a0l4a0000006NKf') 
        .map(mapLocationRecordToLocation);
 
     return {
