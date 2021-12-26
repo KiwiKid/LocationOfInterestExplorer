@@ -9,7 +9,7 @@ export default function useLocations() {
     let BLOCKED_LOCATIONS = ['a0l4a0000006NKfAAM']
 
     const formattedLocations = data?.locations
-       .filter((loc) => BLOCKED_LOCATIONS.some((blockId) => loc.id == blockId))
+       .filter((loc) => !BLOCKED_LOCATIONS.some((blockId) => loc.id == blockId))
        .map(mapLocationRecordToLocation);
 
     return {
