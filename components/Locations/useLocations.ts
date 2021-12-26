@@ -6,8 +6,10 @@ import fetcher from "../utils/fetcher"
 export default function useLocations() {
     const { data, error } = useSWR<LocationAPIResponse>(`/api/locations/`, {fetcher: fetcher, refreshInterval: 60000*30} )
 
+    let BLOCKED_LOCATIONS = ['a0l4a0000006NKfAAM']
+
     const formattedLocations = data?.locations
-       .filter((loc) => loc.eventId != 'a0l4a0000006NKf') 
+       .filter((loc) => BLOCKED_LOCATIONS.some((blockId) => loc.id == blockId))
        .map(mapLocationRecordToLocation);
 
     return {
