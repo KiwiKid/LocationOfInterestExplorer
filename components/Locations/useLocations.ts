@@ -3,14 +3,24 @@ import { LocationAPIResponse } from "../types/LocationAPIResponse"
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import fetcher from "../utils/fetcher"
 
+type LocationOverride = {
+  eventId: string
+  lat: string
+  lng: string
+}
+
+let LOCATION_OVERRIDES:LocationOverride[] = [
+  {eventId: 'a0l4a0000006NKfAAM', lat: '-39.550910', lng: '174.123688'}
+]
+
 export default function useLocations() {
     const { data, error } = useSWR<LocationAPIResponse>(`/api/locations/`, {fetcher: fetcher, refreshInterval: 60000*30} )
 
-    let BLOCKED_LOCATIONS = ['a0l4a0000006NKfAAM']
+
 
     const formattedLocations = data?.locations
-       .filter((loc) => !BLOCKED_LOCATIONS.some((blockId) => loc.id == blockId))
-       .map(mapLocationRecordToLocation);
+        .map(applyLocationOverrides)
+        .map(mapLocationRecordToLocation);
 
     return {
       locations: formattedLocations,
@@ -18,6 +28,16 @@ export default function useLocations() {
       isError: error || !data || (data && !data.success)
     }
   }
+
+  const applyLocationOverrides = (rec:LocationOfInterestRecord):LocationOfInterestRecord => {
+    var overriddenLocation = LOCATION_OVERRIDES.filter((ov) => ov.eventId == rec.id)[0];
+    if(overriddenLocation !== undefined){
+      rec.lat = overriddenLocation.lat;
+      rec.lng = overriddenLocation.lng;
+    }
+    return rec;
+  }
+  
 
   const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
     return {
