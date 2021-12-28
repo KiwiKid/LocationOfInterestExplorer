@@ -40,10 +40,17 @@ import LocationTypeDisplay from "./LocationTypeDisplay"
                     <div className="col-span-2 py-2 ">
                         <div className="m-auto">
                             <ExternalLink
-                            href={`https://tracing.covid19.govt.nz/loi?eventId=${loi.id}`}
-                            title="I was here! (Official MoH link)"
-                        />
-                    </div>
+                                href={`https://tracing.covid19.govt.nz/loi?eventId=${loi.id}`}
+                                title="I was here! (Official MoH link)"
+                            />
+                            <div className="opacity-80">
+                                <ExternalLink
+                                    href={`https://docs.google.com/forms/d/e/1FAIpQLSezFLwmktyBgMSNriV2-J3CgOmIdqpbbHU84dn3XDyCDRERJw/viewform?usp=pp_url&entry.1493705502=${loi.location} (${loi.id})`}
+                                    title="This location is wrong"
+                                    iconOverride="⚠️"
+                                />
+                            </div>
+                        </div>
                     {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
                     {/*<a target="_blank" 
                         rel="noreferrer"

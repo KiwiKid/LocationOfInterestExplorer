@@ -40,12 +40,21 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         <div className="col-span-3 text-center">{loi.advice}</div>
                     </div>
                     <div className="grid grid-cols-2">
-                        <div className="w-full col-span-2">
+                        <div className="">
                             <div className="w-64 m-auto">
                                 <ExternalLink
                                     href={`https://tracing.covid19.govt.nz/loi?eventId=${loi.id}`}
                                     title="I was here! (Official MoH link)"
                                 />
+                            </div>
+                        </div>
+                        <div className="opacity-80">
+                            <div className="w-64 m-auto">
+                            <ExternalLink
+                                href={`https://docs.google.com/forms/d/e/1FAIpQLSezFLwmktyBgMSNriV2-J3CgOmIdqpbbHU84dn3XDyCDRERJw/viewform?usp=pp_url&entry.1493705502=${loi.location} (${loi.id})`}
+                                title="This location is wrong"
+                                iconOverride="⚠️"
+                            />
                             </div>
                         </div>
                         {false && <div className="m-auto">
