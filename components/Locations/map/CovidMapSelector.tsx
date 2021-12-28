@@ -10,7 +10,6 @@ import { MapContainer
     CircleMarker
 } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
-
 import axios from 'axios'
 
 import {useRouter} from 'next/router'
@@ -28,7 +27,6 @@ import LocationCirclePopup from "./LocationCirclePopup";
 import { CircleSelectableMarkers, updateAndReturnCircleSelectedStatus } from './CircleSelectableMarkers'
 import { getHoursAgo } from "../../utils/utils";
 import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
-import { json } from "stream/consumers";
 
 
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
@@ -101,7 +99,6 @@ function CovidMapSelector({
     const [subscribeSuccess, setSubscribeSuccess] = useState(false);
     const [subscribeError, setSubscribeError] = useState<string|undefined>(undefined);
     const [centeredCircleRadius, setCenteredCircleRadius] = useState<number|undefined>();
-
     const [allVisibleLocations, setAllVisibleLocations] = useState<LocationOfInterestCalculated[]>([]);
 
     // Ensure the marker ref array size remains correct
@@ -132,10 +129,10 @@ function CovidMapSelector({
             var newRadiusSize = Math.min(Math.min(mapCenter.distanceTo(eastPoint), mapCenter.distanceTo(southPoint))*MAP_RESIZE_PERCENTAGE, MAX_CIRCLE_SIZE);
             activeCircleRef.current.setRadius(newRadiusSize);
             setCenteredCircleRadius(newRadiusSize);
-
         }else{
         }
     }
+
 
     function isValidLocation(location:LocationOfInterest){
         let valid = location.lat
@@ -149,6 +146,7 @@ function CovidMapSelector({
         return valid;
     }
 
+
     const validTypes = ["Standard", "approx", "approx_multi", "High"]
     function isValidLocationType(locationType:string){
         return validTypes.some((ty) => ty === locationType);
@@ -158,6 +156,7 @@ function CovidMapSelector({
         if(map == null){
             return;
         }
+
 
         if(activeCircleRef.current && activeLocationMarkerRefs.current){
             var centerPoint = activeCircleRef.current.getLatLng();
@@ -232,6 +231,7 @@ function CovidMapSelector({
         resetDrawerScroll();
         setMapIsLocated(false)
         saveMapState(map);
+        setMapIsLocated(false);
     }
 
     const onZoomEnd = (map:Map) => {
@@ -253,13 +253,12 @@ function CovidMapSelector({
         saveMapState(map);
     }
 
-
     function saveMapState(map:Map){
         let center = map.getCenter();
         let zoom = map.getZoom();
         setPageState({lat: center.lat, lng: center.lng, zoom: zoom, daysInPastShown: daysInPastShown})
   //      saveMapSettingsLocally(center.lat, center.lng, zoom, daysInPastShown);
-        //refreshShareUrl(center.lat, center.lng, zoom, daysInPastShown);
+       // refreshShareUrl(center.lat, center.lng, zoom, daysInPastShown);
     }
 /*
     function saveMapSettingsLocally(centerLat:number, centerLng:number, zoom:number, daysInPastShown:number){
@@ -279,7 +278,6 @@ function CovidMapSelector({
         }
     }
 
-
     const triggerSubscribe = async () => {
         setSubscribeSuccess(false);
         setSubscribeError(undefined);
@@ -295,38 +293,38 @@ function CovidMapSelector({
     }
 
     return (<>
-    <div >
-        <style>{`
-            .leaflet-control-zoom{
-                text-align: middle !important;
-                text-align: center !important;
-                
-            }
+    <div>
+    <style>{`
+        .leaflet-control-zoom{
+            text-align: middle !important;
+            text-align: center !important;
+            
+        }
 
-            .leaflet-control-zoom-in {
-                font-size: 4rem !important;
-                padding-right: 40px !important;
-                padding-bottom: 40px !important;
-                padding-top: 10px !important;
-            }
+        .leaflet-control-zoom-in {
+            font-size: 4rem !important;
+            padding-right: 40px !important;
+            padding-bottom: 40px !important;
+            padding-top: 10px !important;
+        }
 
-            .leaflet-control-zoom-out {
-                font-size: 4rem !important;
-                padding-right: 40px !important;
-                padding-bottom: 40px !important;
-                padding-top: 10px !important;
-            }
-            .leaflet-container{
-                height: 95vh;
-                width: 100wh;
-            }
+        .leaflet-control-zoom-out {
+            font-size: 4rem !important;
+            padding-right: 40px !important;
+            padding-bottom: 40px !important;
+            padding-top: 10px !important;
+        }
+        .leaflet-container{
+            height: 95vh;
+            width: 100wh;
+        }
 
-            .leaflet-popup-content {
-                margin: 10px;
-            }
+        .leaflet-popup-content {
+            margin: 10px;
+        }
 
-            `}
-        </style>
+        `}
+    </style>
         <div className="col-span-10" ref={(ref) => containerRef.current = ref}>
             <div>
             <div id="use-my-location" className="fixed top-0 -right-0 z-3000">
@@ -342,14 +340,14 @@ function CovidMapSelector({
                     onClick={() => setLocationPromptVisible(true)}  
                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
                 >Near Me</InternalLink>
-                <InternalLink
+ <InternalLink
                     id="Subscribe"
                     onClick={() => setSubscribePromptVisible(true)}  
                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
                 >Subscribe</InternalLink>
             </div>
             <div id="mapContainer">
-                {locationPromptVisible &&
+                {locationPromptVisible && 
                 <div className="top-24 right-10 absolute z-5000">
                     <div className="w-4/5 m-auto content-center bg-blue-200 rounded-xl">
                         <div className="max-w-2xl m-auto">

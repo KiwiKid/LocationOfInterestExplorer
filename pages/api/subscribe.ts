@@ -13,7 +13,21 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 } 
 
 const handleRequestSubscription = async (req:NextApiRequest, res:NextApiResponse<any>) => {
-    await createSubscription(req.body, (subsribeResponse:SubscribeResponse) =>  {
+    
+    var subRequest:SubscriptionRequest = {
+        email_address: req.body.email,
+        status: "",
+        email_type: "",
+        merge_fields: {
+            location: `${req.body.lat},${req.body.lng}`,
+            radius: `${req.body.meters/1000}`,
+            frequency: "Daily",
+            tags: ["NZCovidMap"],
+            vip: false
+        }};
+
+    console.log(`post to ${process.env.SUBSCRIBE_URL} ${JSON.stringify(subRequest)}`);
+    await createSubscription(subRequest,(subsribeResponse:SubscribeResponse) =>  {
         res.status(200).json({success: true});
         res.end();
     }, (err:any) => {
@@ -21,7 +35,7 @@ const handleRequestSubscription = async (req:NextApiRequest, res:NextApiResponse
     });
 }
 
-async function createSubscription(subscription: Subscription, onSuccess: any, onError: any):Promise<void>{
+async function createSubscription(subscription: SubscriptionRequest, onSuccess: any, onError: any):Promise<void>{
     try{
   
       if(!process.env.SUBSCRIBE_URL){
