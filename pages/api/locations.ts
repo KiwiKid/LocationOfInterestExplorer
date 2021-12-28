@@ -12,9 +12,9 @@ async function queryAllLocations(onSuccess:any, onError:any):Promise<void>{
         return;
     }
     await get({url: process.env.MOH_LOCATIONS_URL})
-    .then(async (response:any) => {
-        onSuccess(response.data.items);
-    });
+      .then(async (response:any) => {
+          onSuccess(response.data.items);
+      });
   } catch(err:any){
     onError(err.toString());
   }
@@ -25,7 +25,7 @@ const handleQueryAllLocations = async (req:NextApiRequest, res:NextApiResponse<a
         res.status(200).json({success: true, locations: allRows.map(mapMohLocationOfInterestToLocation)});
         res.end();
     }, (err:any) => {
-        res.status(405).end(JSON.stringify(err));
+        res.status(500).end(JSON.stringify(err));
     });
 }
 

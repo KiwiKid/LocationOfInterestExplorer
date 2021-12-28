@@ -11,6 +11,8 @@ import { MapContainer
 } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 
+import axios from 'axios'
+
 import {useRouter} from 'next/router'
 import {LatLng, Map } from "leaflet";
 
@@ -26,6 +28,7 @@ import LocationCirclePopup from "./LocationCirclePopup";
 import { CircleSelectableMarkers, updateAndReturnCircleSelectedStatus } from './CircleSelectableMarkers'
 import { getHoursAgo } from "../../utils/utils";
 import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
+import { json } from "stream/consumers";
 
 
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
@@ -61,10 +64,11 @@ type CovidMapSelectorProps = {
     changeDaysInPastShown: any
     map?: Map
     setMap: any
-    setCircleParams: any
     setMapIsLocated: any
     openDrawer: any
     resetDrawerScroll: any
+    pageState: PageState
+    setPageState: any
 }
 
 function CovidMapSelector({
@@ -75,10 +79,11 @@ function CovidMapSelector({
     , changeDaysInPastShown
     , map
     , setMap
-    , setCircleParams
     , setMapIsLocated
     , openDrawer
     , resetDrawerScroll
+    , pageState
+    , setPageState
 }:CovidMapSelectorProps) {
 
     const [activeLocation, setActiveLocation] = useState(startingSettings.startingLocation);
@@ -90,6 +95,13 @@ function CovidMapSelector({
     const [isViewingAll, setIsViewingAll] = useState(false);
     const [mapIsLocating, setMapIsLocating] = useState(false);
     const [locationPromptVisible, setLocationPromptVisible] = useState(false);
+
+    const [subscribeEmail, setSubscribeEmail] = useState<string|undefined>(undefined);
+    const [subscribePromptVisible, setSubscribePromptVisible] = useState(false);
+    const [subscribeSuccess, setSubscribeSuccess] = useState(false);
+    const [subscribeError, setSubscribeError] = useState<string|undefined>(undefined);
+    const [centeredCircleRadius, setCenteredCircleRadius] = useState<number|undefined>();
+
     const [allVisibleLocations, setAllVisibleLocations] = useState<LocationOfInterestCalculated[]>([]);
 
     // Ensure the marker ref array size remains correct
@@ -119,12 +131,11 @@ function CovidMapSelector({
             var southPoint = new LatLng(map?.getBounds().getSouth(), mapCenter.lng);
             var newRadiusSize = Math.min(Math.min(mapCenter.distanceTo(eastPoint), mapCenter.distanceTo(southPoint))*MAP_RESIZE_PERCENTAGE, MAX_CIRCLE_SIZE);
             activeCircleRef.current.setRadius(newRadiusSize);
+            setCenteredCircleRadius(newRadiusSize);
+
         }else{
         }
     }
-
-
-    const inCircleLocations = allVisibleLocations.filter(avl => avl.isInCircle);
 
     function isValidLocation(location:LocationOfInterest){
         let valid = location.lat
@@ -138,7 +149,6 @@ function CovidMapSelector({
         return valid;
     }
 
-
     const validTypes = ["Standard", "approx", "approx_multi", "High"]
     function isValidLocationType(locationType:string){
         return validTypes.some((ty) => ty === locationType);
@@ -148,7 +158,6 @@ function CovidMapSelector({
         if(map == null){
             return;
         }
-
 
         if(activeCircleRef.current && activeLocationMarkerRefs.current){
             var centerPoint = activeCircleRef.current.getLatLng();
@@ -222,6 +231,7 @@ function CovidMapSelector({
         refreshMap(map);
         resetDrawerScroll();
         setMapIsLocated(false)
+        saveMapState(map);
     }
 
     const onZoomEnd = (map:Map) => {
@@ -243,19 +253,13 @@ function CovidMapSelector({
         saveMapState(map);
     }
 
-    function refreshShareUrl(centerLat:number, centerLng:number, zoom:number, daysInPastShown:number){
-        setCircleParams(createURLParamsString(centerLat, centerLng, zoom, daysInPastShown));
-    }
-    function createURLParamsString(centerLat:number, centerLng:number, activeZoom:number, daysInPastShown:number){
-        return `?lat=${centerLat.toFixed(5)}&lng=${centerLng.toFixed(5)}&zoom=${activeZoom}&daysInPastShown=${daysInPastShown}`;
-    }
 
     function saveMapState(map:Map){
         let center = map.getCenter();
         let zoom = map.getZoom();
-        
+        setPageState({lat: center.lat, lng: center.lng, zoom: zoom, daysInPastShown: daysInPastShown})
   //      saveMapSettingsLocally(center.lat, center.lng, zoom, daysInPastShown);
-        refreshShareUrl(center.lat, center.lng, zoom, daysInPastShown);
+        //refreshShareUrl(center.lat, center.lng, zoom, daysInPastShown);
     }
 /*
     function saveMapSettingsLocally(centerLat:number, centerLng:number, zoom:number, daysInPastShown:number){
@@ -275,39 +279,54 @@ function CovidMapSelector({
         }
     }
 
+
+    const triggerSubscribe = async () => {
+        setSubscribeSuccess(false);
+        setSubscribeError(undefined);
+        try{
+            await axios.post('/api/subscribe', {data: {lat: pageState.lat, lng: pageState.lng, meters: centeredCircleRadius}}, undefined)
+            .then(async (response:any) => {
+                //TODO: error handling
+                setSubscribeSuccess(true);
+            });
+        }catch(err){
+            setSubscribeError('An error occurred. Please try again later')
+        }
+    }
+
     return (<>
-    <div className="" >
-    <style>{`
-        .leaflet-control-zoom{
-            text-align: middle !important;
-            text-align: center !important;
-            
-        }
+    <div >
+        <style>{`
+            .leaflet-control-zoom{
+                text-align: middle !important;
+                text-align: center !important;
+                
+            }
 
-        .leaflet-control-zoom-in {
-            font-size: 4rem !important;
-            padding-right: 40px !important;
-            padding-bottom: 40px !important;
-            padding-top: 10px !important;
-        }
+            .leaflet-control-zoom-in {
+                font-size: 4rem !important;
+                padding-right: 40px !important;
+                padding-bottom: 40px !important;
+                padding-top: 10px !important;
+            }
 
-        .leaflet-control-zoom-out {
-            font-size: 4rem !important;
-            padding-right: 40px !important;
-            padding-bottom: 40px !important;
-            padding-top: 10px !important;
-        }
-        .leaflet-container{
-            height: 95vh;
-            width: 100wh;
-        }
+            .leaflet-control-zoom-out {
+                font-size: 4rem !important;
+                padding-right: 40px !important;
+                padding-bottom: 40px !important;
+                padding-top: 10px !important;
+            }
+            .leaflet-container{
+                height: 95vh;
+                width: 100wh;
+            }
 
-        .leaflet-popup-content {
-            margin: 10px;
-        }
+            .leaflet-popup-content {
+                margin: 10px;
+            }
 
-        `}
-    </style>
+            `}
+        </style>
         <div className="col-span-10" ref={(ref) => containerRef.current = ref}>
             <div>
             <div id="use-my-location" className="fixed top-0 -right-0 z-3000">
@@ -323,6 +342,11 @@ function CovidMapSelector({
                     onClick={() => setLocationPromptVisible(true)}  
                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
                 >Near Me</InternalLink>
+                <InternalLink
+                    id="Subscribe"
+                    onClick={() => setSubscribePromptVisible(true)}  
+                    linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
+                >Subscribe</InternalLink>
             </div>
             <div id="mapContainer">
                 {locationPromptVisible &&
@@ -335,7 +359,7 @@ function CovidMapSelector({
                                     id="LocationPromptVisible"
                                     onClick={() => setLocationPromptVisible(false)}
                                     linkClassName="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
-                                >Nah, not keen.</InternalLink>
+                                >Nah, not keen</InternalLink>
                                 <InternalLink 
                                     id="MoveMap"
                                     onClick={triggerLocation}
@@ -344,7 +368,30 @@ function CovidMapSelector({
                         </div>
                     </div>
                 </div>}
-                
+                {subscribePromptVisible &&
+                 <div className="top-24 right-10 absolute z-5000">
+                    <div className="w-4/5 m-auto content-center bg-blue-200 rounded-xl">
+                        <div className="max-w-2xl m-auto">
+                            <p className="text-lg p-2">Enter your email to get notified of new locations in this circle</p>
+                            <div className="p-3 space-y-2">
+                                <label htmlFor="email p-1">Your email:</label>
+                                <input type="email" placeholder="member@teamof5million.org" onChange={(evt) => setSubscribeEmail(evt.target.value)} value={subscribeEmail}  name="email" className="w-full"></input>
+                                <InternalLink 
+                                    id="Subscribe"
+                                    onClick={triggerSubscribe}
+                                >Subscribe</InternalLink>
+                                <InternalLink 
+                                    id="SubscribePromptVisible"
+                                    onClick={() => setSubscribePromptVisible(false)}
+                                    linkClassName="text-red-400 border-red-400 bg-red-200 hover:bg-red-400 hover:text-red-200"
+                                >Cancel</InternalLink>
+                                [{pageState.lat.toFixed(5)},{pageState.lng.toFixed(5)} - {pageState.zoom} - {centeredCircleRadius}]
+                                {subscribeSuccess && <span className="bg-green-500">Subscribed</span>}
+                                {!!subscribeError && <div className="bg-red-500">{subscribeError}</div>}
+                            </div>
+                        </div>
+                    </div>
+                </div>}
                 <div >
                     <MapContainer 
                         center={activeLocation}
@@ -406,21 +453,6 @@ function CovidMapSelector({
                                         </Pane>
                                 </CircleSelectableMarkers>
                             ))}
-                            {/*<Circle
-                                key={'auckland'} 
-                                center={[-36.8, 174.8]}
-                                radius={50000}
-                                weight={4}
-                                color="#808080"
-                                fillColor="#808080"
-                                fillOpacity={0.5}
-                            >
-                                <Pane name="click_auckland" style={{zIndex: 499 }}>
-                                    <AutoHidePopup keepInView={false} autoPan={false} className="" >
-                                        <div className="text-lg italic text-center bg-gray-200 rounded-lg">Most Locations in Auckland are not currently published by the MoH.<br/> See FAQ for details</div>
-                                    </AutoHidePopup>
-                                </Pane>
-                            </Circle>*/}
                         </Pane>
                         <Pane name="noclick" style={{zIndex: 450 }}>
                             <CenteredCircle 

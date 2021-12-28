@@ -35,7 +35,7 @@ type LocationPageDrawerProps = {
     showSortFieldPopup: boolean
     setShowSortFieldPopup: any
     mapIsLocated: boolean
-    circleParams: string
+    pageState: PageState
     publishTime: Date
     drawPositionY: number
     setDrawPositionY: any
@@ -59,7 +59,7 @@ const LocationPageDrawer = ({
     showSortFieldPopup,
     setShowSortFieldPopup,
     mapIsLocated, 
-    circleParams,
+    pageState,
     publishTime,
     drawPositionY,
     setDrawPositionY, 
@@ -204,6 +204,11 @@ const LocationPageDrawer = ({
       
     }, [])
 
+
+    function getPageUrl(pageState:PageState){
+      return `?lat=${pageState.lat.toFixed(5)}&lng=${pageState.lng.toFixed(5)}&zoom=${pageState.zoom}&daysInPastShown=${pageState.daysInPastShown}`;
+  }
+
   return (
     <Draggable 
       handle=".handle"
@@ -248,7 +253,7 @@ const LocationPageDrawer = ({
                   <AddToHomeScreenButton /> 
                 </div>
                 <div className="">
-                  <CopyBox id="locatedCopy" copyText={`${url}${circleParams}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
+                  <CopyBox id="locatedCopy" copyText={`${url}${getPageUrl(pageState)}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
                     {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: undefined}
                   </CopyBox>
                 </div>
@@ -363,7 +368,9 @@ const LocationPageDrawer = ({
                     </div>
                   </Toggle>
                 <div className="text-center mt-4">
-                  <span className="underline"><Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link></span> - Website by Greg C. - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
+                  <span className="underline">
+                    <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>
+                    </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
                 </div>
               <div style={{height: window.document.body.clientHeight*0.5}}>
                           

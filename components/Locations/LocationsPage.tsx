@@ -22,6 +22,12 @@ type LocationsPageProps ={
 
   
 const CLOSED_DRAW_POS = -60;
+const DEFAULT_PAGE_STATE = {
+   lat: -40.8248,
+   lng: 173.7304,
+   zoom: 8,
+   daysInPastShown:  14
+}
 
 export default function LocationsPage({locations, startingSettings, publishTime}:LocationsPageProps){
 
@@ -60,7 +66,8 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     
     const [showHelpPopup, setShowHelpPopup] = useState(false);
 
-    const [circleParams, setCircleParams] = useState('');
+    //const [circleParams, setCircleParams] = useState('');
+    const [pageState, setPageState] = useState<PageState>(DEFAULT_PAGE_STATE);
 
     const [windowWidth, windowHeight] = useWindowSize();
 
@@ -117,11 +124,12 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   daysInPastShown={daysInPastShown}
                   setMap={setMap}
                   map={map}
-                  setCircleParams={setCircleParams}
                   setMapIsLocated={setMapIsLocated}
                   openDrawer={openDrawer}
                   changeDaysInPastShown={changeDaysInPastShown}
                   resetDrawerScroll={resetDrawerScroll}
+                  pageState={pageState}
+                  setPageState={setPageState}
                 />
               </div>
               <div>
@@ -138,7 +146,8 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   showSortFieldPopup={showSortFieldPopup}
                   setShowSortFieldPopup={setShowSortFieldPopup}
                   mapIsLocated={mapIsLocated}
-                  circleParams={circleParams}
+                  //circleParams={circleParams}
+                  pageState={pageState}
                   publishTime={publishTime}
                   drawPositionY={drawPositionY}
                   setDrawPositionY={setDrawPositionY}
