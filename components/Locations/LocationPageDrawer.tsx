@@ -42,7 +42,7 @@ type LocationPageDrawerProps = {
     drawerRef: any
 }
 
-const CLOSED_DRAW_POS = -60
+const CLOSED_DRAW_POS = -120
 
 const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.79
 
@@ -68,7 +68,7 @@ const LocationPageDrawer = ({
 
 
     const PX_FROM_TOP = 200
-    const PX_FROM_BOTTOM = 80
+    const PX_FROM_BOTTOM = 100
 
 
     const [width, windowHeight] = useWindowSize();

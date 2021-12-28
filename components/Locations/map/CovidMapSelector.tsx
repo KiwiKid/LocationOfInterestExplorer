@@ -325,7 +325,7 @@ function CovidMapSelector({
                 >Near Me</InternalLink>
             </div>
             <div id="mapContainer">
-                {locationPromptVisible ? 
+                {locationPromptVisible &&
                 <div className="top-24 right-10 absolute z-5000">
                     <div className="w-4/5 m-auto content-center bg-blue-200 rounded-xl">
                         <div className="max-w-2xl m-auto">
@@ -343,7 +343,8 @@ function CovidMapSelector({
                             </div>
                         </div>
                     </div>
-                </div> : null}
+                </div>}
+                
                 <div >
                     <MapContainer 
                         center={activeLocation}
