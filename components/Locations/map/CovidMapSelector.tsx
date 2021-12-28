@@ -221,6 +221,7 @@ function CovidMapSelector({
     const onDragEnd = (map:Map) => { 
         refreshMap(map);
         resetDrawerScroll();
+        setMapIsLocated(false)
     }
 
     const onZoomEnd = (map:Map) => {
