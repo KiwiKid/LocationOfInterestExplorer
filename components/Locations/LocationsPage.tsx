@@ -12,10 +12,10 @@ import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
+import useLocations from "./useLocations";
 
 
 type LocationsPageProps ={
-    locations: LocationOfInterest[]
     startingSettings: StartingSettings
     publishTime: Date
   }
@@ -29,7 +29,9 @@ const DEFAULT_PAGE_STATE = {
    daysInPastShown:  14
 }
 
-export default function LocationsPage({locations, startingSettings, publishTime}:LocationsPageProps){
+export default function LocationsPage({startingSettings, publishTime}:LocationsPageProps){
+
+  const { locations, isLoading, isError } = useLocations();
 
     const CovidMapSelector = useMemo(() => dynamic(
         () => import("./map/CovidMapSelector")
@@ -88,6 +90,9 @@ export default function LocationsPage({locations, startingSettings, publishTime}
 
     return (
         <>
+        {isLoading ? <div className="w-full h-full"><div className="m-auto">Loading Latest Locations of Interest...</div></div>
+        : isError ? <div>An Error occurred.</div>
+        : 
        <div className="flex flex-col h-screen text-left font-medium w-screen">
        {process.env.NEXT_PUBLIC_GA_ID && <><Script
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
@@ -157,5 +162,6 @@ export default function LocationsPage({locations, startingSettings, publishTime}
             </div>
           </main>
         </div>
+      }
       </>)
 }

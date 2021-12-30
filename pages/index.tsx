@@ -16,7 +16,6 @@ type HomePageProps = {
 
 const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
 
-  const { locations, isLoading, isError } = useLocations();
   const settings = useSettings();
   
   const title = "NZ Covid Map"
@@ -80,14 +79,10 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
       <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
     </Head>
       <>
-        {isLoading ? <div className="w-full h-full"><div className="m-auto">Loading Latest Locations of Interest...</div> </div>
-        : isError ? <div>An Error occurred.</div> 
-        : <LocationsPage
-            locations={locations || []}
+        <LocationsPage
             startingSettings={settings}
             publishTime={new Date(publishTimeUTC)}
         />
-        }
       </>
     </>
   )
