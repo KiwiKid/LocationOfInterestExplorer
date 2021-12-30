@@ -26,7 +26,7 @@ let LOCATION_OVERRIDES:LocationOverride[] = [
 ]
 
 export default function useLocations() {
-    const { data, error } = useSWR<LocationAPIResponse>(`/api/locations/`, {fetcher: fetcher, refreshInterval: 60000*30} )
+    const { data, error } = useSWR<LocationAPIResponse>(`/api/locations/`, {fetcher: fetcher } )
 
     const formattedLocations = data?.locations
         .map(applyLocationOverrides)
