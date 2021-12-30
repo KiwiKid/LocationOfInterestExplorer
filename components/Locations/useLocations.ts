@@ -30,7 +30,7 @@ export default function useLocations() {
 
     const formattedLocations = data?.locations
         .map(applyLocationOverrides)
-        .map(mapLocationRecordToLocation);
+        .map(mapLocationRecordToLocation) || [];
 
     return {
       locations: formattedLocations,
