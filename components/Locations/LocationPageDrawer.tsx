@@ -229,6 +229,7 @@ const LocationPageDrawer = ({
       onStop={handleClickEnd}
       >
       <div  style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-4000 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
+        {/*<div>PX_FROM_BOTTOM: {PX_FROM_BOTTOM}<br/> openDrawPosition: {openDrawPosition} <br/>drawPositionY: {drawPositionY} </div>*/}
         <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl">
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
           <div className="m-auto italic text-gray-700  text-center">
@@ -245,7 +246,7 @@ const LocationPageDrawer = ({
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
-                    <div className={`pb-3 ${isOld ? 'bg-red-200' : ''}`}>{isOld && "⚠️"} last updated <NiceShortDate date={publishTime}/>{isOld && "⚠️"}</div>
+                    <div className={`${isOld ? 'bg-red-200 pb-3' : ''}`}>{isOld && "⚠️"} last updated <NiceShortDate date={publishTime}/>{isOld && "⚠️"}</div>
                     {isOld && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
               <LocationGridContainer 
@@ -381,6 +382,9 @@ const LocationPageDrawer = ({
                   <span className="underline">
                     <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>
                     </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
+                </div>
+                <div>
+                  Update Difference (hours): {dayjs(publishTime).diff(new Date(), 'hour')}
                 </div>
               <div style={{height: window.document.body.clientHeight*0.5}}>
                           
