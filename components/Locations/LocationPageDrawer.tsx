@@ -220,8 +220,7 @@ const LocationPageDrawer = ({
     window.location.reload
   }
 
-
-  let isOld = dayjs(publishTime).diff(new Date(), 'hour') > 1
+  let isOld = dayjs(publishTime).diff(new Date(), 'hour') > 0;
   return (
     <Draggable 
       handle=".handle"
