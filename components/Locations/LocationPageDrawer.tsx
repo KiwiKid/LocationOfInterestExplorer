@@ -21,6 +21,7 @@ import Link from "next/link";
 import { getDaysAgoClassName, tailwindClassToHex } from "../utils/Styling";
 import { NiceTimeFromNow } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
+import dayjs from "dayjs";
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -209,6 +210,18 @@ const LocationPageDrawer = ({
       return `?lat=${pageState.lat.toFixed(5)}&lng=${pageState.lng.toFixed(5)}&zoom=${pageState.zoom}&daysInPastShown=${pageState.daysInPastShown}`;
   }
 
+  function triggerRefresh(){
+    try{
+      //@ts-ignore;
+      ga('send', 'event', 'User Refresh', 'refresh');
+    }catch(err){
+      console.error(err);
+    }
+    window.location.reload
+  }
+
+
+  let isOld = dayjs(publishTime).diff(new Date(), 'hour') > 1
   return (
     <Draggable 
       handle=".handle"
@@ -236,7 +249,8 @@ const LocationPageDrawer = ({
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
-                    last updated <NiceTimeFromNow date={publishTime}/>
+                    <div className={`pb-3 ${isOld ? 'bg-red-200' : ''}`}>{isOld && "⚠️"} last updated <NiceTimeFromNow date={publishTime}/>{isOld && "⚠️"}</div>
+                    {isOld && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
               <LocationGridContainer 
                     showLocationData={false}
