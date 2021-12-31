@@ -42,9 +42,6 @@ type LocationPageDrawerProps = {
     setDrawPositionY: any
     drawerRef: any
 }
-
-const CLOSED_DRAW_POS = -0
-
 const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.79
 
 const LocationPageDrawer = ({
@@ -69,14 +66,14 @@ const LocationPageDrawer = ({
 
 
     const PX_FROM_TOP = 200
-    const PX_FROM_BOTTOM = 60
+    const PX_FROM_BOTTOM = -50
 
 
     const [width, windowHeight] = useWindowSize();
     let openDrawPosition = getOpenDrawPosition(windowHeight)
 
 
-    const [lastDrawPositionY, setLastDrawPositionY] = useState(CLOSED_DRAW_POS)
+    const [lastDrawPositionY, setLastDrawPositionY] = useState(PX_FROM_BOTTOM)
 
     const [topDrawPosition, setTopDrawPosition] = useState(null);
 
@@ -92,7 +89,7 @@ const LocationPageDrawer = ({
         if(-drawPositionY < windowHeight*0.4){
           setDrawPositionY(openDrawPosition);
         }else{
-          setDrawPositionY(CLOSED_DRAW_POS);
+          setDrawPositionY(PX_FROM_BOTTOM);
         }
         return;
       }
@@ -103,7 +100,7 @@ const LocationPageDrawer = ({
         if(lastDrawPositionY > d.y){
           setDrawPositionY(openDrawPosition);
         }else if(lastDrawPositionY < d.y){
-          setDrawPositionY(CLOSED_DRAW_POS);
+          setDrawPositionY(PX_FROM_BOTTOM);
         }
       }else{
         setDrawPositionY(d.y);
@@ -119,7 +116,7 @@ const LocationPageDrawer = ({
 
     useEffect(() => {
       if(map && !!selectPresetLocation){
-        setDrawPositionY(CLOSED_DRAW_POS);
+        setDrawPositionY(PX_FROM_BOTTOM);
         map.flyTo([selectPresetLocation.lat,selectPresetLocation.lng], selectPresetLocation.zoom);
         //navigateTo({lat: , lng: , zoom:pl.zoom});
         setSelectPresetLocation(undefined);
@@ -224,7 +221,7 @@ const LocationPageDrawer = ({
   return (
     <Draggable 
       handle=".handle"
-      bounds={{top: openDrawPosition, bottom: -PX_FROM_BOTTOM}} 
+      bounds={{top: openDrawPosition, bottom: PX_FROM_BOTTOM}} 
       axis="y"
    //   nodeRef={drawerRef}
       position={{x: 0, y: drawPositionY}}
@@ -395,4 +392,4 @@ const LocationPageDrawer = ({
     )
 }
 
-export {LocationPageDrawer, getOpenDrawPosition, CLOSED_DRAW_POS}
+export {LocationPageDrawer, getOpenDrawPosition}
