@@ -38,7 +38,6 @@ const processQueryString = (query:any):StartingSettingsMergeable => {
   }
 
 export const useSettings = ():StartingSettings  => {
-    //const { data, error } = useSWR<LocationAPIResponse>(`/api/locations/`, fetcher)
     const router = useRouter();
 
     const [isLoading, setIsLoading] = useState(true);

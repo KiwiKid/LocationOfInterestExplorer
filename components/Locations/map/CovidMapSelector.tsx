@@ -340,11 +340,11 @@ function CovidMapSelector({
                     onClick={() => setLocationPromptVisible(true)}  
                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
                 >Near Me</InternalLink>
- <InternalLink
+                {/*<InternalLink
                     id="Subscribe"
                     onClick={() => setSubscribePromptVisible(true)}  
                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
-                >Subscribe</InternalLink>
+                >Subscribe</InternalLink>*/}
             </div>
             <div id="mapContainer">
                 {locationPromptVisible && 
