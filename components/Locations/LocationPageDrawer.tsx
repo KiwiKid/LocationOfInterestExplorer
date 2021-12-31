@@ -19,7 +19,7 @@ import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
 import { getDaysAgoClassName, tailwindClassToHex } from "../utils/Styling";
-import { NiceTimeFromNow } from "./DateHandling";
+import { NiceDate, NiceShortDate, NiceTimeFromNow } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 
@@ -248,7 +248,7 @@ const LocationPageDrawer = ({
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
-                    <div className={`pb-3 ${isOld ? 'bg-red-200' : ''}`}>{isOld && "⚠️"} last updated <NiceTimeFromNow date={publishTime}/>{isOld && "⚠️"}</div>
+                    <div className={`pb-3 ${isOld ? 'bg-red-200' : ''}`}>{isOld && "⚠️"} last updated <NiceShortDate date={publishTime}/>{isOld && "⚠️"}</div>
                     {isOld && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
               <LocationGridContainer 

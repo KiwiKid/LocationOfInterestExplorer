@@ -17,12 +17,9 @@ const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
 }
 
 
-const NiceDate = ({date}:DateProps):JSX.Element => {
+const NiceDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
 
-    return <>{dayjs(date).calendar(null,{
-        
-    })}<br/>This<br/></>
-}
+const NiceShortDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h:m A')}</>
 
 
 const groupingFormat = (date:Date) => {
@@ -31,4 +28,4 @@ const groupingFormat = (date:Date) => {
 
 
 
-export {NiceTimeFromNow, NiceDate, groupingFormat}
+export {NiceTimeFromNow, NiceDate, groupingFormat, NiceShortDate}
