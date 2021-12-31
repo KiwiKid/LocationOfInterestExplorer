@@ -141,7 +141,7 @@ function CovidMapSelector({
             && !isNaN(+location.lng);
 
             if(!valid){
-                console.error('location is not valid! '+JSON.stringify(location));
+                //console.error('location is not valid! '+JSON.stringify(location));
             }
         return valid;
     }
