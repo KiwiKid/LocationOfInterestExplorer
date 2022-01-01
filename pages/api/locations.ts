@@ -7,14 +7,7 @@ import { PRESET_LOCATIONS } from '../../components/Locations/PresetLocations';
 //import mockData from '../../components/Locations/mockdata';
 
 async function queryAllLocations(onSuccess:any, onError:any):Promise<void>{
-
-  
   try{
-
-   // if(process.env.USE_MOCK_DATA === 'true'){
-    //  onSuccess(mockData.items.map(mapMohLocationOfInterestToLocation));
-   // }
-
     if(!process.env.MOH_LOCATIONS_URL){
         onError('No Location Query set');
         return;

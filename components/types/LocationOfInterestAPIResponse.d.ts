@@ -1,0 +1,3 @@
+type LocationOfInterestAPIResponse = {
+    locations: LocationOfInterestRecord[]
+}

@@ -3,21 +3,41 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import LocationsPage from '../components/Locations/LocationsPage'
-import useLocations from '../components/Locations/useLocations'
+import getLocations from '../components/Locations/getLocations'
 import { useSettings } from '../components/Locations/useSettings'
 import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
-
+import { LocationOfInterest } from '../components/types/LocationOfInterest'
 
 type HomePageProps = {
+  locationRecords: LocationOfInterestRecord[]
   publishTimeUTC: string // Allow for native next.js props usage
   hardcodedURL: string
 }
 
-const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
+
+const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
+  return {
+    id: rec.id,
+    location: rec.location,
+    city: rec.city,
+    event: rec.event,
+    start: new Date(rec.start),
+    end: new Date(rec.end),
+    updated: rec.updated ? new Date(rec.updated) : undefined,
+    added: new Date(rec.added),
+    advice: rec.advice,
+    lat: +rec.lat,
+    lng: +rec.lng,
+    locationType: rec.locationType,
+  }
+}
+
+const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcodedURL}) => {
 
   const settings = useSettings();
-  const { locations, isLoading, isError } = useLocations();
+
+  const locations = locationRecords.map(mapLocationRecordToLocation);
 
   const title = "NZ Covid Map"
   const description =  "Explore Locations of Interest published by the Ministry of Health."
@@ -80,15 +100,11 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
       <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
     </Head>
       <>
-      {isLoading ? <div className="w-full h-full"><div className="m-auto">Loading Latest Locations of Interest...</div></div>
-        : isError ? <div>An Error occurred.</div>
-        : 
         <LocationsPage
             locations={locations}
             startingSettings={settings}
             publishTime={new Date(publishTimeUTC)}
         />
-      }
       </>
     </>
   )
@@ -96,11 +112,13 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
 
 export const getStaticProps:GetStaticProps = async (context:any) => {
 
+  const locations = await getLocations();
 
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
-      hardcodedURL: getHardCodedUrl()
+      hardcodedURL: getHardCodedUrl(),
+      locations: locations
      }
   }
 }
