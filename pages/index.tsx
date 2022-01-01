@@ -114,9 +114,12 @@ export const getStaticProps:GetStaticProps = async (context:any) => {
 
   const locationRecords = await getLocations();
 
+
+  const fakeDate = Date.parse(new Date().toISOString()) - (10 * 60 * 1000);
+
   return {
     props:{
-      publishTimeUTC: new Date().toUTCString(),
+      publishTimeUTC: new Date(fakeDate).toISOString(),////new Date().toUTCString(),
       hardcodedURL: getHardCodedUrl(),
       locationRecords: locationRecords
      }

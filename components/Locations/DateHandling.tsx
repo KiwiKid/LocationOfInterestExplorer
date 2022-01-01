@@ -19,7 +19,7 @@ const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
 
 const NiceDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
 
-const NiceShortDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h:m A')}</>
+const NiceShortDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h:mm A')}</>
 
 
 const groupingFormat = (date:Date) => {

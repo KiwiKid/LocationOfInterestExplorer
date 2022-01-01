@@ -1,4 +1,4 @@
-name: "Deploy Prod during waking hours"
+name: "PROD - Deploy"
 
 on:
   schedule:

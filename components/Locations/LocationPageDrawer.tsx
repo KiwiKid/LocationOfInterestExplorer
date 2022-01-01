@@ -76,7 +76,7 @@ const LocationPageDrawer = ({
     const [lastDrawPositionY, setLastDrawPositionY] = useState(PX_FROM_BOTTOM)
 
     const [topDrawPosition, setTopDrawPosition] = useState(null);
-
+    const [dataStale, setDataStale] = useState(false);
 
     const [url, setUrl] = useState<string>('');
 
@@ -216,9 +216,19 @@ const LocationPageDrawer = ({
     }
     window.location.reload
   }
-
-  let isOld = dayjs(publishTime).diff(new Date(), 'hour') > 0;
   
+  const checkDataStale = () => { 
+    return dayjs(new Date()).diff(publishTime, 'minute') > 60;
+  }
+
+  useEffect(() => { 
+    setDataStale(checkDataStale());
+  }, []);
+  
+  setTimeout(() => {
+    setDataStale(checkDataStale());
+  })
+
   return (
     <Draggable 
       handle=".handle"
@@ -248,8 +258,8 @@ const LocationPageDrawer = ({
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
-                    <div className={`${isOld ? 'bg-red-200 pb-3' : ''}`}>{isOld && "⚠️"} last updated <NiceShortDate date={publishTime}/>{isOld && "⚠️"}</div>
-                    {isOld && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
+                    <div className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortDate date={publishTime}/>{dataStale && "⚠️"}</div>
+                    {dataStale && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
               <LocationGridContainer 
                     showLocationData={false}
@@ -386,12 +396,12 @@ const LocationPageDrawer = ({
                     </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
                 </div>
                 <div>
-                  Update Difference (hours): {dayjs(publishTime).diff(new Date(), 'hour')}
+                  {dataStale ? 'stale' : 'fresh'} ({dayjs(new Date()).diff(publishTime, 'minute')} mins old - {publishTime.toISOString()})
                 </div>
-                {/*
-              <div style={{height: window.document.body.clientHeight*0.5}}>
+              <div style={{height: '800px'}}>
                           
-            </div> */}
+            </div>
+            
             </div>
             
           </div>
