@@ -2,7 +2,7 @@ name: "Preview - Scheduled Deploy"
 
 on:
   schedule:
-    - cron: '2 * * * *'
+    - cron: '* * * * *'
 jobs:
   deployment:
     runs-on: ubuntu-latest
