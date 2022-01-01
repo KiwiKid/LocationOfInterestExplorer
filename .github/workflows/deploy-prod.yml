@@ -2,7 +2,7 @@ name: "Deploy Prod during waking hours"
 
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '*/5 * * * *'
 jobs:
   deployment:
     runs-on: ubuntu-latest
