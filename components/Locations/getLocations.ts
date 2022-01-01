@@ -34,13 +34,21 @@ let LOCATION_OVERRIDES:LocationOverride[] = [
 
 export default function getLocations():Promise<LocationOfInterestRecord[] | void> {
 
-  var res = new Promise<LocationOfInterestRecord[]>((resolve) => {
-    get({url: process.env.MOH_LOCATIONS_URL})
-      .then(async (response:AxiosResponse<LocationOfInterestAPIResponse>) => {
-        resolve(response.data.items
-          .map(mapLoITOLoIRecord)
-          .map(applyLocationOverrides) || [])
-      });
+  var res = new Promise<LocationOfInterestRecord[]>((resolve, reject) => {
+    try{
+      get({url: process.env.MOH_LOCATIONS_URL})
+        .then(async (response:AxiosResponse<LocationOfInterestAPIResponse>) => {
+          var res = 
+          response.data.items
+            .map(mapLoITOLoIRecord)
+            .map(applyLocationOverrides) || []
+
+          resolve(res);
+
+        });
+      }catch(err){
+        reject(err);
+      }
   })
 
   return res;
@@ -64,47 +72,25 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
   
   let res:LocationOfInterestRecord = {
     id: row.eventId,
-    added: row.publishedAt.toISOString(),
-    event: row.eventName,
-    location: row.location.address,
-    city: row.location.city,
-    start: row.startDateTime.toISOString(),
-    end: row.endDateTime.toISOString(),
-    advice: row.publicAdvice,
-    lat: !!lat ? lat.toString() : "0",
-    lng: !!lng ? lng.toString() : "0",
-    updated: !!row.updatedAt ? row.updatedAt.toISOString() : undefined,
-    locationType: getLocationTypeFromAdvice(row.publicAdvice)
-  }
-
-  return res;
-}
-
-
-
-
-const mapMohLocationOfInterestToLocation = (row:MohLocationOfInterest):LocationOfInterest => {
-
-  let lat = row.location.latitude;//(!!approxCityOverride ? approxCityOverride?.lat : );
-  let lng = row.location.longitude;//0 (!!approxCityOverride ? approxCityOverride?.lng  : row.location.longitude);
-  
-  let res = {
-    id: row.eventId,
     added: row.publishedAt,
     event: row.eventName,
     location: row.location.address,
     city: row.location.city,
-    start: new Date(row.startDateTime),
-    end: new Date(row.endDateTime),
+    start: row.startDateTime,
+    end: row.endDateTime,
     advice: row.publicAdvice,
-    lat: !!lat ? lat : 0,
-    lng: !!lng ? lng : 0,
-    updated: row.updatedAt,
+    lat: !!lat ? lat.toString() : "0",
+    lng: !!lng ? lng.toString() : "0",
+    updated: !!row.updatedAt ? row.updatedAt : null,
     locationType: getLocationTypeFromAdvice(row.publicAdvice)
   }
 
   return res;
 }
+
+
+
+
 
 function getLocationTypeFromAdvice(advice:string){
   return advice.toLowerCase().indexOf('immediately') > -1 ? 'High' : 'Standard'

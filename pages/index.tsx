@@ -112,13 +112,13 @@ const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcod
 
 export const getStaticProps:GetStaticProps = async (context:any) => {
 
-  const locations = await getLocations();
+  const locationRecords = await getLocations();
 
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
       hardcodedURL: getHardCodedUrl(),
-      locations: locations
+      locationRecords: locationRecords
      }
   }
 }

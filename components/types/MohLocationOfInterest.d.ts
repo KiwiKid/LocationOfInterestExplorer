@@ -1,12 +1,12 @@
 type MohLocationOfInterest = {
     eventId: string;
     eventName: string;
-    startDateTime: Date;
-    endDateTime: Date;
+    startDateTime: string;
+    endDateTime: string;
     publicAdvice: string;
     visibleInWebform: boolean;
-    publishedAt: Date;
-    updatedAt?: Date | undefined;
+    publishedAt: string;
+    updatedAt?: string | undefined;
     exposureType: string;
     location: MohLocationOfInterestLocation;
 }

@@ -229,7 +229,8 @@ const LocationPageDrawer = ({
       onStart={(e:DraggableEvent,d:DraggableData) => { e.stopPropagation(); setLastDrawPositionY(d.y); } }
       onStop={handleClickEnd}
       >
-      <div  style={{top:`${window.document.body.clientHeight-120}px`}} className="w-full z-4000 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
+      {/*style={{top:`${window.document.body.clientHeight-120}px`}}*/}
+      <div className="w-full z-4000 fixed bg-gray-100 h-max rounded-t-3xl border-t-8 border-gray-600">
         {/*<div>PX_FROM_BOTTOM: {PX_FROM_BOTTOM}<br/> openDrawPosition: {openDrawPosition} <br/>drawPositionY: {drawPositionY} </div>*/}
         <div className="handle h-20 grid grid-cols-1 bg-gray-300 rounded-t-3xl">
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
@@ -387,9 +388,10 @@ const LocationPageDrawer = ({
                 <div>
                   Update Difference (hours): {dayjs(publishTime).diff(new Date(), 'hour')}
                 </div>
+                {/*
               <div style={{height: window.document.body.clientHeight*0.5}}>
                           
-            </div>
+            </div> */}
             </div>
             
           </div>

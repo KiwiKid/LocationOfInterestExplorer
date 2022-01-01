@@ -6,7 +6,7 @@ type LocationOfInterestRecord = {
     event: string;
     start: string;
     end: string;
-    updated?: string;
+    updated?: string | null;
     added: string;
     advice: string;
     city: string;
