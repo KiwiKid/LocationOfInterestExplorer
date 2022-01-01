@@ -4,10 +4,10 @@ type LocationOfInterestRecord = {
     id: string;
     location: string;
     event: string;
-    start: Date;
-    end: Date;
-    updated?: Date;
-    added: Date;
+    start: string;
+    end: string;
+    updated?: string;
+    added: string;
     advice: string;
     city: string;
     lat: string;

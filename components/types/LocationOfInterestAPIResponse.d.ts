@@ -1,3 +1,3 @@
 type LocationOfInterestAPIResponse = {
-    locations: LocationOfInterestRecord[]
+    items: MohLocationOfInterest[]
 }
