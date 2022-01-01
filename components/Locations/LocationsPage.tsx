@@ -28,6 +28,9 @@ const DEFAULT_PAGE_STATE = {
    zoom: 8,
    daysInPastShown:  14
 }
+const isInvalidLocation = (loc:LocationOfInterest) => {
+  return !(!!loc.lat || !!loc.lng)
+}
 
 export default function LocationsPage({locations, startingSettings, publishTime}:LocationsPageProps){
 
@@ -41,6 +44,9 @@ export default function LocationsPage({locations, startingSettings, publishTime}
 
 
     const [visibleLocations, setVisibleLocations] = useState<LocationOfInterestCalculated[]>([])
+    const invalidLocations = locations.filter(isInvalidLocation);
+
+
     const [openLocations, setOpenLocations] = useState([]);
 
     const [daysInPastShown, setDaysInPastShown] = useState(startingSettings.daysInPastShown);
@@ -135,6 +141,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
               <div>
                 <LocationPageDrawer 
                   openLocations={openLocations}
+                  invalidLocations={invalidLocations}
                   setOpenLocations={setOpenLocations}
                   visibleLocations={visibleLocations}
                   changeDaysInPastShown={changeDaysInPastShown}

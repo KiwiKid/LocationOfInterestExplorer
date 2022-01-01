@@ -5,7 +5,7 @@ import Question from "./Questions";
 // @ts-ignore
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable'
 import Controls from "./Controls";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { WhatToDo } from "./MohAdvice";
 import ExternalLink from "../utils/ExternalLink";
 import InternalLink from "../utils/InternalLink";
@@ -18,13 +18,16 @@ import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
-import { getDaysAgoClassName, tailwindClassToHex } from "../utils/Styling";
-import { NiceDate, NiceShortDate, NiceTimeFromNow } from "./DateHandling";
+import {  NiceDate, NiceShortDate } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
+import { LOCATION_OVERRIDES } from "./getLocations";
+import { LocationOfInterest } from "../types/LocationOfInterest";
+import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay";
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
+    invalidLocations: LocationOfInterest[];
     openLocations: any;
     setOpenLocations: any;
     daysInPastShown: number;
@@ -46,6 +49,7 @@ const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.79
 
 const LocationPageDrawer = ({
     visibleLocations,
+    invalidLocations,
     openLocations,
     setOpenLocations,
     daysInPastShown,
@@ -214,7 +218,7 @@ const LocationPageDrawer = ({
     }catch(err){
       console.error(err);
     }
-    window.location.reload
+    window.location.reload();
   }
   
   const checkDataStale = () => { 
@@ -298,7 +302,7 @@ const LocationPageDrawer = ({
                     
                   </div>
                 </div>
-            </Toggle>         
+            </Toggle>
             <Toggle id="fastTravel" title="Move map to:" extendClassName="border-gray-800 border-b-4">
               <>
                 <Summary>Use these buttons to re-position the map at a specific location</Summary>
@@ -336,12 +340,7 @@ const LocationPageDrawer = ({
                     <p>This is not endorsed by or in anyway affiliated with the Ministry of Health.</p>
                     <p>The MoH provides the Locations of Interests and this service publishes that information.</p>
                   </Question>
-                  <Question className="" title="Why are locations not published in Auckland?">
-                    <span className="text-gray-600">(sourced directly from the MoH)</span>
-                    <p>Locations of interest are linked to public exposure events. We will not always publish low risk locations for regions that are at Red. We will publish high risk locations for all regions. Follow the health instructions if you were at a location on the same date and time shown.</p>
-                    <p>If you were at a private exposure event you will be contacted by a district health board, the Ministry of Health or a district health board public health unit. Make sure you please follow their advice.</p>
-                  </Question>
-                  <Question   title="Why do you want me to install!?!">
+                  <Question title="Why do you want me to install!?!">
                     {/*<p>The {`"Add to Home screen"`} button allows the app to be more accessible.</p>*/}
                     <p>(Google Chrome only at this stage) Alot of people struggled to return to the app or add a shortcut to their home page.</p>
                     <p>For all practical purposes, it just acts as a shortcut</p>
@@ -357,27 +356,26 @@ const LocationPageDrawer = ({
                       </div>
                     </Question>}
                     <Question title="How up to date is this?">
-                        <p>The MOH generally update the cases 3 times a day (8am, 12 noon and 4pm).</p>
-                        <p>New locations are imported by this tool from the MoH each hour.</p>
+                        <p>The MOH adds cases throughout the day.</p>
+                        <p>New locations are imported by this tool from the MoH regularly.</p>
+                        <p>(The MoH API was called {dayjs(new Date()).diff(publishTime, 'minute')} minutes ago)</p>
+                        <InternalLink id="refresh" onClick={triggerRefresh} >Reload and show new Locations (if any)</InternalLink>
                     </Question>
                     <Question title="How does this app work?">
                         <p>This service checks for new locations of interest via a file regularly updated by the Ministry of Health (MOH). </p>
                         <p>Static locations (i.e. not buses or flights) have a latitude and longitude coordinate pair.</p>
                         <p>These locations are then projected into the map and with a bit of good ol&apos; fashion trigonometry we can determine if the location is in the circle and display the detailed information for it.</p>
                               
-                        The raw data this service is based on:
-                        <div className="pt-2 max-w-3xl">
-                          <ExternalLink
-                            title="Raw Data (MoH)"
-                            href="https://github.com/minhealthnz/nz-covid-data"
-                            />
-                        </div>
+                        <p>The raw data this service is based on:
+                          <div className="pt-2 max-w-3xl">
+                            <ExternalLink
+                              title="MoH Location of Interest API"
+                              href="https://github.com/minhealthnz/nz-covid-data/tree/main/locations-of-interest"
+                              />
+                          </div>
+                        </p>
                     </Question>
-                    <Question title="What does this do differently to the MoH?">
-                        <p>Locations are categorized in 4 groups: Standard, High, Bus, Flight</p>
-                        <p>The {`"High"`} status is based on the advice containing the word {`"Immediately"`}. {`"Flights" and "Buses"`} are placed in the center of the city (destination city in the case of {`"Flights"`})</p>
-                    </Question>
-                    <Question   title="Why are you doing this?">
+                    <Question title="Why are you doing this?">
                         <p>I want provide people with the best possible understanding of the locations of interest. Hopefully this tool provides some comfort to people.
                         We are facing a period of greater uncertainty and, I strongly believe, we can make a difference through tools and services like these.<br/>
                         Over the years myself and my family have been supported by the tireless, friendly, hardworking and unrelenting work of the heros within the NZ Health system. <br/>
@@ -390,14 +388,26 @@ const LocationPageDrawer = ({
                       {USEFUL_LINKS.map((ul) => <ExternalLinkWithDetails key={ul.href} href={ul.href} title={ul.title} description={ul.description}/>)}
                     </div>
                   </Toggle>
+                  {invalidLocations.length > 0 && <Toggle id="invalidLocations" title="Locations not yet mapped:" >
+                    <div className="grid grid-cols-8">
+                        {invalidLocations.map((invLoc) => (
+                          <>
+                            <div>{invLoc.id}</div>
+                            <div>{invLoc.event}</div>
+                            <div>{invLoc.city}</div>
+                            <div>{invLoc.location}</div>
+                            <div>{invLoc.advice}</div>
+                            <div><LocationSummaryDateDisplay loi={invLoc} includeDate={true}/> <NiceDate date={invLoc.start}/></div>
+                          </>
+                        ))}
+                    </div>
+            </Toggle>}
                 <div className="text-center mt-4">
                   <span className="underline">
                     <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>
                     </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
                 </div>
-                <div>
-                  {dataStale ? 'stale' : 'fresh'} ({dayjs(new Date()).diff(publishTime, 'minute')} mins old - {publishTime.toISOString()})
-                </div>
+                
               <div style={{height: '800px'}}>
                           
             </div>

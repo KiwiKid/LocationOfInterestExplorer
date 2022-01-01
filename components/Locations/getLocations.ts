@@ -30,9 +30,10 @@ let LOCATION_OVERRIDES:LocationOverride[] = [
   , { eventId: 'a0l4a0000006YGUAA2', lat: '-35.53664725946573', lng:'173.3861921967765'}
   , { eventId: 'a0l4a0000006YGeAAM', lat: '-35.53664725946573', lng:'173.3861921967765'}
   , { eventId: 'a0l4a0000006ZL5AAM', lat: '-37.674113436476176', lng:'176.2243295802912'}
+  , { eventId: 'a0l4a0000006aeRAAQ', lat:'-37.99000017599115', lng: '177.1615482680346'}
 ]
 
-export default function getLocations():Promise<LocationOfInterestRecord[] | void> {
+function getLocations():Promise<LocationOfInterestRecord[] | void> {
 
   var res = new Promise<LocationOfInterestRecord[]>((resolve, reject) => {
     try{
@@ -95,3 +96,6 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 function getLocationTypeFromAdvice(advice:string){
   return advice.toLowerCase().indexOf('immediately') > -1 ? 'High' : 'Standard'
 }
+
+
+export { getLocations, LOCATION_OVERRIDES}

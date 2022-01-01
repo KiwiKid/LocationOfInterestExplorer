@@ -3,11 +3,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState } from 'react'
 import LocationsPage from '../components/Locations/LocationsPage'
-import getLocations from '../components/Locations/getLocations'
 import { useSettings } from '../components/Locations/useSettings'
 import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
 import { LocationOfInterest } from '../components/types/LocationOfInterest'
+import { getLocations } from '../components/Locations/getLocations'
 
 type HomePageProps = {
   locationRecords: LocationOfInterestRecord[]
