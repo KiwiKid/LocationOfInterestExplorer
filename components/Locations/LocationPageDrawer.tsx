@@ -389,7 +389,7 @@ const LocationPageDrawer = ({
                     </div>
                   </Toggle>
                   {invalidLocations.length > 0 && <Toggle id="invalidLocations" title="Locations not yet mapped:" >
-                    <div className="grid grid-cols-8">
+                    <div className="grid grid-cols-6">
                         {invalidLocations.map((invLoc) => (
                           <>
                             <div>{invLoc.id}</div>

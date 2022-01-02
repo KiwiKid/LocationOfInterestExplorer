@@ -31,6 +31,10 @@ let LOCATION_OVERRIDES:LocationOverride[] = [
   , { eventId: 'a0l4a0000006YGeAAM', lat: '-35.53664725946573', lng:'173.3861921967765'}
   , { eventId: 'a0l4a0000006ZL5AAM', lat: '-37.674113436476176', lng:'176.2243295802912'}
   , { eventId: 'a0l4a0000006aeRAAQ', lat:'-37.99000017599115', lng: '177.1615482680346'}
+  , { eventId: 'a0l4a0000006VokAAE', lat: '-36.86286489342495', lng: '174.75669958249682'}
+  , { eventId: 'a0l4a0000006VpTAAU', lat: '-36.86286489342495', lng: '174.75669958249682'}
+  , { eventId: 'a0l4a0000006baKAAQ', lat: '-36.86286489342495', lng: '174.75669958249682'}
+  , { eventId: 'a0l4a0000006X6FAAU', lat: '-36.849718170449385',lng: '174.75963861112493'}
 ]
 
 function getLocations():Promise<LocationOfInterestRecord[] | void> {
