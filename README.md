@@ -8,10 +8,14 @@ Given the time sensitive nature of Covid-19, there are some untidy compromises m
 
 Environment variables:
 ```
+// Current NZ Ministry of Health API endpoint
 MOH_LOCATIONS_URL=https://api.integration.covid19.health.nz/locations/v1/current-locations-of-interest
 VERCEL_ENV=development
 VERCEL_URL=localhost
 ```
+The two "VERCEL" variables ensure we statically render the correct URLs with Vercel. 
+Vercel will first build a "commit" specific environments, which will then be "promoted" to production. This results in a url that is correct in the "commit" specific environments, but incorrect when the same build is deployed to the live environments. See getHardCodedUrl() for more details. 
+Note: The "commit" specific environments will NOT have the correctly statically render URL - this largely doesn't matter as the URLs are mostly used for SEO/link preview reasons. For this reason, its preferred to use "window.location" when referencing the URL
 
 
 ## Getting Started
@@ -28,45 +32,43 @@ yarn dev
 ```
 
 
-When the app is built, an API call is made to the MOH_LOCATIONS_URL returning and array of locations (MohLocationOfInterest).
-These locations are normalised into flat LocationsOfInterests objects.This is mostly for historic reasons (The page was previously built around a CSV export directly from GitHub).
-It'd be good to remove the need for that conversion.
+When the page is built, an API call is made to the MOH_LOCATIONS_URL. The API (published by the NZ Ministry of Health) returns an array of current Covid-19 Locations of Interest "MohLocationOfInterest".
+These locations are normalised into flat "LocationsOfInterests" objects.
+(This is mostly for historic reasons - the page was previously built around a CSV export directly from GitHub - It'd be nice to remove the need for that conversion.)
 
-When the react-leaflet map loads, we create a set of LocationOfInterestsCalculated within (reloadInCircleLocations()). This and the on-load of the Circle Markers ensures the correct items are highlighted. There is a preference for style updates as it improves the performance of the map re-renders.
+When the react-leaflet map loads, we create a set of LocationOfInterestsCalculated within (reloadInCircleLocations()) rendering the locations on the map.
 
 The Drawer contains details of all the locations in the current selection circle.
-This is really only Mobile-Friendly i could find of allowing the user to explore a large amount of data, while allowing map navigation (who would have guessed, google maps got it right....)
-
 
 Feature Ideas (open to ideas here!)
-- [ ] Ensure latest data is always shown (https://swr.vercel.app/docs/with-nextjs)
 - [ ] "Subscribe to a circle" (Notifications) [InProg - GC]
 - [ ] Search text filter input box in Drawer
 - [ ] Improve navigation between drawers and map (and vice-versa)
-- [ ] Its verrry Mobile-First. The Desktop view could use some love
 Tech Debt
 - [ ] Loose typing (so much "any"...)
   - [ ] The "LocationOfInterest" type is based on the original CSV item and could be replaced by MohLocationOfInterest).
 - Merge LargeLocationGrid and LocationGrid components
-- [ ] Average Drawer render performance
-- [ ] Average Map render performance
-     (relating to circle recalculations. This could become a greater risk Covid progresses and more locations of interest are added). 
-   - (Update: This has been mitigated through only updating the circle at he end of the drag. Might even need to debounce that update as some users are "peckers", for lack of a better word, when moving the map).
-    - Could do Location circle Clustering?
 - [ ] Zoom button styling (esp when moving drawer)
 - [ ] The useEffects are pretty funky in places (esp around map updates)
 
-Wildcard ideas
-- [ ] A guessing game for where new locations of interests will be and providing a leaderboard that will reset weekly.
-The goal would be to rise awareness and make understanding Locations of Interests in the community more engaging.
-- [ ] A game where you fly a mini plane shooting bullets vaccines at Locations of Interests. Leaderboard for the quickest time to destroy them all.
-
-
-set the meta tag for verifying domain ownership with google
+set the meta tag for verifying domain ownership with google (only needed in production)
 NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG 
+
+
+
+## Production Enviroment variables:
+(facebook API ID)
+NEXT_PUBLIC_FACEBOOK_APP_ID
+(Google forms feedback link)
+NEXT_PUBLIC_FEEDBACK_URL=http://google.com
+(Google URL verification tag)
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG=WpxXBycKmD_r57XMCpmtwkVI1hax5LFawIMUZcXzfRo
+
 
 ## Trigger automatic builds:
 set VERCEL_REBUILD_URL as a github secret. The "deploy-prod" action will call the Vercel deploy Hook url on "main" and get any new locations each hour.
 (VERCEL_REBUILD_URL_PREVIEW) is the alternative for staging environments
+
+Note: Vercel currently allows 100 builds per day. 48 will be used deploying the prod site. If this limit is exceeded, Vercel will pause deployment of the production site.
 
 Open to PR's!
