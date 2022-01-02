@@ -2,7 +2,7 @@ name: "PROD - Deploy"
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/15 * * * *'
 jobs:
   deployment:
     runs-on: ubuntu-latest
