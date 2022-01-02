@@ -1,4 +1,4 @@
-name: "Preview - Deploy"
+name: "PREVIEW - Deploy"
 
 on:
   schedule:

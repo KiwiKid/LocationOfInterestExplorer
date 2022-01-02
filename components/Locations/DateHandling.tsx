@@ -7,7 +7,6 @@ type DateProps = {
     date: Date
 }
 
-
 dayjs.extend(relativeTime);
 dayjs.extend(calendar);
 dayjs.extend(localizedFormat);
@@ -16,16 +15,12 @@ const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
     return <>{dayjs().to(dayjs(date))}</>
 }
 
-
 const NiceDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
 
 const NiceShortDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h:mm A')}</>
 
-
 const groupingFormat = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
-
-
 
 export {NiceTimeFromNow, NiceDate, groupingFormat, NiceShortDate}
