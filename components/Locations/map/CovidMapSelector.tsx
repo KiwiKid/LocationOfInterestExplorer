@@ -26,6 +26,7 @@ import LocationCirclePopup from "./LocationCirclePopup";
 import { CircleSelectableMarkers, updateAndReturnCircleSelectedStatus } from './CircleSelectableMarkers'
 import { getHoursAgo } from "../../utils/utils";
 import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
+import { useRouter } from "next/router";
 
 
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
@@ -99,6 +100,8 @@ function CovidMapSelector({
     const [subscribeError, setSubscribeError] = useState<string|undefined>(undefined);
     const [centeredCircleRadius, setCenteredCircleRadius] = useState<number|undefined>();
     const [allVisibleLocations, setAllVisibleLocations] = useState<LocationOfInterestCalculated[]>([]);
+
+    const router = useRouter();
 
     // Ensure the marker ref array size remains correct
    /* useEffect(() => {
@@ -232,8 +235,10 @@ function CovidMapSelector({
         setMapIsLocated(false)
         saveMapState(map);
         setMapIsLocated(false);
+        if(window.location.search !== ""){
+            router.push('/');
+        }
     }
-
     const onZoomEnd = (map:Map) => {
         if(isViewingAll || mapIsLocating){
             setTimeout(() => {
