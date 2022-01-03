@@ -12,7 +12,6 @@ import { MapContainer
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios'
 
-import {useRouter} from 'next/router'
 import {LatLng, Map } from "leaflet";
 
 import CenteredCircle from './CenteredCircle'

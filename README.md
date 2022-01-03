@@ -12,10 +12,18 @@ Environment variables:
 MOH_LOCATIONS_URL=https://api.integration.covid19.health.nz/locations/v1/current-locations-of-interest
 VERCEL_ENV=development
 VERCEL_URL=localhost
+// Google forms feedback link
+NEXT_PUBLIC_FEEDBACK_URL=http://google.com
 ```
+<details>
+<summary>"VERCEL_" environment variables</summary>
+<p>
 The two "VERCEL" variables ensure we statically render the correct URLs with Vercel. 
 Vercel will first build a "commit" specific environments, which will then be "promoted" to production. This results in a url that is correct in the "commit" specific environments, but incorrect when the same build is deployed to the live environments. See getHardCodedUrl() for more details. 
 Note: The "commit" specific environments will NOT have the correctly statically render URL - this largely doesn't matter as the URLs are mostly used for SEO/link preview reasons. For this reason, its preferred to use "window.location" when referencing the URL
+</p>
+</details>
+
 
 
 ## Getting Started

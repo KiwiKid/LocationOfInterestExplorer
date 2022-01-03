@@ -2,8 +2,9 @@
 // If the zoom is not set, it is used to match approx locations
 type PresetLocation = {
     title:string
+    urlParam:string
     lat:number
     lng:number
-    zoom?:number
+    zoom:number
   }
   

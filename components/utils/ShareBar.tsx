@@ -1,4 +1,3 @@
-import { useRouter, withRouter } from 'next/router';
 import { Children, useEffect, useState } from 'react';
 import {
     FacebookShareCount,
@@ -21,7 +20,6 @@ type ShareBarProps = {
 
 function ShareBar({children, url}:ShareBarProps) {
 
-    const router = useRouter();
 
     const title = 'Locations of Interest Explorer';
 
