@@ -5,7 +5,9 @@ import fetcher from "../utils/fetcher"
 import get, { AxiosResponse, AxiosPromise } from 'axios'
 
 type LocationOverride = {
-  eventId: string
+  eventName?: string  // Indirect Override (preferred)
+  eventId?: string  // Direct Override
+  city?: string // Last resort
   lat: string
   lng: string
 }
@@ -65,10 +67,27 @@ function getLocations():Promise<LocationOfInterestRecord[] | void> {
 }
 
 const applyLocationOverrides = (rec:LocationOfInterestRecord):LocationOfInterestRecord => {
+
   var overriddenLocation = LOCATION_OVERRIDES.filter((ov) => ov.eventId == rec.id)[0];
   if(overriddenLocation !== undefined){
     rec.lat = overriddenLocation.lat;
     rec.lng = overriddenLocation.lng;
+    return rec;
+  }
+
+
+  var locationFromEvent = LOCATION_OVERRIDES.filter((ov) => ov.eventName == rec.event)[0];
+  if(locationFromEvent !== undefined){
+    rec.lat = locationFromEvent.lat;
+    rec.lng = locationFromEvent.lng;
+    return rec;
+  }
+
+  var locationFromCity = LOCATION_OVERRIDES.filter((ov) => ov.city == rec.city)[0];
+  if(locationFromCity !== undefined){
+    rec.lat = locationFromCity.lat;
+    rec.lng = locationFromCity.lng;
+    return rec;
   }
 
   return rec;
