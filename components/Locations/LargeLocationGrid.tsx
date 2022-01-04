@@ -41,17 +41,9 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         <div className="text-center">{loi.location}</div>
                         <div className="col-span-3 text-center">{loi.advice}</div>
                     </div>
-                    <div className="grid grid-cols-2 py-2">
-                        {loi.visibleInWebform && <div className="">
-                            <div className="w-64 m-auto">
-                                <RegisterVisit loi={loi}/>
-                            </div>
-                        </div>}
-                        <div className="opacity-80">
-                            <div className="w-64 m-auto">
-                                <RegisterIncorrectLocation loi={loi}/>
-                            </div>
-                        </div>
+                    <div className="grid grid-cols-2 py-4 px-40 space-x-10">
+                        <RegisterVisit loi={loi}/>
+                        <RegisterIncorrectLocation loi={loi}/>
                         {false && <div className="m-auto">
                             <a target="_blank"
                                 rel="noreferrer"

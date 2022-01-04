@@ -39,11 +39,9 @@ import RegisterVisit from "./RegisterVisit"
                     <div className="">{loi.location}</div>
                     {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
                     <div className="col-span-2 pt-4">{loi.advice}</div>
-                    <div className="col-span-2">
-                        <div className="m-auto p-3">
+                    <div className="col-span-2 w-4/5 m-auto py-2 space-y-2">
                             <RegisterVisit loi={loi}/>
                             <RegisterIncorrectLocation loi={loi}/>
-                        </div>
                     {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
                     {/*<a target="_blank" 
                         rel="noreferrer"
