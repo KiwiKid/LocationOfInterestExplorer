@@ -90,7 +90,6 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
     lat: !!lat ? lat.toString() : "0",
     lng: !!lng ? lng.toString() : "0",
     updated: !!row.updatedAt ? row.updatedAt : null,
-    locationType: getLocationTypeFromAdvice(row.publicAdvice)
   }
 
   return res;
@@ -99,10 +98,6 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 
 
 
-
-function getLocationTypeFromAdvice(advice:string){
-  return advice.toLowerCase().indexOf('immediately') > -1 ? 'High' : 'Standard'
-}
 
 
 export { getLocations, LOCATION_OVERRIDES}
