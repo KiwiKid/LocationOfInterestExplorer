@@ -150,11 +150,6 @@ function CovidMapSelector({
     }
 
 
-    const validTypes = ["Standard", "approx", "approx_multi", "High"]
-    function isValidLocationType(locationType:string){
-        return validTypes.some((ty) => ty === locationType);
-    }
-
        function reloadInCircleLocations(map:Map) {
         if(map == null){
             return;
@@ -169,9 +164,6 @@ function CovidMapSelector({
                 activeMarkerPoints = locations
                     .filter((al) => isValidLocation(al))
                         .map((al:LocationOfInterest) => {
-                        if(!isValidLocationType(al.locationType)){
-                            console.error('Not Valid location Type: ('+al.locationType+') for '+al.id);
-                        }
                     
                         let markerLatLng = new LatLng(al.lat, al.lng);
                         

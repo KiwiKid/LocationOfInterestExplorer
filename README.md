@@ -41,7 +41,7 @@ yarn dev
 
 
 When the page is built, an API call is made to the MOH_LOCATIONS_URL. The API (published by the NZ Ministry of Health) returns an array of current Covid-19 Locations of Interest "MohLocationOfInterest".
-These locations are normalised into flat "LocationsOfInterests" objects.
+These locations are normalised into flat "LocationOfInterest" objects.
 (This is mostly for historic reasons - the page was previously built around a CSV export directly from GitHub - It'd be nice to remove the need for that conversion.)
 
 When the react-leaflet map loads, we create a set of LocationOfInterestsCalculated within (reloadInCircleLocations()) rendering the locations on the map.

@@ -1,15 +1,10 @@
 import {LocationOfInterestCalculated} from '../types/LocationOfInterestCalculated'
-import { dateFormatX, dateFormatY,  detailedLongTimeToNZ, longDayToNZ, metersToKmsString, shortDayMonthToNZ, shortTimeWithHourMinToNZ, sortFormatToNZ } from '../utils/utils'
+import { longDayToNZ, metersToKmsString, shortDayMonthToNZ, shortTimeWithHourMinToNZ, sortFormatToNZ } from '../utils/utils'
 import _ from 'lodash'
 
-import { useState } from 'react';
 import { LocationOfInterest } from '../types/LocationOfInterest';
 import LargeLocationGrid from './LargeLocationGrid';
-import LocationTypeDisplay from './LocationTypeDisplay';
-import ExternalLink from '../utils/ExternalLink';
 import { Sort } from '../types/Sort';
-import { loadGetInitialProps } from 'next/dist/shared/lib/utils';
-import LocationSummaryDateDisplay from './LocationSummaryDateDisplay';
 import Location from './Location';
 import { groupingFormat } from './DateHandling';
 

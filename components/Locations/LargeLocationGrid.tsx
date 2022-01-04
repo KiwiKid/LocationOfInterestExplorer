@@ -4,7 +4,9 @@ import ExternalLink from "../utils/ExternalLink";
 import {metersToKmsString, detailedLongTimeToNZ, getHoursAgo } from "../utils/utils";
 import LocationMetaDataSummary from "./LocationMetaDataSummary";
 import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay";
-import LocationTypeDisplay from "./LocationTypeDisplay";
+import LocationExposureTypeDisplay from "./LocationExposureTypeDisplay";
+import RegisterIncorrectLocation from "./RegisterIncorrectLocation";
+import RegisterVisit from "./RegisterVisit";
 
 
 type LargeLocationGridProps = {
@@ -32,29 +34,22 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         {isOpen !== undefined ? 
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
-                        <div className="text-center col-span-full"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
+                        <div className="text-center col-span-full"><LocationExposureTypeDisplay detailed={isOpen} exposureType={loi.exposureType}/></div>
                     </div>
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
                         <div className="text-center">{loi.location}</div>
                         <div className="col-span-3 text-center">{loi.advice}</div>
                     </div>
-                    <div className="grid grid-cols-2">
-                        <div className="">
+                    <div className="grid grid-cols-2 py-2">
+                        {loi.visibleInWebform && <div className="">
                             <div className="w-64 m-auto">
-                                <ExternalLink
-                                    href={`https://tracing.covid19.govt.nz/loi?eventId=${loi.id}`}
-                                    title="I was here! (Official MoH link)"
-                                />
+                                <RegisterVisit loi={loi}/>
                             </div>
-                        </div>
+                        </div>}
                         <div className="opacity-80">
                             <div className="w-64 m-auto">
-                            <ExternalLink
-                                href={`https://docs.google.com/forms/d/e/1FAIpQLSezFLwmktyBgMSNriV2-J3CgOmIdqpbbHU84dn3XDyCDRERJw/viewform?usp=pp_url&entry.1493705502=${loi.location} (${loi.id})`}
-                                title="This location is wrong"
-                                iconOverride="⚠️"
-                            />
+                                <RegisterIncorrectLocation loi={loi}/>
                             </div>
                         </div>
                         {false && <div className="m-auto">

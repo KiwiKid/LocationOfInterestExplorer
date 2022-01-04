@@ -13,8 +13,9 @@ export interface LocationOfInterest {
     city: string;
     lat: number;
     lng: number;
+    exposureType: string;
+    visibleInWebform: boolean;
   //  ref?: any?;
-    locationType: string;
   }
 
 

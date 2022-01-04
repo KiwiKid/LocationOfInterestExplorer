@@ -9,8 +9,9 @@ type LocationOfInterestRecord = {
     updated?: string | null;
     added: string;
     advice: string;
+    exposureType: string;
+    visibleInWebform: boolean;
     city: string;
     lat: string;
     lng: string;
-    locationType: string;
   }

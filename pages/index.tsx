@@ -26,10 +26,11 @@ const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInt
     end: new Date(rec.end),
     updated: rec.updated ? new Date(rec.updated) : undefined,
     added: new Date(rec.added),
+    exposureType: rec.exposureType,
+    visibleInWebform: rec.visibleInWebform,
     advice: rec.advice,
     lat: +rec.lat,
     lng: +rec.lng,
-    locationType: rec.locationType,
   }
 }
 
@@ -39,24 +40,25 @@ const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcod
 
   const locations = locationRecords.map(mapLocationRecordToLocation);
 
-  const title = "NZ Covid Map"
-  const description =  "Explore Locations of Interest published by the Ministry of Health."
+  const shortTitle = "NZ Covid Map"
+  const mediumTitle = "NZ Covid Map - Explore Official Locations of Interest"
+  const longTitle = "NZ Covid Map - Explore Official Locations of Interest published by the Ministry of Health"
+  const description =  "NZ Covid Map allows you too explore Locations of Interest published by the Ministry of Health easily, from any device."
 
   return (
     <>
     <Head>
-      <title>{title}</title>
+      <title>{mediumTitle}</title>
 
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&amp;display=swap" rel="stylesheet" />
 
-      <meta name="description" content={title} />
+      <meta name="description" content={description} />
       <meta name="google-site-verification" content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG} />
-      <meta name='application-name' content={title}/>
+      <meta name='application-name' content={shortTitle}/>
       <meta name='apple-mobile-web-app-capable' content='yes' />
       <meta name='apple-mobile-web-app-status-bar-style' content='default' />
-      <meta name='apple-mobile-web-app-title' content={title} />
-      <meta name='description' content={title} />
+      <meta name='apple-mobile-web-app-title' content={shortTitle} />
       <meta name='format-detection' content='telephone=no' />
       <meta name='mobile-web-app-capable' content='yes' />
       <meta name='msapplication-config' content='/icons/browserconfig.xml' />
@@ -79,14 +81,14 @@ const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcod
           
       <meta name='twitter:card' content='summary' />
       <meta name='twitter:url' content={hardcodedURL} />
-      <meta name='twitter:title' content={title} />
+      <meta name='twitter:title' content={mediumTitle} />
       <meta name='twitter:description' content={description} />
       <meta name='twitter:image' content={`${hardcodedURL}/icons/covid19/android-chrome-192x192.png`} />
       <meta name='twitter:creator' content='GregC' />
       <meta property='og:type' content='website' />
-      <meta property='og:title' content={title} />
+      <meta property='og:title' content={shortTitle} />
       <meta property='og:description' content={description} />
-      <meta property='og:site_name' content={title} />
+      <meta property='og:site_name' content={shortTitle} />
       <meta property='og:url' content={`${hardcodedURL}`} />
       <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}

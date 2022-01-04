@@ -37,7 +37,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const CovidMapSelector = useMemo(() => dynamic(
         () => import("./map/CovidMapSelector")
         , {
-           loading: Object.assign(() => <div className="h-96 w-full"><p>Loading Latest Covid-19 Locations of Interest...</p></div>, {displayName: 'Loading'}),
+           loading: Object.assign(() => <div className="h-96 w-full"><p>Loading Latest Covid-19 Locations of Interest published by the New Zealand Ministry of Health...</p></div>, {displayName: 'Loading'}),
            ssr: false
         })
     ,[]);

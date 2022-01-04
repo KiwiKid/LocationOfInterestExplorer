@@ -5,7 +5,9 @@ import ExternalLink from "../utils/ExternalLink"
 import { detailedLongTimeToNZ, getHoursAgo } from "../utils/utils"
 import LocationMetaDataSummary  from "./LocationMetaDataSummary"
 import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay"
-import LocationTypeDisplay from "./LocationTypeDisplay"
+import LocationExposureTypeDisplay from "./LocationExposureTypeDisplay"
+import RegisterIncorrectLocation from "./RegisterIncorrectLocation"
+import RegisterVisit from "./RegisterVisit"
 
 
 
@@ -29,7 +31,7 @@ import LocationTypeDisplay from "./LocationTypeDisplay"
                     <div className="text-left">{loi.city} - {loi.event}</div>
                     <LocationSummaryDateDisplay loi={loi} includeDate={isOpen}/>
                     <div className="md:text-lg col-span-full text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
-                    <div className="text-left col-span-full"><LocationTypeDisplay detailed={isOpen} locationType={loi.locationType}/></div>
+                    <div className="text-left col-span-full"><LocationExposureTypeDisplay detailed={isOpen} exposureType={loi.exposureType}/></div>
 
                 </div>
                 {isOpen ? 
@@ -37,19 +39,10 @@ import LocationTypeDisplay from "./LocationTypeDisplay"
                     <div className="">{loi.location}</div>
                     {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
                     <div className="col-span-2 pt-4">{loi.advice}</div>
-                    <div className="col-span-2 py-2 ">
-                        <div className="m-auto">
-                            <ExternalLink
-                                href={`https://tracing.covid19.govt.nz/loi?eventId=${loi.id}`}
-                                title="I was here! (Official MoH link)"
-                            />
-                            <div className="opacity-80">
-                                <ExternalLink
-                                    href={`https://docs.google.com/forms/d/e/1FAIpQLSezFLwmktyBgMSNriV2-J3CgOmIdqpbbHU84dn3XDyCDRERJw/viewform?usp=pp_url&entry.1493705502=${loi.location} (${loi.id})`}
-                                    title="This location is wrong"
-                                    iconOverride="⚠️"
-                                />
-                            </div>
+                    <div className="col-span-2">
+                        <div className="m-auto p-3">
+                            <RegisterVisit loi={loi}/>
+                            <RegisterIncorrectLocation loi={loi}/>
                         </div>
                     {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
                     {/*<a target="_blank" 

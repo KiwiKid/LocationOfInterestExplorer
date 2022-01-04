@@ -85,6 +85,8 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
     start: row.startDateTime,
     end: row.endDateTime,
     advice: row.publicAdvice,
+    visibleInWebform: row.visibleInWebform,
+    exposureType: row.exposureType,
     lat: !!lat ? lat.toString() : "0",
     lng: !!lng ? lng.toString() : "0",
     updated: !!row.updatedAt ? row.updatedAt : null,
