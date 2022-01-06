@@ -49,7 +49,7 @@ const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcod
 
 const metaImageURL = 
     settings.quickLink == null ? `${hardcodedURL}/img/preview.png` : 
-    `preview/${encodeURIComponent(`loc=${settings.quickLink}`)}`;
+    `${hardcodedURL}/preview/${encodeURIComponent(`loc=${settings.quickLink.urlParam}`)}`;
 
   return (
     <>
