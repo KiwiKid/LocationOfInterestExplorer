@@ -6,6 +6,9 @@ import path from 'path';
 import chromium from 'chrome-aws-lambda';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { getHardCodedUrl } from '../../components/utils/utils'
+
+
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const reqQuery = req.query.reqQuery;//.replace('reqQuery', '');
 
@@ -133,7 +136,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }
             </style>
         </html>`);*/
-        let url = `https://nzcovidmap.org/?${reqQuery}`;
+        
+        let url = `${getHardCodedUrl()}${reqQuery}`;
         console.log(`Going to page ${url}`);
         page.goto(url);
         console.log(`Waiting for .leaflet-container`);
