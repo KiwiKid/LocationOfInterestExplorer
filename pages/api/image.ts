@@ -134,7 +134,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             </style>
         </html>`);*/
         page.goto(`https://nzcovidmap.org/${reqQuery}`);
-        page.waitForText("Locations of interest since");
+        page.waitForText("Locations of Interest since");
         const screenShotBuffer = await page.screenshot();
         if(!!screenShotBuffer){
             res.writeHead(200, {
