@@ -136,15 +136,15 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             </style>
         </html>`);*/
         
-        let url = `${getHardCodedUrl()}/?${reqQuery}`;
+        let url = `${getHardCodedUrl()}/?${typeof(reqQuery) == 'string' ?  decodeURIComponent(reqQuery) : 'array'}`;
         console.log(`Going to page ${url}`);
         page.goto(url);
         console.log(`Waiting for .leaflet-container`);
         //await page.waitForText("Not an Official Ministry of Health Service");
         await page.waitUntilVisible('.leaflet-container');
         // Gross handcoded timeout
-        await page.waitForTimeout(4000);
-        console.log(`Taking screenshot: ${url}`)
+        await page.waitForTimeout(2000);
+        console.log(`Taking screenshot: ${url}`);
         const screenShotBuffer = await page.screenshot();
         if(!!screenShotBuffer){
             res.writeHead(200, {
