@@ -143,7 +143,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         //await page.waitForText("Not an Official Ministry of Health Service");
         await page.waitUntilVisible('.leaflet-container');
         // Gross handcoded timeout
-        await page.waitForTimeout(2000);
+        //await page.waitForTimeout(2000);
         console.log(`Taking screenshot: ${url}`);
         const screenShotBuffer = await page.screenshot();
         if(!!screenShotBuffer){
