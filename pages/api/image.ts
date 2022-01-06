@@ -133,8 +133,11 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }
             </style>
         </html>`);*/
-        page.goto(`https://nzcovidmap.org/?${reqQuery}`);
-        await page.waitForTimeout(5000);
+        let url = `https://nzcovidmap.org/?${reqQuery}`
+        console.log(`Going to page ${url}`)
+        page.goto(url);
+        await page.waitForText("Not an Official Ministry of Health Service");
+        console.log(`Taking screenshot: ${url}`)
         const screenShotBuffer = await page.screenshot();
         if(!!screenShotBuffer){
             res.writeHead(200, {
@@ -142,7 +145,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 "Content-Length": Buffer.byteLength(screenShotBuffer),
             })
         }else{ 
-            res.end("Error occurred (monkeybum)");
+            console.log(`Error occurred (no screenshot image): ${url}`)
+            res.end("Error occurred (no screenshot image)");
         }
         res.end(screenShotBuffer);
 }
