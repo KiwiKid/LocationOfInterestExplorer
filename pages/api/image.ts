@@ -135,10 +135,14 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         </html>`);*/
         page.goto(`https://nzcovidmap.org/${reqQuery}`);
         const screenShotBuffer = await page.screenshot();
-        res.writeHead(200, {
-            "Content-Type": "image/png",
-            "Content-Length": Buffer.byteLength(screenShotBuffer),
-        })
+        if(!!screenShotBuffer){
+            res.writeHead(200, {
+                "Content-Type": "image/png",
+                "Content-Length": Buffer.byteLength(screenShotBuffer),
+            })
+        }else{ 
+            res.end("Error occurred (monkeybum)");
+        }
         res.end(screenShotBuffer);
 }
 
