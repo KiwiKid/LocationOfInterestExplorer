@@ -250,7 +250,7 @@ const LocationPageDrawer = ({
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
           <div className="m-auto italic text-gray-700  text-center">
             <>
-              <div className="text-sm font-light"><span className="bold font-base">Drag</span> or <span className="bold font-base">Click</span> this bar <br/> Not an Official Ministry of Health Service.{JSON.stringify(pageState)}</div>
+              <div className="text-sm font-light"><span className="bold font-base">{window.location.href}Drag</span> or <span className="bold font-base">Click</span> this bar <br/> Not an Official Ministry of Health Service.{JSON.stringify(pageState)}</div>
               
             </>
           </div>
