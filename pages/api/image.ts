@@ -7,7 +7,7 @@ import chromium from 'chrome-aws-lambda';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
-    const reqQuery = req.query.post;//.replace('reqQuery', '');
+    const reqQuery = req.query.reqQuery;//.replace('reqQuery', '');
 
     /*if(post.attributes.image != null) {
         // Posts with images
@@ -133,7 +133,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }
             </style>
         </html>`);*/
-        page.goto(`https://nzcovidmap.org/${reqQuery}`);
+        page.goto(`https://nzcovidmap.org/?${reqQuery}`);
         page.waitForText("Locations of Interest since");
         const screenShotBuffer = await page.screenshot();
         if(!!screenShotBuffer){

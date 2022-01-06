@@ -1,28 +1,30 @@
 import Image from "next/image"
 
-function Preview(query:string) {
-    return (<Image src={`/api/image${query}`} alt="NZ Locations of interest"/>)
+type PreviewProps = {
+  query: string
+}
+
+function Preview({query}:PreviewProps):JSX.Element {
+    return (<Image src={`/api/image?reqQuery=${query}`} alt={`/api/image?reqQuery=${query}`} width="900" height="600" />)
   }
   
   export async function getStaticPaths() {
     return {
         paths: [
-            { params: { loc: 'auckland'}},
-            { params: { loc: 'christchurch'}}
+            { params: { query: encodeURIComponent('loc=auckland')}},
+            { params: { query: encodeURIComponent('loc=christchurch')}}
         ],
-        fallback: false
+        fallback: true
     }
   }
   
   // This also gets called at build time
-  /*export async function getStaticProps({ params }) {
+  export async function getStaticProps({params}:any) {
     // params contains the post `id`.
     // If the route is like /posts/1, then params.id is 1
-    const res = await fetch(`/${params.reqQuery}`)
-    const post = await res.json()
   
     // Pass post data to the page via props
-    return { props: { post } }
-  }*/
+    return { props: { query: params.query } }
+  }
   
   export default Preview
