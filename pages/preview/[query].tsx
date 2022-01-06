@@ -9,7 +9,8 @@ function Preview(query:string) {
         paths: [
             { params: { loc: 'auckland'}},
             { params: { loc: 'christchurch'}}
-        ]
+        ],
+        fallback: false
     }
   }
   
