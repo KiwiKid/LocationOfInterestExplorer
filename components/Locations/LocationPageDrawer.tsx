@@ -203,8 +203,8 @@ const LocationPageDrawer = ({
     useEffect(() => {
       if(window.location.origin){
         setUrl(window.location.origin);
-        setDebugURL(window.location.href);
       }      
+      setDebugURL(window.location.href);
     }, [])
 
 
