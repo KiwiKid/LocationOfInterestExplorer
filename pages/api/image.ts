@@ -139,6 +139,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         console.log(`Waiting for .leaflet-container`)
         //await page.waitForText("Not an Official Ministry of Health Service");
         await page.waitUntilVisible('.leaflet-container');
+        // Use the new requests for map tiles to wait for the movement of the map
+        await page.waitForInflightRequests();
         console.log(`Taking screenshot: ${url}`)
         const screenShotBuffer = await page.screenshot();
         if(!!screenShotBuffer){
