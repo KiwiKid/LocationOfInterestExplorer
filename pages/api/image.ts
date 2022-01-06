@@ -136,7 +136,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         let url = `https://nzcovidmap.org/?${reqQuery}`
         console.log(`Going to page ${url}`)
         page.goto(url);
-        await page.waitForText("Not an Official Ministry of Health Service");
+        console.log(`Waiting for .leaflet-container`)
+        //await page.waitForText("Not an Official Ministry of Health Service");
+        await page.waitUntilVisible('.leaflet-container');
         console.log(`Taking screenshot: ${url}`)
         const screenShotBuffer = await page.screenshot();
         if(!!screenShotBuffer){

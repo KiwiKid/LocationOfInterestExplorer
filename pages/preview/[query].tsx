@@ -4,9 +4,13 @@ type PreviewProps = {
   query: string
 }
 
+
+//https://c19locations-staging.vercel.app/preview/loc%3Dauckland
+//https://c19locations-staging.vercel.app/api/image?reqQuery=loc%3Dauckland&w=1080&q=75
+
 function Preview(props:PreviewProps):JSX.Element {
     const url = `/api/image?reqQuery=${encodeURIComponent(props.query)}`
-    return (props.query ? <Image src={url} alt={url} width="900" height="600" />: <></>)
+    return (props.query ? <img src={url} alt={url} width="900" height="600" />: <></>)
   }
   
   export async function getStaticPaths() {
