@@ -34,6 +34,8 @@ const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInt
   }
 }
 
+
+
 const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcodedURL}) => {
 
   const settings = useSettings();
@@ -44,6 +46,10 @@ const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcod
   const mediumTitle = "NZ Covid Map - Explore Official Locations of Interest"
   const longTitle = "NZ Covid Map - Explore Official Locations of Interest published by the Ministry of Health"
   const description =  "NZ Covid Map allows you too explore Locations of Interest published by the Ministry of Health easily, from any device."
+
+const metaImageURL = 
+    settings.quickLink == null ? `${hardcodedURL}/img/preview.png` : 
+    `preview/${encodeURIComponent(`loc=${settings.quickLink}`)}`;
 
   return (
     <>
@@ -90,7 +96,7 @@ const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcod
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={shortTitle} />
       <meta property='og:url' content={`${hardcodedURL}`} />
-      <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
+      <meta property='og:image' content={metaImageURL} key='ogimg' />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
       <link rel='apple-touch-startup-image' href='/images/apple_splash_2048.png' sizes='2048x2732' />

@@ -3,4 +3,5 @@ export type StartingSettingsMergeable = {
     zoom:number | null
     daysInPastShown:number | null
     resetDraw: boolean | null
+    quickLink: PresetLocation | null
   }
