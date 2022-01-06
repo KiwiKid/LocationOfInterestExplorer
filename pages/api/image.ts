@@ -133,14 +133,14 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }
             </style>
         </html>`);*/
-        let url = `https://nzcovidmap.org/?${reqQuery}`
-        console.log(`Going to page ${url}`)
+        let url = `https://nzcovidmap.org/?${reqQuery}`;
+        console.log(`Going to page ${url}`);
         page.goto(url);
-        console.log(`Waiting for .leaflet-container`)
+        console.log(`Waiting for .leaflet-container`);
         //await page.waitForText("Not an Official Ministry of Health Service");
         await page.waitUntilVisible('.leaflet-container');
         // Gross handcoded timeout
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(4000);
         console.log(`Taking screenshot: ${url}`)
         const screenShotBuffer = await page.screenshot();
         if(!!screenShotBuffer){
@@ -149,7 +149,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 "Content-Length": Buffer.byteLength(screenShotBuffer),
             })
         }else{ 
-            console.log(`Error occurred (no screenshot image): ${url}`)
+            console.log(`Error occurred (no screenshot image): ${url}`);
             res.end("Error occurred (no screenshot image)");
         }
         res.end(screenShotBuffer);
