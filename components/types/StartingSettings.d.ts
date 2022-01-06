@@ -3,5 +3,5 @@ export type StartingSettings = {
     zoom:number
     daysInPastShown:number
     resetDraw:boolean
-    quickLink:Quicklink
+    quickLink:PresetLocation | null
   }
