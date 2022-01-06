@@ -43,7 +43,7 @@ const Home: NextPage<HomePageProps> = ({locationRecords, publishTimeUTC, hardcod
   const locations = locationRecords.map(mapLocationRecordToLocation);
 
   const shortTitle = `NZ Covid Map ${settings.quickLink != null ? `- ${settings.quickLink.title}` : ''}`
-  const mediumTitle = "NZ Covid Map - Explore Official Locations of Interest"
+  const mediumTitle = `NZ Covid Map ${settings.quickLink != null ? `- ${settings.quickLink.title}` : ''} - Explore Official Locations of Interest`
   const longTitle = "NZ Covid Map - Explore Official Locations of Interest published by the Ministry of Health"
   const description =  "NZ Covid Map allows you too explore Locations of Interest published by the Ministry of Health easily, from any device."
 
