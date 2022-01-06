@@ -22,7 +22,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
 
     const addedDateIsRecent = getHoursAgo(loi.added) < 48;
 
-    return ( <div key={`${loi.id}_L`}>
+    return ( <div key={`${loi.id}_L`} id={loi.id}>
                 <div>
                     <div className={`bg-gray-100 grid grid-cols-6 content-center align-middle `} onClick={(evt) => toggleOpenLocation(loi.id)}>
                         <div className="text-center">{loi.city}</div>

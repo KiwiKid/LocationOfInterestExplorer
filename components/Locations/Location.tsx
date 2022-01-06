@@ -24,7 +24,7 @@ import RegisterVisit from "./RegisterVisit"
         const addedDateIsRecent = getHoursAgo(loi.added) < 48;
 
         return (
-            <div key={`${loi.id}_S`} className="p-1" >
+            <div key={`${loi.id}_S`} id={loi.id} className="p-1" >
                 <div className={`rounded-lg grid grid-cols-2`} 
                         onClick={(evt) => toggleOpenLocation(loi.id)}>
                     {addedDateIsRecent && <div className="col-span-full"><LocationMetaDataSummary loi={loi} showUpdated={isOpen}/></div>}
