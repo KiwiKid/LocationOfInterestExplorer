@@ -1,16 +1,17 @@
+import Image from "next/image"
+
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import { useState } from 'react'
-import LocationsPage from '../components/Locations/LocationsPage'
-import { useSettings } from '../components/Locations/useSettings'
-import { getHardCodedUrl } from '../components/utils/utils'
+import LocationsPage from '../../components/Locations/LocationsPage'
+import { getMatchingQuickLink, useSettings } from '../../components/Locations/useSettings'
+import { getHardCodedUrl } from '../../components/utils/utils'
 import styles from '../styles/Home.module.css'
-import { LocationOfInterest } from '../components/types/LocationOfInterest'
-import LocationContext from '../components/Locations/LocationAPI/LocationContext'
+import { LocationOfInterest } from '../../components/types/LocationOfInterest'
+import LocationContext from "../../components/Locations/LocationAPI/LocationContext"
 
-type HomePageProps = {
-  locationRecords: LocationOfInterestRecord[]
+type LocationPageProps = {
+  quickLink: PresetLocation
   publishTimeUTC: string // Allow for native next.js props usage
   hardcodedURL: string
 }
@@ -36,22 +37,18 @@ const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInt
 
 
 
-const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
+const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, hardcodedURL}) => {
 
-  const settings = useSettings();
+  //const settings = useSettings();
 
-  //const { locationRecords, error, loading } = useMohLocations();
-
- // let locationRecords = LocationContext;
-
-  const shortTitle = `NZ Covid Map ${settings.quickLink != null ? `- ${settings.quickLink.title}` : ''}`
-  const mediumTitle = `NZ Covid Map ${settings.quickLink != null ? `- ${settings.quickLink.title}` : ''} - Explore Official Locations of Interest`
+  const shortTitle = `NZ Covid Map ${quickLink != null ? `- ${quickLink.title}` : ''}`
+  const mediumTitle = `NZ Covid Map ${quickLink != null ? `- ${quickLink.title}` : ''} - Explore Official Locations of Interest`
   const longTitle = "NZ Covid Map - Explore Official Locations of Interest published by the Ministry of Health"
   const description =  "NZ Covid Map allows you too explore Locations of Interest published by the Ministry of Health easily, from any device."
 
 const metaImageURL = 
-    settings.quickLink == null ? `${hardcodedURL}/img/preview.png` : 
-    `${hardcodedURL}/preview/${encodeURIComponent(`loc=${settings.quickLink.urlParam}`)}`;
+    quickLink == null ? `${hardcodedURL}/img/preview.png` : 
+    `${hardcodedURL}/preview/${encodeURIComponent(`loc=${quickLink.urlParam}`)}`;
 
   return (
     <>
@@ -97,7 +94,7 @@ const metaImageURL =
       <meta property='og:title' content={shortTitle} />
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={shortTitle} />
-      <meta property='og:url' content={`${hardcodedURL}${settings.quickLink ? '?loc='+encodeURIComponent(`${settings.quickLink.urlParam}`) : ''}`} />
+      <meta property='og:url' content={`${hardcodedURL}${quickLink ? '?loc='+encodeURIComponent(`${quickLink.urlParam}`) : ''}`} />
       <meta property='og:image' content={metaImageURL} key='ogimg' />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
@@ -110,46 +107,52 @@ const metaImageURL =
       <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
     </Head>
       <>
-        {//!locationRecords ? <div>No Locations</div> : 
-          //locationRecords.length == 0 ? <div>0 Locations</div> :
-          <LocationContext.Consumer>
+        <LocationContext.Consumer>
             {locationsRecords => 
               locationsRecords ? <LocationsPage
                       locations={locationsRecords.map(mapLocationRecordToLocation)}
-                      startingSettings={settings}
+                      startingSettings={{
+                        daysInPastShown: 14,
+                        quickLink: quickLink,
+                        resetDraw: true,
+                        startingLocation: [quickLink.lat, quickLink.lng],
+                        zoom: quickLink.zoom
+                      }}
                       publishTime={new Date(publishTimeUTC)}
                   />: <>No Loc records</>
             }
           </LocationContext.Consumer>
-        }
       </>
     </>
   )
 }
-/*
-export const getStaticProps:GetStaticProps = async (context:any) => {
+
+export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
 
 
  // const fakeDateInPast = Date.parse(new Date().toISOString()) - (10 * 60 * 1000);
-/*
+
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
       hardcodedURL: getHardCodedUrl(),
-      locationRecords: locationRecords
+      quickLink: params && typeof(params.query) === 'string' ? getMatchingQuickLink(params.query) : null 
      }
   }
 }
-*/
-/*
-export async function getStaticPaths(){
-  return  {
-    paths: [
-      { params: { }},
-    ]
-    , fallback: true
+
+export async function getStaticPaths() {
+    return {
+        paths: [
+            { params: { query: 'auckland'}},
+            { params: { query: 'christchurch'}}
+        ],
+        fallback: true
+    }
   }
-}*/
 
 
-export default Home
+
+export default LocationPage
+
+  

@@ -3,6 +3,7 @@ import { LocationAPIResponse } from "../types/LocationAPIResponse"
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import fetcher from "../utils/fetcher"
 import get, { AxiosResponse, AxiosPromise } from 'axios'
+import React, { useContext, useEffect, useReducer, useState } from "react";
 
 type LocationOverride = {
   eventName?: string  // Indirect Override (preferred)
@@ -44,27 +45,21 @@ let LOCATION_OVERRIDES:LocationOverride[] = [
   , {eventId: 'a0l4a0000006jpuAAA', lat: '-37.679527857475044', lng:'176.1656490270016'}
 ]
 
-function getLocations():Promise<LocationOfInterestRecord[] | void> {
 
-  var res = new Promise<LocationOfInterestRecord[]>((resolve, reject) => {
-    try{
-      get({url: process.env.MOH_LOCATIONS_URL})
-        .then(async (response:AxiosResponse<LocationOfInterestAPIResponse>) => {
-          var res = 
-          response.data.items
-            .map(mapLoITOLoIRecord)
-            .map(applyLocationOverrides) || []
-
-          resolve(res);
-
-        });
-      }catch(err){
-        reject(err);
-      }
-  })
-
-  return res;
+/*
+TODO: Create a reducer for all location management
+const visibleLocations = (state:any, action:any) => {
+  switch (action.type) {
+      case "changeColor":
+          return {...state, color: action.color};
+      case "changeTextVisibility":
+          return {...state, isTextVisible: !state.isTextVisible};
+      default:
+          return state;
+  }
 }
+*/
+
 
 const applyLocationOverrides = (rec:LocationOfInterestRecord):LocationOfInterestRecord => {
 
@@ -74,7 +69,6 @@ const applyLocationOverrides = (rec:LocationOfInterestRecord):LocationOfInterest
     rec.lng = overriddenLocation.lng;
     return rec;
   }
-
 
   var locationFromEvent = LOCATION_OVERRIDES.filter((ov) => ov.eventName == rec.event)[0];
   if(locationFromEvent !== undefined){
@@ -124,4 +118,4 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 
 
 
-export { getLocations, LOCATION_OVERRIDES}
+export { mapLoITOLoIRecord, LOCATION_OVERRIDES, applyLocationOverrides}

@@ -16,11 +16,14 @@ const DEFAULT_SETTINGS:StartingSettings = {
     quickLink: null
 }
 
+const getMatchingQuickLink = (locationParam:string) => PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam)[0];
+
+
 
 const processQueryString = (query:any):StartingSettingsMergeable => {
 
   if(!!query.loc){
-    let quickLink = PRESET_LOCATIONS.filter((pl) => pl.urlParam === query.loc)[0];
+    let quickLink = getMatchingQuickLink(query.loc);
     if(quickLink == undefined){
       console.error(`No quick link '${query.loc}' exists`);
       return DEFAULT_SETTINGS;
@@ -39,7 +42,7 @@ const processQueryString = (query:any):StartingSettingsMergeable => {
         zoom: query.zoom ? +query.zoom : null,//DEFAULT_ZOOM,
         daysInPastShown: query.daysInPastShown ? +query.daysInPastShown : null,//DEFAULT_DAYS_IN_PAST
         resetDraw: null,
-        quickLink: query.quickLink ? query.quickLink : null
+        quickLink: { lat: 1, lng: 1, title: 'hello', urlParam: 'woah', zoom: 8}
     }
   }
 
@@ -72,6 +75,8 @@ export const useSettings = ():StartingSettings  => {
     let settings = mergeSettings({a: querySettings, b:DEFAULT_SETTINGS});
     return settings
   }
+
+  export {getMatchingQuickLink}
 
 
   

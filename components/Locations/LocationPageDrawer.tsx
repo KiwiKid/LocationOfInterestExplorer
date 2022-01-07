@@ -21,7 +21,7 @@ import Link from "next/link";
 import {  NiceDate, NiceShortDate } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
-import { LOCATION_OVERRIDES } from "./getLocations";
+import { LOCATION_OVERRIDES } from "./LocationObjectHandling";
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay";
 
