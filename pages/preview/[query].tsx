@@ -10,7 +10,7 @@ type PreviewProps = {
 
 function Preview(props:PreviewProps):JSX.Element {
     const url = `/api/image?reqQuery=${encodeURIComponent(props.query)}`
-    return (props.query ? <Image src={url} alt={url} width="900" height="600" />: <>No props</>)
+    return (props.query ? <Image src={url} alt={url} width="900" height="600" layout="fill" quality={10} priority={true}  />: <>No props for image</>)
   }
   
   export async function getStaticPaths() {
