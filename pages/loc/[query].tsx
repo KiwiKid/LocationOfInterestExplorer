@@ -48,7 +48,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
 
 const metaImageURL = 
     quickLink == null ? `${hardcodedURL}/img/preview.png` : 
-    `${hardcodedURL}/preview/${encodeURIComponent(`loc=${quickLink.urlParam}`)}`;
+    `${hardcodedURL}/preview/?${encodeURIComponent(`loc=${quickLink.urlParam}`)}`;
 
   return (
     <>
@@ -119,7 +119,7 @@ const metaImageURL =
                         zoom: quickLink.zoom
                       }}
                       publishTime={new Date(publishTimeUTC)}
-                  />: <>No Loc records</>
+                  />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>
             }
           </LocationContext.Consumer>
       </>

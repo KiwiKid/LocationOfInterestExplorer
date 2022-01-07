@@ -47,7 +47,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
   const shortTitle = `NZ Covid Map ${settings.quickLink != null ? `- ${settings.quickLink.title}` : ''}`
   const mediumTitle = `NZ Covid Map ${settings.quickLink != null ? `- ${settings.quickLink.title}` : ''} - Explore Official Locations of Interest`
   const longTitle = "NZ Covid Map - Explore Official Locations of Interest published by the Ministry of Health"
-  const description =  "NZ Covid Map allows you too explore Locations of Interest published by the Ministry of Health easily, from any device."
+  const description =  "Explore Locations of Interest published by the Ministry of Health from anywhere"
 
 const metaImageURL = 
     settings.quickLink == null ? `${hardcodedURL}/img/preview.png` : 
