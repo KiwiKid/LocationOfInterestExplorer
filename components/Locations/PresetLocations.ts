@@ -77,7 +77,15 @@ export const PRESET_LOCATIONS:PresetLocation[] = [
     lat: -39.9333,
     lng: 175.0500,
     zoom: 12
-  }/*,{
+  },{
+    title: "Taupo",
+    urlParam: "taupo",
+    lat: -38.6669222319595, 
+    lng: 176.07563672978526,
+    zoom: 12
+  }
+  
+  /*,{
     title: 'Te Puke',
     urlParam: "tepuke",
     lat: -37.766667,
