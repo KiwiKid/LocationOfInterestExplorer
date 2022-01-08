@@ -49,7 +49,8 @@ When the react-leaflet map loads, we create a set of LocationOfInterestsCalculat
 The Drawer contains details of all the locations in the current selection circle.
 
 Feature Ideas (open to ideas here!)
-- [ ] "Subscribe to a circle" (Notifications) [InProg - GC]
+- [ ] "Subscribe to a circle" (Notifications integration) [InProg - GC]
+- [ ] Generate a set of images for major population centers [InProg - GC]
 - [ ] Search text filter input box in Drawer
 - [ ] Improve navigation between drawers and map (and vice-versa)
 Tech Debt
@@ -59,8 +60,7 @@ Tech Debt
 - [ ] Zoom button styling (esp when moving drawer)
 - [ ] The useEffects are pretty funky in places (esp around map updates)
 
-set the meta tag for verifying domain ownership with google (only needed in production)
-NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG 
+
 
 
 
@@ -71,6 +71,8 @@ NEXT_PUBLIC_FACEBOOK_APP_ID
 NEXT_PUBLIC_FEEDBACK_URL=http://google.com
 (Google URL verification tag)
 NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG=WpxXBycKmD_r57XMCpmtwkVI1hax5LFawIMUZcXzfRo
+(meta tag for verifying domain ownership with google)
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG 
 
 
 ## Trigger automatic builds:
