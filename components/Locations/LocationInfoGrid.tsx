@@ -26,7 +26,7 @@ const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
                     
                     {Object.keys(groupedLocations).sort().reverse().map((d) => <>
                         <details>
-                        <summary><NiceDate date={new Date(d.substring(0,d.indexOf('|')))}/> - {groupedLocations[d].length} Locations - {d.substring(d.indexOf('|')+1, d.length)}
+                        <summary><NiceDate date={new Date(d.substring(0,d.indexOf('|')))}/> - {groupedLocations[d].length} Locations - {d.substring(d.indexOf('|')+1, d.length)} {groupedLocations[d].some((gl) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
                             <CopyBox 
                                     id="copybox"
                                     copyText=
