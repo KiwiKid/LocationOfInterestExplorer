@@ -45,6 +45,24 @@ let LOCATION_OVERRIDES:LocationOverride[] = [
   , {eventId: 'a0l4a0000006jpuAAA', lat: '-37.679527857475044', lng:'176.1656490270016'}
 ]
 
+const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
+  return {
+    id: rec.id,
+    location: rec.location,
+    city: rec.city,
+    event: rec.event,
+    start: new Date(rec.start),
+    end: new Date(rec.end),
+    updated: rec.updated ? new Date(rec.updated) : undefined,
+    added: new Date(rec.added),
+    exposureType: rec.exposureType,
+    visibleInWebform: rec.visibleInWebform,
+    advice: rec.advice,
+    lat: +rec.lat,
+    lng: +rec.lng,
+  }
+}
+
 
 /*
 TODO: Create a reducer for all location management
@@ -118,4 +136,4 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 
 
 
-export { mapLoITOLoIRecord, LOCATION_OVERRIDES, applyLocationOverrides}
+export { mapLoITOLoIRecord, LOCATION_OVERRIDES, applyLocationOverrides, mapLocationRecordToLocation}

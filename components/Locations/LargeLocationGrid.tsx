@@ -3,7 +3,7 @@ import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalcula
 import ExternalLink from "../utils/ExternalLink";
 import {metersToKmsString, detailedLongTimeToNZ, getHoursAgo } from "../utils/utils";
 import LocationMetaDataSummary from "./LocationMetaDataSummary";
-import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay";
+import { LocationSummaryDateDisplay } from "./LocationSummaryDateDisplay";
 import LocationExposureTypeDisplay from "./LocationExposureTypeDisplay";
 import RegisterIncorrectLocation from "./RegisterIncorrectLocation";
 import RegisterVisit from "./RegisterVisit";

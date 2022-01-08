@@ -8,6 +8,7 @@ import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
 import { LocationOfInterest } from '../components/types/LocationOfInterest'
 import LocationContext from '../components/Locations/LocationAPI/LocationContext'
+import { mapLocationRecordToLocation } from '../components/Locations/LocationObjectHandling'
 
 type HomePageProps = {
   locationRecords: LocationOfInterestRecord[]
@@ -16,23 +17,7 @@ type HomePageProps = {
 }
 
 
-const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
-  return {
-    id: rec.id,
-    location: rec.location,
-    city: rec.city,
-    event: rec.event,
-    start: new Date(rec.start),
-    end: new Date(rec.end),
-    updated: rec.updated ? new Date(rec.updated) : undefined,
-    added: new Date(rec.added),
-    exposureType: rec.exposureType,
-    visibleInWebform: rec.visibleInWebform,
-    advice: rec.advice,
-    lat: +rec.lat,
-    lng: +rec.lng,
-  }
-}
+
 
 
 
@@ -126,21 +111,20 @@ const metaImageURL =
     </>
   )
 }
-/*
+
 export const getStaticProps:GetStaticProps = async (context:any) => {
 
 
  // const fakeDateInPast = Date.parse(new Date().toISOString()) - (10 * 60 * 1000);
-/*
+
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
-      hardcodedURL: getHardCodedUrl(),
-      locationRecords: locationRecords
+      hardcodedURL: getHardCodedUrl()
      }
   }
 }
-*/
+
 /*
 export async function getStaticPaths(){
   return  {

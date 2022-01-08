@@ -16,7 +16,7 @@ const DEFAULT_SETTINGS:StartingSettings = {
     quickLink: null
 }
 
-const getMatchingQuickLink = (locationParam:string) => PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam)[0];
+const getMatchingQuickLink = (locationParam:string) => PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam.toLowerCase())[0];
 
 
 

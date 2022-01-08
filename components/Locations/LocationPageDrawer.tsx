@@ -18,12 +18,12 @@ import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
-import {  NiceDate, NiceShortDate } from "./DateHandling";
+import {  NiceDate, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 import { LOCATION_OVERRIDES } from "./LocationObjectHandling";
 import { LocationOfInterest } from "../types/LocationOfInterest";
-import LocationSummaryDateDisplay from "./LocationSummaryDateDisplay";
+import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
 
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
@@ -263,7 +263,7 @@ const LocationPageDrawer = ({
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
-                    <div className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortDate date={publishTime}/>{dataStale && "⚠️"}</div>
+                    <div className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishTime}/>{dataStale && "⚠️"}</div>
                     {dataStale && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
               <LocationGridContainer 
@@ -281,26 +281,28 @@ const LocationPageDrawer = ({
                   <AddToHomeScreenButton /> 
                 </div>
                 <div className="">
-                  <CopyBox id="locatedCopy" copyText={`${url}${getPageUrl(pageState)}`} successText="Copy link to THIS circle" promptText="Link to THIS circle has been copied!">
-                    {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: undefined}
+                  <CopyBox id="locatedCopy" copyText={`${url}${getPageUrl(pageState)}`} promptText="Copy link to THIS circle" successText="Link to THIS circle has been copied!">
+                    {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: undefined}  
                   </CopyBox>
+                  
                 </div>
                 <div className="">
-                  <CopyBox id="basicCopy" copyText={`${url}`} successText="Copy link to page" promptText="Link copied" />
+                  <CopyBox id="basicCopy" copyText={`${url}`} promptText="Copy link to page" successText="Link copied" />
                 </div>
               </div>
             </ShareBar>   
             <Toggle title="🚨 Disclaimer 🚨" id="disclaimer" defaultOpen={true} extendClassName="border-gray-800 border-b-4">
-                <div className="text-center w-full">
+                <div className="text-center w-full ">
                     <p className="">
                       This service is not affiliated with the New Zealand Government or the Ministry of Health. It provides no guarantees of correctness or timeliness.
                     </p>
                     <p className=""> I&apos;ll do my best, but i&apos;m just a guy with a keyboard in a relatively dark room.</p>
-                    <div className="md:w-3/5 m-auto">
-                    <p className="text-center"> Any technical issues, questions, or suggestions/feedback, please:
-                      <SendFeedback />
-                    </p>
-                    
+                    <div className="w-3/5 m-auto">
+                      <p className="text-center"> Any technical issues, questions, or suggestions/feedback, please:</p>
+                      <div className="md:w-3/5 m-auto">
+                        <SendFeedback />
+                      </div>
+                      
                   </div>
                 </div>
             </Toggle>

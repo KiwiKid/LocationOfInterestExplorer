@@ -17,10 +17,20 @@ const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
 
 const NiceDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
 
-const NiceShortDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h:mm A')}</>
+const NiceShortTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h:mm A')}</>
 
-const groupingFormat = (date:Date) => {
+const NiceFullDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('D MMM h:mm A')}</>
+
+const startOfDay = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
 
-export {NiceTimeFromNow, NiceDate, groupingFormat, NiceShortDate}
+const startOfDayFormatted = (date:Date) => {
+    return dayjs(date).startOf('day').format('D MMM');
+}
+
+const releaseDateAndCity = (date:Date) => {
+    return dayjs(date).startOf('day').format();
+}
+
+export {NiceTimeFromNow, NiceDate,NiceFullDate, startOfDay, startOfDayFormatted, NiceShortTime}

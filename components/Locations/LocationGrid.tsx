@@ -6,7 +6,7 @@ import { LocationOfInterest } from '../types/LocationOfInterest';
 import LargeLocationGrid from './LargeLocationGrid';
 import { Sort } from '../types/Sort';
 import Location from './Location';
-import { groupingFormat } from './DateHandling';
+import { startOfDay } from './DateHandling';
 
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 }
 
 export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
-    return groupingFormat(loi.start);
+    return startOfDay(loi.start);
     try{
 
         switch(sortField){
@@ -46,7 +46,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
             .map((l:LocationOfInterestCalculated) => {
                 return l
             })
-            .groupBy((lc) => groupingFormat(lc.loi.start))
+            .groupBy((lc) => startOfDay(lc.loi.start))
             .value();
 
     function isOpen(loc:LocationOfInterest){

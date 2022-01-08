@@ -1,5 +1,5 @@
 import { shortTimeWithHourMinToNZ } from "../../utils/utils";
-import LocationSummaryDateDisplay from "../LocationSummaryDateDisplay";
+import {LocationSummaryDateDisplay} from "../LocationSummaryDateDisplay";
 import LocationExposureTypeDisplay from "../LocationExposureTypeDisplay";
 import AutoHidePopup from "./AutoHidePopup";
 import RegisterIncorrectLocation from '../RegisterIncorrectLocation';
