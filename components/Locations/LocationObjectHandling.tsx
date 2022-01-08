@@ -43,6 +43,10 @@ let LOCATION_OVERRIDES:LocationOverride[] = [
   , { eventId: 'a0l4a0000006jZhAAI', lat: '-38.11602517023455', lng:'176.2259859711393'}
   , {eventId: 'a0l4a0000006jgJAAQ', lat: '-41.29232941897306', lng:'174.77645536127966'}
   , {eventId: 'a0l4a0000006jpuAAA', lat: '-37.679527857475044', lng:'176.1656490270016'}
+  , {eventId: 'a0l4a0000006jsZAAQ', lat: '-37.63690773843197', lng:'176.1829740402555'}
+  , {eventId: 'a0l4a0000006jmbAAA', lat: '-36.823432181151354', lng:'174.61118945822034'}
+  , {eventId: 'a0l4a0000006jj8AAA', lat: '-36.823432181151354', lng:'174.61118945822034'}
+  , {eventId: 'a0l4a0000006jlEAAQ', lat: '-36.823432181151354', lng:'174.61118945822034'}
 ]
 
 const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
