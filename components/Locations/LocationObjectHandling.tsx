@@ -4,6 +4,7 @@ import { LocationOfInterest } from "../types/LocationOfInterest";
 import fetcher from "../utils/fetcher"
 import get, { AxiosResponse, AxiosPromise } from 'axios'
 import React, { useContext, useEffect, useReducer, useState } from "react";
+import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 
 type LocationOverride = {
   eventName?: string  // Indirect Override (preferred)
@@ -134,10 +135,16 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 
   return res;
 }
+const getPrintableLocationOfInterestString = (l:LocationOfInterest) => `- ${l.event} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
+
+// This isn't dependable CSV conversion and it doesn't need to be (its just for debugging)
+const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
+  return `${loi.added}|${loi.updated}|${loi.event}|${loi.location}|${loi.city}|${loi.start},${loi.end},${loi.advice}|${loi.visibleInWebform}|${loi.exposureType}|${loi.lat}|${loi.lng}`
+}
 
 
 
 
 
 
-export { mapLoITOLoIRecord, LOCATION_OVERRIDES, applyLocationOverrides, mapLocationRecordToLocation}
+export { mapLoITOLoIRecord,getPrintableLocationOfInterestString, getCSVLocationOfInterestString, LOCATION_OVERRIDES, applyLocationOverrides, mapLocationRecordToLocation}

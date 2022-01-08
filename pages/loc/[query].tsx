@@ -110,7 +110,7 @@ const metaImageURL =
         <LocationContext.Consumer>
             {locationsRecords => 
               locationsRecords ? <LocationsPage
-                      locations={locationsRecords.map(mapLocationRecordToLocation)}
+                      locations={locationsRecords}
                       startingSettings={{
                         daysInPastShown: 14,
                         quickLink: quickLink,

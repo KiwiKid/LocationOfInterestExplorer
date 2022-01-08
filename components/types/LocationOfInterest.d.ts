@@ -1,6 +1,6 @@
 import {LatLng} from 'leaflet'
 
-export interface LocationOfInterest {
+export type LocationOfInterest = {
     id: string;
     location: string;
     city: string;

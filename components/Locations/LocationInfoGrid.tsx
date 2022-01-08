@@ -4,6 +4,7 @@ import { LocationOfInterest } from "../types/LocationOfInterest";
 import CopyBox from "../utils/CopyBox";
 import { getHoursAgo } from "../utils/utils";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "./DateHandling";
+import { getPrintableLocationOfInterestString } from "./LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 
 type LocationInfoGridProps = {
@@ -12,19 +13,19 @@ type LocationInfoGridProps = {
 }
 
 const getBorderColor = (hoursAgo:number) => {
-   
     if(hoursAgo <= 5){
         return `red-${(700-(hoursAgo*100))}`
     }
-    if(hoursAgo < 24){
+    if(hoursAgo < 10){
         return 'yellow-300'
     }
-    return '';
+    return 'black';
 }
 
 type LocationGroupProps = {
     group: any
     groupKey: string
+    hardcodedURL: string
 }
 
 const processGroupKey = (key:string) => {
@@ -34,18 +35,20 @@ const processGroupKey = (key:string) => {
     }
 }
 
-const LocationGroup = ({groupKey, group}:LocationGroupProps) => {
+const LocationGroup = ({groupKey, group, hardcodedURL}:LocationGroupProps) => {
 
     const { date, loc } = processGroupKey(groupKey);
 
     const mostRecentLocationAdded = group.sort((loi:LocationOfInterest) => loi.added)[0].added;
+    
+    const metaImageURL = `${hardcodedURL}/preview/${encodeURIComponent(`loc=${loc}`)}`;
 
     return (
         <>
             <details className={`m-4 p-4 border-4  border-${getBorderColor(getHoursAgo(date))}`}>
-            <summary className="pb-36 red">
-            <NiceDate date={date}/> - {group.length} Locations - {loc} {group.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
-            ({getHoursAgo(mostRecentLocationAdded)} hours ago)
+            <summary className="">
+            (after) <NiceDate date={date}/> - {group.length} Locations - {loc} {group.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
+            (most recent was {getHoursAgo(mostRecentLocationAdded)} hours ago)
                 <CopyBox 
                         id="copybox"
                         copyText=
@@ -54,7 +57,7 @@ const LocationGroup = ({groupKey, group}:LocationGroupProps) => {
                 <CopyBox 
                     id="copybox"
                     copyText=
-                    {`${loc} - ${group.length} Locations:\n${group.map(locationString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
+                    {`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
                     textarea={true} 
                 />
             </summary>
@@ -89,16 +92,17 @@ const LocationGroup = ({groupKey, group}:LocationGroupProps) => {
                     <div className={`${lr.lng === 0 ? 'bg-red-500':''}`}>{lr.lng}</div>
                     <div className={`${lr.lat === 0 ? 'bg-red-500':''}`}>{lr.lat}</div>
                 </>)}
+               
             </div>
+            <div>{metaImageURL}</div>
+            <img src={metaImageURL}/>
         </details>
         </>
     )
 }
 
 
-const locationString = (l:LocationOfInterest) => {
-    return `- ${l.event} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
-}
+
 const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
     
     var groupedLocations = _.groupBy(locations
@@ -107,7 +111,7 @@ const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
         });
 
     return (<div className="">                    
-                {Object.keys(groupedLocations).sort().reverse().map((d) => <LocationGroup key={d} groupKey={d} group={groupedLocations[d]}/>)}
+                {Object.keys(groupedLocations).sort().reverse().map((d) => <LocationGroup key={d} groupKey={d} group={groupedLocations[d]} hardcodedURL={hardcodedURL}/>)}
             </div>)
 }
 

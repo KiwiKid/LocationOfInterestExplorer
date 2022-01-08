@@ -1,5 +1,6 @@
 import { createContext } from "react";
+import { LocationOfInterest } from "../../types/LocationOfInterest";
 
-const LocationContext = createContext<LocationOfInterestRecord[]|undefined>(undefined);
+const LocationContext = createContext<LocationOfInterest[]|undefined>(undefined);
 
 export default LocationContext

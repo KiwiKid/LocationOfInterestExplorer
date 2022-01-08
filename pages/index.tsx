@@ -98,9 +98,9 @@ const metaImageURL =
         {//!locationRecords ? <div>No Locations</div> : 
           //locationRecords.length == 0 ? <div>0 Locations</div> :
           <LocationContext.Consumer>
-            {locationsRecords => 
-              locationsRecords ? <LocationsPage
-                      locations={locationsRecords.map(mapLocationRecordToLocation)}
+            {locations => 
+              locations ? <LocationsPage
+                      locations={locations}
                       startingSettings={settings}
                       publishTime={new Date(publishTimeUTC)}
                   />: <>Loading a Map of Covid-19 Locations of Interest published by the Ministry of Health</>

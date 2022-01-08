@@ -421,6 +421,7 @@ const LocationPageDrawer = ({
                       <summary>debug</summary>
                       <div>{JSON.stringify(pageState)}</div>
                       <div>{debugURL}</div>
+                      <Link href={'/info'}>raw info</Link>
                     </details>
                 </div>
                 
