@@ -13,6 +13,9 @@ type LocationInfoGridProps = {
 }
 
 const getBorderColor = (hoursAgo:number) => {
+    if(hoursAgo == 0){
+        return 'red-900'
+    }
     if(hoursAgo <= 5){
         return `red-${(700-(hoursAgo*100))}`
     }
@@ -42,6 +45,7 @@ const LocationGroup = ({groupKey, group, hardcodedURL}:LocationGroupProps) => {
     const mostRecentLocationAdded = group.sort((loi:LocationOfInterest) => loi.added)[0].added;
     
     const metaImageURL = `${hardcodedURL}/preview/loc/${encodeURIComponent(loc)}`;
+    const metaImageURLDirect = `${hardcodedURL}/api/image/loc/${encodeURIComponent(loc)}`;
 
     return (
         <>
@@ -96,18 +100,28 @@ const LocationGroup = ({groupKey, group, hardcodedURL}:LocationGroupProps) => {
             </div>
             <div>{metaImageURL}</div>
             <img src={metaImageURL}/>
+            <img src={metaImageURLDirect}/>
         </details>
         </>
     )
 }
 
+const cityOverrides = [{ key: 'Mount Maunganui', override: 'Tauranga'}]
+
+const applyCityOverrides = (cityName:string) => {
+    let override = cityOverrides.filter((co) => co.key == cityName)[0];
+    if(override){
+        return override.override
+    }
+    return cityName;
+}
 
 
 const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
     
     var groupedLocations = _.groupBy(locations
         , function(lc){ 
-            return `${startOfDay(lc.added)}|${lc.city}`
+            return `${startOfDay(lc.added)}|${applyCityOverrides(lc.city)}`
         });
 
     return (<div className="">                    

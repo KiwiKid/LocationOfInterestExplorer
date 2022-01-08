@@ -1,12 +1,19 @@
 const WithPWA = require('next-pwa');
+const withPlugins = require('next-compose-plugins');
 const {InjectManifest} = require('workbox-webpack-plugin');
+const optimizedImages = require('next-optimized-images');
+
 /** @type {import('next').NextConfig} */
 
-module.exports = WithPWA({
-  reactStrictMode: true,
-  pwa: {
-    dest: 'public'
-  },
+module.exports = withPlugins([
+  [WithPWA, {
+    reactStrictMode: true,
+    pwa: {
+      dest: 'public'
+    }
+  }],
+  [optimizedImages, {}]
+], {
   async redirects(){
     return [
       {
@@ -24,5 +31,6 @@ module.exports = WithPWA({
     new InjectManifest({
       swSrc: './lib/sw.js',
     })
-  ]
-});
+  ]}
+);
+
