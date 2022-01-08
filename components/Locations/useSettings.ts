@@ -42,7 +42,7 @@ const processQueryString = (query:any):StartingSettingsMergeable => {
         zoom: query.zoom ? +query.zoom : null,//DEFAULT_ZOOM,
         daysInPastShown: query.daysInPastShown ? +query.daysInPastShown : null,//DEFAULT_DAYS_IN_PAST
         resetDraw: null,
-        quickLink: { lat: 1, lng: 1, title: 'hello', urlParam: 'woah', zoom: 8}
+        quickLink: null//{ lat: 1, lng: 1, title: 'hello', urlParam: 'woah', zoom: 8}
     }
   }
 

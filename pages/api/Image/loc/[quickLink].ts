@@ -5,11 +5,11 @@ import path from 'path';
 // Libs
 import chromium from 'chrome-aws-lambda';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getHardCodedUrl } from '../../components/utils/utils';
+import { getHardCodedUrl } from '../../../../components/utils/utils';
 
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
-    const reqQuery = req.query.reqQuery;//.replace('reqQuery', '');
+    const quickLink = decodeURIComponent(req.query.quickLink);//.replace('reqQuery', '');
 
     /*if(post.attributes.image != null) {
         // Posts with images
@@ -136,7 +136,11 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             </style>
         </html>`);*/
         
-        let url = `${getHardCodedUrl()}/?${typeof(reqQuery) == 'string' ?  decodeURIComponent(reqQuery) : 'array'}`;
+        
+        if(!quickLink || typeof(quickLink) !== 'string'){
+            throw 'Provide a quicklink';
+        }
+        let url = `${getHardCodedUrl()}/?${quickLink}`;
         console.log(`Going to page ${url}`);
         page.goto(url);
         console.log(`Waiting for .leaflet-container`);

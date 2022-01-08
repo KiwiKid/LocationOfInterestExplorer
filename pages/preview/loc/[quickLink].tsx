@@ -1,7 +1,7 @@
 import Image from "next/image"
 
 type PreviewProps = {
-  query: string
+  quickLink: string
 }
 
 
@@ -9,15 +9,15 @@ type PreviewProps = {
 //https://c19locations-staging.vercel.app/api/image?reqQuery=loc%3Dauckland&w=1080&q=75
 
 function Preview(props:PreviewProps):JSX.Element {
-    const url = `/api/image?reqQuery=${encodeURIComponent(props.query)}`
-    return (props.query ? <Image src={url} alt={url} width="900" height="600" layout="fill" quality={10} priority={true}  />: <>No props for image</>)
+    const url = `/api/image/loc/${encodeURIComponent(props.quickLink)}`;
+    return (props.quickLink ? <img src={url} alt={url} width="900" height="600" />: <>No props for image</>)
   }
   
   export async function getStaticPaths() {
     return {
         paths: [
-            { params: { query: encodeURIComponent('loc=auckland')}},
-            { params: { query: encodeURIComponent('loc=christchurch')}}
+            { params: { quickLink: 'auckland' }},
+            { params: { quickLink: 'christchurch' }}
         ],
         fallback: true
     }
@@ -29,7 +29,7 @@ function Preview(props:PreviewProps):JSX.Element {
     // If the route is like /posts/1, then params.id is 1
   
     // Pass post data to the page via props
-    return { props: { query: params.query } }
+    return { props: { quickLink: params.quickLink } }
   }
   
   export default Preview
