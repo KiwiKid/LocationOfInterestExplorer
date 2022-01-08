@@ -26,12 +26,11 @@ const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
                     
                     {Object.keys(groupedLocations).sort().reverse().map((d) => <>
                         <details>
-                        <summary><NiceDate date={new Date(d.substring(0,d.indexOf('|')))}/> - {groupedLocations[d].length} Locations
+                        <summary><NiceDate date={new Date(d.substring(0,d.indexOf('|')))}/> - {groupedLocations[d].length} Locations - {d.substring(d.indexOf('|')+1, d.length)}
                             <CopyBox 
                                     id="copybox"
                                     copyText=
                                     {`${groupedLocations[d].length} New Locations of Interest in ${d.substring(d.indexOf('|')+1, d.length)}\n`}
-                                    textarea={true} 
                                 />
                         
                             <CopyBox 
