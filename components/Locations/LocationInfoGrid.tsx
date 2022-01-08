@@ -41,7 +41,7 @@ const LocationGroup = ({groupKey, group, hardcodedURL}:LocationGroupProps) => {
 
     const mostRecentLocationAdded = group.sort((loi:LocationOfInterest) => loi.added)[0].added;
     
-    const metaImageURL = `${hardcodedURL}/preview/${encodeURIComponent(`loc=${loc}`)}`;
+    const metaImageURL = `${hardcodedURL}/preview/loc/${encodeURIComponent(loc)}`;
 
     return (
         <>
