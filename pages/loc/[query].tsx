@@ -48,7 +48,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
 
 const metaImageURL = 
     quickLink == null ? `${hardcodedURL}/img/preview.png` : 
-    `${hardcodedURL}/preview/${encodeURIComponent(`loc=${quickLink.urlParam}`)}`;
+    `${hardcodedURL}/preview/loc/${encodeURIComponent(quickLink.urlParam)}`;
 
   return (
     <>
