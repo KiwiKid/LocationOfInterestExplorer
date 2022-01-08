@@ -18,7 +18,7 @@ import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
-import {  NiceDate, NiceShortTime } from "./DateHandling";
+import { NiceDateWithTime, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 import { LOCATION_OVERRIDES } from "./LocationObjectHandling";
@@ -408,7 +408,7 @@ const LocationPageDrawer = ({
                             <div>{invLoc.city}</div>
                             <div>{invLoc.location}</div>
                             <div>{invLoc.advice}</div>
-                            <div><LocationSummaryDateDisplay loi={invLoc} includeDate={true}/> <NiceDate date={invLoc.start}/></div>
+                            <div><LocationSummaryDateDisplay loi={invLoc} includeDate={true}/> <NiceDateWithTime date={invLoc.start}/></div>
                           </>
                         ))}
                     </div>

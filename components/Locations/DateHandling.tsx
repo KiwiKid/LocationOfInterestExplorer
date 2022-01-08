@@ -15,6 +15,8 @@ const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
     return <>{dayjs().to(dayjs(date))}</>
 }
 
+const NiceDateWithTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
+
 const NiceDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
 
 const NiceShortTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h:mm A')}</>
@@ -33,4 +35,4 @@ const releaseDateAndCity = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
 
-export {NiceTimeFromNow, NiceDate,NiceFullDate, startOfDay, startOfDayFormatted, NiceShortTime}
+export {NiceTimeFromNow, NiceDateWithTime,NiceFullDate, NiceDate, startOfDay, startOfDayFormatted, NiceShortTime}

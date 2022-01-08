@@ -12,7 +12,7 @@ type LocationInfoGridProps = {
 
 
 const locationString = (l:LocationOfInterest) => {
-    return `- ${l.event} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType})` : ''}\n`
+    return `- ${l.event} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
 }
 const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
     
@@ -23,22 +23,17 @@ const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
 
 
     return (<div className="">
-                    <div>id</div>
-                    <div>added</div>
-                    <div>updated</div>
-                    <div>from</div>
-                    <div>to</div>
-                    <div>event</div>
-                    <div>location</div>
-
-                    <div>city</div>
-                    <div>exposureType</div>
-                    <div>advice</div>
-                    <div>lat</div>
-                    <div>lng</div>
+                    
                     {Object.keys(groupedLocations).sort().reverse().map((d) => <>
                         <details>
-                        <summary>{d} - {groupedLocations[d].length} Locations
+                        <summary><NiceDate date={new Date(d.substring(0,d.indexOf('|')))}/> - {groupedLocations[d].length} Locations
+                            <CopyBox 
+                                    id="copybox"
+                                    copyText=
+                                    {`${groupedLocations[d].length} New Locations of Interest in ${d.substring(d.indexOf('|')+1, d.length)}\n`}
+                                    textarea={true} 
+                                />
+                        
                             <CopyBox 
                                     id="copybox"
                                     copyText=
@@ -47,6 +42,19 @@ const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
                                 />
                                 </summary>
                         <div className="grid grid-cols-12">
+                            <div>id</div>
+                            <div>added</div>
+                            <div>updated</div>
+                            <div>from</div>
+                            <div>to</div>
+                            <div>event</div>
+                            <div>location</div>
+
+                            <div>city</div>
+                            <div>exposureType</div>
+                            <div>advice</div>
+                            <div>lat</div>
+                            <div>lng</div>
                             {groupedLocations[d].map((lr) => <>
                                 <div>{lr.id}</div>
                                 <div><NiceFullDate date={lr.added}/></div>

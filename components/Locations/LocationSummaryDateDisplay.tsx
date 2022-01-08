@@ -10,7 +10,7 @@ const locationSummaryDateDisplayString = (loi:LocationOfInterest, includeDate:bo
 
     const startEndSameDate = startDay === endDay;
     return startEndSameDate ? 
-        `${startTime} to ${endTime} ${includeDate ? `- ${startDay}` : ''}` :
+        `${includeDate ? `${startDay} - ` : ''} ${startTime} to ${endTime} ` :
         `${startTime} (${startDay}) to ${endTime} (${endDay})`
 }
 
