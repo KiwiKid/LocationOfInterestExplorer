@@ -9,7 +9,7 @@ const AutoSizeTextArea = ({text,className}:AutoSizeTextAreaProps) => {
 
   const [heightPx, setHeightPx] = useState(40);
 
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if(textareaRef && textareaRef.current){

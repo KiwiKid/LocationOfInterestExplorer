@@ -9,8 +9,12 @@ import { getHardCodedUrl } from '../../../../components/utils/utils';
 
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
-    const quickLink = decodeURIComponent(req.query.quickLink);//.replace('reqQuery', '');
+    if(!req.query.quickLink || typeof(req.query.quickLink) !== 'string'){
+        throw 'Provide a quicklink';
+    }
 
+    const quickLink = decodeURIComponent(req.query.quickLink);//.replace('reqQuery', '');
+    
     /*if(post.attributes.image != null) {
         // Posts with images
         const filePath = path.resolve('./public/', post.attributes.image);
@@ -137,9 +141,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         </html>`);*/
         
         
-        if(!quickLink || typeof(quickLink) !== 'string'){
-            throw 'Provide a quicklink';
-        }
+       
         let url = `${getHardCodedUrl()}/?${quickLink}`;
         console.log(`Going to page ${url}`);
         page.goto(url);
