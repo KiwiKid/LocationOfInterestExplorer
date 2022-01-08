@@ -103,7 +103,7 @@ const metaImageURL =
                       locations={locationsRecords.map(mapLocationRecordToLocation)}
                       startingSettings={settings}
                       publishTime={new Date(publishTimeUTC)}
-                  />: <>No Loc records</>
+                  />: <>Loading a Map of Covid-19 Locations of Interest published by the Ministry of Health</>
             }
           </LocationContext.Consumer>
         }
