@@ -251,7 +251,7 @@ const LocationPageDrawer = ({
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
           <div className="m-auto italic text-gray-700  text-center">
             <>
-              <div className="text-sm font-light"><span className="bold font-base">{debugURL}Drag</span> or <span className="bold font-base">Click</span> this bar <br/> Not an Official Ministry of Health Service.{JSON.stringify(pageState)}</div>
+              <div className="text-sm font-light"><span className="bold font-base">Drag</span> or <span className="bold font-base">Click</span> this bar <br/> Not an Official Ministry of Health Service.</div>
               
             </>
           </div>
@@ -417,6 +417,11 @@ const LocationPageDrawer = ({
                   <span className="underline">
                     <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>
                     </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
+                    <details>
+                      <summary>debug</summary>
+                      <div>{JSON.stringify(pageState)}</div>
+                      <div>{debugURL}</div>
+                    </details>
                 </div>
                 
               <div style={{height: '800px'}}>
