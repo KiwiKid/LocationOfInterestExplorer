@@ -6,6 +6,7 @@ import { getHoursAgo } from "../utils/utils";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "./DateHandling";
 import { getPrintableLocationOfInterestString } from "./LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
+import TodayLocationSummary from "./TodayLocationSummary";
 
 type LocationInfoGridProps = {
     locations:LocationOfInterest[]
@@ -33,6 +34,7 @@ type LocationGroupProps = {
 
 const processGroupKey = (key:string) => {
     return {
+        key: key,
         date: new Date(key.substring(0,key.indexOf('|'))),
         loc: key.substring(key.indexOf('|')+1, key.length)
     }
@@ -111,7 +113,7 @@ const cityOverrides = [{ key: 'Mount Maunganui', override: 'Tauranga'}]
 const applyCityOverrides = (cityName:string) => {
     let override = cityOverrides.filter((co) => co.key == cityName)[0];
     if(override){
-        return override.override
+        return override.override;
     }
     return cityName;
 }
@@ -124,10 +126,11 @@ const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
             return `${startOfDay(lc.added)}|${applyCityOverrides(lc.city)}`
         });
 
-    return (<div className="">                    
+    return (<div className="">
+                <TodayLocationSummary locationGroups={groupedLocations}/>                 
                 {Object.keys(groupedLocations).sort().reverse().map((d) => <LocationGroup key={d} groupKey={d} group={groupedLocations[d]} hardcodedURL={hardcodedURL}/>)}
             </div>)
 }
 
 
-export default LocationInfoGrid;
+export { LocationInfoGrid, processGroupKey }

@@ -11,7 +11,6 @@ import LocationContext from '../components/Locations/LocationAPI/LocationContext
 import { mapLocationRecordToLocation } from '../components/Locations/LocationObjectHandling'
 
 type HomePageProps = {
-  locationRecords: LocationOfInterestRecord[]
   publishTimeUTC: string // Allow for native next.js props usage
   hardcodedURL: string
 }

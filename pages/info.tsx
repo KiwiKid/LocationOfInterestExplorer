@@ -1,11 +1,12 @@
 import { GetStaticProps, NextPage } from "next"
-import { NiceFullDate } from "../components/Locations/DateHandling"
+import { NiceFullDate, startOfDay } from "../components/Locations/DateHandling"
 import LocationContext from "../components/Locations/LocationAPI/LocationContext"
-import LocationInfoGrid from "../components/Locations/LocationInfoGrid"
+import { LocationInfoGrid } from "../components/Locations/LocationInfoGrid"
 import { getCSVLocationOfInterestString, mapLocationRecordToLocation } from "../components/Locations/LocationObjectHandling"
 import LocationsPage from "../components/Locations/LocationsPage"
+import TodayLocationSummary from "../components/Locations/TodayLocationSummary"
 import CopyBox from "../components/utils/CopyBox"
-import { getHardCodedUrl } from "../components/utils/utils"
+import { getHardCodedUrl, getHoursAgo } from "../components/utils/utils"
 
 type InfoPageProps = {
     publishTimeUTC: string,
@@ -20,12 +21,14 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, hardcodedURL}) => {
         <LocationContext.Consumer>
         {locations => 
             locations ? 
-            <><LocationInfoGrid locations={locations} hardcodedURL={hardcodedURL} />
-            <CopyBox 
+            <>
+            <LocationInfoGrid locations={locations} hardcodedURL={hardcodedURL} />
+            
+            {/*<CopyBox 
                 id="copybox"
                 copyText=
                 {`${locations.map(getCSVLocationOfInterestString)}`}
-            />
+            />*/}
             </>
             : <>No Location records</>
         }
