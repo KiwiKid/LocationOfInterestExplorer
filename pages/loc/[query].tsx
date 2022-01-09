@@ -11,6 +11,7 @@ import { LocationOfInterest } from '../../components/types/LocationOfInterest'
 import LocationContext from "../../components/Locations/LocationAPI/LocationContext"
 import { PRESET_LOCATIONS } from "../../components/Locations/PresetLocations"
 import { useRouter } from "next/router"
+import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 
 type LocationPageProps = {
   quickLink: PresetLocation
@@ -30,10 +31,6 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
   const mediumTitle = `NZ Covid Map ${quickLink != null ? `- ${quickLink.title}` : ''} - Explore Official Locations of Interest`
   const longTitle = "NZ Covid Map - Explore Official Locations of Interest published by the Ministry of Health"
   const description =  "NZ Covid Map allows you too explore Locations of Interest published by the Ministry of Health easily, from any device."
-
-const metaImageURL = 
-    quickLink == null ? `${hardcodedURL}/img/preview.png` : 
-    `${hardcodedURL}/preview/loc/${encodeURIComponent(quickLink.urlParam)}`;
 
   return (
     <>
@@ -80,7 +77,10 @@ const metaImageURL =
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={shortTitle} />
       <meta property='og:url' content={`${hardcodedURL}${quickLink ? `/loc/${quickLink.urlParam}` : ''}`} />
-      <meta property='og:image' content={metaImageURL} key='ogimg' />
+      {quickLink ? 
+        <meta property='og:image' content={metaImageURLDirect(hardcodedURL, quickLink.urlParam)} key='ogimg' /> 
+        :  <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
+      }
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
       <link rel='apple-touch-startup-image' href='/images/apple_splash_2048.png' sizes='2048x2732' />
