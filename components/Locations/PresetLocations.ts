@@ -101,6 +101,12 @@ export const PRESET_LOCATIONS:PresetLocation[] = [
     lat: -37.391462000435894,
     lng: 175.84035379999997,
     zoom: 12
+  },{
+    title: "Queenstown",
+    urlParam: "queenstown",
+    lat: -45.02108559729038, 
+    lng: 168.69876199033442,
+    zoom: 12
   }
   
   /*,{

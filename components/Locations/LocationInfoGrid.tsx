@@ -4,7 +4,7 @@ import { LocationOfInterest } from "../types/LocationOfInterest";
 import CopyBox from "../utils/CopyBox";
 import { getHoursAgo } from "../utils/utils";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "./DateHandling";
-import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString } from "./LocationObjectHandling";
+import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "./LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 import TodayLocationSummary from "./TodayLocationSummary";
 
@@ -49,8 +49,6 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL}:LocationGroupProps)
 
     const mostRecentLocationAdded = group.sort((a:LocationOfInterest, b:LocationOfInterest) => a.added > b.added ? 1 : -1)[0].added;
     
-    const metaImageURL = `${hardcodedURL}/preview/loc/${encodeURIComponent(groupKey.city)}`;
-    const metaImageURLDirect = `${hardcodedURL}/api/image/loc/${encodeURIComponent(groupKey.city)}`;
 
     return (
         <>
@@ -106,8 +104,8 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL}:LocationGroupProps)
                
             </div>
             <div>{metaImageURL}</div>
-            <img src={metaImageURL}/>
-            <img src={metaImageURLDirect}/>
+            <img src={metaImageURL(hardcodedURL, groupKey.city)}/>
+            <img src={metaImageURLDirect(hardcodedURL, groupKey.city)}/>
         </details>
         </>
     )

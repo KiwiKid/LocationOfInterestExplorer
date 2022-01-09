@@ -143,7 +143,7 @@ const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
   return `${loi.added}|${loi.updated}|${loi.event}|${loi.location}|${loi.city}|${loi.start},${loi.end},${loi.advice}|${loi.visibleInWebform}|${loi.exposureType}|${loi.lat}|${loi.lng}`
 }
 
-const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string) => `${key.city} ${group.length > 1 ? `- ${group.length} New Locations`: ''}\n${group.map(getPrintableLocationOfInterestString).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n`
+const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string) => `${key.city}${group.length > 1 ? ` - ${group.length} New Locations`: ''}:\n\n${group.map(getPrintableLocationOfInterestString).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n`
 
 const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
   if(cityString === undefined){
@@ -152,11 +152,15 @@ const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
   }
   let quickLink = PRESET_LOCATIONS.filter((pl) => pl.urlParam == cityString.toLowerCase())[0];
   if(quickLink){
-      return `${hardcodedURL}/?loc=${quickLink.urlParam}`
+      return `${hardcodedURL}/loc/${quickLink.urlParam}`
   }else{
       return ''
   }
 }
+
+const metaImageURL = (hardcodedURL:string, key:string) => key ? `${hardcodedURL}/preview/loc/${encodeURIComponent(key.toLowerCase())}` : `${hardcodedURL}/img/preview.png`;
+const metaImageURLDirect = (hardcodedURL:string, key:string) => `${hardcodedURL}/api/image/loc/${encodeURIComponent(key.toLowerCase())}`
+
 
 
 
@@ -169,4 +173,6 @@ export {
   , LOCATION_OVERRIDES
   , applyLocationOverrides
   , mapLocationRecordToLocation
+  , metaImageURL
+  , metaImageURLDirect
 }

@@ -81,7 +81,7 @@ const metaImageURL =
       <meta property='og:title' content={shortTitle} />
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={shortTitle} />
-      <meta property='og:url' content={`${hardcodedURL}${settings.quickLink ? '?loc='+encodeURIComponent(`${settings.quickLink.urlParam}`) : ''}`} />
+      <meta property='og:url' content={`${hardcodedURL}${settings.quickLink ? '/loc/'+encodeURIComponent(`${settings.quickLink.urlParam}`) : ''}`} />
       <meta property='og:image' content={metaImageURL} key='ogimg' />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
