@@ -23,6 +23,8 @@ const NiceShortTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h
 
 const NiceFullDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('D MMM h:mm A')}</>
 
+const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).locale('en-NZ').format('D MMM h:mm A')}</>
+
 const startOfDay = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
@@ -35,4 +37,4 @@ const releaseDateAndCity = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
 
-export {NiceTimeFromNow, NiceDateWithTime,NiceFullDate, NiceDate, startOfDay, startOfDayFormatted, NiceShortTime}
+export {NiceTimeFromNow, NiceDateWithTime,NiceFullDate,NiceFullAlwaysNZDate, NiceDate, startOfDay, startOfDayFormatted, NiceShortTime}

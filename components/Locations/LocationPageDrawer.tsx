@@ -18,7 +18,7 @@ import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
-import { NiceDateWithTime, NiceFullDate, NiceShortTime } from "./DateHandling";
+import { NiceDateWithTime, NiceFullAlwaysNZDate, NiceFullDate, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 import { LOCATION_OVERRIDES, metaImageURLDirect } from "./LocationObjectHandling";
@@ -266,7 +266,7 @@ const LocationPageDrawer = ({
               <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
           </div> : 
           <div className="w-full text-center">
-            <span className="text-2xl">Covid-19 Locations of Interest (<NiceFullDate date={publishState.publishTime}/>) </span>
+            <span className="text-2xl">Covid-19 Locations of Interest (<NiceFullAlwaysNZDate date={publishState.publishTime}/>) </span>
             </div>}
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
