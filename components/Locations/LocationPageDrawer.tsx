@@ -18,7 +18,7 @@ import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
-import { NiceDateWithTime, NiceShortTime } from "./DateHandling";
+import { NiceDateWithTime, NiceFullDate, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 import { LOCATION_OVERRIDES, metaImageURLDirect } from "./LocationObjectHandling";
@@ -262,9 +262,12 @@ const LocationPageDrawer = ({
           </div>
         </div>
         <div ref={drawerRef} id="drawer-content" className="overflow-auto overflow-y-scroll max-h-screen">
-          <div className="w-full text-center">            
-              {!pageState.screenshotMode && <span className="text-2xl">{visibleLocations.length}</span>} Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
-          </div>
+        {!pageState.screenshotMode ? <div className="w-full text-center">            
+              <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
+          </div> : 
+          <div className="w-full text-center">
+            <span className="text-2xl">Covid-19 Locations of Interest (<NiceFullDate date={publishState.publishTime}/>) </span>
+            </div>}
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
