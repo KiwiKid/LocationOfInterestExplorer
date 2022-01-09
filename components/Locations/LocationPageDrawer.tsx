@@ -418,10 +418,18 @@ const LocationPageDrawer = ({
                         ))}
                     </div>
             </Toggle>}
-            <Toggle title="Previews" id="previews" >          
+            <Toggle title="Previews" id="previews" extendClassName="border-gray-800 border-b-4" >          
               <>
                 <Summary>Experimental Feature - View images previews of locations -<br/> (Warning: these images might be slow to load and out of date)</Summary>
-                {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}> <Image src={metaImageURLDirect('',pl.urlParam)} width={300} height={200} alt={`Preview of ${pl.title}`}/></div>)}
+                <div className="grid grid-cols-2">
+                {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}>
+                <div style={{width: '600px', height: '450px', position: 'relative'}}>
+                      <div>{pl.title}</div> 
+                    
+                      <Image src={metaImageURLDirect('',pl.urlParam)} layout="fill" alt={`Preview of ${pl.title}`}/>
+                    </div>
+                  </div>)}
+                </div>
               </>
             </Toggle>
                 <div className="text-center mt-4">
