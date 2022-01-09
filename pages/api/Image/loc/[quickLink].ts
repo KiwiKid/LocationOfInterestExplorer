@@ -182,7 +182,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
         
        
-        let url = `${getHardCodedUrl()}/loc/${encodeURIComponent(quickLink)}?dontShowDrawer`;
+        let url = `${getHardCodedUrl()}/loc/${encodeURIComponent(quickLink)}?screenshotMode`;
         console.log(`Going to page ${url}`);
         page.goto(url);
         console.log(`Waiting for .leaflet-container`);

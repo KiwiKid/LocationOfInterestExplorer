@@ -21,8 +21,6 @@ type LocationPageProps = {
 
 const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, hardcodedURL}) => {
 
-  //const settings = useSettings();
-
   const router = useRouter();
 
   
@@ -104,7 +102,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
                         lat: quickLink.lat,
                         lng: quickLink.lng,
                         zoom: quickLink.zoom,
-                        screenshotMode: router.asPath.indexOf('screenShotMode') > 0
+                        screenshotMode: router.asPath.indexOf('screenshotMode') > 0
                       }}
                       publishState={{hardcodedURL: hardcodedURL, publishTime: new Date(publishTimeUTC)}}
                   />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>
@@ -116,9 +114,6 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
 }
 
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
-
-
- // const fakeDateInPast = Date.parse(new Date().toISOString()) - (10 * 60 * 1000);
 
   return {
     props:{
