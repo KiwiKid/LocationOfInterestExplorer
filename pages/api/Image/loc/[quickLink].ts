@@ -14,7 +14,6 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     }
 
     const quickLink = decodeURIComponent(req.query.quickLink);//.replace('reqQuery', '');
-    
     /*if(post.attributes.image != null) {
         // Posts with images
         const filePath = path.resolve('./public/', post.attributes.image);
@@ -184,6 +183,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
        
         let url = `${getHardCodedUrl()}/loc/${encodeURIComponent(quickLink)}?screenshotMode`;
         console.log(`Going to page ${url}`);
+        page.setViewport({width: 320, height: 0, deviceScaleFactor: 2})
         page.goto(url);
         console.log(`Waiting for .leaflet-container`);
         //await page.waitForText("Not an Official Ministry of Health Service");
