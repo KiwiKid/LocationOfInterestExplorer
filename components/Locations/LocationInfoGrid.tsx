@@ -127,7 +127,7 @@ const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
         });
 
     return (<div className="">
-                <TodayLocationSummary locationGroups={groupedLocations}/>                 
+                <TodayLocationSummary locationGroups={groupedLocations} hardcodedURL={hardcodedURL}/>                 
                 {Object.keys(groupedLocations).sort().reverse().map((d) => <LocationGroup key={d} groupKey={d} group={groupedLocations[d]} hardcodedURL={hardcodedURL}/>)}
             </div>)
 }
