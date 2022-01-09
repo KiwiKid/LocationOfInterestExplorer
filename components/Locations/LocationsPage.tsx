@@ -76,7 +76,6 @@ export default function LocationsPage({locations, startingPageState, publishStat
     
     const [showHelpPopup, setShowHelpPopup] = useState(false);
 
-    //const [circleParams, setCircleParams] = useState('');
     const [pageState, setPageState] = useState<PageState>(startingPageState);
 
     const handlePageStateUpdate = (newPageState:PageState) => {
