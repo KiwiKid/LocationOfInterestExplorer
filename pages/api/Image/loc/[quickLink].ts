@@ -183,7 +183,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
        
         let url = `${getHardCodedUrl()}/loc/${encodeURIComponent(quickLink)}?screenshotMode`;
         console.log(`Going to page ${url}`);
-        page.setViewport({width: 320, height: 0, deviceScaleFactor: 2})
+        page.setViewport({width: 640, height: 0, deviceScaleFactor: 2})
         page.goto(url);
         console.log(`Waiting for .leaflet-container`);
         //await page.waitForText("Not an Official Ministry of Health Service");
