@@ -10,8 +10,9 @@ type LocationGridContainerProps = {
     openLocations: string[]
     setOpenLocations: any
     sortField: Sort
+    pageState: PageState
 }
-export default function LocationGridContainer({showLocationData, locations, openLocations, setOpenLocations, sortField}:LocationGridContainerProps) {
+export default function LocationGridContainer({showLocationData, locations, openLocations, setOpenLocations, sortField, pageState}:LocationGridContainerProps) {
 
     return (
         <div >
@@ -27,10 +28,10 @@ export default function LocationGridContainer({showLocationData, locations, open
                             sortField={sortField}
                         />
                     </>
-                    : <div className="bg-green-400 text-center mb-2">
+                    : !pageState.screenshotMode ? <div className="bg-green-400 text-center mb-2">
                             <div className="text-lg">No Locations of interest found in the circle </div>
                             <div>Close the drawer and move the map to find more locations (or celebrate?)</div>
-                    </div>}
+                    </div> : null}
         </div>
     )
 }

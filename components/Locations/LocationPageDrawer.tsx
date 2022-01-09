@@ -271,13 +271,14 @@ const LocationPageDrawer = ({
                     <div className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishState.publishTime}/>{dataStale && "⚠️"}</div>
                     {dataStale && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
-              <LocationGridContainer 
+              {!pageState.screenshotMode && <LocationGridContainer 
                     showLocationData={false}
                     locations={visibleLocations}
                     openLocations={openLocations}
                     setOpenLocations={setOpenLocations}
                     sortField={sortField}
-                />
+                    pageState={pageState}
+                />}
             </>
           </Toggle>
             <ShareBar url={url}>
