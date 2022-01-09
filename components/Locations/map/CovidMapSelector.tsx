@@ -250,7 +250,13 @@ function CovidMapSelector({
     function saveMapState(map:Map){
         let center = map.getCenter();
         let zoom = map.getZoom();
-        setPageState({lat: center.lat, lng: center.lng, zoom: zoom, daysInPastShown: daysInPastShown})
+        // Have we moved enough?
+        let latDiff = center.lat - pageState.lat;
+        let lngDiff = center.lng - pageState.lng;
+        // Only reset the quickLink if we have moved enough
+        if(Math.abs(latDiff) > 0.1 || Math.abs(latDiff) > 0.1){
+            setPageState({lat: center.lat, lng: center.lng, zoom: zoom, daysInPastShown: daysInPastShown})
+        }
   //      saveMapSettingsLocally(center.lat, center.lng, zoom, daysInPastShown);
        // refreshShareUrl(center.lat, center.lng, zoom, daysInPastShown);
     }

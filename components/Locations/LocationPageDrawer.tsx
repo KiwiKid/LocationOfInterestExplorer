@@ -321,8 +321,7 @@ const LocationPageDrawer = ({
                         <InternalLink
                           id="FastTravel"
                           onClick={(evt:any) => goToLocation(pl)}
-                        >{pl.title}</InternalLink>
-                        <Image src={metaImageURLDirect('',pl.urlParam)} width={300} height={200} alt={`Preview of ${pl.title}`}/>
+                        >{pl.title}</InternalLink>                        
                       </div>
                     </div>
                   )}
@@ -419,13 +418,19 @@ const LocationPageDrawer = ({
                         ))}
                     </div>
             </Toggle>}
+            <Toggle title="Previews" id="previews" >          
+              <>
+                <Summary>Experimental Feature - View images previews of locations -<br/> (Warning: these images might be slow to load and out of date)</Summary>
+                {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}> <Image src={metaImageURLDirect('',pl.urlParam)} width={300} height={200} alt={`Preview of ${pl.title}`}/></div>)}
+              </>
+            </Toggle>
                 <div className="text-center mt-4">
                   <span className="underline">
                     <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>
                     </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
                     <details>
                       <summary>debug</summary>
-                      <div>{JSON.stringify(pageState)}</div>
+                      <div>[{pageState.lat},{pageState.lng}] {pageState.zoom} {pageState.daysInPastShown}{pageState.screenshotMode ? 'SCREENSHOT MODE' : ''}{pageState.quickLink ? pageState.quickLink.title : ''}</div>
                       <div>{debugURL}</div>
                       <Link href={'/info'}>raw info</Link>
                     </details>

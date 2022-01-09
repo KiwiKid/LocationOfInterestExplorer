@@ -11,6 +11,7 @@ import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
+import { useRouter } from "next/router";
 
 
 
@@ -64,6 +65,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
 
     const locationsAfterDate = locations.filter(inActiveDateRange);
     const drawerRef = useRef<Element>(null);
+    const router = useRouter();
 
     // State
     const [map, setMap] = useState(undefined);
@@ -76,6 +78,13 @@ export default function LocationsPage({locations, startingPageState, publishStat
 
     //const [circleParams, setCircleParams] = useState('');
     const [pageState, setPageState] = useState<PageState>(startingPageState);
+
+    const handlePageStateUpdate = (newPageState:PageState) => {
+      //if(pageState.quickLink && !newPageState.quickLink){
+      //  router.push({pathname: '/'}, undefined, {shallow: true});
+      //}
+      setPageState(newPageState);
+    }
 
     const [windowWidth, windowHeight] = useWindowSize();
 
@@ -136,7 +145,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
                   openDrawer={openDrawer}
                   changeDaysInPastShown={changeDaysInPastShown}
                   resetDrawerScroll={resetDrawerScroll}
-                  setPageState={setPageState}
+                  setPageState={handlePageStateUpdate}
                 />
               </div>
               <div>
