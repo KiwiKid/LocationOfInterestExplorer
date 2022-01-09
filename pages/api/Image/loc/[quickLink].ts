@@ -199,7 +199,6 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             })
 
             res.send(screenShotBuffer);
-            res.end();
         }else{ 
             console.log(`Error occurred (no screenshot image): ${url}`);
             res.end("Error occurred (no screenshot image)");
