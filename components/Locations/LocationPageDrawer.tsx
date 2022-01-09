@@ -418,20 +418,19 @@ const LocationPageDrawer = ({
                         ))}
                     </div>
             </Toggle>}
-            {/*<Toggle title="Previews" id="previews" extendClassName="border-gray-800 border-b-4" >          
+            <Toggle title="Previews" id="previews" extendClassName="border-gray-800 border-b-4" >          
               <>
                 <Summary>Experimental Feature - View images previews of locations -<br/> (Warning: these images might be slow to load and out of date)</Summary>
                 <div className="grid grid-cols-2">
                 {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}>
                 <div style={{width: '600px', height: '450px', position: 'relative'}}>
                       <div>{pl.title}</div> 
-                    
-                      <Image src={metaImageURLDirect('',pl.urlParam)} layout="fill" alt={`Preview of ${pl.title}`}/>
+                      <img src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>
                     </div>
                   </div>)}
                 </div>
               </>
-              </Toggle>*/}
+              </Toggle>
                 <div className="text-center mt-4">
                   <span className="underline">
                     <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>
