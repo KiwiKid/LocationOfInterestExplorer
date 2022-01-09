@@ -11,6 +11,7 @@ import TodayLocationSummary from "./TodayLocationSummary";
 type LocationInfoGridProps = {
     locations:LocationOfInterest[]
     hardcodedURL:string
+    publishTime:Date
 }
 
 const getBorderColor = (hoursAgo:number) => {
@@ -119,7 +120,7 @@ const applyCityOverrides = (cityName:string) => {
 }
 
 
-const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
+const LocationInfoGrid = ({locations, hardcodedURL, publishTime}:LocationInfoGridProps) => {
     
     var groupedLocations = _.groupBy(locations
         , function(lc){ 
@@ -127,7 +128,11 @@ const LocationInfoGrid = ({locations, hardcodedURL}:LocationInfoGridProps) => {
         });
 
     return (<div className="">
-                <TodayLocationSummary locationGroups={groupedLocations} hardcodedURL={hardcodedURL}/>                 
+                <TodayLocationSummary 
+                    locationGroups={groupedLocations} 
+                    hardcodedURL={hardcodedURL}
+                    publishTime={publishTime}
+                    />                 
                 {Object.keys(groupedLocations).sort().reverse().map((d) => <LocationGroup key={d} groupKey={d} group={groupedLocations[d]} hardcodedURL={hardcodedURL}/>)}
             </div>)
 }

@@ -15,14 +15,18 @@ type InfoPageProps = {
 
 const Info: NextPage<InfoPageProps> = ({publishTimeUTC, hardcodedURL}) => {
 
-
+    const publishTime = new Date(publishTimeUTC);
     return (
-        <><NiceFullDate date={new Date(publishTimeUTC)}/>
+        <><NiceFullDate date={publishTime}/>
         <LocationContext.Consumer>
         {locations => 
             locations ? 
             <>
-            <LocationInfoGrid locations={locations} hardcodedURL={hardcodedURL} />
+            <LocationInfoGrid 
+                locations={locations}
+                hardcodedURL={hardcodedURL} 
+                publishTime={publishTime}
+                 />
             
             {/*<CopyBox 
                 id="copybox"
