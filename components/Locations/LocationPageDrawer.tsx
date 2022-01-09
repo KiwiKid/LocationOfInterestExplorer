@@ -424,7 +424,7 @@ const LocationPageDrawer = ({
                 <Summary>Experimental Feature - View images previews of locations -<br/> (Warning: these images might be slow to load and out of date)</Summary>
                 <div className="grid grid-cols-2">
                 {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}>
-                <div>{pl.title}
+                <div className="border border-2 p-4">{pl.title}
                 <div style={{width: '600px', height: '450px', position: 'relative'}}>
                       
                       <img src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>
