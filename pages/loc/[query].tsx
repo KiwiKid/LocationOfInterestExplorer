@@ -81,6 +81,8 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
         <meta property='og:image' content={metaImageURLDirect(hardcodedURL, quickLink.urlParam)} key='ogimg' /> 
         :  <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
       }
+      <meta property="og:image:width" content="600" />
+      <meta property="og:image:height" content="900" />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
       <link rel='apple-touch-startup-image' href='/images/apple_splash_2048.png' sizes='2048x2732' />
