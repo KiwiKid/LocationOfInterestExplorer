@@ -304,7 +304,7 @@ const LocationPageDrawer = ({
                     <p className=""> I&apos;ll do my best, but i&apos;m just a guy with a keyboard in a relatively dark room.</p>
                     <div className="w-3/5 m-auto">
                       <p className="text-center"> Any technical issues, questions, or suggestions/feedback, please:</p>
-                      <div className="md:w-3/5 m-auto">
+                      <div className="w-3/5 m-auto">
                         <SendFeedback />
                       </div>
                       
