@@ -3,4 +3,6 @@ type PageState = {
     lng: number
     zoom: number
     daysInPastShown: number
+    quickLink?: PresetLocation
+    screenshotMode: boolean
 }

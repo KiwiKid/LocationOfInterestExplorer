@@ -98,15 +98,15 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
             {locationsRecords => 
               locationsRecords ? <LocationsPage
                       locations={locationsRecords}
-                      startingSettings={{
+                      startingPageState={{
                         daysInPastShown: 14,
                         quickLink: quickLink,
-                        resetDraw: true,
-                        startingLocation: [quickLink.lat, quickLink.lng],
+                        lat: quickLink.lat,
+                        lng: quickLink.lng,
                         zoom: quickLink.zoom,
-                        screenShotMode: router.asPath.indexOf('screenShotMode') > 0
+                        screenshotMode: router.asPath.indexOf('screenShotMode') > 0
                       }}
-                      publishTime={new Date(publishTimeUTC)}
+                      publishState={{hardcodedURL: hardcodedURL, publishTime: new Date(publishTimeUTC)}}
                   />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>
             }
           </LocationContext.Consumer>

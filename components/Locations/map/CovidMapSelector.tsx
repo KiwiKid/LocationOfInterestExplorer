@@ -18,7 +18,6 @@ import CenteredCircle from './CenteredCircle'
 import { LocationOfInterest } from "../../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated";
 import _ from "lodash";
-import { StartingSettings } from "../../types/StartingSettings";
 import InternalLink from "../../utils/InternalLink";
 import { Pane } from "react-leaflet";
 import AutoHidePopup from "./AutoHidePopup";
@@ -57,7 +56,6 @@ const MapEventHandler = ({onZoomEnd, onLocate,onDragEnd}:MapEventHandlerProps) =
 type CovidMapSelectorProps = {
     locations: LocationOfInterest[]
     onNewLocations: any
-    startingSettings:StartingSettings
     daysInPastShown: number
     changeDaysInPastShown: any
     map?: Map
@@ -70,8 +68,7 @@ type CovidMapSelectorProps = {
 }
 
 function CovidMapSelector({
-    startingSettings
-    , locations
+    locations
     , onNewLocations
     , daysInPastShown
     , changeDaysInPastShown
@@ -84,8 +81,8 @@ function CovidMapSelector({
     , setPageState
 }:CovidMapSelectorProps) {
 
-    const [activeLocation, setActiveLocation] = useState(startingSettings.startingLocation);
-    const [activeZoom, setActiveZoom] = useState(startingSettings.zoom);
+    const [activeLocation, setActiveLocation] = useState(new LatLng(pageState.lat, pageState.lng));
+    const [activeZoom, setActiveZoom] = useState(pageState.zoom);
 
     const activeCircleRef = useRef<any>(null);
     const activeLocationMarkerRefs = useRef<any>([]);

@@ -4,7 +4,6 @@ import { useMemo, useRef, useState } from "react";
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import { Sort } from "../types/Sort";
-import { StartingSettings } from "../types/StartingSettings";
 import { getDateInPastByXDays } from "../utils/utils";
 import HelpPopup from "./HelpPopup";
 import ActiveSortSelection from "./ActiveSortSelection";
@@ -14,25 +13,28 @@ import useWindowSize from "../utils/useWindowSize";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 
 
-type LocationsPageProps ={
-    locations: LocationOfInterest[]
-    startingSettings: StartingSettings
-    publishTime: Date
-  }
+
 
   
 const CLOSED_DRAW_POS = -60;
-const DEFAULT_PAGE_STATE = {
+const DEFAULT_PAGE_STATE:PageState = {
    lat: -40.8248,
    lng: 173.7304,
    zoom: 8,
-   daysInPastShown:  14
+   daysInPastShown:  14,
+   screenshotMode: false
 }
 const isInvalidLocation = (loc:LocationOfInterest) => {
   return !(!!loc.lat || !!loc.lng)
 }
 
-export default function LocationsPage({locations, startingSettings, publishTime}:LocationsPageProps){
+type LocationsPageProps ={
+  locations: LocationOfInterest[]
+  startingPageState: PageState
+  publishState: PublishState
+}
+
+export default function LocationsPage({locations, startingPageState, publishState}:LocationsPageProps){
 
     const CovidMapSelector = useMemo(() => dynamic(
         () => import("./map/CovidMapSelector")
@@ -49,7 +51,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
 
     const [openLocations, setOpenLocations] = useState([]);
 
-    const [daysInPastShown, setDaysInPastShown] = useState(startingSettings.daysInPastShown);
+    const [daysInPastShown, setDaysInPastShown] = useState(startingPageState.daysInPastShown);
 
     const inActiveDateRange = (location:LocationOfInterest) => {
       var dateFrom = getDateInPastByXDays(daysInPastShown)
@@ -73,7 +75,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
     const [showHelpPopup, setShowHelpPopup] = useState(false);
 
     //const [circleParams, setCircleParams] = useState('');
-    const [pageState, setPageState] = useState<PageState>(DEFAULT_PAGE_STATE);
+    const [pageState, setPageState] = useState<PageState>(startingPageState);
 
     const [windowWidth, windowHeight] = useWindowSize();
 
@@ -126,7 +128,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                 <CovidMapSelector
                   locations={locationsAfterDate}
                   onNewLocations={handleVisibleLocationsChange}
-                  startingSettings={startingSettings}
+                  pageState={pageState}
                   daysInPastShown={daysInPastShown}
                   setMap={setMap}
                   map={map}
@@ -134,7 +136,6 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   openDrawer={openDrawer}
                   changeDaysInPastShown={changeDaysInPastShown}
                   resetDrawerScroll={resetDrawerScroll}
-                  pageState={pageState}
                   setPageState={setPageState}
                 />
               </div>
@@ -153,13 +154,11 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   showSortFieldPopup={showSortFieldPopup}
                   setShowSortFieldPopup={setShowSortFieldPopup}
                   mapIsLocated={mapIsLocated}
-                  //circleParams={circleParams}
                   pageState={pageState}
-                  publishTime={publishTime}
+                  publishState={publishState}
                   drawPositionY={drawPositionY}
                   setDrawPositionY={setDrawPositionY}
                   drawerRef={drawerRef}
-                  screenshotMode={startingSettings.screenshotMode}
                 />
               </div>
             </div>

@@ -162,8 +162,6 @@ const metaImageURL = (hardcodedURL:string, key:string) => key ? `${hardcodedURL}
 const metaImageURLDirect = (hardcodedURL:string, key:string) => `${hardcodedURL}/api/image/loc/${encodeURIComponent(key.toLowerCase())}`
 
 
-
-
 export { 
   getQuickLinkURL
   , getPrintableLocationOfInterestGroupString

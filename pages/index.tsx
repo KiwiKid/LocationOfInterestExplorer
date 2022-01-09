@@ -103,8 +103,8 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
             {locations => 
               locations ? <LocationsPage
                       locations={locations}
-                      startingSettings={settings}
-                      publishTime={new Date(publishTimeUTC)}
+                      startingPageState={settings}
+                      publishState={{hardcodedURL: hardcodedURL, publishTime:new Date(publishTimeUTC)}}
                   />: <>Loading a Map of Covid-19 Locations of Interest published by the Ministry of Health</>
             }
           </LocationContext.Consumer>

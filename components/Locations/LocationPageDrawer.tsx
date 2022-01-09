@@ -21,10 +21,12 @@ import Link from "next/link";
 import { NiceDateWithTime, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
-import { LOCATION_OVERRIDES } from "./LocationObjectHandling";
+import { LOCATION_OVERRIDES, metaImageURLDirect } from "./LocationObjectHandling";
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
+import Image from 'next/image';
 
+// TODO: consoidate most of this into "PageState"
 type LocationPageDrawerProps = { 
     visibleLocations: LocationOfInterestCalculated[];
     invalidLocations: LocationOfInterest[];
@@ -40,11 +42,10 @@ type LocationPageDrawerProps = {
     setShowSortFieldPopup: any
     mapIsLocated: boolean
     pageState: PageState
-    publishTime: Date
+    publishState: PublishState
     drawPositionY: number
     setDrawPositionY: any
     drawerRef: any
-    screenshotMode: boolean
 }
 const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.79
 
@@ -63,11 +64,10 @@ const LocationPageDrawer = ({
     setShowSortFieldPopup,
     mapIsLocated, 
     pageState,
-    publishTime,
+    publishState,
     drawPositionY,
     setDrawPositionY, 
-    drawerRef,
-    screenshotMode
+    drawerRef
   }:LocationPageDrawerProps) => {
 
 
@@ -211,6 +211,9 @@ const LocationPageDrawer = ({
 
 
     function getPageUrl(pageState:PageState){
+      if(pageState.quickLink){
+        return `/loc/${pageState.quickLink.urlParam}`;
+      }
       return `?lat=${pageState.lat.toFixed(5)}&lng=${pageState.lng.toFixed(5)}&zoom=${pageState.zoom}&daysInPastShown=${pageState.daysInPastShown}`;
   }
 
@@ -225,7 +228,7 @@ const LocationPageDrawer = ({
   }
   
   const checkDataStale = () => { 
-    return dayjs(new Date()).diff(publishTime, 'minute') > 60;
+    return dayjs(new Date()).diff(publishState.publishTime, 'minute') > 60;
   }
 
   useEffect(() => { 
@@ -260,12 +263,12 @@ const LocationPageDrawer = ({
         </div>
         <div ref={drawerRef} id="drawer-content" className="overflow-auto overflow-y-scroll max-h-screen">
           <div className="w-full text-center">            
-              {!screenshotMode && <span className="text-2xl">{visibleLocations.length}</span>} Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
+              {!pageState.screenshotMode && <span className="text-2xl">{visibleLocations.length}</span>} Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
           </div>
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
-                    <div className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishTime}/>{dataStale && "⚠️"}</div>
+                    <div className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishState.publishTime}/>{dataStale && "⚠️"}</div>
                     {dataStale && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
               <LocationGridContainer 
@@ -319,6 +322,7 @@ const LocationPageDrawer = ({
                           id="FastTravel"
                           onClick={(evt:any) => goToLocation(pl)}
                         >{pl.title}</InternalLink>
+                        <Image src={metaImageURLDirect('',pl.urlParam)} width={300} height={200} alt={`Preview of ${pl.title}`}/>
                       </div>
                     </div>
                   )}
@@ -363,7 +367,7 @@ const LocationPageDrawer = ({
                     <Question title="How up to date is this?">
                         <p>The MOH adds cases throughout the day.</p>
                         <p>New locations are imported by this tool from the MoH regularly.</p>
-                        <p>(The MoH API was called {dayjs(new Date()).diff(publishTime, 'minute')} minutes ago)</p>
+                        <p>(The MoH API was called {dayjs(new Date()).diff(publishState.publishTime, 'minute')} minutes ago)</p>
                         <InternalLink id="refresh" onClick={triggerRefresh} >Reload and show new Locations (if any)</InternalLink>
                     </Question>
                     <Question title="How does this app work?">
