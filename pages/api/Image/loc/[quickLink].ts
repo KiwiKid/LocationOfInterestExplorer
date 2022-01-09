@@ -30,8 +30,48 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         //const originalDate = new Date(post.attributes.date);
        // const formattedDate = `${originalDate.getDate()}/${('0' + (originalDate.getMonth()+1)).slice(-2)}/${originalDate.getFullYear()}`;
 
+       const minimal_args = [
+        '--autoplay-policy=user-gesture-required',
+        '--disable-background-networking',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-breakpad',
+        '--disable-client-side-phishing-detection',
+        '--disable-component-update',
+        '--disable-default-apps',
+        '--disable-dev-shm-usage',
+        '--disable-domain-reliability',
+        '--disable-extensions',
+        '--disable-features=AudioServiceOutOfProcess',
+        '--disable-hang-monitor',
+        '--disable-ipc-flooding-protection',
+        '--disable-notifications',
+        '--disable-offer-store-unmasked-wallet-cards',
+        '--disable-popup-blocking',
+        '--disable-print-preview',
+        '--disable-prompt-on-repost',
+        '--disable-renderer-backgrounding',
+        '--disable-setuid-sandbox',
+        '--disable-speech-api',
+        '--disable-sync',
+        '--hide-scrollbars',
+        '--ignore-gpu-blacklist',
+        '--metrics-recording-only',
+        '--mute-audio',
+        '--no-default-browser-check',
+        '--no-first-run',
+        '--no-pings',
+        '--no-sandbox',
+        '--no-zygote',
+        '--password-store=basic',
+        '--use-gl=swiftshader',
+        '--use-mock-keychain',
+        '--disable-web-security'
+      ];
+
+
         const browser = await chromium.puppeteer.launch({
-            args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+            args: [...chromium.args, ...minimal_args],
             defaultViewport: chromium.defaultViewport,
             executablePath: await chromium.executablePath,
             headless: true,
@@ -151,17 +191,23 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         // Gross handcoded timeout
         //await page.waitForTimeout(2000);
         console.log(`Taking screenshot: ${url}`);
-        const screenShotBuffer = await page.screenshot();
+        const screenShotBuffer = await page.screenshot({ quality: 10});
         if(!!screenShotBuffer){
             res.writeHead(200, {
-                "Content-Type": "image/png",
+                "Content-Type": "image/jpg",
                 "Content-Length": Buffer.byteLength(screenShotBuffer),
             })
+
+            res.send(screenShotBuffer);
+            res.end();
         }else{ 
             console.log(`Error occurred (no screenshot image): ${url}`);
             res.end("Error occurred (no screenshot image)");
         }
-        res.end(screenShotBuffer);
+
+
+
+       // res.end(screenShotBuffer);
 }
 
 export default handler
