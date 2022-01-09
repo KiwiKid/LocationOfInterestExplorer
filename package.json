@@ -29,6 +29,7 @@
     "react-draggable": "^4.4.4",
     "react-leaflet": "^3.2.2",
     "react-share": "^4.4.0",
+    "sharp": "^0.29.3",
     "sitemap": "^7.0.0",
     "swr": "^1.1.0"
   },

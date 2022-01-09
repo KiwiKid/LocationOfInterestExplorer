@@ -1,4 +1,5 @@
 import Image from "next/image"
+//import Img from 'react-optimized-image';
 
 type PreviewProps = {
   quickLink: string
@@ -10,7 +11,10 @@ type PreviewProps = {
 
 function Preview(props:PreviewProps):JSX.Element {
     const url = `/api/image/loc/${encodeURIComponent(props.quickLink)}`;
-    return (props.quickLink ? <img src={url} alt={url} width="900" height="600" />: <>No props for image</>)
+    
+
+
+    return (props.quickLink ? <Image priority={true} src={url} alt={url} width="90" height="60" />: <>No props for image</>)
   }
   
   export async function getStaticPaths() {
