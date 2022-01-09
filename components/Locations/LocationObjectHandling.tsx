@@ -146,9 +146,10 @@ const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
 const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string) => `${key.city} ${group.length > 1 ? `- ${group.length} New Locations`: ''}\n${group.map(getPrintableLocationOfInterestString).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n`
 
 const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
-  if(!cityString){ 
+  if(cityString === undefined){
     console.error(`No city for ${cityString}`); 
-    return '' }
+    return ''
+  }
   let quickLink = PRESET_LOCATIONS.filter((pl) => pl.urlParam == cityString.toLowerCase())[0];
   if(quickLink){
       return `${hardcodedURL}/?loc=${quickLink.urlParam}`

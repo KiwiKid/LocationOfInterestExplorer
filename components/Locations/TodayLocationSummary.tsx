@@ -36,11 +36,11 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime}:TodayL
 
     return (
         <CopyBox 
-                id="copybox"
-                copyText=
-                {copyText}
-                textarea={true}
-            />
+            id="copybox"
+            copyText=
+            {copyText}
+            textarea={true}
+        />
     )
 }
 

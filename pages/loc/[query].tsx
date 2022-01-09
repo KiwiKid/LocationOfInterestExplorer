@@ -9,6 +9,7 @@ import { getHardCodedUrl } from '../../components/utils/utils'
 import styles from '../styles/Home.module.css'
 import { LocationOfInterest } from '../../components/types/LocationOfInterest'
 import LocationContext from "../../components/Locations/LocationAPI/LocationContext"
+import { PRESET_LOCATIONS } from "../../components/Locations/PresetLocations"
 
 type LocationPageProps = {
   quickLink: PresetLocation
@@ -143,10 +144,7 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
 
 export async function getStaticPaths() {
     return {
-        paths: [
-            { params: { query: 'auckland'}},
-            { params: { query: 'christchurch'}}
-        ],
+        paths: PRESET_LOCATIONS.map((pl) => { return { params:{ query: pl.urlParam}}}),
         fallback: true
     }
   }

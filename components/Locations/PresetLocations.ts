@@ -96,10 +96,10 @@ export const PRESET_LOCATIONS:PresetLocation[] = [
     lng: 175.38489529999998,
     zoom: 12
   },{
-    title: "Bulls",
+    title: "Waihi",
     urlParam: "bulls",
-    lat: -40.174538700945355,
-    lng: 175.38489529999998,
+    lat: -37.391462000435894,
+    lng: 175.84035379999997,
     zoom: 12
   }
   

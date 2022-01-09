@@ -115,7 +115,8 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL}:LocationGroupProps)
 
 const cityOverrides = [
     { key: 'Mount Maunganui', override: 'Tauranga'},
-    { key: 'Waihi Beach', override: 'Waihi'}
+    { key: 'Waihi Beach', override: 'Waihi'},
+    { key: 'Papamoa', override: 'Tauranga'}
 ]
 
 const applyCityOverrides = (cityName:string) => {
