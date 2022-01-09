@@ -5,6 +5,7 @@ import fetcher from "../utils/fetcher"
 import get, { AxiosResponse, AxiosPromise } from 'axios'
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
+import { PRESET_LOCATIONS } from "./PresetLocations";
 
 type LocationOverride = {
   eventName?: string  // Indirect Override (preferred)
@@ -142,9 +143,29 @@ const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
   return `${loi.added}|${loi.updated}|${loi.event}|${loi.location}|${loi.city}|${loi.start},${loi.end},${loi.advice}|${loi.visibleInWebform}|${loi.exposureType}|${loi.lat}|${loi.lng}`
 }
 
+const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string) => `${key.city} ${group.length > 1 ? `- ${group.length} New Locations`: ''}\n${group.map(getPrintableLocationOfInterestString).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n`
+
+const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
+  if(!cityString){ 
+    console.error(`No city for ${cityString}`); 
+    return '' }
+  let quickLink = PRESET_LOCATIONS.filter((pl) => pl.urlParam == cityString.toLowerCase())[0];
+  if(quickLink){
+      return `${hardcodedURL}/?loc=${quickLink.urlParam}`
+  }else{
+      return ''
+  }
+}
 
 
 
-
-
-export { mapLoITOLoIRecord,getPrintableLocationOfInterestString, getCSVLocationOfInterestString, LOCATION_OVERRIDES, applyLocationOverrides, mapLocationRecordToLocation}
+export { 
+  getQuickLinkURL
+  , getPrintableLocationOfInterestGroupString
+  , mapLoITOLoIRecord
+  ,getPrintableLocationOfInterestString
+  , getCSVLocationOfInterestString
+  , LOCATION_OVERRIDES
+  , applyLocationOverrides
+  , mapLocationRecordToLocation
+}
