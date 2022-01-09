@@ -139,7 +139,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                 />
               </div>
               <div>
-                <LocationPageDrawer 
+                {!startingSettings.hideDrawer && <LocationPageDrawer 
                   openLocations={openLocations}
                   invalidLocations={invalidLocations}
                   setOpenLocations={setOpenLocations}
@@ -159,7 +159,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   drawPositionY={drawPositionY}
                   setDrawPositionY={setDrawPositionY}
                   drawerRef={drawerRef}
-                />
+                />}
               </div>
             </div>
           </main>

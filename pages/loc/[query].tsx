@@ -10,6 +10,7 @@ import styles from '../styles/Home.module.css'
 import { LocationOfInterest } from '../../components/types/LocationOfInterest'
 import LocationContext from "../../components/Locations/LocationAPI/LocationContext"
 import { PRESET_LOCATIONS } from "../../components/Locations/PresetLocations"
+import { useRouter } from "next/router"
 
 type LocationPageProps = {
   quickLink: PresetLocation
@@ -17,30 +18,13 @@ type LocationPageProps = {
   hardcodedURL: string
 }
 
-
-const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
-  return {
-    id: rec.id,
-    location: rec.location,
-    city: rec.city,
-    event: rec.event,
-    start: new Date(rec.start),
-    end: new Date(rec.end),
-    updated: rec.updated ? new Date(rec.updated) : undefined,
-    added: new Date(rec.added),
-    exposureType: rec.exposureType,
-    visibleInWebform: rec.visibleInWebform,
-    advice: rec.advice,
-    lat: +rec.lat,
-    lng: +rec.lng,
-  }
-}
-
-
-
 const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, hardcodedURL}) => {
 
   //const settings = useSettings();
+
+  const router = useRouter();
+
+  
 
   const shortTitle = `NZ Covid Map ${quickLink != null ? `- ${quickLink.title}` : ''}`
   const mediumTitle = `NZ Covid Map ${quickLink != null ? `- ${quickLink.title}` : ''} - Explore Official Locations of Interest`
@@ -117,7 +101,8 @@ const metaImageURL =
                         quickLink: quickLink,
                         resetDraw: true,
                         startingLocation: [quickLink.lat, quickLink.lng],
-                        zoom: quickLink.zoom
+                        zoom: quickLink.zoom,
+                        hideDrawer: router.asPath.indexOf('dontShowDrawer') > 0
                       }}
                       publishTime={new Date(publishTimeUTC)}
                   />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>
