@@ -191,7 +191,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         // Gross handcoded timeout
         //await page.waitForTimeout(2000);
         console.log(`Taking screenshot: ${url}`);
-        const screenShotBuffer = await page.screenshot({ quality: 10, type:'jpeg'});
+        const screenShotBuffer = await page.screenshot({ quality: 50, type:'jpeg'});
         if(!!screenShotBuffer){
             res.setHeader("Content-Type", "image/jpg",)
             res.setHeader("Content-Length", Buffer.byteLength(screenShotBuffer),)

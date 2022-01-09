@@ -104,7 +104,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
                         resetDraw: true,
                         startingLocation: [quickLink.lat, quickLink.lng],
                         zoom: quickLink.zoom,
-                        hideDrawer: router.asPath.indexOf('dontShowDrawer') > 0
+                        screenShotMode: router.asPath.indexOf('screenShotMode') > 0
                       }}
                       publishTime={new Date(publishTimeUTC)}
                   />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>

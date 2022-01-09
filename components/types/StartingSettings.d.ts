@@ -4,5 +4,5 @@ export type StartingSettings = {
     daysInPastShown:number
     resetDraw:boolean
     quickLink:PresetLocation | null
-    hideDrawer:boolean
+    screenshotMode:boolean
   }

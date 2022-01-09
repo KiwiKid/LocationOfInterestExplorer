@@ -139,7 +139,7 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                 />
               </div>
               <div>
-                {!startingSettings.hideDrawer && <LocationPageDrawer 
+                <LocationPageDrawer 
                   openLocations={openLocations}
                   invalidLocations={invalidLocations}
                   setOpenLocations={setOpenLocations}
@@ -159,7 +159,8 @@ export default function LocationsPage({locations, startingSettings, publishTime}
                   drawPositionY={drawPositionY}
                   setDrawPositionY={setDrawPositionY}
                   drawerRef={drawerRef}
-                />}
+                  screenshotMode={startingSettings.screenshotMode}
+                />
               </div>
             </div>
           </main>
