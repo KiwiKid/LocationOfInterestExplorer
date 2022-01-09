@@ -8,7 +8,7 @@ import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
 import { LocationOfInterest } from '../components/types/LocationOfInterest'
 import LocationContext from '../components/Locations/LocationAPI/LocationContext'
-import { mapLocationRecordToLocation } from '../components/Locations/LocationObjectHandling'
+import { mapLocationRecordToLocation, metaImageURL, metaImageURLDirect } from '../components/Locations/LocationObjectHandling'
 
 type HomePageProps = {
   publishTimeUTC: string // Allow for native next.js props usage
@@ -33,9 +33,9 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
   const longTitle = "NZ Covid Map - Explore Official Locations of Interest published by the Ministry of Health"
   const description =  "Explore Locations of Interest published by the Ministry of Health from anywhere"
 
-const metaImageURL = 
-    settings.quickLink == null ? `${hardcodedURL}/img/preview.png` : 
-    `${hardcodedURL}/preview/loc/${encodeURIComponent(settings.quickLink.urlParam)}`;
+//const metaImageURL = 
+  //  settings.quickLink == null ? `${hardcodedURL}/img/preview.png` : 
+   // `${hardcodedURL}/preview/loc/${encodeURIComponent(settings.quickLink.urlParam)}`;
 
   return (
     <>
@@ -82,7 +82,10 @@ const metaImageURL =
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={shortTitle} />
       <meta property='og:url' content={`${hardcodedURL}${settings.quickLink ? '/loc/'+encodeURIComponent(`${settings.quickLink.urlParam}`) : ''}`} />
-      <meta property='og:image' content={metaImageURL} key='ogimg' />
+      {settings.quickLink ? 
+        <meta property='og:image' content={metaImageURLDirect(hardcodedURL, settings.quickLink?.urlParam)} key='ogimg' /> 
+        :  <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
+      }
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
       <link rel='apple-touch-startup-image' href='/images/apple_splash_2048.png' sizes='2048x2732' />
