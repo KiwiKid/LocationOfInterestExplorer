@@ -193,11 +193,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         console.log(`Taking screenshot: ${url}`);
         const screenShotBuffer = await page.screenshot({ quality: 10, type:'jpeg'});
         if(!!screenShotBuffer){
-            res.writeHead(200, {
-                "Content-Type": "image/jpg",
-                "Content-Length": Buffer.byteLength(screenShotBuffer),
-            })
-
+            res.setHeader("Content-Type", "image/jpg",)
+            res.setHeader("Content-Length", Buffer.byteLength(screenShotBuffer),)
             res.send(screenShotBuffer);
         }else{ 
             console.log(`Error occurred (no screenshot image): ${url}`);
