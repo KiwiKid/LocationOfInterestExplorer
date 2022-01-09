@@ -4,4 +4,5 @@ export type StartingSettingsMergeable = {
     daysInPastShown:number | null
     resetDraw: boolean | null
     quickLink: PresetLocation | null
+    hideDrawer: boolean | null
   }

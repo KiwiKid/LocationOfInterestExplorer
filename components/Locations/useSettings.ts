@@ -13,7 +13,8 @@ const DEFAULT_SETTINGS:StartingSettings = {
     zoom: 8,
     daysInPastShown: 14,
     resetDraw: false,
-    quickLink: null
+    quickLink: null,
+    hideDrawer: false
 }
 
 const getMatchingQuickLink = (locationParam:string) => PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam.toLowerCase())[0];
@@ -33,7 +34,8 @@ const processQueryString = (query:any):StartingSettingsMergeable => {
       zoom: +quickLink.zoom,
       daysInPastShown: 14,
       resetDraw: true,
-      quickLink: quickLink
+      quickLink: quickLink,
+      hideDrawer: false
     }
   }
     
@@ -42,7 +44,8 @@ const processQueryString = (query:any):StartingSettingsMergeable => {
         zoom: query.zoom ? +query.zoom : null,//DEFAULT_ZOOM,
         daysInPastShown: query.daysInPastShown ? +query.daysInPastShown : null,//DEFAULT_DAYS_IN_PAST
         resetDraw: null,
-        quickLink: null//{ lat: 1, lng: 1, title: 'hello', urlParam: 'woah', zoom: 8}
+        quickLink: null,//{ lat: 1, lng: 1, title: 'hello', urlParam: 'woah', zoom: 8}
+        hideDrawer: false
     }
   }
 
@@ -58,7 +61,8 @@ const processQueryString = (query:any):StartingSettingsMergeable => {
         zoom: a.zoom != null ? a.zoom : DEFAULT_SETTINGS.zoom,
         daysInPastShown: a.daysInPastShown != null ? a.daysInPastShown : DEFAULT_SETTINGS.daysInPastShown,
         resetDraw: a.resetDraw != null ? true : DEFAULT_SETTINGS.resetDraw,
-        quickLink: a.quickLink != null ? a.quickLink : DEFAULT_SETTINGS.quickLink
+        quickLink: a.quickLink != null ? a.quickLink : DEFAULT_SETTINGS.quickLink,
+        hideDrawer: a.hideDrawer != null ? a.hideDrawer : DEFAULT_SETTINGS.hideDrawer
       };
   }
 
