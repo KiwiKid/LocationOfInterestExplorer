@@ -11,7 +11,7 @@ const DEFAULT_SETTINGS:PageState = {
   ,lng: 175.13305664062503
   ,zoom: 8
   ,daysInPastShown: 14
-  ,screenshotMode: false
+  ,screenshotMode: null
 }
 
 
@@ -32,7 +32,7 @@ const processQueryString = (query:any):PageState => {
       , zoom: +quickLink.zoom
       , daysInPastShown: 14
       , quickLink: quickLink
-      , screenshotMode: false
+      , screenshotMode: null
 
     }
   }
@@ -42,7 +42,7 @@ const processQueryString = (query:any):PageState => {
         lng: query.lng ? query.lng : DEFAULT_SETTINGS.lng,
         zoom: query.zoom ? +query.zoom : DEFAULT_SETTINGS.zoom,
         daysInPastShown: query.daysInPastShown ? +query.daysInPastShown : DEFAULT_SETTINGS.daysInPastShown,
-        screenshotMode: false
+        screenshotMode: null
     }
   }
   /*const mergeSettings = ({a}:PageState):StartingSettings => {
