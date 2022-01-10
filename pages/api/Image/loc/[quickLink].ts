@@ -181,7 +181,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
         
        
-        let url = `${getHardCodedUrl()}/loc/${encodeURIComponent(quickLink)}?screenshotMode=preview`;
+        let url = `${getHardCodedUrl()}/loc/${encodeURIComponent(quickLink)}?sm=preview`;
         console.log(`Going to page ${url}`);
         page.setViewport({width: 768, height: 540})
         page.goto(url);

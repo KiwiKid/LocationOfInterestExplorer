@@ -24,12 +24,12 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
 
   const router = useRouter();
 
-  const { screenshotModeStr } = router.query;
+  const { sm } = router.query;
   let screenshotMode:ScreenshotMode|null = null;
-  if(screenshotModeStr 
-    && typeof(screenshotModeStr) === 'string' 
-    && ['preview'].some((o) => o === screenshotModeStr.toLowerCase())){
-      screenshotMode = ScreenshotMode[screenshotModeStr as keyof typeof ScreenshotMode];
+  if(sm 
+    && typeof(sm) === 'string' 
+    && ['preview'].some((o) => o === sm.toLowerCase())){
+      screenshotMode = ScreenshotMode[sm as keyof typeof ScreenshotMode];
   }
   
   
