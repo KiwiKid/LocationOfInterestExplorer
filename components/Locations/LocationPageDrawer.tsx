@@ -130,7 +130,7 @@ const LocationPageDrawer = ({
       if(map && !!selectPresetLocation){
         setDrawPositionY(PX_FROM_BOTTOM);
         map.flyTo([selectPresetLocation.lat,selectPresetLocation.lng], selectPresetLocation.zoom);
-        //navigateTo({lat: , lng: , zoom:pl.zoom});
+        
         setSelectPresetLocation(undefined);
       }
     }, [selectPresetLocation]);

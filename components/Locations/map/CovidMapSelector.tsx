@@ -186,6 +186,7 @@ function CovidMapSelector({
     function onLocate(point:LatLng, map:any){
         if(map){
             map.flyTo(point, ONLOCATE_ZOOM_LEVEL);
+            setCircleRadiusBasedOnMapSize(activeCircleRef, map);
             setMapIsLocated(true);
         }
     }
