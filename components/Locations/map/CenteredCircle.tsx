@@ -21,6 +21,7 @@ function setCircleRadiusBasedOnMapSize(circleRef:any, map:any){
         var eastPoint = new LatLng(mapCenter.lat, map?.getBounds().getEast());
         var southPoint = new LatLng(map?.getBounds().getSouth(), mapCenter.lng);
         var newRadiusSize = Math.min(Math.min(mapCenter.distanceTo(eastPoint), mapCenter.distanceTo(southPoint))*MAP_RESIZE_PERCENTAGE, MAX_CIRCLE_SIZE);
+        circleRef.current.options.opacity = 1;
         circleRef.current.setRadius(newRadiusSize);
     }
 }
@@ -43,8 +44,10 @@ function setCircleRadiusBasedOnMapSize(circleRef:any, map:any){
             }
         }
     });
+
     
-    return <Circle className="z-3000" center={location} fillColor={color} fillOpacity={0.03} ref={circleRef}/>
+    
+    return <Circle opacity={0} className="z-3000" center={location} fillColor={color} fillOpacity={0.03} ref={circleRef}/>
 }
 
 
