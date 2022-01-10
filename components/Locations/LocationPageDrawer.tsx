@@ -18,7 +18,7 @@ import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
-import { NiceDateWithTime, NiceFullAlwaysNZDate, NiceFullDate, NiceShortTime } from "./DateHandling";
+import { NiceDateWithTime, NiceFullAlwaysNZDate, NiceFullAlwaysNZDate2, NiceFullAlwaysNZDate3, NiceFullDate, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 import { LOCATION_OVERRIDES, metaImageURLDirect } from "./LocationObjectHandling";
@@ -265,8 +265,8 @@ const LocationPageDrawer = ({
         {!pageState.screenshotMode ? <div className="w-full text-center">            
               <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
           </div> : 
-          <div className="w-full text-center">
-            <span className="text-2xl">Covid-19 Locations of Interest (<NiceFullAlwaysNZDate date={publishState.publishTime}/>) </span>
+          <div className="w-full text-center"><NiceFullAlwaysNZDate3 date={publishState.publishTime}/><NiceFullAlwaysNZDate2 date={publishState.publishTime}/>
+            <span className="text-2xl">{pageState.quickLink ? pageState.quickLink.title : ''} - Covid-19 Locations of Interest - <NiceFullAlwaysNZDate date={publishState.publishTime}/> </span>
             </div>}
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
@@ -428,11 +428,15 @@ const LocationPageDrawer = ({
                 <div className="grid sm:grid-cols-2">
                   {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}>
                     <div className="border-2 border-black p-2 w-full">
-                      <div className="w-3/5 m-auto text-center">{pl.title}</div>
-                      <div style={{width: '350px', height: '300px', position: 'relative', maxWidth: '100%'}}>
-                          {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
-                          <img src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>
-                      </div>
+                      <Link href={`/loc/${pl.urlParam}`}>
+                        <a>
+                          <div className="w-3/5 m-auto text-center">{pl.title}</div>
+                          <div style={{width: '350px', height: '300px', position: 'relative', maxWidth: '100%'}}>
+                            {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
+                              <img src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>
+                          </div>
+                        </a>
+                      </Link>
                     </div>
                   </div> )}
                 </div>
