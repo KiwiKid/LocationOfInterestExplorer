@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import calendar from 'dayjs/plugin/calendar'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import timezone from 'dayjs/plugin/timezone'
+
 
 type DateProps = {
     date: Date
@@ -10,6 +12,7 @@ type DateProps = {
 dayjs.extend(relativeTime);
 dayjs.extend(calendar);
 dayjs.extend(localizedFormat);
+dayjs.extend(timezone);
 
 const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
     return <>{dayjs().to(dayjs(date))}</>
@@ -24,7 +27,7 @@ const NiceShortTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h
 const NiceFullDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('D MMM h:mm A')}</>
 
 // Use when generating dates for screenshots
-const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).locale('en-NZ').format('D MMM h:mm A')}</>
+const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).tz('Pacific/Auckland').format('D MMM h:mm A')}</>
 
 const startOfDay = (date:Date) => {
     return dayjs(date).startOf('day').format();
