@@ -234,6 +234,7 @@ function CovidMapSelector({
             setIsViewingAll(false);
             setMapIsLocating(false);
         }
+        setCircleRadiusBasedOnMapSize(activeCircleRef, map);
         setActiveZoom(map.getZoom());
         refreshMap(map);
     }
