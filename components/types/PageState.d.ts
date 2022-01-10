@@ -4,5 +4,5 @@ type PageState = {
     zoom: number
     daysInPastShown: number
     quickLink?: PresetLocation
-    screenshotMode: ScreenshotMode | null
+    screenshotMode: string | null
 }

@@ -262,7 +262,7 @@ const LocationPageDrawer = ({
           </div>
         </div>
         <div ref={drawerRef} id="drawer-content" className="overflow-auto overflow-y-scroll max-h-screen">
-        {!pageState.screenshotMode ? <div className="w-full text-center">            
+        {!pageState.screenshotMode === 'preview' ? <div className="w-full text-center">            
               <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
           </div> : 
           <div className="w-full text-center">
@@ -274,7 +274,7 @@ const LocationPageDrawer = ({
                     <div className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishState.publishTime}/>{dataStale && "⚠️"}</div>
                     {dataStale && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
-              {!pageState.screenshotMode && <LocationGridContainer 
+              {!pageState.screenshotMode === 'preview' && <LocationGridContainer 
                     showLocationData={false}
                     locations={visibleLocations}
                     openLocations={openLocations}

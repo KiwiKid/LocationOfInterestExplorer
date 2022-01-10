@@ -13,6 +13,7 @@ import { PRESET_LOCATIONS } from "../../components/Locations/PresetLocations"
 import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 import Preview from "../preview/loc/[quickLink]"
+import parseQuery from "../../components/utils/parseQuery"
 
 type LocationPageProps = {
   quickLink: PresetLocation
@@ -24,14 +25,15 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
 
   const router = useRouter();
 
-  const { sm } = router.query;
-  let screenshotMode:ScreenshotMode|null = null;
-  if(sm 
-    && typeof(sm) === 'string' 
-    && ['preview'].some((o) => o === sm.toLowerCase())){
-      screenshotMode = ScreenshotMode[sm as keyof typeof ScreenshotMode];
+  // Gross fake Enum (https://github.com/vercel/next.js/issues/13045):
+  var screenshotMode:string|null = null;
+  if(router.asPath.indexOf('?') > 0){
+    const query = parseQuery(router.asPath.substring(router.asPath.indexOf('?')+1, router.asPath.length));
+    switch(query.sm){
+      case 'preview': 
+        screenshotMode = 'preview';  
+    }
   }
-  
   
 
   
