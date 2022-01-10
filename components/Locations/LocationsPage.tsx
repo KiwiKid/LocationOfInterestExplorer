@@ -12,6 +12,7 @@ import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import { useRouter } from "next/router";
+import { resetScroll } from "../utils/resetScroll";
 
 
 
@@ -96,11 +97,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
         setDaysInPastShown(daysInPast);
     }
 
-    const resetDrawerScroll = () => {
-      if(drawerRef !== null && drawerRef.current !== null && drawerRef.current.scrollTop != 0) { 
-          drawerRef.current.scrollTo(0, 0);
-      }
-    }
+    
 
     return (
         <>
@@ -143,7 +140,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
                   setMapIsLocated={setMapIsLocated}
                   openDrawer={openDrawer}
                   changeDaysInPastShown={changeDaysInPastShown}
-                  resetDrawerScroll={resetDrawerScroll}
+                  resetDrawerScroll={() => resetScroll(drawerRef)}
                   setPageState={handlePageStateUpdate}
                 />
               </div>

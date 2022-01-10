@@ -25,6 +25,7 @@ import { LOCATION_OVERRIDES, metaImageURLDirect } from "./LocationObjectHandling
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
 import Image from 'next/image';
+import { resetScroll } from "../utils/resetScroll";
 
 // TODO: consoidate most of this into "PageState"
 type LocationPageDrawerProps = { 
@@ -47,7 +48,10 @@ type LocationPageDrawerProps = {
     setDrawPositionY: any
     drawerRef: any
 }
+
+
 const getOpenDrawPosition = (windowHeight:number) => -windowHeight*0.79
+
 
 const LocationPageDrawer = ({
     visibleLocations,
@@ -118,7 +122,9 @@ const LocationPageDrawer = ({
 
     const goToLocation = (pl:PresetLocation) => {
       setSelectPresetLocation(pl);
+      resetScroll(drawerRef);
     }
+
 
     useEffect(() => {
       if(map && !!selectPresetLocation){
