@@ -23,6 +23,7 @@ const NiceShortTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h
 
 const NiceFullDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('D MMM h:mm A')}</>
 
+// Use when generating dates for screenshots
 const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).locale('en-NZ').format('D MMM h:mm A')}</>
 
 const startOfDay = (date:Date) => {
