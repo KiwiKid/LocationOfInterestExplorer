@@ -14,7 +14,7 @@ import axios from 'axios'
 
 import {LatLng, Map } from "leaflet";
 
-import CenteredCircle from './CenteredCircle'
+import { CenteredCircle, setCircleRadiusBasedOnMapSize } from './CenteredCircle'
 import { LocationOfInterest } from "../../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated";
 import _ from "lodash";
@@ -118,19 +118,7 @@ function CovidMapSelector({
         }
     },[daysInPastShown, map]);
 
-    const MAP_RESIZE_PERCENTAGE = 0.60
-    const MAX_CIRCLE_SIZE = 1000000
-    function resizeCircleBasedOnMapSize(map:any){
-        if(activeCircleRef.current && map){
-            var mapCenter = map.getCenter();
-            var eastPoint = new LatLng(mapCenter.lat, map?.getBounds().getEast());
-            var southPoint = new LatLng(map?.getBounds().getSouth(), mapCenter.lng);
-            var newRadiusSize = Math.min(Math.min(mapCenter.distanceTo(eastPoint), mapCenter.distanceTo(southPoint))*MAP_RESIZE_PERCENTAGE, MAX_CIRCLE_SIZE);
-            activeCircleRef.current.setRadius(newRadiusSize);
-            setCenteredCircleRadius(newRadiusSize);
-        }else{
-        }
-    }
+
 
 
     function isValidLocation(location:LocationOfInterest){
@@ -205,21 +193,29 @@ function CovidMapSelector({
     const onMapLoad = (m:any) => {
         setMap(m);
         refreshMap(m);
+        setCircleRadiusBasedOnMapSize(activeCircleRef, map);
         // On some older browsers the circle marker layers take longer than the map to load.
         // This ensure that the circle resizes and hightlights the circles, even in adverse conditions.
         var ensureLocationsInCircleActive = setInterval(function(){
-            refreshMap(m);
+            if(activeCircleRef.current._mRadius == 10){
+                setCircleRadiusBasedOnMapSize(activeCircleRef, m);
+                refreshMap(m);
+            }
             clearInterval(ensureLocationsInCircleActive);
         },1500);
 
         var reallyReallyEnsureCircleResizeBasedOnMapSize = setInterval(function(){
-            refreshMap(m);
+            if(activeCircleRef.current._mRadius == 10){
+                setCircleRadiusBasedOnMapSize(activeCircleRef, m);
+                refreshMap(m);
+            }
             clearInterval(reallyReallyEnsureCircleResizeBasedOnMapSize);
         },3000);
     }
 
     const onDragEnd = (map:Map) => { 
         refreshMap(map);
+        setCircleRadiusBasedOnMapSize(activeCircleRef, map);
         resetDrawerScroll();
         setMapIsLocated(false)
         saveMapState(map);
@@ -242,7 +238,7 @@ function CovidMapSelector({
     }
 
     function refreshMap(map:Map){
-        resizeCircleBasedOnMapSize(map);
+        
         reloadInCircleLocations(map);
         saveMapState(map);
     }

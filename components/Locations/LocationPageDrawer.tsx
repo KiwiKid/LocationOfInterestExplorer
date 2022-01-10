@@ -262,8 +262,10 @@ const LocationPageDrawer = ({
         <div className="border-gray-500 rounded-t-lg border-t-14 m-auto w-60 z-3000"></div>
           <div className="m-auto italic text-gray-700  text-center">
             <>
-              <div className="text-sm font-light"><span className="bold font-base">Drag</span> or <span className="bold font-base">Click</span> this bar <br/> Not an Official Ministry of Health Service.</div>
-              
+              <div className="text-sm font-light">
+                {!pageState.screenshotMode && <div><span className="bold font-base">Drag</span> or <span className="bold font-base">Click</span> this bar</div>}
+                <div> Not an Official Ministry of Health Service.</div>
+              </div>
             </>
           </div>
         </div>
@@ -272,12 +274,13 @@ const LocationPageDrawer = ({
               <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
           </div> : 
           <div className="w-full text-center">
-            <span className="text-xl">{pageState.quickLink ? pageState.quickLink.title : ''} - Covid-19 Locations of Interest - <span className="text-gray-600">updated @ <NiceFullAlwaysNZDate date={publishState.publishTime}/></span> </span>
+            <div><span style={{lineClamp: 'font-size: clamp(1rem, -0.875rem + 8.333vw, 3.5rem);'}}>{pageState.quickLink ? `${pageState.quickLink.title} - ` : ''} Covid-19 Locations of Interest </span></div>
+            <div><span className="text-gray-600">updated <NiceFullAlwaysNZDate date={publishState.publishTime}/></span> </div>
             </div>}
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>
               <Summary>
-                    <div className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishState.publishTime}/>{dataStale && "⚠️"}</div>
+                    <div  className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishState.publishTime}/>{dataStale && "⚠️"}</div>
                     {dataStale && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
               {pageState.screenshotMode !== 'preview' && <LocationGridContainer 
