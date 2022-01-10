@@ -1,8 +1,20 @@
 
   /* 
-    City overrides are used in combination with PRESET_LOCATIONS.
-    When the MoH reports a 
+  
+Adding a new Preset Location:
+```
+type PresetLocation = {
+  title:string // The nice display title
+    urlParam:string // The matching url param (via ?loc=[urlParm] or /loc/[urlParm])
+    matchingMohCityString:string[] // All MoH locations will be mapped to this location based on these keys
+    lat:number 
+    lng:number
+    zoom:number // The react-leaflet map zoom for this location (compare to other similar sized cities)
+}
+```
   */
+
+  
 
 const PRESET_LOCATIONS:PresetLocation[] = [
     { 
@@ -143,7 +155,11 @@ const PRESET_LOCATIONS:PresetLocation[] = [
   }*/]
 
 
-
+/*
+  If a location is released without a location (or with the wrong one).
+  It can be corrected here:
+  MoH locations without a lat/lng will also appear in a "unmapped locations" section at the bottom of the drawer.
+*/
 
 
 let LOCATION_OVERRIDES:LocationOverride[] = [
