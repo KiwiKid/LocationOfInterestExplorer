@@ -3,6 +3,7 @@
 type PresetLocation = {
     title:string
     urlParam:string
+    matchingMohCityString:string[]
     lat:number
     lng:number
     zoom:number

@@ -9,7 +9,7 @@ import { getHardCodedUrl } from '../../components/utils/utils'
 import styles from '../styles/Home.module.css'
 import { LocationOfInterest } from '../../components/types/LocationOfInterest'
 import LocationContext from "../../components/Locations/LocationAPI/LocationContext"
-import { PRESET_LOCATIONS } from "../../components/Locations/PresetLocations"
+import { PRESET_LOCATIONS } from "../../components/Locations/LOCATION_CONSTANTS"
 import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 import Preview from "../preview/loc/[quickLink]"

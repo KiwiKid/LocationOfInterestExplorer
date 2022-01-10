@@ -37,10 +37,22 @@ The page can enter quicklink mode through either:
 
 "/loc/[urlParam]" is perferred as a sharing meta image and page title is provided.
 
-QuickLinks are called defined in the "PRESET_LOCATIONS" const.
+QuickLinks are defined in the "PRESET_LOCATIONS" const:
+
+Adding a new Preset Location:
+```
+type PresetLocation = {
+  title:string // The nice display title
+    urlParam:string // The matching url param (via ?loc=[urlParm] or /loc/[urlParm])
+    matchingMohCityString:string[] // All MoH locations will be mapped to this location based on these keys
+    lat:number 
+    lng:number
+    zoom:number // The react-leaflet map zoom for this location (compare to other similar sized cities)
+}
+```
 
 Screenshot mode system:
-This allows the app to display a custom appearance when generating a screenshot image.
+This allows the app to display a custom appearance when generating a screenshot image. Triggered with the "?sm=preview" query string param.
 
 
 ## Prerequisites

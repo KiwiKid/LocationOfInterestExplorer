@@ -6,6 +6,7 @@ import { getHoursAgo } from "../utils/utils";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "./DateHandling";
 import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "./LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
+import { PRESET_LOCATIONS } from "./LOCATION_CONSTANTS";
 import TodayLocationSummary from "./TodayLocationSummary";
 
 type LocationInfoGridProps = {
@@ -111,18 +112,14 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL}:LocationGroupProps)
     )
 }
 
-const cityOverrides = [
-    { key: 'Mount Maunganui', override: 'Tauranga'},
-    { key: 'Waihi Beach', override: 'Waihi'},
-    { key: 'Papamoa', override: 'Tauranga'}
-]
 
-const applyCityOverrides = (cityName:string) => {
-    let override = cityOverrides.filter((co) => co.key == cityName)[0];
+
+const getPresetLocationPrimaryCity = (mohCity:string) => {
+    let override = PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((ml) => ml === mohCity))[0];
     if(override){
-        return override.override;
+        return override.urlParam;
     }
-    return cityName;
+    return 'Others';
 }
 
 
@@ -130,7 +127,7 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime}:LocationInfoGri
     
     var groupedLocations = _.groupBy(locations
         , function(lc){ 
-            return `${startOfDay(lc.added)}|${applyCityOverrides(lc.city)}`
+            return `${startOfDay(lc.added)}|${getPresetLocationPrimaryCity(lc.city)}`
         });
 
     return (<div className="">

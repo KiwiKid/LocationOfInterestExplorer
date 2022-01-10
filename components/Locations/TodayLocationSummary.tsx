@@ -1,13 +1,7 @@
-import { LocationOfInterest } from "../types/LocationOfInterest"
 import CopyBox from "../utils/CopyBox"
 import { startOfDay } from "./DateHandling"
 import { processGroupKey } from "./LocationInfoGrid"
 import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString } from "./LocationObjectHandling"
-import { PRESET_LOCATIONS } from "./PresetLocations"
-
-
-
-
 
 type TodayLocationSummaryProps = {
     locationGroups: any
@@ -33,7 +27,6 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime}:TodayL
             .join('')}`
     }
     
-
     return (
         <CopyBox 
             id="copybox"

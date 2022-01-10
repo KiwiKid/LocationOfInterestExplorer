@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr"
 import fetcher from "../utils/fetcher"
-import { PRESET_LOCATIONS } from "./PresetLocations";
+import { PRESET_LOCATIONS } from "./LOCATION_CONSTANTS";
 
 // Warning - this class is a mess..
 

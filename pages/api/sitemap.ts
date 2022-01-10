@@ -3,7 +3,7 @@ import { createGzip } from 'zlib'
 import { SitemapStream } from 'sitemap'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getHardCodedUrl } from '../../components/utils/utils'
-import { PRESET_LOCATIONS } from '../../components/Locations/PresetLocations'
+import { PRESET_LOCATIONS } from '../../components/Locations/LOCATION_CONSTANTS'
 
 const STATIC_URLS:any = ['?loc=christchurch','?loc=auckland']
 

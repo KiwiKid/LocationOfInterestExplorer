@@ -13,7 +13,7 @@ import Toggle from "../utils/Toggle";
 import Summary from '../utils/Summary'
 import { Sort } from "../types/Sort";
 import { SendFeedback } from "../utils/SendFeedback";
-import { PRESET_LOCATIONS } from "./PresetLocations";
+import { PRESET_LOCATIONS } from "./LOCATION_CONSTANTS";
 import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
