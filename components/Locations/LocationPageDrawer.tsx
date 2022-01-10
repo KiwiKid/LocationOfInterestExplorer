@@ -427,16 +427,12 @@ const LocationPageDrawer = ({
                 <Summary>Experimental Feature - View images previews of locations -<br/> (Warning: these images might be slow to load and out of date)</Summary>
                 <div className="grid sm:grid-cols-2">
                   {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}>
-                    <div className="border-2 border-black p-2 w-full">
-                      <Link href={`/loc/${pl.urlParam}`}>
-                        <a>
-                          <div className="w-3/5 m-auto text-center">{pl.title}</div>
-                          <div style={{width: '350px', height: '300px', position: 'relative', maxWidth: '100%'}}>
-                            {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
-                              <img src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>
-                          </div>
-                        </a>
-                      </Link>
+                    <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl)}}>
+                        <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
+                        <div className="flex justify-center align-middle overflow-hidden">
+                          {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
+                            <img  className="flex-shrink-0 min-w-full min-h-full" src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>{/*<img  src="/img/preview.png"/>*/}
+                        </div>
                     </div>
                   </div> )}
                 </div>
