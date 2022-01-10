@@ -1,0 +1,3 @@
+enum ScreenshotMode {
+    Preview
+}

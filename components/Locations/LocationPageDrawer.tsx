@@ -18,7 +18,7 @@ import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
-import { NiceDateWithTime, NiceFullAlwaysNZDate, NiceFullAlwaysNZDate2, NiceFullAlwaysNZDate3, NiceFullDate, NiceShortTime } from "./DateHandling";
+import { NiceDateWithTime, NiceFullAlwaysNZDate, NiceFullDate, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 import { LOCATION_OVERRIDES, metaImageURLDirect } from "./LocationObjectHandling";

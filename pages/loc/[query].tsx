@@ -12,6 +12,7 @@ import LocationContext from "../../components/Locations/LocationAPI/LocationCont
 import { PRESET_LOCATIONS } from "../../components/Locations/PresetLocations"
 import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
+import Preview from "../preview/loc/[quickLink]"
 
 type LocationPageProps = {
   quickLink: PresetLocation
@@ -23,12 +24,25 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
 
   const router = useRouter();
 
+  const { screenshotModeStr } = router.query;
+  let screenshotMode:ScreenshotMode|null = null;
+  if(screenshotModeStr 
+    && typeof(screenshotModeStr) === 'string' 
+    && ['preview'].some((o) => o === screenshotModeStr.toLowerCase())){
+      screenshotMode = ScreenshotMode[screenshotModeStr as keyof typeof ScreenshotMode];
+  }
+  
+  
+
   
 
   const shortTitle = `NZ Covid Map ${quickLink != null ? `- ${quickLink.title}` : ''}`
   const mediumTitle = `NZ Covid Map ${quickLink != null ? `- ${quickLink.title}` : ''} - Explore Official Locations of Interest`
   const longTitle = "NZ Covid Map - Explore Official Locations of Interest published by the Ministry of Health"
   const description =  "NZ Covid Map allows you too explore Locations of Interest published by the Ministry of Health easily, from any device."
+
+
+
 
   return (
     <>
@@ -102,7 +116,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
                         lat: quickLink.lat,
                         lng: quickLink.lng,
                         zoom: quickLink.zoom,
-                        screenshotMode: router.asPath.indexOf('screenshotMode') > 0
+                        screenshotMode: screenshotMode // router.asPath.indexOf('screenshotMode') > 0
                       }}
                       publishState={{hardcodedURL: hardcodedURL, publishTime: new Date(publishTimeUTC)}}
                   />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>

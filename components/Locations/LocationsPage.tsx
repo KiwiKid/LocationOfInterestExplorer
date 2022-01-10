@@ -22,8 +22,7 @@ const DEFAULT_PAGE_STATE:PageState = {
    lat: -40.8248,
    lng: 173.7304,
    zoom: 8,
-   daysInPastShown:  14,
-   screenshotMode: false
+   daysInPastShown:  14
 }
 const isInvalidLocation = (loc:LocationOfInterest) => {
   return !(!!loc.lat || !!loc.lng)
