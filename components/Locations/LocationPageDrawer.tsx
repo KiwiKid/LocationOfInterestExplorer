@@ -265,8 +265,8 @@ const LocationPageDrawer = ({
         {!pageState.screenshotMode ? <div className="w-full text-center">            
               <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
           </div> : 
-          <div className="w-full text-center"><div className="text-lg">NiceFullAlwaysNZDate2:<NiceFullAlwaysNZDate2 date={publishState.publishTime}/>|||<NiceFullAlwaysNZDate date={publishState.publishTime}/></div>
-            <span className="text-2xl">{pageState.quickLink ? pageState.quickLink.title : ''} - Covid-19 Locations of Interest -  </span>
+          <div className="w-full text-center">
+            <span className="text-2xl">{pageState.quickLink ? pageState.quickLink.title : ''} - Covid-19 Locations of Interest - <span className="text-gray-600">updated @ <NiceFullAlwaysNZDate date={publishState.publishTime}/></span> </span>
             </div>}
           <Toggle id="locations" extendClassName="border-gray-800 border-b-4 text-sm" title={"Locations"} defaultOpen={true} >
             <>

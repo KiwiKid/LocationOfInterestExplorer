@@ -31,10 +31,6 @@ const NiceFullDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('D 
 // Use when generating dates for screenshots
 const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).tz('Pacific/Auckland').format('D MMM h:mm A') : 'no date'}</>
 
-const NiceFullAlwaysNZDate2 = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).format('D MMM h:mm A') : 'no date'}</>
-
-const NiceFullAlwaysNZDate3 = ({date}:DateProps):JSX.Element => <>||||||||||||||UTD: {date.toUTCString()} ||||||||||ISO: {date.toISOString()}</>
-
 const startOfDay = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
@@ -47,4 +43,4 @@ const releaseDateAndCity = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
 
-export {NiceTimeFromNow, NiceDateWithTime,NiceFullDate,NiceFullAlwaysNZDate,NiceFullAlwaysNZDate2,NiceFullAlwaysNZDate3, NiceDate, startOfDay, startOfDayFormatted, NiceShortTime}
+export {NiceTimeFromNow, NiceDateWithTime,NiceFullDate,NiceFullAlwaysNZDate,NiceDate, startOfDay, startOfDayFormatted, NiceShortTime}
