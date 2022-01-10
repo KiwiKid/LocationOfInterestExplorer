@@ -21,16 +21,7 @@ type LocationPageProps = {
   hardcodedURL: string
 };
 
-const DEFAULT_FEATURE_FLAGS = [
-  'zoomControls',
-  'mapNavigateControls',
-  'fancyPreviewLinks'
-];
 
-const PREVIEW_FEATURE_FLAGS = [
-  'basicDrawerTitle',
-  'noDrawer'
-];
 
 const getfeatureFlags = (asPath:string):string[] => {
   if(asPath.indexOf('?') > 0){
