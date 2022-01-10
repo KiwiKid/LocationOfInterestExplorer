@@ -4,6 +4,45 @@ The circle based selection method allows for the best in class view of the Covid
 
 Given the time sensitive nature of Covid-19, there are some untidy compromises made in the interests of time. (See "Tech Debt" for more details - open to collaboration here!)
 
+## Features
+
+- Statically rendered Location specific pages (https://nzcovidmap.org/loc/auckland)
+- Install as PWA
+- Share bookmarks
+- Auto-Locate
+- Date filtering
+- Quick map navigation links
+- Full Mobile/Desktop support
+
+Next up:
+- [-] Generate a set of images for major population centers [InProg - GC]
+- [ ] Search text filter input box in Drawer
+- [ ] Improve navigation between drawers and map (and vice-versa)
+- [ ] Extend screenshot API display options
+
+
+
+There are two "mode" systems:
+
+QuickLink mode system:
+
+By default the page is running in "specific" mode, as indicated by the circle specific sharing url with parameters like 'lat' and 'lng'. There is just a default sharing preview image and the normal page title.
+
+The other mode is "quickLink". Quicklinks are specific to population centers. When the app is build, a page will be created for each quicklink at '/loc/[urlParam]'. 
+The page can enter quicklink mode through either: 
+```
+/loc/[urlParam] (preferred)
+?loc=[urlParam]
+```
+
+"/loc/[urlParam]" is perferred as a sharing meta image and page title is provided.
+
+QuickLinks are called defined in the "PRESET_LOCATIONS" const.
+
+Screenshot mode system:
+This allows the app to display a custom appearance when generating a screenshot image.
+
+
 ## Prerequisites
 
 Environment variables:
@@ -48,11 +87,7 @@ When the react-leaflet map loads, we create a set of LocationOfInterestsCalculat
 
 The Drawer contains details of all the locations in the current selection circle.
 
-Feature Ideas (open to ideas here!)
-- [ ] "Subscribe to a circle" (Notifications integration) [InProg - GC]
-- [ ] Generate a set of images for major population centers [InProg - GC]
-- [ ] Search text filter input box in Drawer
-- [ ] Improve navigation between drawers and map (and vice-versa)
+
 Tech Debt
 - [ ] Loose typing (so much "any"...)
   - [ ] The "LocationOfInterest" type is based on the original CSV item and could be replaced by MohLocationOfInterest).
