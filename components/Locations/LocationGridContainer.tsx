@@ -28,7 +28,7 @@ export default function LocationGridContainer({showLocationData, locations, open
                             sortField={sortField}
                         />
                     </>
-                    : !pageState.screenshotMode == 'preview' ? <div className="bg-green-400 text-center mb-2">
+                    : pageState.screenshotMode === 'preview' ? <div className="bg-green-400 text-center mb-2">
                             <div className="text-lg">No Locations of interest found in the circle </div>
                             <div>Close the drawer and move the map to find more locations (or celebrate?)</div>
                     </div> : null}
