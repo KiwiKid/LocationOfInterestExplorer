@@ -430,6 +430,7 @@ const LocationPageDrawer = ({
                     <div className="border-2 border-black p-2 w-full">
                       <div className="w-3/5 m-auto text-center">{pl.title}</div>
                       <div style={{width: '350px', height: '300px', position: 'relative', maxWidth: '100%'}}>
+                          {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
                           <img src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>
                       </div>
                     </div>
