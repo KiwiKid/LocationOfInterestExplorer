@@ -17,7 +17,14 @@ type PresetLocation = {
   
 
 const PRESET_LOCATIONS:PresetLocation[] = [
-    { 
+  { 
+    title: "all",
+    urlParam: "all",
+    matchingMohCityString: [""],
+    lat: -40.8248,
+    lng: 173.7304,
+    zoom: 6
+  },{ 
     title: "Auckland",
     urlParam: "auckland",
     matchingMohCityString: ["Auckland"],

@@ -11,7 +11,7 @@ const DEFAULT_SETTINGS:PageState = {
   ,lng: 175.13305664062503
   ,zoom: 8
   ,daysInPastShown: 14
-  ,screenshotMode: null
+  ,featureFlags: ['zoomControls','mapNavigateControls']//,'basicDrawerTitle','noDrawer'
 }
 
 
@@ -19,7 +19,9 @@ const getMatchingQuickLink = (locationParam:string) => PRESET_LOCATIONS.filter((
 
 const processQueryString = (query:any):PageState => {
 
-  // Old style ?loc=[auckland] query matching
+  // Old style "?loc=auckland" query matching
+  // This is depreciated in favour of "/loc/auckland" format because generates better page meta data.
+  // It remains to support old links in social media
   if(!!query.loc){
     let quickLink = getMatchingQuickLink(query.loc);
     if(quickLink == undefined){
@@ -32,8 +34,7 @@ const processQueryString = (query:any):PageState => {
       , zoom: +quickLink.zoom
       , daysInPastShown: 14
       , quickLink: quickLink
-      , screenshotMode: null
-
+      , featureFlags: DEFAULT_SETTINGS.featureFlags
     }
   }
     
@@ -42,7 +43,7 @@ const processQueryString = (query:any):PageState => {
         lng: query.lng ? query.lng : DEFAULT_SETTINGS.lng,
         zoom: query.zoom ? +query.zoom : DEFAULT_SETTINGS.zoom,
         daysInPastShown: query.daysInPastShown ? +query.daysInPastShown : DEFAULT_SETTINGS.daysInPastShown,
-        screenshotMode: null
+        featureFlags:  DEFAULT_SETTINGS.featureFlags
     }
   }
   /*const mergeSettings = ({a}:PageState):StartingSettings => {

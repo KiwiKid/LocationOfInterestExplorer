@@ -263,14 +263,14 @@ const LocationPageDrawer = ({
           <div className="m-auto italic text-gray-700  text-center">
             <>
               <div className="text-sm font-light">
-                {!pageState.screenshotMode && <div><span className="bold font-base">Drag</span> or <span className="bold font-base">Click</span> this bar</div>}
+                {!pageState.featureFlags.some((ff) => ff === 'basicDrawerTitle') && <div><span className="bold font-base">Drag</span> or <span className="bold font-base">Click</span> this bar</div>}
                 <div> Not an Official Ministry of Health Service.</div>
               </div>
             </>
           </div>
         </div>
         <div ref={drawerRef} id="drawer-content" className="overflow-auto overflow-y-scroll max-h-screen">
-        {pageState.screenshotMode !== 'preview' ? <div className="w-full text-center">            
+        {!pageState.featureFlags.some((ff) => ff === 'basicDrawerTitle') ? <div className="w-full text-center">            
               <span className="text-2xl">{visibleLocations.length}</span> Locations of Interest since <span onClick={() => setShowDateInPastPopup(!showDateInPastPopup)} className="text-2xl underline">{shortDayLongMonthToNZ.format(getDateInPastByXDays(daysInPastShown))}</span> in the <span className="text-blue-700"> circle</span>
           </div> : 
           <div className="w-full text-center">
@@ -283,7 +283,7 @@ const LocationPageDrawer = ({
                     <div  className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishState.publishTime}/>{dataStale && "⚠️"}</div>
                     {dataStale && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
               </Summary>
-              {pageState.screenshotMode !== 'preview' && <LocationGridContainer 
+              {!pageState.featureFlags.some((ff) => ff === 'noDrawer') && <LocationGridContainer 
                     showLocationData={false}
                     locations={visibleLocations}
                     openLocations={openLocations}
@@ -453,7 +453,11 @@ const LocationPageDrawer = ({
                     </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
                     <details>
                       <summary>debug</summary>
-                      <div>[{pageState.lat},{pageState.lng}] {pageState.zoom} {pageState.daysInPastShown}{pageState.screenshotMode ? 'SCREENSHOT MODE' : ''}{pageState.quickLink ? pageState.quickLink.title : ''}</div>
+                      <div>[{pageState.lat},{pageState.lng}]</div>
+                      <div> {pageState.zoom}</div>
+                      <div>{pageState.daysInPastShown}</div>
+                      <div>{pageState.featureFlags.length ? JSON.stringify(pageState.featureFlags) : 'No Feature flags'}</div>
+                      <div>{pageState.quickLink ? pageState.quickLink.title : ''}</div>
                       <div>{debugURL}</div>
                       <Link href={'/info'}>raw info</Link>
                     </details>

@@ -19,22 +19,38 @@ type LocationPageProps = {
   quickLink: PresetLocation
   publishTimeUTC: string // Allow for native next.js props usage
   hardcodedURL: string
+};
+
+const DEFAULT_FEATURE_FLAGS = [
+  'zoomControls',
+  'mapNavigateControls'
+];
+
+const PREVIEW_FEATURE_FLAGS = [
+  'basicDrawerTitle',
+  'noDrawer'
+];
+
+const getfeatureFlags = (asPath:string):string[] => {
+  if(asPath.indexOf('?') > 0){
+    const query = parseQuery(asPath.substring(asPath.indexOf('?')+1, asPath.length));
+    switch(query.sm){
+      case 'preview': 
+        return PREVIEW_FEATURE_FLAGS
+        break;
+    }
+  }
+  return DEFAULT_FEATURE_FLAGS
 }
+
 
 const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, hardcodedURL}) => {
 
   const router = useRouter();
 
   // Gross fake Enum (https://github.com/vercel/next.js/issues/13045):
-  var screenshotMode:string|null = null;
-  if(router.asPath.indexOf('?') > 0){
-    const query = parseQuery(router.asPath.substring(router.asPath.indexOf('?')+1, router.asPath.length));
-    switch(query.sm){
-      case 'preview': 
-        screenshotMode = 'preview';  
-    }
-  }
-  
+
+  let featureFlags:string[] = getfeatureFlags(router.asPath)
 
   
 
@@ -118,7 +134,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
                         lat: quickLink.lat,
                         lng: quickLink.lng,
                         zoom: quickLink.zoom,
-                        screenshotMode: screenshotMode // router.asPath.indexOf('screenshotMode') > 0
+                        featureFlags: featureFlags
                       }}
                       publishState={{hardcodedURL: hardcodedURL, publishTime: new Date(publishTimeUTC)}}
                   />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>

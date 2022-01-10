@@ -22,6 +22,7 @@ type HomePageProps = {
 
 const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
 
+  
   const settings = useSettings();
 
   //const { locationRecords, error, loading } = useMohLocations();

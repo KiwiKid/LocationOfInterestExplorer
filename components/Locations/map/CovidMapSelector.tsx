@@ -196,9 +196,9 @@ function CovidMapSelector({
         refreshMap(m);
         setCircleRadiusBasedOnMapSize(activeCircleRef, map);
         // On some older browsers the circle marker layers take longer than the map to load.
-        // This ensure that the circle resizes and hightlights the circles, even in adverse conditions.
+        // These two method ensure that the circle resizes and hightlights the circles, even in adverse conditions.
         var ensureLocationsInCircleActive = setInterval(function(){
-            if(activeCircleRef.current._mRadius == 10){
+            if(activeCircleRef && activeCircleRef.current._mRadius == 10){
                 setCircleRadiusBasedOnMapSize(activeCircleRef, m);
                 refreshMap(m);
             }
@@ -206,7 +206,7 @@ function CovidMapSelector({
         },1500);
 
         var reallyReallyEnsureCircleResizeBasedOnMapSize = setInterval(function(){
-            if(activeCircleRef.current._mRadius == 10){
+            if(activeCircleRef && activeCircleRef.current._mRadius == 10){
                 setCircleRadiusBasedOnMapSize(activeCircleRef, m);
                 refreshMap(m);
             }
@@ -253,7 +253,12 @@ function CovidMapSelector({
         let lngDiff = center.lng - pageState.lng;
         // Only reset the quickLink if we have moved enough
         if(Math.abs(latDiff) > 0.1 || Math.abs(latDiff) > 0.1){
-            setPageState({lat: center.lat, lng: center.lng, zoom: zoom, daysInPastShown: daysInPastShown})
+            let newPageState = pageState;
+            newPageState.lat = center.lat;
+            newPageState.lng = center.lng;
+            newPageState.zoom = zoom;
+            newPageState.daysInPastShown = daysInPastShown;
+            setPageState(newPageState);
         }
   //      saveMapSettingsLocally(center.lat, center.lng, zoom, daysInPastShown);
        // refreshShareUrl(center.lat, center.lng, zoom, daysInPastShown);
@@ -325,7 +330,7 @@ function CovidMapSelector({
     </style>
         <div className="col-span-10" ref={(ref) => containerRef.current = ref}>
             <div>
-            <div id="use-my-location" className="fixed top-0 -right-0 z-3000">
+            {pageState.featureFlags.some((ff) => ff === 'mapNavigateControls') && <div id="use-my-location" className="fixed top-0 -right-0 z-3000">
             <label className="h-4 hidden" htmlFor="ViewAllButton">Request GPS location:</label>
                 <InternalLink
                     id="ViewAllButton"
@@ -343,7 +348,7 @@ function CovidMapSelector({
                     onClick={() => setSubscribePromptVisible(true)}  
                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
                 >Subscribe</InternalLink>*/}
-            </div>
+            </div>}
             <div id="mapContainer">
                 {locationPromptVisible && 
                 <div className="top-24 right-10 absolute z-5000">
@@ -392,7 +397,7 @@ function CovidMapSelector({
                     <MapContainer 
                         center={activeLocation}
                         zoom={activeZoom}
-                        zoomControl={true}
+                        zoomControl={pageState.featureFlags.some((ff) => ff === 'zoomControls')}
                         whenCreated={(m) => { onMapLoad(m); } }
                         style={{ height: "85vh",}}
                         preferCanvas={true}
