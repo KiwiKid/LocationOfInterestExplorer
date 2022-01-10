@@ -320,14 +320,27 @@ const LocationPageDrawer = ({
                       <div className="w-3/5 m-auto">
                         <SendFeedback />
                       </div>
-                      
                   </div>
                 </div>
             </Toggle>
             <Toggle id="fastTravel" title="Move map to:" extendClassName="border-gray-800 border-b-4">
               <>
-                <Summary>Use these buttons to re-position the map at a specific location</Summary>
-                <div className="grid grid-cols-2">
+              {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') 
+              ? <Summary>After about 10 seconds preview images should show</Summary>
+              : <Summary>Use these buttons to re-position the map at a specific location</Summary>}
+                  {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') ? 
+                    <div className="grid sm:grid-cols-2">
+                    {PRESET_LOCATIONS.filter((pl) => pl.showInDrawer).map((pl) => <div key={`${pl.urlParam}_preview`}>
+                      <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl)}}>
+                          <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
+                          <div className="flex justify-center align-middle overflow-hidden p-6">
+                            {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
+                              <img className="flex-shrink-0 min-w-full min-h-full" src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>{/*<img  src="/img/preview.png"/>*/}
+                          </div>
+                      </div>
+                    </div> )}
+                  </div>
+                  : <div className="grid grid-cols-2">
                   {PRESET_LOCATIONS.filter((p) => !!p.zoom).sort((a,b) => a.lat > b.lat ? -1 : 1).map((pl) => 
                     <div key={pl.title} className="w-full">
                       <div className="w-4/5 m-auto p-3">
@@ -337,8 +350,7 @@ const LocationPageDrawer = ({
                         >{pl.title}</InternalLink>                        
                       </div>
                     </div>
-                  )}
-                </div>
+                  )}</div>}
               </>
              </Toggle>
               <Toggle id="controls" title="Controls" extendClassName="border-gray-800 border-b-4">
@@ -431,22 +443,6 @@ const LocationPageDrawer = ({
                         ))}
                     </div>
             </Toggle>}
-            <Toggle title="Previews" id="previews" extendClassName="border-gray-800 border-b-4" >          
-              <>
-                <Summary>Experimental Feature - View images previews of locations -<br/> (Warning: these images might be slow to load and out of date)</Summary>
-                <div className="grid sm:grid-cols-2">
-                  {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}>
-                    <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl)}}>
-                        <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
-                        <div className="flex justify-center align-middle overflow-hidden p-6">
-                          {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
-                            <img className="flex-shrink-0 min-w-full min-h-full" src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>{/*<img  src="/img/preview.png"/>*/}
-                        </div>
-                    </div>
-                  </div> )}
-                </div>
-              </>
-              </Toggle>
                 <div className="text-center mt-4">
                   <span className="underline">
                     <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>

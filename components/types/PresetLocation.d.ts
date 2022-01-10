@@ -7,5 +7,6 @@ type PresetLocation = {
     lat:number
     lng:number
     zoom:number
+    showInDrawer: boolean
   }
   

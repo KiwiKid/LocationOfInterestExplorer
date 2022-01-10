@@ -191,6 +191,13 @@ function CovidMapSelector({
         }
     }
 
+    const updateCenterCircleIfNeeded = (m:Map) => {
+        if(activeCircleRef && activeCircleRef.current && activeCircleRef.current._mRadius == 10){
+            setCircleRadiusBasedOnMapSize(activeCircleRef, m);
+            refreshMap(m);
+        }
+    }
+
     const onMapLoad = (m:any) => {
         setMap(m);
         refreshMap(m);
@@ -198,18 +205,12 @@ function CovidMapSelector({
         // On some older browsers the circle marker layers take longer than the map to load.
         // These two method ensure that the circle resizes and hightlights the circles, even in adverse conditions.
         var ensureLocationsInCircleActive = setInterval(function(){
-            if(activeCircleRef && activeCircleRef.current._mRadius == 10){
-                setCircleRadiusBasedOnMapSize(activeCircleRef, m);
-                refreshMap(m);
-            }
+            updateCenterCircleIfNeeded(m);
             clearInterval(ensureLocationsInCircleActive);
         },1500);
 
         var reallyReallyEnsureCircleResizeBasedOnMapSize = setInterval(function(){
-            if(activeCircleRef && activeCircleRef.current._mRadius == 10){
-                setCircleRadiusBasedOnMapSize(activeCircleRef, m);
-                refreshMap(m);
-            }
+            updateCenterCircleIfNeeded(m);
             clearInterval(reallyReallyEnsureCircleResizeBasedOnMapSize);
         },3000);
     }

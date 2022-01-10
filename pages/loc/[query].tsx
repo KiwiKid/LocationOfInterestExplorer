@@ -23,7 +23,8 @@ type LocationPageProps = {
 
 const DEFAULT_FEATURE_FLAGS = [
   'zoomControls',
-  'mapNavigateControls'
+  'mapNavigateControls',
+  'fancyPreviewLinks'
 ];
 
 const PREVIEW_FEATURE_FLAGS = [

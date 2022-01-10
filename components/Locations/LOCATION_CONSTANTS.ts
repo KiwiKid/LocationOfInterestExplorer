@@ -23,70 +23,80 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     matchingMohCityString: [""],
     lat: -40.8248,
     lng: 173.7304,
-    zoom: 6
+    zoom: 6,
+    showInDrawer: false
   },{ 
     title: "Auckland",
     urlParam: "auckland",
     matchingMohCityString: ["Auckland"],
     lat: -36.8500,
     lng: 174.7833,
-    zoom: 9
+    zoom: 9,
+    showInDrawer: true
   },{
     title: "Wellington",
     urlParam: "wellington",
     matchingMohCityString: ["Wellington"],
     lat: -41.2889,
     lng: 174.7772,
-    zoom: 11
+    zoom: 11,
+    showInDrawer: true
   },{
     title: "Hamilton",
     urlParam: "hamilton",
     matchingMohCityString: ["Hamilton"],
     lat: -37.7833,
     lng: 175.2833,
-    zoom: 11
+    zoom: 11,
+    showInDrawer: true
   },{
     title: "Tauranga",
     urlParam: "tauranga",
     matchingMohCityString: ["Tauranga", "Mount Maunganui", "Papamoa"],
     lat: -37.6858,
     lng: 176.1667,
-    zoom: 11
+    zoom: 11,
+    showInDrawer: true
   },{
     title: "Palmerston North",
     urlParam: "palmerstonnorth",
     matchingMohCityString: ["Palmerston North"],
     lat: -40.3549,
     lng: 175.6095,
-    zoom: 11
+    zoom: 11,
+    showInDrawer: true
   },{
     title:"Whangarei",
     urlParam: "whangarei",
     matchingMohCityString: ["Whangarei"],
     lat: -35.7250,
     lng: 174.3236,
-    zoom: 12
+    zoom: 12,
+    showInDrawer: true
   },{
     title: "Napier",
     urlParam: "napier",
     matchingMohCityString: ["Napier"],
     lat: -39.4833,
     lng: 176.9167,
-    zoom: 12
+    zoom: 12,
+    showInDrawer: true
   },{
     title: "Rotorua",
     urlParam: "rotorua",
     matchingMohCityString: ["Rotorua"],
     lat: -38.1378,
     lng: 176.2514,
-    zoom: 12
+    zoom: 12,
+    showInDrawer: true
   },{
     title: "Dunedin",
     urlParam: "dunedin",
     matchingMohCityString: ["Dunedin"],
     lat: -45.8667,
     lng: 170.5000,
-    zoom: 12
+    zoom: 12,
+    showInDrawer: true
   },  {
     title: "Christchurch",
     urlParam: "christchurch",
@@ -94,6 +104,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lat: -43.5309,
     lng: 172.6365,
     zoom: 11
+      ,showInDrawer: true
   },{
     title: "Invercargill",
     urlParam: "invercargill",
@@ -101,13 +112,15 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lat: -46.4290,
     lng: 168.3620,
     zoom: 11
+      ,showInDrawer: true
   },{
     title: "Nelson",
     urlParam: "nelson",
     matchingMohCityString: ["Nelson"],
     lat: -41.2931,
     lng: 173.2381,
-    zoom: 12
+    zoom: 12,
+    showInDrawer: true
   },{
     title: "Whanganui",
     urlParam: "whanganui",
@@ -115,6 +128,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lat: -39.9333,
     lng: 175.0500,
     zoom: 12
+      ,showInDrawer: true
   },{
     title: "Taupo",
     urlParam: "taupo",
@@ -122,6 +136,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lat: -38.690980140896016,
     lng: 176.08259535359113,
     zoom: 12
+      ,showInDrawer: true
   },{
     title: "Bulls",
     urlParam: "bulls",
@@ -129,20 +144,23 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lat: -40.174538700945355,
     lng: 175.38489529999998,
     zoom: 12
+      ,showInDrawer: true
   },{
     title: "Waihi",
     urlParam: "waihi",
     matchingMohCityString: ["Waihi", "Waihi Beach"],
     lat: -37.391462000435894,
     lng: 175.84035379999997,
-    zoom: 12
+    zoom: 12,
+    showInDrawer: true
   },{
     title: "Queenstown",
     urlParam: "queenstown",
     matchingMohCityString: ["Queenstown"],
     lat: -45.02108559729038, 
     lng: 168.69876199033442,
-    zoom: 12
+    zoom: 12,
+    showInDrawer: true
   }
   
   /*,{
@@ -152,6 +170,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     matchingMohCityString: ["Tauranga"],
     lat: -37.766667,
     lng: 176.316667
+      ,showInDrawer: true
   },{
     title: "Turangi",
     urlParam: "turangi",
