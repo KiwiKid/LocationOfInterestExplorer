@@ -159,7 +159,7 @@ const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
 }
 
 const metaImageURL = (hardcodedURL:string, key:string) => key ? `${hardcodedURL}/preview/loc/${encodeURIComponent(key.toLowerCase())}` : `${hardcodedURL}/img/preview.png`;
-const metaImageURLDirect = (hardcodedURL:string, key:string) => `${hardcodedURL}/api/image/loc/${encodeURIComponent(key.toLowerCase())}`
+const metaImageURLDirect = (hardcodedURL:string, key:string) => hardcodedURL === 'https://localhost:3000' ? 'https://nzcovidmap.org/img/preview.png' : `${hardcodedURL}/api/image/loc/${encodeURIComponent(key.toLowerCase())}`
 
 
 export { 

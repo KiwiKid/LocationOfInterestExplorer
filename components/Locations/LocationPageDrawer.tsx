@@ -429,9 +429,9 @@ const LocationPageDrawer = ({
                   {PRESET_LOCATIONS.map((pl) => <div key={`${pl.urlParam}_preview`}>
                     <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl)}}>
                         <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
-                        <div className="flex justify-center align-middle overflow-hidden">
+                        <div className="flex justify-center align-middle overflow-hidden p-6">
                           {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
-                            <img  className="flex-shrink-0 min-w-full min-h-full" src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>{/*<img  src="/img/preview.png"/>*/}
+                            <img className="flex-shrink-0 min-w-full min-h-full" src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>{/*<img  src="/img/preview.png"/>*/}
                         </div>
                     </div>
                   </div> )}
