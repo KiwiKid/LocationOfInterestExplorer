@@ -25,10 +25,6 @@ import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
 import Image from 'next/image';
 import { resetScroll } from "../utils/resetScroll";
-const PRESET_LOCATIONS:PresetLocation[] = require('./data/PRESET_LOCATIONS')
-const LOCATION_OVERRIDES:LocationOverride[] = require('./data/LOCATION_OVERRIDES')
-
-
 
 // TODO: consoidate most of this into "PageState"
 type LocationPageDrawerProps = { 
