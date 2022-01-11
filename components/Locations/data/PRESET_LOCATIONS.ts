@@ -170,7 +170,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ["Bay Of Islands"],
       lat: -35.21386707198709, 
       lng: 174.15347141745954,
-      zoom: 9,
+      zoom: 10,
       showInDrawer: true
     },{
       title: 'Feilding',
@@ -187,7 +187,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Carterton'],
       lat: -41.023569115843145,
       lng: 175.5221376193341,
-      zoom: 10,
+      zoom: 12,
       showInDrawer: true
     },
     {
