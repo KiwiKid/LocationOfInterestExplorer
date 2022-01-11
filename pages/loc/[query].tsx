@@ -10,6 +10,7 @@ import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 import parseQuery from "../../components/utils/parseQuery"
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "../../components/Locations/FeatureFlags"
+import LocationData from "../../components/Locations/LocationData"
 
 type LocationPageProps = {
   quickLink: PresetLocation

@@ -2,7 +2,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr"
 import fetcher from "../utils/fetcher"
-import { PRESET_LOCATIONS } from "./LOCATION_CONSTANTS";
+import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "./FeatureFlags";
+import LocationData from "./LocationData";
 
 // Warning - this class is a mess..
 
@@ -11,17 +12,16 @@ const DEFAULT_SETTINGS:PageState = {
   ,lng: 175.13305664062503
   ,zoom: 8
   ,daysInPastShown: 14
-  ,featureFlags: ['zoomControls','mapNavigateControls']//,'basicDrawerTitle','noDrawer'
+  ,featureFlags: DEFAULT_FEATURE_FLAGS
 }
 
 
-const getMatchingQuickLink = (locationParam:string) => PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam.toLowerCase())[0];
+const getMatchingQuickLink = (locationParam:string) => LocationData.PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam.toLowerCase())[0];
 
 const processQueryString = (query:any):PageState => {
 
-  // Old style "?loc=auckland" query matching
-  // This is depreciated in favour of "/loc/auckland" format because generates better page meta data.
-  // It remains to support old links in social media
+  // Old style ?loc=[auckland] query matching
+  // Note: Preview mode is not supported
   if(!!query.loc){
     let quickLink = getMatchingQuickLink(query.loc);
     if(quickLink == undefined){
@@ -34,7 +34,8 @@ const processQueryString = (query:any):PageState => {
       , zoom: +quickLink.zoom
       , daysInPastShown: 14
       , quickLink: quickLink
-      , featureFlags: DEFAULT_SETTINGS.featureFlags
+      , featureFlags: DEFAULT_FEATURE_FLAGS
+
     }
   }
     
@@ -43,7 +44,7 @@ const processQueryString = (query:any):PageState => {
         lng: query.lng ? query.lng : DEFAULT_SETTINGS.lng,
         zoom: query.zoom ? +query.zoom : DEFAULT_SETTINGS.zoom,
         daysInPastShown: query.daysInPastShown ? +query.daysInPastShown : DEFAULT_SETTINGS.daysInPastShown,
-        featureFlags:  DEFAULT_SETTINGS.featureFlags
+        featureFlags: query.sm && query.sm == 'preview' ? PREVIEW_FEATURE_FLAGS : DEFAULT_FEATURE_FLAGS
     }
   }
   /*const mergeSettings = ({a}:PageState):StartingSettings => {

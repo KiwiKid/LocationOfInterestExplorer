@@ -16,6 +16,9 @@ type PresetLocation = {
 
 
 
+
+
+
  const PRESET_LOCATIONS:PresetLocation[] = [
   { 
     title: "all",
@@ -222,9 +225,19 @@ const LOCATION_OVERRIDES:LocationOverride[] = [
   , {eventId: 'a0l4a0000006jj8AAA', lat: '-36.823432181151354', lng:'174.61118945822034'}
   , {eventId: 'a0l4a0000006jlEAAQ', lat: '-36.823432181151354', lng:'174.61118945822034'}
 ]
-
+/*
 let LocationData = {
   PRESET_LOCATIONS: PRESET_LOCATIONS,
   LOCATION_OVERRIDES: LOCATION_OVERRIDES
+}*/
+type LocationData = {
+  PRESET_LOCATIONS: PresetLocation[]
+  LOCATION_OVERRIDES: LocationOverride[]
 }
-export default LocationData;
+
+let Data:LocationData = {
+  PRESET_LOCATIONS: PRESET_LOCATIONS,
+  LOCATION_OVERRIDES: LOCATION_OVERRIDES
+}
+
+export default Data;

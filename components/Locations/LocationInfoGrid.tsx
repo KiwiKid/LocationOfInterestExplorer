@@ -6,7 +6,7 @@ import { getHoursAgo } from "../utils/utils";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "./DateHandling";
 import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "./LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
-import LocationData from "./LOCATION_DATA";
+import LocationData from "./LocationData";
 import TodayLocationSummary from "./TodayLocationSummary";
 
 type LocationInfoGridProps = {
@@ -32,11 +32,12 @@ const getBorderColor = (hoursAgo:number) => {
 
 const processGroupKey = (keyString:string):LocationGroupKey => {
     let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
+    let qLink = LocationData.PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((urlParm) => urlParm === cityParam.toLowerCase()))[0] || null
     return {
         key: keyString,
         date: new Date(keyString.substring(0,keyString.indexOf('|'))),
         city: cityParam,
-        quicklink: LocationData.PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((urlParm) => urlParm === cityParam.toLowerCase()))[0] || null
+        quicklink: qLink
     }
 }
 
