@@ -25,7 +25,7 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, preset
         copyText = `${totalLocations} New Locations of Interest (as at ${new Intl.DateTimeFormat('en-NZ', {timeStyle: 'short'}).format(publishTime)} ${new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishTime)})\n\n${Object.keys(locationGroups)
             .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
             .filter((keyObj:any) => onlyToday(keyObj.date))
-            .map((keyObj:any) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL))
+            .map((keyObj:any) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL, publishTime, true))
             .join('')}`
     }
     

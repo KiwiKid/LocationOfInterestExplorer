@@ -54,9 +54,10 @@ type LocationGroupProps = {
     groupKeyString: string
     hardcodedURL: string
     presetLocations: PresetLocation[]
+    publishTime: Date
 }
 
-const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations}:LocationGroupProps) => {
+const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations, publishTime}:LocationGroupProps) => {
 
     const groupKey = processGroupKey(presetLocations, groupKeyString);
 
@@ -67,7 +68,7 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations}:Lo
         <>
             <details className={`m-4 p-4 border-4  border-${getBorderColor(getHoursAgo(groupKey.date))}`}>
             <summary className="">
-            (after) <NiceDate date={groupKey.date}/> - {group.length} Locations - {groupKey.city} {group.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
+            (after) <NiceDate date={groupKey.date}/> - {group.length} Locations - {groupKey.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishTime)}) {group.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
             (most recent was {getHoursAgo(mostRecentLocationAdded)} hours ago)
                 <CopyBox 
                         id="copybox"
@@ -77,7 +78,7 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations}:Lo
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={getPrintableLocationOfInterestGroupString(groupKey, group, hardcodedURL)}
+                    copyText={getPrintableLocationOfInterestGroupString(groupKey, group, hardcodedURL, publishTime, false)}
                     textarea={true} 
                 />
             </summary>
@@ -152,7 +153,7 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime}:LocationInfoGri
                 {Object.keys(groupedLocations)
                 .map((keyStr:string) => processGroupKey(PRESET_LOCATIONS, keyStr))
                 .sort((a:LocationGroupKey,b:LocationGroupKey) => a.date > b.date ? -1 : 1)
-                .map((groupKey) => <LocationGroup presetLocations={PRESET_LOCATIONS} key={groupKey.key} groupKeyString={groupKey.key} group={groupedLocations[groupKey.key]} hardcodedURL={hardcodedURL}/>)}
+                .map((groupKey) => <LocationGroup publishTime={publishTime} presetLocations={PRESET_LOCATIONS} key={groupKey.key} groupKeyString={groupKey.key} group={groupedLocations[groupKey.key]} hardcodedURL={hardcodedURL}/>)}
             </div>)
 }
 
