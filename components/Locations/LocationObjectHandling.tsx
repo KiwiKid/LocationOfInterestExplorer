@@ -105,7 +105,7 @@ const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
   return `${loi.added}|${loi.updated}|${loi.event}|${loi.location}|${loi.city}|${loi.start},${loi.end},${loi.advice}|${loi.visibleInWebform}|${loi.exposureType}|${loi.lat}|${loi.lng}`
 }
 
-const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string, publishTime:Date, showAsAt:boolean) => `${key.quicklink ? key.quicklink?.title : 'Other'}${group.length > 1 ? ` - ${group.length} New Locations ${showAsAt ? asAtDateAlwaysNZ(publishTime)  : null}`: ''}:\n\n${group.map((loi) => getPrintableLocationOfInterestString(loi,key.city === 'Others')).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n\n`
+const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string, publishTime:Date, showAsAt:boolean) => `${key.quicklink ? key.quicklink?.title : 'Other'}${group.length > 1 ? ` - ${group.length} New Locations`: ''}${showAsAt ? ` ${asAtDateAlwaysNZ(publishTime)}`  : ''}:\n\n${group.map((loi) => getPrintableLocationOfInterestString(loi,key.city === 'Others')).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n\n`
 
 const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
   if(cityString === undefined){
