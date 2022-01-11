@@ -13,19 +13,14 @@ import useWindowSize from "../utils/useWindowSize";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import { useRouter } from "next/router";
 import { resetScroll } from "../utils/resetScroll";
+import { DEFAULT_FEATURE_FLAGS } from "./FeatureFlags";
 
 
 
 
   
 const CLOSED_DRAW_POS = -60;
-const DEFAULT_PAGE_STATE:PageState = {
-   lat: -40.8248,
-   lng: 173.7304,
-   zoom: 8,
-   daysInPastShown:  14,
-   screenshotMode: null
-}
+
 const isInvalidLocation = (loc:LocationOfInterest) => {
   return !(!!loc.lat || !!loc.lng)
 }
