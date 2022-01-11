@@ -3,7 +3,11 @@ import { createGzip } from 'zlib'
 import { SitemapStream } from 'sitemap'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getHardCodedUrl } from '../../components/utils/utils'
-import LocationData from '../../components/Locations/LocationData'
+
+const PRESET_LOCATIONS:PresetLocation[] = require('../../data/PRESET_LOCATIONS')
+const LOCATION_OVERRIDES:LocationOverride[] = require('../../data/LOCATION_OVERRIDES')
+
+
 
 const STATIC_URLS:any = ['?loc=christchurch','?loc=auckland']
 
@@ -24,11 +28,11 @@ const sitemapApi = async (req:NextApiRequest, res:NextApiResponse) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}${url}` })
   });
 
-  LocationData.PRESET_LOCATIONS.forEach((pl:PresetLocation) => {
+  PRESET_LOCATIONS.forEach((pl:PresetLocation) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}/loc/${pl.urlParam}` })
   });
 
-  LocationData.PRESET_LOCATIONS.forEach((pl:PresetLocation) => {
+  PRESET_LOCATIONS.forEach((pl:PresetLocation) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}/api/image/loc/${pl.urlParam}` })
   });
 

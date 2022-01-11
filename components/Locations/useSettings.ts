@@ -1,9 +1,7 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
-import useSWR from "swr"
-import fetcher from "../utils/fetcher"
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "./FeatureFlags";
-import LocationData from "./LocationData";
+import  PRESET_LOCATIONS from './data/PRESET_LOCATIONS'
+
 
 // Warning - this class is a mess..
 
@@ -16,7 +14,7 @@ const DEFAULT_SETTINGS:PageState = {
 }
 
 
-const getMatchingQuickLink = (locationParam:string) => LocationData.PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam.toLowerCase())[0];
+const getMatchingQuickLink = (locationParam:string) => PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam.toLowerCase())[0];
 
 const processQueryString = (query:any):PageState => {
 

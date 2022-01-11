@@ -3,16 +3,21 @@ import _ from "lodash";
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import CopyBox from "../utils/CopyBox";
 import { getHoursAgo } from "../utils/utils";
+import PRESET_LOCATIONS from "./data/PRESET_LOCATIONS";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "./DateHandling";
 import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "./LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
-import Data from "./LocationData";
+
 import TodayLocationSummary from "./TodayLocationSummary";
+
+//const PRESET_LOCATIONS:PresetLocation[] = require('./data/PRESET_LOCATIONS')
+//const LOCATION_OVERRIDES:LocationOverride[] = require('./data/LOCATION_OVERRIDES')
 
 type LocationInfoGridProps = {
     locations:LocationOfInterest[]
     hardcodedURL:string
     publishTime:Date
+    presetLocations:PresetLocation[]
 }
 
 const getBorderColor = (hoursAgo:number) => {
@@ -30,11 +35,11 @@ const getBorderColor = (hoursAgo:number) => {
 
 
 
-const processGroupKey = (keyString:string):LocationGroupKey => {
+const processGroupKey = (presetLocations:PresetLocation[],keyString:string):LocationGroupKey => {
     let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
 
 
-    let qLink = Data.PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((urlParm) => urlParm === cityParam.toLowerCase()))[0] || null
+    let qLink = presetLocations.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr.toLowerCase() === cityParam))[0] || null
 
     return {
         key: keyString,
@@ -48,11 +53,12 @@ type LocationGroupProps = {
     group: LocationOfInterest[]
     groupKeyString: string
     hardcodedURL: string
+    presetLocations: PresetLocation[]
 }
 
-const LocationGroup = ({groupKeyString, group, hardcodedURL}:LocationGroupProps) => {
+const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations}:LocationGroupProps) => {
 
-    const groupKey = processGroupKey(groupKeyString);
+    const groupKey = processGroupKey(presetLocations, groupKeyString);
 
     const mostRecentLocationAdded = group.sort((a:LocationOfInterest, b:LocationOfInterest) => a.added > b.added ? 1 : -1)[0].added;
     
@@ -120,8 +126,8 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL}:LocationGroupProps)
 
 
 
-const getPresetLocationPrimaryCity = (mohCity:string) => {
-    let override = Data.PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((ml) => ml === mohCity))[0];
+const getPresetLocationPrimaryCity = (presetLocations:PresetLocation[],mohCity:string) => {
+    let override = presetLocations.filter((pl) => pl.matchingMohCityString.some((ml) => ml === mohCity))[0];
     if(override){
         return override.urlParam;
     }
@@ -133,7 +139,7 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime}:LocationInfoGri
     
     var groupedLocations = _.groupBy(locations
         , function(lc){ 
-            return `${startOfDay(lc.added)}|${getPresetLocationPrimaryCity(lc.city)}`
+            return `${startOfDay(lc.added)}|${getPresetLocationPrimaryCity(PRESET_LOCATIONS, lc.city)}`
         });
 
     return (<div className="">
@@ -141,11 +147,12 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime}:LocationInfoGri
                     locationGroups={groupedLocations} 
                     hardcodedURL={hardcodedURL}
                     publishTime={publishTime}
+                    presetLocations={PRESET_LOCATIONS}
                     />                 
                 {Object.keys(groupedLocations)
-                .map(processGroupKey)
+                .map((keyStr:string) => processGroupKey(PRESET_LOCATIONS, keyStr))
                 .sort((a:LocationGroupKey,b:LocationGroupKey) => a.date > b.date ? -1 : 1)
-                .map((groupKey) => <LocationGroup key={groupKey.key} groupKeyString={groupKey.key} group={groupedLocations[groupKey.key]} hardcodedURL={hardcodedURL}/>)}
+                .map((groupKey) => <LocationGroup presetLocations={PRESET_LOCATIONS} key={groupKey.key} groupKeyString={groupKey.key} group={groupedLocations[groupKey.key]} hardcodedURL={hardcodedURL}/>)}
             </div>)
 }
 

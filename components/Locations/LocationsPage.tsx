@@ -11,6 +11,7 @@ import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import { resetScroll } from "../utils/resetScroll";
+import PRESET_LOCATIONS from "./data/PRESET_LOCATIONS";
 
 
 const CLOSED_DRAW_POS = -60;
@@ -152,6 +153,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
                   drawPositionY={drawPositionY}
                   setDrawPositionY={setDrawPositionY}
                   drawerRef={drawerRef}
+                  presetLocations={PRESET_LOCATIONS}
                 />
               </div>
             </div>

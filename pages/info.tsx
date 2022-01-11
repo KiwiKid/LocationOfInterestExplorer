@@ -1,4 +1,5 @@
 import { GetStaticProps, NextPage } from "next"
+import PRESET_LOCATIONS from "../components/Locations/data/PRESET_LOCATIONS"
 import { NiceFullDate, startOfDay } from "../components/Locations/DateHandling"
 import LocationContext from "../components/Locations/LocationAPI/LocationContext"
 import { LocationInfoGrid } from "../components/Locations/LocationInfoGrid"
@@ -26,6 +27,7 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, hardcodedURL}) => {
                 locations={locations}
                 hardcodedURL={hardcodedURL} 
                 publishTime={publishTime}
+                presetLocations={PRESET_LOCATIONS}
                  />
             
             {/*<CopyBox 

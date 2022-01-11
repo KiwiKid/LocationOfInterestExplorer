@@ -10,7 +10,11 @@ import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 import parseQuery from "../../components/utils/parseQuery"
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "../../components/Locations/FeatureFlags"
-import LocationData from "../../components/Locations/LocationData"
+
+const PRESET_LOCATIONS:PresetLocation[] = require('../../components/locations/data/PRESET_LOCATIONS')
+const LOCATION_OVERRIDES:LocationOverride[] = require('../../components/locations/data/LOCATION_OVERRIDES')
+
+
 
 type LocationPageProps = {
   quickLink: PresetLocation
@@ -147,7 +151,7 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
 
 export async function getStaticPaths() {
     return {
-        paths: LocationData.PRESET_LOCATIONS.map((pl) => { return { params:{ query: pl.urlParam}}}),
+        paths: PRESET_LOCATIONS.map((pl) => { return { params:{ query: pl.urlParam}}}),
         fallback: true
     }
   }
