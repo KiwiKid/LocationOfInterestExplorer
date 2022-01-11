@@ -127,7 +127,7 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations}:Lo
 
 
 const getPresetLocationPrimaryCity = (presetLocations:PresetLocation[],mohCity:string) => {
-    let override = presetLocations.filter((pl) => pl.matchingMohCityString.some((ml) => ml === mohCity))[0];
+    let override = presetLocations.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
     if(override){
         return override.urlParam;
     }
