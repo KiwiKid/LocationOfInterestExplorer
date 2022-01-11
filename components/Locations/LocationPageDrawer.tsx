@@ -331,7 +331,7 @@ const LocationPageDrawer = ({
               : <Summary>Use these buttons to re-position the map at a specific location</Summary>}
                   {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') ? 
                     <div className="grid sm:grid-cols-2">
-                    {presetLocations.filter((pl) => pl.showInDrawer).map((pl) => <div key={`${pl.urlParam}_preview`}>
+                    {presetLocations.sort((a,b) => a.lat > b.lat ? -1 : 0).filter((pl) => pl.showInDrawer).map((pl) => <div key={`${pl.urlParam}_preview`}>
                       <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl)}}>
                           <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
                           <div className="flex justify-center align-middle overflow-hidden p-6">
