@@ -25,7 +25,6 @@ import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
 import Image from 'next/image';
 import { resetScroll } from "../utils/resetScroll";
-import PRESET_LOCATIONS from "./LocationData";
 import LocationData from "./LocationData";
 
 // TODO: consoidate most of this into "PageState"
