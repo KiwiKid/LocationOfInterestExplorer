@@ -6,7 +6,7 @@ import { getHoursAgo } from "../utils/utils";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "./DateHandling";
 import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "./LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
-import LocationData from "./LocationData";
+import Data from "./LocationData";
 import TodayLocationSummary from "./TodayLocationSummary";
 
 type LocationInfoGridProps = {
@@ -32,7 +32,10 @@ const getBorderColor = (hoursAgo:number) => {
 
 const processGroupKey = (keyString:string):LocationGroupKey => {
     let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
-    let qLink = LocationData.PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((urlParm) => urlParm === cityParam.toLowerCase()))[0] || null
+
+
+    let qLink = Data.PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((urlParm) => urlParm === cityParam.toLowerCase()))[0] || null
+
     return {
         key: keyString,
         date: new Date(keyString.substring(0,keyString.indexOf('|'))),
@@ -118,7 +121,7 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL}:LocationGroupProps)
 
 
 const getPresetLocationPrimaryCity = (mohCity:string) => {
-    let override = LocationData.PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((ml) => ml === mohCity))[0];
+    let override = Data.PRESET_LOCATIONS.filter((pl) => pl.matchingMohCityString.some((ml) => ml === mohCity))[0];
     if(override){
         return override.urlParam;
     }
