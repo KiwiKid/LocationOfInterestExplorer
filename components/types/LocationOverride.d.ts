@@ -1,8 +1,8 @@
 
 type LocationOverride = {
-    eventName?: string  // Indirect Override (preferred)
-    eventId?: string  // Direct Override
-    city?: string // Last resort
+    eventName?: string 
+    eventId?: string 
+    city?: string
     lat: string
     lng: string
   }

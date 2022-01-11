@@ -1,14 +1,11 @@
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
-import { useState } from 'react'
 import LocationsPage from '../components/Locations/LocationsPage'
 import { useSettings } from '../components/Locations/useSettings'
 import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
-import { LocationOfInterest } from '../components/types/LocationOfInterest'
 import LocationContext from '../components/Locations/LocationAPI/LocationContext'
-import { mapLocationRecordToLocation, metaImageURL, metaImageURLDirect } from '../components/Locations/LocationObjectHandling'
+import { metaImageURLDirect } from '../components/Locations/LocationObjectHandling'
 
 type HomePageProps = {
   publishTimeUTC: string // Allow for native next.js props usage

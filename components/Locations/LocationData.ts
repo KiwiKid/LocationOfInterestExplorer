@@ -14,9 +14,9 @@ type PresetLocation = {
 ```
   */
 
-  
 
-const PRESET_LOCATIONS:PresetLocation[] = [
+
+ const PRESET_LOCATIONS:PresetLocation[] = [
   { 
     title: "all",
     urlParam: "all",
@@ -187,8 +187,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
   MoH locations without a lat/lng will also appear in a "unmapped locations" section at the bottom of the drawer.
 */
 
-
-let LOCATION_OVERRIDES:LocationOverride[] = [
+const LOCATION_OVERRIDES:LocationOverride[] = [
   {eventId: 'a0l4a0000006NKfAAM', lat: '-39.550910', lng: '174.123688'}
   ,{eventId: 'a0l4a0000006RWCAA2', lat: '-38.689185', lng: '176.071376'}
   , {eventId: 'a0l4a0000006QRRAA2', lat: '-37.673978143585785', lng: '176.22322409540428'}
@@ -224,4 +223,8 @@ let LOCATION_OVERRIDES:LocationOverride[] = [
   , {eventId: 'a0l4a0000006jlEAAQ', lat: '-36.823432181151354', lng:'174.61118945822034'}
 ]
 
-  export { PRESET_LOCATIONS, LOCATION_OVERRIDES }
+let LocationData = {
+  PRESET_LOCATIONS: PRESET_LOCATIONS,
+  LOCATION_OVERRIDES: LOCATION_OVERRIDES
+}
+export default LocationData;

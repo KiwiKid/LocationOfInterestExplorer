@@ -2,17 +2,12 @@ import Image from "next/image"
 
 import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
-import { useState } from 'react'
 import LocationsPage from '../../components/Locations/LocationsPage'
 import { getMatchingQuickLink, useSettings } from '../../components/Locations/useSettings'
 import { getHardCodedUrl } from '../../components/utils/utils'
-import styles from '../styles/Home.module.css'
-import { LocationOfInterest } from '../../components/types/LocationOfInterest'
 import LocationContext from "../../components/Locations/LocationAPI/LocationContext"
-import { PRESET_LOCATIONS } from "../../components/Locations/LOCATION_CONSTANTS"
 import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
-import Preview from "../preview/loc/[quickLink]"
 import parseQuery from "../../components/utils/parseQuery"
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "../../components/Locations/FeatureFlags"
 
@@ -151,7 +146,7 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
 
 export async function getStaticPaths() {
     return {
-        paths: PRESET_LOCATIONS.map((pl) => { return { params:{ query: pl.urlParam}}}),
+        paths: LocationData.PRESET_LOCATIONS.map((pl) => { return { params:{ query: pl.urlParam}}}),
         fallback: true
     }
   }

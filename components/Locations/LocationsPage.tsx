@@ -10,15 +10,9 @@ import ActiveSortSelection from "./ActiveSortSelection";
 import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
-import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
-import { useRouter } from "next/router";
 import { resetScroll } from "../utils/resetScroll";
-import { DEFAULT_FEATURE_FLAGS } from "./FeatureFlags";
 
 
-
-
-  
 const CLOSED_DRAW_POS = -60;
 
 const isInvalidLocation = (loc:LocationOfInterest) => {
@@ -61,7 +55,6 @@ export default function LocationsPage({locations, startingPageState, publishStat
 
     const locationsAfterDate = locations.filter(inActiveDateRange);
     const drawerRef = useRef<Element>(null);
-    const router = useRouter();
 
     // State
     const [map, setMap] = useState(undefined);
