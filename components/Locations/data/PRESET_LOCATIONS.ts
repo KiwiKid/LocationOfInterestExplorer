@@ -187,7 +187,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Carterton'],
       lat: -41.023569115843145,
       lng: 175.5221376193341,
-      zoom: 12,
+      zoom: 13,
       showInDrawer: true
     },
     {
