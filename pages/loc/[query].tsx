@@ -10,9 +10,7 @@ import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 import parseQuery from "../../components/utils/parseQuery"
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "../../components/Locations/FeatureFlags"
-
-const PRESET_LOCATIONS:PresetLocation[] = require('../../components/locations/data/PRESET_LOCATIONS')
-const LOCATION_OVERRIDES:LocationOverride[] = require('../../components/locations/data/LOCATION_OVERRIDES')
+import PRESET_LOCATIONS from "../../components/Locations/data/PRESET_LOCATIONS"
 
 
 

@@ -3,9 +3,7 @@ import { createGzip } from 'zlib'
 import { SitemapStream } from 'sitemap'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getHardCodedUrl } from '../../components/utils/utils'
-
-const PRESET_LOCATIONS:PresetLocation[] = require('../../data/PRESET_LOCATIONS')
-const LOCATION_OVERRIDES:LocationOverride[] = require('../../data/LOCATION_OVERRIDES')
+import PRESET_LOCATIONS from '../../components/Locations/data/PRESET_LOCATIONS'
 
 
 
