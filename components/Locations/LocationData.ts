@@ -224,6 +224,12 @@ const LOCATION_OVERRIDES:LocationOverride[] = [
   , {eventId: 'a0l4a0000006jmbAAA', lat: '-36.823432181151354', lng:'174.61118945822034'}
   , {eventId: 'a0l4a0000006jj8AAA', lat: '-36.823432181151354', lng:'174.61118945822034'}
   , {eventId: 'a0l4a0000006jlEAAQ', lat: '-36.823432181151354', lng:'174.61118945822034'}
+  , {eventId: 'a0l4a0000006n9fAAA', lat: '-39.47954129434454', lng: '175.669459569513' }
+  , {eventId: 'a0l4a0000006nBqAAI', lat: '-40.348771995369354', lng: '175.62327494840014' }
+  , {eventId: 'a0l4a0000006nAxAAI', lat: '-41.20990670954692',lng: '174.90620871204248'}
+
+  , {eventId: 'a0l4a0000006n91AAA', lat: '-35.22065780052977', lng:'174.23203990272302'}
+  , {eventId: 'a0l4a0000006nAYAAY', lat: '-41.209882137630295', lng:'174.90678119833257'}
 ]
 /*
 let LocationData = {
