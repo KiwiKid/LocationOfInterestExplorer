@@ -73,7 +73,12 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations, pu
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {`${group.length} New Locations of Interest in ${groupKey.city}\n\n`}
+                        {`${group.length} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city}\n\n`}
+                />
+                <CopyBox 
+                        id="copybox"
+                        copyText=
+                        {`New Locations of Interest in ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''}\n\n`}
                 />
                 <CopyBox 
                     id="copybox"

@@ -38,7 +38,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     },{
       title: "Wellington",
       urlParam: "wellington",
-      matchingMohCityString: ["Wellington"],
+      matchingMohCityString: ["Wellington", "Lower Hutt"],
       lat: -41.2889,
       lng: 174.7772,
       zoom: 11,
@@ -132,9 +132,9 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       zoom: 12
         ,showInDrawer: true
     },{
-      title: "Taupo",
+      title: "Taupō",
       urlParam: "taupo",
-      matchingMohCityString: ["Taupo"],
+      matchingMohCityString: ["Taupo", "Taupō"],
       lat: -38.690980140896016,
       lng: 176.08259535359113,
       zoom: 12
@@ -163,23 +163,60 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       lng: 168.69876199033442,
       zoom: 12,
       showInDrawer: true
-    }
-    
-    /*,{
-      title: 'Te Puke',
-      urlParam: "tepuke",
-      matchingMohCityString: ["Tauranga"],
-      matchingMohCityString: ["Tauranga"],
-      lat: -37.766667,
-      lng: 176.316667
-        ,showInDrawer: true
+    },
+    {
+      title: 'Bay Of Islands',
+      urlParam: 'bayofislands',
+      matchingMohCityString: ["Bay Of Islands"],
+      lat: -35.21386707198709, 
+      lng: 174.15347141745954,
+      zoom: 12,
+      showInDrawer: true
     },{
-      title: "Turangi",
-      urlParam: "turangi",
-      matchingMohCityString: ["Tauranga"],
-      matchingMohCityString: ["Tauranga"],
-      lat: -38.988889,
-      lng: 175.808333
-    }*/]
+      title: 'Feilding',
+      urlParam: 'feilding',
+      matchingMohCityString: ['Feilding'],
+      lat: -40.2253049740385, 
+      lng: 175.5684729604652,
+      zoom: 12,
+      showInDrawer: true
+    },
+    {
+      title: 'Carterton',
+      urlParam: 'carterton',
+      matchingMohCityString: ['Carterton'],
+      lat: -41.023569115843145,
+      lng: 175.5221376193341,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Masterton',
+      urlParam: 'masterton',
+      matchingMohCityString: ['Masterton'],
+      lat: -40.946190374524,
+      lng: 175.66576287590723,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Masterton',
+      urlParam: 'masterton',
+      matchingMohCityString: ['Masterton'],
+      lat: -40.946190374524,
+      lng: 175.66576287590723,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Whanganui',
+      urlParam: 'whanganui',
+      matchingMohCityString: ['Whanganui'],
+      lat: -39.93242412021889, 
+      lng: 175.02958355172697
+      zoom: 10,
+      showInDrawer: true
+    }
+  ];
 
-    export default PRESET_LOCATIONS
+export default PRESET_LOCATIONS

@@ -97,14 +97,14 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 
   return res;
 }
-const getPrintableLocationOfInterestString = (l:LocationOfInterest) => `- ${l.event} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
+const getPrintableLocationOfInterestString = (l:LocationOfInterest,includeCity:boolean) => `- ${l.event}${includeCity ? ` - ${l.city}`: ''} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
 
 // This isn't dependable CSV conversion and it doesn't need to be (its just for debugging)
 const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
   return `${loi.added}|${loi.updated}|${loi.event}|${loi.location}|${loi.city}|${loi.start},${loi.end},${loi.advice}|${loi.visibleInWebform}|${loi.exposureType}|${loi.lat}|${loi.lng}`
 }
 
-const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string, publishTime:Date, showAsAt:boolean) => `${key.quicklink ? key.quicklink?.title : 'Other'}${group.length > 1 ? ` - ${group.length} New Locations ${showAsAt ? `(as at ${new Intl.DateTimeFormat('en-NZ', {timeStyle: 'short'}).format(publishTime)})`: ''}`: ''}:\n\n${group.map(getPrintableLocationOfInterestString).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n\n`
+const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string, publishTime:Date, showAsAt:boolean) => `${key.quicklink ? key.quicklink?.title : 'Other'}${group.length > 1 ? ` - ${group.length} New Locations ${showAsAt ? `(as at ${new Intl.DateTimeFormat('en-NZ', {timeStyle: 'short'}).format(publishTime)})`: ''}`: ''}:\n\n${group.map((loi) => getPrintableLocationOfInterestString(loi,key.city === 'Others')).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n\n`
 
 const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
   if(cityString === undefined){
