@@ -1,6 +1,6 @@
 import CopyBox from "../utils/CopyBox"
 import PRESET_LOCATIONS from "./data/PRESET_LOCATIONS"
-import { startOfDay } from "./DateHandling"
+import { asAtDateAlwaysNZ, startOfDay } from "./DateHandling"
 import { processGroupKey } from "./LocationInfoGrid"
 import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString } from "./LocationObjectHandling"
 
@@ -22,7 +22,7 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, preset
 
     let copyText = 'invalid';
     if(locationGroups){
-        copyText = `${totalLocations} New Locations of Interest (as at ${new Intl.DateTimeFormat('en-NZ', {timeStyle: 'short'}).format(publishTime)} ${new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishTime)})\n\n${Object.keys(locationGroups)
+        copyText = `${totalLocations} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)} \n\n${Object.keys(locationGroups)
             .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
             .filter((keyObj:any) => onlyToday(keyObj.date))
             .map((keyObj:any) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL, publishTime, true))

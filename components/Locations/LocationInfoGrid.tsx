@@ -39,7 +39,7 @@ const processGroupKey = (presetLocations:PresetLocation[],keyString:string):Loca
     let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
 
 
-    let qLink = presetLocations.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr.toLowerCase() === cityParam))[0] || null
+    let qLink = presetLocations.filter((pl) => pl.urlParam === cityParam)[0] || null
 
     return {
         key: keyString,
@@ -78,12 +78,12 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations, pu
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {`New Locations of Interest in ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''}\n\n`}
+                        {`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''}\n\n`}
                 />
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={getPrintableLocationOfInterestGroupString(groupKey, group, hardcodedURL, publishTime, false)}
+                    copyText={getPrintableLocationOfInterestGroupString(groupKey, group, hardcodedURL, publishTime, true)}
                     textarea={true} 
                 />
             </summary>

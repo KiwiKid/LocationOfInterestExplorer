@@ -213,7 +213,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       urlParam: 'whanganui',
       matchingMohCityString: ['Whanganui'],
       lat: -39.93242412021889, 
-      lng: 175.02958355172697
+      lng: 175.02958355172697,
       zoom: 10,
       showInDrawer: true
     }
