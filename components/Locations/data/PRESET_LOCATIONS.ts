@@ -30,7 +30,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     },{ 
       title: "Auckland",
       urlParam: "auckland",
-      matchingMohCityString: ["Auckland"],
+      matchingMohCityString: ["Auckland", "Takaanini"],
       lat: -36.8500,
       lng: 174.7833,
       zoom: 9,
@@ -165,9 +165,9 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       showInDrawer: true
     },
     {
-      title: 'Bay Of Islands',
+      title: 'The Bay of Islands',
       urlParam: 'bayofislands',
-      matchingMohCityString: ["Bay Of Islands"],
+      matchingMohCityString: ["Bay of Islands"],
       lat: -35.21386707198709, 
       lng: 174.15347141745954,
       zoom: 10,
@@ -205,6 +205,78 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Whanganui'],
       lat: -39.93242412021889, 
       lng: 175.02958355172697,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Kaikoura',
+      urlParam: 'kaikoura',
+      matchingMohCityString: ['Kaikoura'],
+      lat: -42.39200642596124,
+      lng: 173.67887645158532,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Ōtaki',
+      urlParam: 'otaki',
+      matchingMohCityString: ['Otaki'],
+      lat: -40.76018472420495,
+      lng:  175.1568850510182,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Orewa',
+      urlParam: 'orewa',
+      matchingMohCityString: ["Orewa"],
+      lat: -36.58622354488708,
+      lng: 174.68657614155387,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Warkworth',
+      urlParam: 'warkworth',
+      matchingMohCityString: ['Warkworth'],
+      lat: -36.39825538554779, 
+      lng: 174.6622196622345, 
+      zoom:10,
+      showInDrawer: true
+    },
+    {
+      title: 'Waimauku',
+      urlParam: 'Waimauku',
+      matchingMohCityString: ['Waimauku'],
+      lat: -36.769535791859894, 
+      lng: 174.49177041557877,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Otorohanga',
+      urlParam: 'Otorohanga',
+      matchingMohCityString: ['Otorohanga'],
+      lat: -38.185506335511775, 
+      lng: 175.2103540378415,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'New Plymouth',
+      urlParam: 'newplymouth',
+      matchingMohCityString: ['New Plymouth'],
+      lat: -39.05531858908381, 
+      lng: 174.08590254313253,
+      zoom: 10,
+      showInDrawer: true
+    },
+    {
+      title: 'Ōpōtiki',
+      urlParam: 'opotiki',
+      matchingMohCityString: ['Opotiki'],
+      lat: -38.01207840880075, 
+      lng: 177.2829488360815,
       zoom: 10,
       showInDrawer: true
     }
