@@ -98,10 +98,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={shortTitle} />
       <meta property='og:url' content={`${hardcodedURL}${quickLink ? `/loc/${quickLink.urlParam}` : ''}`} />
-      {quickLink ? 
-        <meta property='og:image' content={metaImageURLDirect(hardcodedURL, quickLink.urlParam)} key='ogimg' /> 
-        :  <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
-      }
+      <meta property='og:image' content={metaImageURLDirect(hardcodedURL, quickLink ? quickLink.urlParam : 'all')} key='ogimg' /> 
       <meta property="og:image:width" content="600" />
       <meta property="og:image:height" content="900" />
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}

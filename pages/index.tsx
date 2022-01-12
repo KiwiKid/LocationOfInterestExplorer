@@ -80,10 +80,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
       <meta property='og:description' content={description} />
       <meta property='og:site_name' content={shortTitle} />
       <meta property='og:url' content={`${hardcodedURL}${settings.quickLink ? '/loc/'+encodeURIComponent(`${settings.quickLink.urlParam}`) : ''}`} />
-      {settings.quickLink ? 
-        <meta property='og:image' content={metaImageURLDirect(hardcodedURL, settings.quickLink?.urlParam)} key='ogimg' /> 
-        :  <meta property='og:image' content={`${hardcodedURL}/img/preview.png`} key='ogimg' />
-      }
+      <meta property='og:image' content={metaImageURLDirect(hardcodedURL, settings.quickLink ? settings.quickLink.urlParam : 'all')} key='ogimg' /> 
       {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && <meta property='fb:app_id' content={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID} key="fbid"/>}
       {/*TODO: Add these images: */}
       <link rel='apple-touch-startup-image' href='/images/apple_splash_2048.png' sizes='2048x2732' />
