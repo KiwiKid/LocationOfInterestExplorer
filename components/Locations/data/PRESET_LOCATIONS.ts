@@ -211,7 +211,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     {
       title: 'Kaikoura',
       urlParam: 'kaikoura',
-      matchingMohCityString: ['Kaikoura'],
+      matchingMohCityString: ['Kaikoura', 'Kaikōura'],
       lat: -42.39200642596124,
       lng: 173.67887645158532,
       zoom: 10,
