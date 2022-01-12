@@ -6,13 +6,14 @@ Given the time sensitive nature of Covid-19, there are some untidy compromises m
 
 ## Features
 
-- Statically rendered Location specific pages (https://nzcovidmap.org/loc/auckland)
+- Statically rendered Location specific pages (e.g: https://nzcovidmap.org/loc/auckland)
 - Install as PWA
+- Date filtering
 - Share bookmarks
 - Auto-Locate
-- Date filtering
-- Quick map navigation links
 - Full Mobile/Desktop support
+- Quick map navigation links
+- Location specific Image API (See "Move map to" section in the drawer)
 
 Next up:
 - [-] Generate a set of images for major population centers [InProg - GC]
@@ -28,7 +29,7 @@ QuickLink mode system:
 
 By default the page is running in "specific" mode, as indicated by the circle specific sharing url with parameters like 'lat' and 'lng'. There is just a default sharing preview image and the normal page title.
 
-The other mode is "quickLink". Quicklinks are specific to population centers. When the app is build, a page will be created for each quicklink at '/loc/[urlParam]'. 
+The other mode is "quickLink". Quicklinks are specific to population centers. When the app is built, a page will be created for each quicklink at '/loc/[urlParam]'. 
 The page can enter quicklink mode through either: 
 ```
 /loc/[urlParam] (preferred)
@@ -44,16 +45,29 @@ Adding a new Preset Location:
 type PresetLocation = {
   title:string // The nice display title
     urlParam:string // The matching url param (via ?loc=[urlParm] or /loc/[urlParm])
-    matchingMohCityString:string[] // All MoH locations will be mapped to this location based on these keys
+    matchingMohCityString:string[] // All MoH locations will be mapped to this location based on the "city" field
     lat:number 
     lng:number
-    zoom:number // The react-leaflet map zoom for this location (compare to other similar sized cities)
+    zoom:number // The react-leaflet map zoom for this location (see other similar sized cities)
+    showInDrawer:boolean // show in the preview section of the drawer
 }
 ```
 
 Screenshot mode system:
 This allows the app to display a custom appearance when generating a screenshot image. Triggered with the "?sm=preview" query string param.
 
+
+Image API:
+
+e.g: 
+https://nzcovidmap.org/api/image/loc/dunedin
+
+I'm looking at extending this image API and allowing integration with NZCovidMap
+
+
+(Planned)
+Text API: 
+An API that return the formatted text for all new locations in a specific location
 
 ## Prerequisites
 

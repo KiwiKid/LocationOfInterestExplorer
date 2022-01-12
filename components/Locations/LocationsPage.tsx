@@ -86,6 +86,8 @@ export default function LocationsPage({locations, startingPageState, publishStat
         setDaysInPastShown(daysInPast);
     }
 
+    let activePresetLocations = PRESET_LOCATIONS.filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
+
     
 
     return (
@@ -153,7 +155,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
                   drawPositionY={drawPositionY}
                   setDrawPositionY={setDrawPositionY}
                   drawerRef={drawerRef}
-                  presetLocations={PRESET_LOCATIONS}
+                  activePresetLocations={activePresetLocations}
                 />
               </div>
             </div>
