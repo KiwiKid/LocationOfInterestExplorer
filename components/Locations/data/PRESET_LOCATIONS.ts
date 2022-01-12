@@ -279,7 +279,16 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       lng: 177.2829488360815,
       zoom: 10,
       showInDrawer: true
-    }
+    }, 
+  {
+    title: 'Whitianga',
+    urlParam: 'whitianga',
+    matchingMohCityString: ['Whitianga'],
+    lat: -36.82538450146477, 
+    lng: 175.68297168174058,
+    zoom: 10,
+    showInDrawer: true
+  }
   ];
 
 export default PRESET_LOCATIONS
