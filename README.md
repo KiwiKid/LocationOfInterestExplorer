@@ -44,7 +44,7 @@ Adding a new Preset Location:
 ```
 type PresetLocation = {
   title:string // The nice display title
-    urlParam:string // The matching url param (via ?loc=[urlParm] or /loc/[urlParm])
+    urlParam:string // The matching url param (via ?loc=[urlParm] or /loc/[urlParm]). Lowercase.
     matchingMohCityString:string[] // All MoH locations will be mapped to this location based on the "city" field
     lat:number 
     lng:number
@@ -54,15 +54,14 @@ type PresetLocation = {
 ```
 
 Screenshot mode system:
-This allows the app to display a custom appearance when generating a screenshot image. Triggered with the "?sm=preview" query string param.
-
+This allows the app to display a custom appearance when generating a screenshot image. Triggered with the "?sm=preview" query string param. The screenshot mode is used by the API.
 
 Image API:
 
 e.g: 
 https://nzcovidmap.org/api/image/loc/dunedin
 
-I'm looking at extending this image API and allowing integration with NZCovidMap
+I'm looking at extending this image API and allowing integration with NZCovidMap via image tags
 
 
 (Planned)

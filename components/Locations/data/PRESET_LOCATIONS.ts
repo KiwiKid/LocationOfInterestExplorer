@@ -246,7 +246,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     },
     {
       title: 'Waimauku',
-      urlParam: 'Waimauku',
+      urlParam: 'waimauku',
       matchingMohCityString: ['Waimauku'],
       lat: -36.769535791859894, 
       lng: 174.49177041557877,
@@ -255,7 +255,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     },
     {
       title: 'Otorohanga',
-      urlParam: 'Otorohanga',
+      urlParam: 'otorohanga',
       matchingMohCityString: ['Otorohanga'],
       lat: -38.185506335511775, 
       lng: 175.2103540378415,
