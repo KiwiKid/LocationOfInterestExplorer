@@ -25,7 +25,7 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, hardcodedURL}) => {
             <>
             <LocationInfoGrid 
                 locations={locations}
-                hardcodedURL={hardcodedURL} 
+                hardcodedURL={'https://nzcovidmap.org'} 
                 publishTime={publishTime}
                 presetLocations={PRESET_LOCATIONS}
                  />

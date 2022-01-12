@@ -1,6 +1,6 @@
 import CopyBox from "../utils/CopyBox"
 import PRESET_LOCATIONS from "./data/PRESET_LOCATIONS"
-import { asAtDateAlwaysNZ, startOfDay } from "./DateHandling"
+import { asAtDateAlwaysNZ, startOfDay, startOfDayFormatted } from "./DateHandling"
 import { processGroupKey } from "./LocationInfoGrid"
 import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString } from "./LocationObjectHandling"
 
@@ -28,18 +28,18 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, preset
             .map((keyObj:any) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL, publishTime, false))
             .join('')}`
     }
+
+    let titleText = `New Locations of Interest - ${startOfDayFormatted(publishTime)}`
     
     return (
         <><CopyBox 
             id="copybox"
-            copyText=
-            {copyText}
+            copyText={titleText}
             textarea={true}
         />
         <CopyBox 
             id="copybox"
-            copyText=
-            {copyText}
+            copyText={copyText}
             textarea={true}
         />
         </>
