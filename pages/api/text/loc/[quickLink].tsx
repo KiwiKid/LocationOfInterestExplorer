@@ -9,6 +9,8 @@ import { getHardCodedUrl } from '../../../../components/utils/utils';
 import LocationContext from '../../../../components/Locations/LocationAPI/LocationContext';
 import PRESET_LOCATIONS from '../../../../components/Locations/data/PRESET_LOCATIONS';
 import { LocationInfoGrid } from '../../../../components/Locations/LocationInfoGrid';
+import { requestLocations } from '../../../../components/Locations/LocationAPI/requestLocations';
+import { mapLocationRecordToLocation } from '../../../../components/Locations/LocationObjectHandling';
 var ReactDOMServer = require('react-dom/server');
 
 
@@ -17,27 +19,22 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         throw 'Provide a quicklink';
     }
 
-    const quickLink = decodeURIComponent(req.query.quickLink);//.replace('reqQuery', '');
-    const component = ReactDOMServer.renderToString(<LocationContext.Consumer>
-        {locations => 
-            locations ? 
-            <>
+
+    if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL) throw 'No MoH URL set';
+    let locations = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
+            .then((d) => d.map(mapLocationRecordToLocation));
+      
+      const quickLink = decodeURIComponent(req.query.quickLink);//.replace('reqQuery', '');
+      
+    const component = ReactDOMServer.renderToString(
+        locations.length > 0 ? 
             <LocationInfoGrid 
                 locations={locations}
                 hardcodedURL={'https://nzcovidmap.org'} 
                 publishTime={new Date()}
                 presetLocations={PRESET_LOCATIONS}
                  />
-            
-            {/*<CopyBox 
-                id="copybox"
-                copyText=
-                {`${locations.map(getCSVLocationOfInterestString)}`}
-            />*/}
-            </>
-            : <>No Location records</>
-        }
-    </LocationContext.Consumer>)
+            : <>No Location records</>);    
 
     res.status(200).json({ content: component })
     // Gross handcoded timeout
