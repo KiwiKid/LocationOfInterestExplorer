@@ -30,12 +30,19 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, preset
     }
     
     return (
+        <><CopyBox 
+            id="copybox"
+            copyText=
+            {copyText}
+            textarea={true}
+        />
         <CopyBox 
             id="copybox"
             copyText=
             {copyText}
             textarea={true}
         />
+        </>
     )
 }
 
