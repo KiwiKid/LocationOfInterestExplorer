@@ -222,9 +222,9 @@ function CovidMapSelector({
         setMapIsLocated(false)
         saveMapState(map);
         setMapIsLocated(false);
-        if(window.location.search !== ""){
+        /*if(window.location.search !== ""){
             router.push('/');
-        }
+        }*/
     }
     const onZoomEnd = (map:Map) => {
         if(isViewingAll || mapIsLocating){
