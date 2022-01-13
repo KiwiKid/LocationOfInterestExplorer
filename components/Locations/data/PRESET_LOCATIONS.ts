@@ -44,6 +44,15 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       zoom: 11,
       showInDrawer: true
     },{
+      title: 'Upper Hutt',
+      urlParam: 'upperhutt',
+      matchingMohCityString: ['Upper Hutt'],
+      lat: -41.119018383326164, 
+      lng: 175.06698171805942,
+      zoom: 12,
+      showInDrawer: true
+    },   
+    {
       title: "Hamilton",
       urlParam: "hamilton",
       matchingMohCityString: ["Hamilton"],
