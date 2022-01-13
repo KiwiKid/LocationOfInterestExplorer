@@ -43,12 +43,12 @@ const LocationInfoGroup = ({groupKey, group, hardcodedURL, presetLocations, publ
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {`${group.length} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city}\n\n`}
+                        {`${group.length} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n\n`}
                 />
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''}\n\n`}
+                        {`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)}\n\n`}
                 />
                 <CopyBox 
                     id="copybox"
