@@ -49,6 +49,8 @@ const LOCATION_OVERRIDES:LocationOverride[] = [
     , {eventId: 'a0l4a0000006ofvAAA', lat:'-41.056165324209765',lng: '175.1939286846638'}
     , {eventId: 'a0l4a0000006oflAAA', lat:'-41.30529412836727', lng: '174.76387535712954' }
     , {eventId: 'a0l4a0000006nNhAAI', lat: '-43.533512171304174',lng: '172.6362027458978'}
+    , {eventId: 'a0l4a0000006q05AAA', lat: '-41.12308815769014',lng: '175.0727367251512'}
+    , {eventId: 'a0l4a0000006q2fAAA', lat: '-41.07351949773043', lng: '175.46861289752854'}
 
     
   ]
