@@ -9,7 +9,7 @@ import { getPresetLocationPrimaryCity, getPrintableLocationOfInterestGroupString
 import { locationSummaryDateDisplayString } from "../LocationSummaryDateDisplay";
 import LocationInfoGroup from "./LocationInfoGroup";
 
-import TodayLocationSummary from "./TodayLocationSummary";
+import { TodayLocationSummary } from "./TodayLocationSummary";
 
 //const PRESET_LOCATIONS:PresetLocation[] = require('./data/PRESET_LOCATIONS')
 //const LOCATION_OVERRIDES:LocationOverride[] = require('./data/LOCATION_OVERRIDES')

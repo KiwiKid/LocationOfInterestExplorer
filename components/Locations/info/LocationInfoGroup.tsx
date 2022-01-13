@@ -27,6 +27,9 @@ type LocationInfoGroupProps = {
     publishTime: Date
 }
 
+
+const getLocationInfoGroupTitle = (groupKey:LocationGroupKey, groupSize:number, publishTime:Date, includeCount:boolean) => `${includeCount ? groupSize : ''} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n\n`
+
 const LocationInfoGroup = ({groupKey, group, hardcodedURL, presetLocations, publishTime}:LocationInfoGroupProps) => {
 
     //const groupKey = processGroupKey(presetLocations, groupKeyString);
@@ -43,12 +46,12 @@ const LocationInfoGroup = ({groupKey, group, hardcodedURL, presetLocations, publ
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {`${group.length} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n\n`}
+                        {getLocationInfoGroupTitle(groupKey, group.length, publishTime, false)}
                 />
                 <CopyBox 
                         id="copybox"
-                        copyText=
-                        {`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)}\n\n`}
+                        copyText={getLocationInfoGroupTitle(groupKey, group.length, publishTime, true)}
+                        //{`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)}\n\n`}
                 />
                 <CopyBox 
                     id="copybox"

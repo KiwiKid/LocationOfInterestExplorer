@@ -315,6 +315,6 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     zoom: 10,
     showInDrawer: true
   }
-  ];
+];
 
 export default PRESET_LOCATIONS

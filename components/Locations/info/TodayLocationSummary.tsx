@@ -12,20 +12,26 @@ type TodayLocationSummaryProps = {
 
 const onlyToday = (date:Date) => startOfDay(date) === startOfDay(new Date());
 
-const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, presetLocations}:TodayLocationSummaryProps) => {
+const getTodayLocationSummary = (presetLocations:PresetLocation[], locationGroups: any, hardcodedURL: string, publishTime: Date) => `${getTotalLocationsToday(locationGroups)} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)} \n\n${Object.keys(locationGroups)
+    .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
+    .filter((keyObj:any) => onlyToday(keyObj.date))
+    .map((keyObj:LocationGroupKey) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL, publishTime, false))
+    .join('')}`
 
-    let totalLocations = 0;
+const getTotalLocationsToday = (locationGroups:any) => {
+    let totalLocationsToday = 0;
     Object.keys(locationGroups).forEach((grp:any) => {
-        totalLocations += locationGroups[grp].filter((grp:any) => onlyToday(grp.added)).length;
+        totalLocationsToday += locationGroups[grp].filter((grp:any) => onlyToday(grp.added)).length;
     });
+    return totalLocationsToday
+}
+
+
+const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, presetLocations}:TodayLocationSummaryProps) => {
 
     let copyText = 'invalid';
     if(locationGroups){
-        copyText = `${totalLocations} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)} \n\n${Object.keys(locationGroups)
-            .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
-            .filter((keyObj:any) => onlyToday(keyObj.date))
-            .map((keyObj:LocationGroupKey) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL, publishTime, false))
-            .join('')}`
+        copyText = getTodayLocationSummary(presetLocations, locationGroups, hardcodedURL, publishTime)
     }
 
     let titleText = `New Locations of Interest - ${startOfDayFormatted(publishTime)}`
@@ -45,4 +51,4 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, preset
     )
 }
 
-export default TodayLocationSummary;
+export { TodayLocationSummary, getTodayLocationSummary, onlyToday};

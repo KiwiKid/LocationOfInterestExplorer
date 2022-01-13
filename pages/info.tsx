@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextPage } from "next";
 import PRESET_LOCATIONS from "../components/Locations/data/PRESET_LOCATIONS";
 import { NiceFullDate } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
