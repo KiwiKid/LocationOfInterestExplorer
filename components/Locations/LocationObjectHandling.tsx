@@ -120,6 +120,14 @@ const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
   }
 }
 
+const getPresetLocationPrimaryCity = (presetLocations:PresetLocation[],mohCity:string) => {
+  let override = presetLocations.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
+  if(override){
+      return override.urlParam;
+  }
+  return 'Others';
+}
+
 const metaImageURL = (hardcodedURL:string, key:string) => key ? `${hardcodedURL}/preview/loc/${encodeURIComponent(key.toLowerCase())}` : `${hardcodedURL}/img/preview.png`;
 const metaImageURLDirect = (hardcodedURL:string, key:string) => hardcodedURL === 'https://localhost:3000' ? 'https://nzcovidmap.org/img/previewDemo.png' : `${hardcodedURL}/api/image/loc/${encodeURIComponent(key.toLowerCase())}`
 
@@ -134,4 +142,5 @@ export {
   , mapLocationRecordToLocation
   , metaImageURL
   , metaImageURLDirect
+  , getPresetLocationPrimaryCity
 }
