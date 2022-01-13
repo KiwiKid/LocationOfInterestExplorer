@@ -20,6 +20,14 @@ Next up:
 - [ ] Search text filter input box in Drawer
 - [ ] Improve navigation between drawers and map (and vice-versa)
 - [ ] Extend screenshot API display options
+- [ ] Display multiple dateTimes when a location of interest occurs more than once
+- [ ] Improve Tablet Grid display
+- [ ] Provide API to support automated social media text
+
+
+Bugs: 
+- [ ] "Opotiki" is showing in the preview section (it should only should locations with cases)
+
 
 
 
