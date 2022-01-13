@@ -4,8 +4,6 @@ import { getHoursAgo } from "../../utils/utils";
 import { NiceDate, NiceFullDate } from "../DateHandling";
 import { getPrintableLocationOfInterestGroupString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 
-
-
 const getBorderColor = (hoursAgo:number) => {
     if(hoursAgo == 0){
         return 'red-900'

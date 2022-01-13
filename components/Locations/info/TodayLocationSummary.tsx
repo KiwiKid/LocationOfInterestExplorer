@@ -1,8 +1,7 @@
-import CopyBox from "../utils/CopyBox"
-import PRESET_LOCATIONS from "./data/PRESET_LOCATIONS"
-import { asAtDateAlwaysNZ, startOfDay, startOfDayFormatted } from "./DateHandling"
-import { processGroupKey } from "./LocationInfoGrid"
-import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString } from "./LocationObjectHandling"
+import CopyBox from "../../utils/CopyBox";
+import { asAtDateAlwaysNZ, startOfDay, startOfDayFormatted } from "../DateHandling";
+import { getPrintableLocationOfInterestGroupString } from "../LocationObjectHandling";
+import { processGroupKey } from "./LocationInfoGrid";
 
 type TodayLocationSummaryProps = {
     locationGroups: any
