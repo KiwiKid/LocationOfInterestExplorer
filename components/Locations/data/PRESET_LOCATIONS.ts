@@ -322,6 +322,15 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lng: 174.83780812384316,
     zoom: 12,
     showInDrawer: true
+  },
+  { 
+    title: 'Takaanini',
+    urlParam: 'takaanini',
+    matchingMohCityString: ['Takaanini']
+    lat: -37.039130027785816, 
+    lng: 174.92993831188855,
+    zoom: 12,
+    showInDrawer: true
   }
 ];
 
