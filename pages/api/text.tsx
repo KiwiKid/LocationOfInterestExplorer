@@ -17,7 +17,6 @@ type LocationGroupSummary = {
 
 type Summary = {
     today: string
-    locationGroups: LocationGroupSummary[]
 }
 
 
@@ -48,7 +47,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     }
                 });
 
-    const summary:Summary = { today: todaySummary, locationGroups: locationGroupSummaries }
+    const summary:Summary = { today: todaySummary }
 
     res.status(200).json(summary);
 }
