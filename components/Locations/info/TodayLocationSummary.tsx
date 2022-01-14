@@ -1,5 +1,5 @@
 import CopyBox from "../../utils/CopyBox";
-import { asAtDateAlwaysNZ, startOfDay, startOfDayFormatted } from "../DateHandling";
+import { asAtDateAlwaysNZ, onlyToday, startOfDay, startOfDayFormatted, subtractHours } from "../DateHandling";
 import { getPrintableLocationOfInterestGroupString } from "../LocationObjectHandling";
 import { processGroupKey } from "./LocationInfoGrid";
 
@@ -9,8 +9,6 @@ type TodayLocationSummaryProps = {
     publishTime:Date
     presetLocations:PresetLocation[]
 }
-
-const onlyToday = (date:Date) => startOfDay(date) === startOfDay(new Date());
 
 const getTodayLocationSummary = (presetLocations:PresetLocation[], locationGroups: any, hardcodedURL: string, publishTime: Date) => `${getTotalLocationsToday(locationGroups)} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)} \n\n${Object.keys(locationGroups)
     .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
@@ -51,4 +49,4 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, preset
     )
 }
 
-export { TodayLocationSummary, getTodayLocationSummary, onlyToday};
+export { TodayLocationSummary, getTodayLocationSummary};
