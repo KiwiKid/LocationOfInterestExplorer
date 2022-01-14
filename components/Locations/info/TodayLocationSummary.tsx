@@ -18,8 +18,16 @@ const getTodayLocationSummary = (
 ) => `${getTotalLocationsToday(locationGroups)} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${Object.keys(locationGroups)
     .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
     .filter((keyObj:any) => onlyToday(keyObj.date))
+    .sort((a, b) => {
+        if(a.quicklink === undefined 
+        || b.quicklink === undefined
+        || a.quicklink?.urlParam === 'all'
+            ){ return 2}
+        // @ts-ignore
+        return a.quicklink?.lat > b.quicklink?.lat ? -1 : 1
+    })
     .map((keyObj:LocationGroupKey) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL, publishTime, false))
-    .join('\n')}`
+    .join(`\n`)}`
 
 const getTotalLocationsToday = (locationGroups:any) => {
     let totalLocationsToday = 0;
