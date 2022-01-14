@@ -1,24 +1,8 @@
-import dayjs from "dayjs";
-import _ from "lodash";
-import { LocationOfInterest } from "../types/LocationOfInterest";
-import CopyBox from "../utils/CopyBox";
-import { getHoursAgo } from "../utils/utils";
-import PRESET_LOCATIONS from "./data/PRESET_LOCATIONS";
-import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "./DateHandling";
-import { getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "./LocationObjectHandling";
-import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
-
-import TodayLocationSummary from "./TodayLocationSummary";
-
-//const PRESET_LOCATIONS:PresetLocation[] = require('./data/PRESET_LOCATIONS')
-//const LOCATION_OVERRIDES:LocationOverride[] = require('./data/LOCATION_OVERRIDES')
-
-type LocationInfoGridProps = {
-    locations:LocationOfInterest[]
-    hardcodedURL:string
-    publishTime:Date
-    presetLocations:PresetLocation[]
-}
+import { LocationOfInterest } from "../../types/LocationOfInterest";
+import CopyBox from "../../utils/CopyBox";
+import { getHoursAgo } from "../../utils/utils";
+import { NiceDate, NiceFullDate } from "../DateHandling";
+import { getPrintableLocationOfInterestGroupString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 
 const getBorderColor = (hoursAgo:number) => {
     if(hoursAgo == 0){
@@ -35,31 +19,20 @@ const getBorderColor = (hoursAgo:number) => {
 
 
 
-const processGroupKey = (presetLocations:PresetLocation[],keyString:string):LocationGroupKey => {
-    let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
-
-
-    let qLink = presetLocations.filter((pl) => pl.urlParam === cityParam)[0] || null
-
-    return {
-        key: keyString,
-        date: new Date(keyString.substring(0,keyString.indexOf('|'))),
-        city: cityParam,
-        quicklink: qLink
-    }
-}
-
-type LocationGroupProps = {
+type LocationInfoGroupProps = {
     group: LocationOfInterest[]
-    groupKeyString: string
+    groupKey: LocationGroupKey
     hardcodedURL: string
     presetLocations: PresetLocation[]
     publishTime: Date
 }
 
-const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations, publishTime}:LocationGroupProps) => {
 
-    const groupKey = processGroupKey(presetLocations, groupKeyString);
+const getLocationInfoGroupTitle = (groupKey:LocationGroupKey, groupSize:number, publishTime:Date, includeCount:boolean) => `${includeCount ? groupSize : ''} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n\n`
+
+const LocationInfoGroup = ({groupKey, group, hardcodedURL, presetLocations, publishTime}:LocationInfoGroupProps) => {
+
+    //const groupKey = processGroupKey(presetLocations, groupKeyString);
 
     const mostRecentLocationAdded = group.sort((a:LocationOfInterest, b:LocationOfInterest) => a.added > b.added ? 1 : -1)[0].added;
     
@@ -73,12 +46,12 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations, pu
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {`${group.length} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city}\n\n`}
+                        {getLocationInfoGroupTitle(groupKey, group.length, publishTime, false)}
                 />
                 <CopyBox 
                         id="copybox"
-                        copyText=
-                        {`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''}\n\n`}
+                        copyText={getLocationInfoGroupTitle(groupKey, group.length, publishTime, true)}
+                        //{`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)}\n\n`}
                 />
                 <CopyBox 
                     id="copybox"
@@ -130,37 +103,4 @@ const LocationGroup = ({groupKeyString, group, hardcodedURL, presetLocations, pu
     )
 }
 
-
-
-const getPresetLocationPrimaryCity = (presetLocations:PresetLocation[],mohCity:string) => {
-    let override = presetLocations.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
-    if(override){
-        return override.urlParam;
-    }
-    return 'Others';
-}
-
-
-const LocationInfoGrid = ({locations, hardcodedURL, publishTime}:LocationInfoGridProps) => {
-    
-    var groupedLocations = _.groupBy(locations
-        , function(lc){ 
-            return `${startOfDay(lc.added)}|${getPresetLocationPrimaryCity(PRESET_LOCATIONS, lc.city)}`
-        });
-
-    return (<div className="">
-                <TodayLocationSummary 
-                    locationGroups={groupedLocations} 
-                    hardcodedURL={hardcodedURL}
-                    publishTime={publishTime}
-                    presetLocations={PRESET_LOCATIONS}
-                    />                 
-                {Object.keys(groupedLocations)
-                .map((keyStr:string) => processGroupKey(PRESET_LOCATIONS, keyStr))
-                .sort((a:LocationGroupKey,b:LocationGroupKey) => a.date > b.date ? -1 : 1)
-                .map((groupKey) => <LocationGroup publishTime={publishTime} presetLocations={PRESET_LOCATIONS} key={groupKey.key} groupKeyString={groupKey.key} group={groupedLocations[groupKey.key]} hardcodedURL={hardcodedURL}/>)}
-            </div>)
-}
-
-
-export { LocationInfoGrid, processGroupKey }
+export default LocationInfoGroup

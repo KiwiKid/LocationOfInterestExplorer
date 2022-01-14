@@ -1,20 +1,15 @@
-import { GetStaticProps, NextPage } from "next"
-import PRESET_LOCATIONS from "../components/Locations/data/PRESET_LOCATIONS"
-import { NiceFullDate, startOfDay } from "../components/Locations/DateHandling"
-import LocationContext from "../components/Locations/LocationAPI/LocationContext"
-import { LocationInfoGrid } from "../components/Locations/LocationInfoGrid"
-import { getCSVLocationOfInterestString, mapLocationRecordToLocation } from "../components/Locations/LocationObjectHandling"
-import LocationsPage from "../components/Locations/LocationsPage"
-import TodayLocationSummary from "../components/Locations/TodayLocationSummary"
-import CopyBox from "../components/utils/CopyBox"
-import { getHardCodedUrl, getHoursAgo } from "../components/utils/utils"
+import { GetStaticProps, NextPage } from "next";
+import PRESET_LOCATIONS from "../components/Locations/data/PRESET_LOCATIONS";
+import { NiceFullDate } from "../components/Locations/DateHandling";
+import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
+import LocationContext from "../components/Locations/LocationAPI/LocationContext";
+import { getHardCodedUrl } from "../components/utils/utils";
 
 type InfoPageProps = {
-    publishTimeUTC: string,
-    hardcodedURL: string
+    publishTimeUTC: string
 }
 
-const Info: NextPage<InfoPageProps> = ({publishTimeUTC, hardcodedURL}) => {
+const Info: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
 
     const publishTime = new Date(publishTimeUTC);
     return (
@@ -51,8 +46,7 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
    
      return {
        props:{
-         publishTimeUTC: new Date().toUTCString(),
-         hardcodedURL: getHardCodedUrl()
+         publishTimeUTC: new Date().toUTCString()
         }
      }
     }

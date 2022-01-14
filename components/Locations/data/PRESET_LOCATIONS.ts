@@ -297,7 +297,24 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lng: 175.68297168174058,
     zoom: 10,
     showInDrawer: true
+  },{
+    title: 'Featherston',
+    urlParam: 'featherston',
+    matchingMohCityString: ['Featherston'],
+    lat: -41.116043061438184, 
+    lng: 175.32472408859616,
+    zoom: 10,
+    showInDrawer: true
+  },
+  {
+    title: 'Greytown',
+    urlParam: 'greytown',
+    matchingMohCityString: ['Greytown'],
+    lat: -41.08030687803606, 
+    lng: 175.45934204204377,
+    zoom: 10,
+    showInDrawer: true
   }
-  ];
+];
 
 export default PRESET_LOCATIONS
