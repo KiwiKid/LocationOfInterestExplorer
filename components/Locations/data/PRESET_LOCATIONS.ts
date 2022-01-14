@@ -214,7 +214,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Whanganui'],
       lat: -39.93242412021889, 
       lng: 175.02958355172697,
-      zoom: 10,
+      zoom: 13,
       showInDrawer: true
     },
     {
@@ -223,7 +223,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Kaikoura', 'Kaikōura'],
       lat: -42.39200642596124,
       lng: 173.67887645158532,
-      zoom: 10,
+      zoom: 13,
       showInDrawer: true
     },
     {
@@ -232,7 +232,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Otaki'],
       lat: -40.76018472420495,
       lng:  175.1568850510182,
-      zoom: 10,
+      zoom: 13,
       showInDrawer: true
     },
     {
@@ -241,7 +241,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ["Orewa"],
       lat: -36.58622354488708,
       lng: 174.68657614155387,
-      zoom: 10,
+      zoom: 13,
       showInDrawer: true
     },
     {
@@ -250,7 +250,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Warkworth'],
       lat: -36.39825538554779, 
       lng: 174.6622196622345, 
-      zoom:10,
+      zoom:13,
       showInDrawer: true
     },
     {
@@ -259,7 +259,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Waimauku'],
       lat: -36.769535791859894, 
       lng: 174.49177041557877,
-      zoom: 10,
+      zoom: 13,
       showInDrawer: true
     },
     {
@@ -268,7 +268,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Otorohanga'],
       lat: -38.185506335511775, 
       lng: 175.2103540378415,
-      zoom: 10,
+      zoom: 13,
       showInDrawer: true
     },
     {
@@ -277,7 +277,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['New Plymouth'],
       lat: -39.05531858908381, 
       lng: 174.08590254313253,
-      zoom: 10,
+      zoom: 14,
       showInDrawer: true
     },
     {
@@ -286,7 +286,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
       matchingMohCityString: ['Opotiki'],
       lat: -38.01207840880075, 
       lng: 177.2829488360815,
-      zoom: 10,
+      zoom: 14,
       showInDrawer: true
     }, 
   {
@@ -295,7 +295,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     matchingMohCityString: ['Whitianga'],
     lat: -36.82538450146477, 
     lng: 175.68297168174058,
-    zoom: 10,
+    zoom: 14,
     showInDrawer: true
   },{
     title: 'Featherston',
@@ -303,7 +303,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     matchingMohCityString: ['Featherston'],
     lat: -41.116043061438184, 
     lng: 175.32472408859616,
-    zoom: 10,
+    zoom: 14,
     showInDrawer: true
   },
   {
@@ -312,7 +312,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     matchingMohCityString: ['Greytown'],
     lat: -41.08030687803606, 
     lng: 175.45934204204377,
-    zoom: 10,
+    zoom: 14,
     showInDrawer: true
   },{
     title: 'Porirua',
@@ -320,7 +320,7 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     matchingMohCityString: ['Porirua'],
     lat: -41.13384572024906, 
     lng: 174.83780812384316,
-    zoom: 10,
+    zoom: 14,
     showInDrawer: true
   }
 ];
