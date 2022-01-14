@@ -324,9 +324,9 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     showInDrawer: true
   },
   { 
-    title: 'Takaanini',
-    urlParam: 'takaanini',
-    matchingMohCityString: ['Takaanini'],
+    title: 'Takanini',
+    urlParam: 'takanini',
+    matchingMohCityString: ['Takanini'],
     lat: -37.039130027785816, 
     lng: 174.92993831188855,
     zoom: 12,
