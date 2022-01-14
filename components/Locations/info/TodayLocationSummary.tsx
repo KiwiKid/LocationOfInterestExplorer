@@ -12,7 +12,7 @@ type TodayLocationSummaryProps = {
 
 const getTodayLocationSummary = (presetLocations:PresetLocation[], locationGroups: any, hardcodedURL: string, publishTime: Date) => `${getTotalLocationsToday(locationGroups)} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)} \n\n${Object.keys(locationGroups)
     .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
-    //.filter((keyObj:any) => onlyToday(keyObj.date))
+    .filter((keyObj:any) => onlyToday(keyObj.date))
     .map((keyObj:LocationGroupKey) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL, publishTime, false))
     .join('')}`
 
