@@ -31,7 +31,7 @@ const NiceFullDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('D 
 // Use when generating dates for screenshots
 const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).tz('Pacific/Auckland').format('D MMM h:mm A') : 'no date'}</>
 
-const startOfDay = (date:Date|DayJs) => {
+const startOfDay = (date:Date|Dayjs) => {
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format();
 }
 
