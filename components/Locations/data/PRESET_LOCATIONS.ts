@@ -314,6 +314,14 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lng: 175.45934204204377,
     zoom: 10,
     showInDrawer: true
+  },{
+    title: 'Porirua',
+    urlParam: 'porirua',
+    matchingMohCityString: ['Porirua'],
+    lat: -41.13384572024906, 
+    lng: 174.83780812384316,
+    zoom: 10,
+    showInDrawer: true
   }
 ];
 
