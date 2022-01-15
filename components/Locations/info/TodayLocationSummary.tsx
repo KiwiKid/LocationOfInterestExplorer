@@ -19,10 +19,12 @@ const getTodayLocationSummary = (
     .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
     .filter((keyObj:any) => onlyToday(keyObj.date))
     .sort((a, b) => {
-        if(a.quicklink === undefined 
-        || b.quicklink === undefined
-        || a.quicklink?.urlParam === 'all'
-            ){ return 2}
+        if(a.quicklink === undefined || b.quicklink === undefined || a.quicklink?.urlParam === 'all'){
+             return 0
+        }
+
+        if(a.city === 'Others'){ return 1 }
+        if(b.city === 'Others'){ return -1 }
         // @ts-ignore
         return a.quicklink?.lat > b.quicklink?.lat ? -1 : 1
     })

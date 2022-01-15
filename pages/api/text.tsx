@@ -30,6 +30,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
       
     const todayLocations = locations.filter((l) => onlyToday(l.added))
 
+
+
     var groupedLocations = _.groupBy(todayLocations
         , function(lc){ 
             return `${startOfDay(lc.added)}|${getPresetLocationPrimaryCity(PRESET_LOCATIONS, lc.city)}`
@@ -37,7 +39,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
     const todaySummary:string = getTodayLocationSummary(PRESET_LOCATIONS, groupedLocations, url, now);
         
-    const locationGroupSummaries:LocationGroupSummary[] = Object.keys(groupedLocations)
+    /*const locationGroupSummaries:LocationGroupSummary[] = Object.keys(groupedLocations)
                 .map((keyStr:string) => processGroupKey(PRESET_LOCATIONS, keyStr))
                 .sort((a:LocationGroupKey,b:LocationGroupKey) => a.date > b.date ? -1 : 1)
                 .map((groupKey:LocationGroupKey) => {
@@ -45,7 +47,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         id: groupKey.city,
                         text: getPrintableLocationOfInterestGroupString(groupKey, groupedLocations[groupKey.key], url, now, true)
                     }
-                });
+                });*/
 
     const summary:Summary = { today: todaySummary }
 
