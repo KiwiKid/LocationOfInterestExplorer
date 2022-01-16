@@ -41,16 +41,16 @@ const LocationInfoGroup = ({groupKey, group, hardcodedURL, presetLocations, publ
         <>
             <details className={`m-4 p-4 border-4  border-${getBorderColor(getHoursAgo(groupKey.date))}`}>
             <summary className="">
-            (after) <NiceDate date={groupKey.date}/> - {group.length} Locations - {groupKey.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishTime)}) {group.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
+            (after) <NiceDate date={groupKey.date}/> - {group.length} Locations - {groupKey.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(groupKey.date)}) {group.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
             (most recent was {getHoursAgo(mostRecentLocationAdded)} hours ago)
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {getLocationInfoGroupTitle(groupKey, group.length, publishTime, false)}
+                        {getLocationInfoGroupTitle(groupKey, group.length, groupKey.date, false)}
                 />
                 <CopyBox 
                         id="copybox"
-                        copyText={getLocationInfoGroupTitle(groupKey, group.length, publishTime, true)}
+                        copyText={getLocationInfoGroupTitle(groupKey, group.length, groupKey.date, true)}
                         //{`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)}\n\n`}
                 />
                 <CopyBox 

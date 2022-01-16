@@ -331,6 +331,24 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lng: 174.92993831188855,
     zoom: 12,
     showInDrawer: true
+  },
+  {
+    title: 'Tūrangi',
+    urlParam: 'turangi',
+    matchingMohCityString: ['Tūrangi','Turangi'],
+    lat: -38.98900179372025, 
+    lng: 175.80689878142314,
+    zoom: 12,
+    showInDrawer: true
+  },
+  {
+    title: 'Hastings',
+    urlParam: 'hastings',
+    matchingMohCityString: ['Hastings'],
+    lat: -39.639445524232414,
+    lng: 176.83594225674403,
+    zoom: 12,
+    showInDrawer: true
   }
 ];
 
