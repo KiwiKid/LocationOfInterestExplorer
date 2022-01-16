@@ -45,7 +45,7 @@ const onlyToday = (a:Dayjs|Date):boolean => {
 
 
 const startOfDayFormatted = (date:Date) => {
-    return dayjs(date).startOf('day').format('D MMM');
+    return dayjs(date).tz("Pacific/Auckland").startOf('day').format('D MMM');
 }
 
 const releaseDateAndCity = (date:Date) => {
