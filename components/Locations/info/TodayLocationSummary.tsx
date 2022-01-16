@@ -39,6 +39,8 @@ const getTotalLocationsToday = (locationGroups:any) => {
     return totalLocationsToday
 }
 
+const getTotalLocationSummaryTitle = (publishTime:Date) => `New Locations of Interest - ${startOfDayFormatted(publishTime)}`
+
 
 const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, presetLocations}:TodayLocationSummaryProps) => {
 
@@ -47,7 +49,7 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, preset
         copyText = getTodayLocationSummary(presetLocations, locationGroups, hardcodedURL, publishTime)
     }
 
-    let titleText = `New Locations of Interest - ${startOfDayFormatted(publishTime)}`
+    let titleText = getTotalLocationSummaryTitle(publishTime);
     
     return (
         <><CopyBox 
@@ -64,4 +66,4 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, preset
     )
 }
 
-export { TodayLocationSummary, getTodayLocationSummary};
+export { TodayLocationSummary, getTodayLocationSummary, getTotalLocationSummaryTitle} ;
