@@ -75,7 +75,6 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL, locationSe
       <meta name='twitter:url' content={hardcodedURL} />
       <meta name='twitter:title' content={mediumTitle} />
       <meta name='twitter:description' content={description} />
-      <meta name='twitter:image' content={`${hardcodedURL}/icons/covid19/android-chrome-192x192.png`} />
       <meta name='twitter:creator' content='GregC' />
       <meta property='og:type' content='website' />
       <meta property='og:title' content={shortTitle} />
@@ -102,7 +101,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL, locationSe
                       locations={locations}
                       startingPageState={settings}
                       publishState={{hardcodedURL: hardcodedURL, publishTime:new Date(publishTimeUTC)}}
-                      locationSettings={settings}
+                      locationSettings={locationSettings}
                   />: <>Loading a Map of Covid-19 Locations of Interest published by the Ministry of Health</>
             }
           </LocationContext.Consumer>
