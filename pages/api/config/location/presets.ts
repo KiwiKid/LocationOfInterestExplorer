@@ -46,12 +46,12 @@ const handler = async (req:NextApiRequest, res:NextApiResponse<any>) => {
     const url = 'https://nzcovidmap.org'
     const now = new Date();
 
-    if(!process.env.NEXT_PUBLIC_NOTION_LOCATION_PRESET_DB_ID){ console.error('NEXT_PUBLIC_NOTION_LOCATION_PRESET_DB_ID not set'); throw 'error' }
+    if(!process.env.NOTION_LOCATION_PRESET_DB_ID){ console.error('NOTION_LOCATION_PRESET_DB_ID not set'); throw 'error' }
     if(!process.env.NOTION_TOKEN){ console.error('NOTION_TOKEN not set'); throw 'error' }
 
     const notion = new Client({ auth: process.env.NOTION_TOKEN});
 
-    let locations = await getLocationPresets(process.env.NEXT_PUBLIC_NOTION_LOCATION_PRESET_DB_ID, notion);
+    let locations = await getLocationPresets(process.env.NOTION_LOCATION_PRESET_DB_ID, notion);
       
     res.status(200).json(locations);
 }

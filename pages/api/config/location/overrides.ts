@@ -39,12 +39,12 @@ const getLocationOverrides = async (dbId:string, client:Client) => client.databa
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     if(!process.env.NOTION_TOKEN){ console.error('NOTION_TOKEN not set'); throw 'error' }
-    if(!process.env.NEXT_PUBLIC_NOTION_LOCATION_OVERRIDE_DB_ID){ console.error('NEXT_PUBLIC_NOTION_LOCATION_OVERRIDE_DB_ID not set'); throw 'error' }
+    if(!process.env.NOTION_LOCATION_OVERRIDE_DB_ID){ console.error('NOTION_LOCATION_OVERRIDE_DB_ID not set'); throw 'error' }
 
 
     const notion = new Client({ auth: process.env.NOTION_TOKEN});
 
-    const overrides = await getLocationOverrides(process.env.NEXT_PUBLIC_NOTION_LOCATION_OVERRIDE_DB_ID, notion);
+    const overrides = await getLocationOverrides(process.env.NOTION_LOCATION_OVERRIDE_DB_ID, notion);
     res.status(200).json(overrides);
 }
 

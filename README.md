@@ -116,6 +116,16 @@ Tech Debt
 - [ ] Zoom button styling (esp when moving drawer)
 - [ ] The useEffects are pretty funky in places (esp around map updates)
 
+## Public Routes
+
+'/api/config/location/presets'
+Get the current "LocationPresets".
+
+
+'/api/config/location/overrides'
+Get the current "LocationOverrides".
+
+
 
 
 
