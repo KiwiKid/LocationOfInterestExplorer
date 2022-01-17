@@ -1,6 +1,7 @@
 import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import NotionClient from "../components/Locations/data/NotionClient";
 import { NiceFullDate } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
@@ -10,8 +11,9 @@ import parseQuery from "../components/utils/parseQuery";
 
 
 
-type InfoPageProps = {
+type ChampionPageProps = {
     publishTimeUTC: string
+    locationSettings: LocationSettings
 }
 
 
@@ -26,7 +28,7 @@ const getOpenLocations = (asPath:string):string[] => {
     return [];
   }
 
-const Champion: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
+const Champion: NextPage<ChampionPageProps> = ({publishTimeUTC, locationSettings}) => {
 
     const router = useRouter();
 
@@ -37,17 +39,15 @@ const Champion: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
     const publishTime = new Date(publishTimeUTC);
     return (
         <>
-        Published: <NiceFullDate date={publishTime}/>
-         {<LocationSettingsContext.Consumer>
-            {locationSettings => 
-            
-             locationSettings ? <>
+            Published: <NiceFullDate date={publishTime}/>
                 <LocationContext.Consumer>
                 {locations => 
-                    locations ? 
+                    locations 
+                    && locationSettings.locationPresets.length 
+                    && locationSettings.locationOverrides.length ? 
                     <>
                     <LocationInfoGrid 
-                        locations={locations.filter((l) => { 
+                        locations={activeQuickLinks.length === 0 ? locations : locations.filter((l) => { 
                             return activeQuickLinks.some((aql) => {
                                 var ql = getMatchingQuickLink(aql, locationSettings.locationPresets);
                              return ql.matchingMohCityString.some((mohMatch) =>  mohMatch == l.city)
@@ -58,23 +58,22 @@ const Champion: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
                         locationSettings={locationSettings}
                         />
                     </>
-                    : <>No Location records</>
+                    : <>Loading Loading Records... </>
                 }
             </LocationContext.Consumer>
-            </> : <>No Location settings</>
-
-        }
-        </LocationSettingsContext.Consumer>}
-    </>
+        </>
     )
 
 }
 
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
 
+    let client = new NotionClient();
+
      return {
        props:{
-         publishTimeUTC: new Date().toUTCString()
+         publishTimeUTC: new Date().toUTCString(),
+         locationSettings: await client.getLocationSettings()
         }
      }
     }

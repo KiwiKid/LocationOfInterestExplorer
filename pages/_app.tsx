@@ -27,29 +27,20 @@ function MyApp({ Component, pageProps }: AppProps) {
         
         const overrides = await requestLocationOverrides();
         
-        const reqPresets = requestLocationPresets();
-
-
-        const reqLocation = requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
+        const locationRecords = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
           .then((loi) => applyOverrides(loi, overrides))
           .then((d) => d.map(mapLocationRecordToLocation))
         
 
-        
+        const presets = await requestLocationPresets();
+
         console.log('Wait for responses')
 
-        const [
-          locations
-          , locationPresets
-        ] = await Promise.all([
-          reqLocation ,
-          reqPresets
-        ]);
-            
+           
         console.log('set results')
-        setLocations(locations);
+        setLocations(locationRecords);
         setLocationSettings({
-            locationPresets: locationPresets
+            locationPresets: presets
             , locationOverrides: overrides
         });
 

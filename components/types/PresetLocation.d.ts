@@ -3,7 +3,7 @@
 type LocationPreset = {
     title:string
     urlParam:string
-    matchingMohCityString:string[]
+    matchingMohCityString:string[] // TODO: convert to Dict
     lat:number
     lng:number
     zoom:number

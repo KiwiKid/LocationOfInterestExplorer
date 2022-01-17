@@ -2,6 +2,7 @@
 
 import { Client } from '@notionhq/client'
 import { Touchscreen } from 'puppeteer-core';
+import { removeStringEnds } from '../../utils/utils';
 
 const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
 
@@ -13,10 +14,31 @@ const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
     }   
 }
 
+const getNotionRichText = (notionParam:any):string => {
+    return notionParam.rich_text[0].plain_text;
+}
+
+
+const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
+
+    const props = notionRow.properties;
+    return {
+        showInDrawer: props.showInDrawer.checkbox,
+        lat: props.lat.number,
+        lng: props.lng.number,
+        matchingMohCityString: removeStringEnds(getNotionRichText(props.matchingMohCityString)).split(',') ,
+        title: getNotionRichText(props.cityTitle),
+        urlParam: getNotionRichText(props.urlParam),
+        zoom: props.zoom.number
+    }   
+}
+
 class NotionClient { 
     notionClient:Client;
     overrideDbId!:string;
     presetDbId!:string;
+    cachedLocationOverrides!:LocationOverride[];
+    cachedLocationPresets!:LocationPreset[];
 
     constructor (){
 
@@ -37,31 +59,48 @@ class NotionClient {
     getLocationOverrides = async ():Promise<LocationOverride[]> => {
         if(!this.overrideDbId){ throw 'No override db set'}
 
-        return this.notionClient.databases.query({
-            database_id: this.overrideDbId,//process.env.,
-            filter: {
-                property: "active",
-                checkbox: {
-                    equals: true,
+        if(!this.cachedLocationOverrides || this.cachedLocationOverrides.length === 0){
+            return this.notionClient.databases.query({
+                database_id: this.overrideDbId,//process.env.,
+                filter: {
+                    property: "active",
+                    checkbox: {
+                        equals: true,
+                    },
                 },
-            },
-        }).then((rs:any) => rs.results.map(mapNotionItemToOverride));
+            }).then((rs:any) => {
+                return rs.results.map(mapNotionItemToOverride)
+            }).then((rs) => {
+                this.cachedLocationOverrides = rs;
+                return rs;
+            });
+        }else{
+            return this.cachedLocationOverrides;
+        }
     }
 
 
     getLocationPresets = async ():Promise<LocationPreset[]> => {
         if(!this.presetDbId){ throw 'No preset db set'}
 
-        return this.notionClient.databases.query({
-            database_id: this.presetDbId,
-            filter: {
-            property: "active",
-            checkbox: {
-                equals: true,
-            },
-            },
-        })
-        .then((r) => r.results.map(mapNotionItemToLocationPreset));
+        if(!this.cachedLocationPresets || this.cachedLocationPresets.length === 0){
+            return this.notionClient.databases.query({
+                database_id: this.presetDbId,
+                filter: {
+                property: "active",
+                checkbox: {
+                    equals: true,
+                },
+                },
+            })
+            .then((r) => r.results.map(mapNotionItemToLocationPreset))
+            .then((rs) => {
+                this.cachedLocationPresets = rs;
+                return rs;
+            });
+        } else {
+            return this.cachedLocationPresets;
+        }
     }
 
 
@@ -77,7 +116,7 @@ class NotionClient {
                     console.error('Error getting overrides/presets');
                     throw 'err';
                 }
-                return { 
+                return {
                     locationOverrides: res[0]
                     , locationPresets: res[1]
                 }
@@ -89,18 +128,5 @@ class NotionClient {
 
 
 
-const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
-
-    const props = notionRow.properties;
-    return {
-        showInDrawer: props.showInDrawer.checkbox,
-        lat: props.lat.number,
-        lng: props.lng.number,
-        matchingMohCityString: props.matchingMohCityString.rich_text.map((rt:any) => rt.text.content),
-        title: props.cityTitle.rich_text[0].plain_text,
-        urlParam: props.urlParam.rich_text[0].plain_text,
-        zoom: props.zoom.number
-    }   
-}
 
 export default NotionClient;

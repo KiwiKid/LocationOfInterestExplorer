@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import _ from "lodash";
+import { useEffect, useState } from "react";
 import { LocationOfInterest } from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
@@ -19,12 +20,11 @@ type LocationInfoGridProps = {
 }
 
 
-
-const processGroupKey = (LocationPresets:LocationPreset[],keyString:string):LocationGroupKey => {
+const processGroupKey = (locationPresets:LocationPreset[],keyString:string):LocationGroupKey => {
     let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
 
 
-    let qLink = LocationPresets.filter((pl) => pl.urlParam === cityParam)[0] || null
+    let qLink = locationPresets.filter((pl) => pl.urlParam === cityParam)[0] || null
 
     return {
         key: keyString,
@@ -35,19 +35,23 @@ const processGroupKey = (LocationPresets:LocationPreset[],keyString:string):Loca
 }
 
 
-
-
-
-
-
 const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSettings}:LocationInfoGridProps) => {
     
-    var groupedLocations = _.groupBy(locations
-        , function(lc){ 
-            return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(locationSettings.locationPresets, lc.city)}`
-        });
 
-    return (<div className="">
+    const [groupedLocations, setGroupedLocations] = useState<any|undefined>(undefined);
+
+    useEffect(()=> {
+        if(!groupedLocations){
+            setGroupedLocations(_.groupBy(locations
+                , function(lc){ 
+                    return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(locationSettings.locationPresets, lc.city)}`
+                }));
+            }
+    }, [groupedLocations]);
+    
+
+    return (groupedLocations ? (locationSettings.locationPresets ? <div className="">
+        {JSON.stringify(locationSettings.locationPresets)}
                 <TodayLocationSummary 
                     locationGroups={groupedLocations} 
                     hardcodedURL={hardcodedURL}
@@ -67,7 +71,8 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
                         hardcodedURL={hardcodedURL}
                     />
                 })}
-            </div>)
+            </div>: <div>Loading Location Presets</div>)
+        : <div>Grouping locations</div>);
 }
 
 

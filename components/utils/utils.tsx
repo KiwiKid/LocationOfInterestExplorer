@@ -52,6 +52,13 @@ export const shortTimeWithHourMin24ToNZ = new Intl.DateTimeFormat("en",  {timeSt
 
 export const detailedLongTimeToNZ =  new Intl.DateTimeFormat("en", { timeStyle: "medium", dateStyle:'medium' }) 
 
+export const removeStringEnds = (input:string) => input.length < 2 ? input : input.substring(1, input.length-1);
+
+
+
+export const getMinutesAgo = (date:Date) => {
+    return Math.floor((Math.abs(new Date(date).getTime() - new Date().getTime())/1000/60))
+}
 
 const ADDED_RECENTLY_HOURS = 48;
 export const getHoursAgo = (date:Date) => {
