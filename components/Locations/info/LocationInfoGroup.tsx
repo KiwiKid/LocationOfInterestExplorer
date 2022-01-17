@@ -23,14 +23,14 @@ type LocationInfoGroupProps = {
     group: LocationOfInterest[]
     groupKey: LocationGroupKey
     hardcodedURL: string
-    LocationPresets: LocationPreset[]
+    locationSettings: LocationSettings
     publishTime: Date
 }
 
 
 const getLocationInfoGroupTitle = (groupKey:LocationGroupKey, groupSize:number, publishTime:Date, includeCount:boolean) => `${includeCount ? groupSize : ''} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n`
 
-const LocationInfoGroup = ({groupKey, group, hardcodedURL, LocationPresets, publishTime}:LocationInfoGroupProps) => {
+const LocationInfoGroup = ({groupKey, group, hardcodedURL, locationSettings, publishTime}:LocationInfoGroupProps) => {
 
     //const groupKey = processGroupKey(LocationPresets, groupKeyString);
 
@@ -56,7 +56,7 @@ const LocationInfoGroup = ({groupKey, group, hardcodedURL, LocationPresets, publ
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={getPrintableLocationOfInterestGroupString(groupKey, group, hardcodedURL, publishTime, true)}
+                    copyText={getPrintableLocationOfInterestGroupString(groupKey, group, hardcodedURL, publishTime, true, locationSettings.locationPresets)}
                     textarea={true} 
                 />
             </summary>

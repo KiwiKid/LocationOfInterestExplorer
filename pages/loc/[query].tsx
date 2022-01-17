@@ -10,7 +10,7 @@ import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 import parseQuery from "../../components/utils/parseQuery"
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "../../components/Locations/FeatureFlags"
-import PRESET_LOCATIONS from "../../components/Locations/data/PRESET_LOCATIONS"
+import NotionClient from "../../components/Locations/data/NotionClient"
 
 
 
@@ -18,6 +18,7 @@ type LocationPageProps = {
   quickLink: LocationPreset
   publishTimeUTC: string // Allow for native next.js props usage
   hardcodedURL: string
+  locationSettings: LocationSettings
 };
 
 
@@ -35,7 +36,7 @@ const getfeatureFlags = (asPath:string):string[] => {
 }
 
 
-const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, hardcodedURL}) => {
+const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, hardcodedURL, locationSettings}) => {
 
   const router = useRouter();
 
@@ -124,6 +125,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
                         zoom: quickLink.zoom,
                         featureFlags: featureFlags
                       }}
+                      locationSettings={locationSettings}
                       publishState={{hardcodedURL: hardcodedURL, publishTime: new Date(publishTimeUTC)}}
                   />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>
             }
@@ -135,18 +137,28 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
 
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
 
+  let client = new NotionClient();
+
+  let settings = await client.getLocationSettings();
+
+
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
       hardcodedURL: getHardCodedUrl(),
-      quickLink: params && typeof(params.query) === 'string' ? getMatchingQuickLink(params.query) : null 
+      quickLink: params && typeof(params.query) === 'string' ? getMatchingQuickLink(params.query, settings.locationPresets) : null,
+      locationSettings: settings
      }
   }
 }
 
 export async function getStaticPaths() {
+
+  let client = new NotionClient();
+  let settings = await client.getLocationSettings();
+
     return {
-        paths: PRESET_LOCATIONS.map((pl) => { return { params:{ query: pl.urlParam}}}),
+        paths: settings.locationPresets.map((pl) => { return { params:{ query: pl.urlParam}}}),
         fallback: true
     }
   }

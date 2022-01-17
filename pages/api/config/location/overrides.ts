@@ -1,8 +1,7 @@
 // Libs
 import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
-import { Client } from '@notionhq/client'
-
+import NotionClient from '../../../../components/Locations/data/NotionClient';
 
 type LocationGroupSummary = {
     id:string
@@ -15,36 +14,14 @@ type Summary = {
     newLocationCount: number
 }
 
-const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
-
-    const props = notionRow.properties;
-    return {
-        lat: props.lat.number,
-        lng: props.lng.number,
-        eventId: props.eventId.rich_text[0].text.content
-    }   
-}
-
-
-   
-const getLocationOverrides = async (dbId:string, client:Client) => client.databases.query({
-    database_id: dbId,//process.env.,
-    filter: {
-      property: "active",
-      checkbox: {
-        equals: true,
-      },
-    },
-  }).then((rs:any) => rs.results.map(mapNotionItemToOverride));
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     if(!process.env.NOTION_TOKEN){ console.error('NOTION_TOKEN not set'); throw 'error' }
     if(!process.env.NOTION_LOCATION_OVERRIDE_DB_ID){ console.error('NOTION_LOCATION_OVERRIDE_DB_ID not set'); throw 'error' }
 
+    const client = new NotionClient();
 
-    const notion = new Client({ auth: process.env.NOTION_TOKEN});
-
-    const overrides = await getLocationOverrides(process.env.NOTION_LOCATION_OVERRIDE_DB_ID, notion);
+    const overrides = await client.getLocationOverrides();
     res.status(200).json(overrides);
 }
 

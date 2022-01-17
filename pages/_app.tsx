@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { requestLocations } from '../components/Locations/MoHLocationClient/requestLocations'
 import LocationContext from '../components/Locations/MoHLocationClient/LocationContext'
 import { useEffect, useState } from 'react';
-import { mapLocationRecordToLocation } from '../components/Locations/LocationObjectHandling';
+import { applyLocationOverrides, mapLocationRecordToLocation } from '../components/Locations/LocationObjectHandling';
 import { LocationOfInterest } from '../components/types/LocationOfInterest';
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import { requestLocationPresets } from '../components/Locations/LocationSettingsContext/requestLocationPreset';
@@ -12,7 +12,7 @@ import { requestLocationOverrides } from '../components/Locations/LocationSettin
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [locations, setLocations] = useState<LocationOfInterest[]|undefined>(undefined);
-  const [locationSettings, setLocationSettings] = useState<LocationSettings|undefined>(undefined);
+  const [locationSettings, setLocationSettings] = useState<LocationSettings>();
   
 
   useEffect(() => {
@@ -23,7 +23,12 @@ function MyApp({ Component, pageProps }: AppProps) {
  //      if(!process.env.NOTION_LOCATION_PRESET_DB_ID){ console.error('NEXT_PUBLIC_NOTION_LOCATION_PRESET_DB_ID not set'); throw 'error' }
 
         console.log('init locations request')
+      while(!locationSettings){
+
+      }
+
         const reqLocation = requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
+          .then((k) => k.map((loiRec) => applyLocationOverrides(loiRec, locationSettings.locationOverrides)))
           .then((d) => d.map(mapLocationRecordToLocation))
         
         const reqPresets = requestLocationPresets();

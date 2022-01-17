@@ -3,7 +3,7 @@ import { createGzip } from 'zlib'
 import { SitemapStream } from 'sitemap'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getHardCodedUrl } from '../../components/utils/utils'
-import PRESET_LOCATIONS from '../../components/Locations/data/PRESET_LOCATIONS'
+import NotionClient from '../../components/Locations/data/NotionClient'
 
 
 
@@ -18,6 +18,9 @@ const sitemapApi = async (req:NextApiRequest, res:NextApiResponse) => {
   // urls from user-gen content
  // const userGenPageUrls = await getUserGeneratedPages()
 
+ const client = new NotionClient();
+ const presetLocations = await client.getLocationPresets();
+
   const sitemapStream = new SitemapStream()
   const pipeline = sitemapStream.pipe(createGzip())
 
@@ -25,12 +28,13 @@ const sitemapApi = async (req:NextApiRequest, res:NextApiResponse) => {
   STATIC_URLS.forEach((url:string) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}${url}` })
   });
+  
 
-  PRESET_LOCATIONS.forEach((pl:LocationPreset) => {
+  presetLocations.forEach((pl:LocationPreset) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}/loc/${pl.urlParam}` })
   });
 
-  PRESET_LOCATIONS.forEach((pl:LocationPreset) => {
+  presetLocations.forEach((pl:LocationPreset) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}/api/image/loc/${pl.urlParam}` })
   });
 

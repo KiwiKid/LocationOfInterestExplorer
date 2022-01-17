@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "./FeatureFlags";
-import  PRESET_LOCATIONS from './data/PRESET_LOCATIONS'
 
 
 // Warning - this class is a mess..
@@ -14,14 +13,14 @@ const DEFAULT_SETTINGS:PageState = {
 }
 
 
-const getMatchingQuickLink = (locationParam:string) => PRESET_LOCATIONS.filter((pl) => pl.urlParam === locationParam.toLowerCase())[0];
+const getMatchingQuickLink = (locationParam:string, locationPreset:LocationPreset[]) => locationPreset.filter((pl) => pl.urlParam === locationParam.toLowerCase())[0];
 
-const processQueryString = (query:any):PageState => {
+const processQueryString = (query:any, locationPreset:LocationPreset[]):PageState => {
 
   // Old style ?loc=[auckland] query matching
   // Note: Preview mode is not supported
   if(!!query.loc){
-    let quickLink = getMatchingQuickLink(query.loc);
+    let quickLink = getMatchingQuickLink(query.loc, locationPreset);
     if(quickLink == undefined){
       console.error(`No quick link '${query.loc}' exists`);
       return DEFAULT_SETTINGS;
@@ -58,13 +57,13 @@ const processQueryString = (query:any):PageState => {
 
   // Note: this useRouter call only works on the "built" SSR page.
   // So it will NOT work when developing locally via 'yarn run dev'
-export const useSettings = ():PageState  => {
+export const useSettings = (locationPreset:LocationPreset[]):PageState  => {
     const { query } = useRouter();
     if(query === undefined){
       return DEFAULT_SETTINGS
     }
     
-    let querySettings = processQueryString(query);
+    let querySettings = processQueryString(query, locationPreset);
 
     return querySettings
   }

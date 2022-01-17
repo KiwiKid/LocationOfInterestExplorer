@@ -6,10 +6,12 @@ import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
 import LocationContext from '../components/Locations/MoHLocationClient/LocationContext'
 import { metaImageURLDirect } from '../components/Locations/LocationObjectHandling'
+import NotionClient from '../components/Locations/data/NotionClient'
 
 type HomePageProps = {
   publishTimeUTC: string // Allow for native next.js props usage
   hardcodedURL: string
+  locationSettings:LocationSettings
 }
 
 
@@ -17,10 +19,10 @@ type HomePageProps = {
 
 
 
-const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
+const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL, locationSettings}) => {
 
   
-  const settings = useSettings();
+  const settings = useSettings(locationSettings.locationPresets);
 
   //const { locationRecords, error, loading } = useMohLocations();
 
@@ -100,6 +102,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
                       locations={locations}
                       startingPageState={settings}
                       publishState={{hardcodedURL: hardcodedURL, publishTime:new Date(publishTimeUTC)}}
+                      locationSettings={settings}
                   />: <>Loading a Map of Covid-19 Locations of Interest published by the Ministry of Health</>
             }
           </LocationContext.Consumer>
@@ -111,13 +114,14 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL}) => {
 
 export const getStaticProps:GetStaticProps = async (context:any) => {
 
+  const client = new NotionClient();
 
- // const fakeDateInPast = Date.parse(new Date().toISOString()) - (10 * 60 * 1000);
-
+  const settings = await client.getLocationSettings();
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),
-      hardcodedURL: getHardCodedUrl()
+      hardcodedURL: getHardCodedUrl(),
+      locationSettings: settings
      }
   }
 }

@@ -11,7 +11,6 @@ import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import { resetScroll } from "../utils/resetScroll";
-import PRESET_LOCATIONS from "./data/PRESET_LOCATIONS";
 
 
 const CLOSED_DRAW_POS = -60;
@@ -24,9 +23,10 @@ type LocationsPageProps ={
   locations: LocationOfInterest[]
   startingPageState: PageState
   publishState: PublishState
+  locationSettings:LocationSettings
 }
 
-export default function LocationsPage({locations, startingPageState, publishState}:LocationsPageProps){
+export default function LocationsPage({locations, startingPageState, publishState, locationSettings}:LocationsPageProps){
 
     const CovidMapSelector = useMemo(() => dynamic(
         () => import("./map/CovidMapSelector")
@@ -86,7 +86,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
         setDaysInPastShown(daysInPast);
     }
 
-    let activeLocationPresets = PRESET_LOCATIONS.filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
+    let activeLocationPresets = locationSettings.locationPresets .filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
 
     
 

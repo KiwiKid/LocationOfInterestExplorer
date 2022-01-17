@@ -1,20 +1,20 @@
 import { GetStaticProps, NextPage } from "next";
-import PRESET_LOCATIONS from "../components/Locations/data/PRESET_LOCATIONS";
+import NotionClient from "../components/Locations/data/NotionClient";
 import { NiceFullDate } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
-import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
+import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
 
-import { getHardCodedUrl } from "../components/utils/utils";
 const { Client } = require("@notionhq/client")
 
 
 
 type InfoPageProps = {
     publishTimeUTC: string
+    locationSettings: LocationSettings;
 }
 
-const Info: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
+const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings}) => {
 
     const publishTime = new Date(publishTimeUTC);
     return (
@@ -24,8 +24,6 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
             {locationSettings => 
             
              locationSettings ? <>
-                {JSON.stringify(locationSettings)}
-
                 <LocationContext.Consumer>
                 {locations => 
                     locations ? 
@@ -34,8 +32,8 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
                         locations={locations}
                         hardcodedURL={'https://nzcovidmap.org'} 
                         publishTime={publishTime}
-                        LocationPresets={PRESET_LOCATIONS}
-                        />
+                        locationSettings={locationSettings}
+                    />
                     
                     {/*<CopyBox 
                         id="copybox"
@@ -52,25 +50,21 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
         </LocationSettingsContext.Consumer>
     </>
     )
-
 }
 
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
 
 
-    const notion = new Client({
-        auth: process.env.NOTION_TOKEN,
-    })
+    const client = new NotionClient();
+    const settings = client.getLocationSettings();
 
-
-    // const fakeDateInPast = Date.parse(new Date().toISOString()) - (10 * 60 * 1000);
-   
-     return {
+    return {
        props:{
-         publishTimeUTC: new Date().toUTCString()
+         publishTimeUTC: new Date().toUTCString(),
+         locationSettings: settings
         }
-     }
     }
+}
     
 
 export default Info;

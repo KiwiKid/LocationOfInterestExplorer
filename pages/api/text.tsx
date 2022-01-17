@@ -4,10 +4,10 @@ import _ from 'lodash';
 import { processGroupKey } from '../../components/Locations/info/LocationInfoGrid';
 import { onlyToday, startOfDay } from '../../components/Locations/DateHandling';
 import { requestLocations } from '../../components/Locations/MoHLocationClient/requestLocations';
-import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
-import PRESET_LOCATIONS from '../../components/Locations/data/PRESET_LOCATIONS';
+import { applyLocationOverrides, getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
 import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
 import { LocationOfInterest } from '../../components/types/LocationOfInterest';
+import NotionClient from '../../components/Locations/data/NotionClient';
 var ReactDOMServer = require('react-dom/server');
 
 type LocationGroupSummary = {
@@ -25,10 +25,14 @@ type Summary = {
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const url = 'https://nzcovidmap.org'
     const now = new Date();
+    
+    const client = new NotionClient();
+    const locationSettings = await client.getLocationSettings();
 
     if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL) throw 'No MoH URL set';
     let locations:LocationOfInterest[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
-            .then((d:any) => d.map(mapLocationRecordToLocation))
+                .then((k) => k.map((loiRec) => applyLocationOverrides(loiRec, locationSettings.locationOverrides)))        
+                .then((d:any) => d.map(mapLocationRecordToLocation))
       
     const todayLocations = locations.filter((l) => onlyToday(l.added))
 
@@ -36,11 +40,11 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
     var groupedLocations = _.groupBy(todayLocations
         , function(lc){ 
-            return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(PRESET_LOCATIONS, lc.city)}`
+            return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(locationSettings.locationPresets, lc.city)}`
         });
 
         
-    const todaySummary:string = getTodayLocationSummary(PRESET_LOCATIONS, groupedLocations, url, now);
+    const todaySummary:string = getTodayLocationSummary(groupedLocations, url, now, locationSettings);
         
 
     const todayTitle = getTotalLocationSummaryTitle(new Date());

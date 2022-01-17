@@ -9,8 +9,8 @@ const requestLocations = (url:string):Promise<LocationOfInterestRecord[]> => {
           .then(async (response:AxiosResponse<LocationOfInterestAPIResponse>) => 
             resolve(
               response.data.items
-              .map(mapLoITOLoIRecord)
-              .map(applyLocationOverrides) || [])
+              .map(mapLoITOLoIRecord))
+
             );
         }catch(err){
           reject(err);

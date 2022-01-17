@@ -5,10 +5,6 @@ import fetcher from "../utils/fetcher"
 import get, { AxiosResponse, AxiosPromise } from 'axios'
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
-
-
-import  PRESET_LOCATIONS from './data/PRESET_LOCATIONS'
-import  LOCATION_OVERRIDES from './data/LOCATION_OVERRIDES'
 import { asAtDateAlwaysNZ } from "./DateHandling";
 
 
@@ -47,23 +43,23 @@ const visibleLocations = (state:any, action:any) => {
 */
 
 
-const applyLocationOverrides = (rec:LocationOfInterestRecord):LocationOfInterestRecord => {
+const applyLocationOverrides = (rec:LocationOfInterestRecord, locationOverrides:LocationOverride[]):LocationOfInterestRecord => {
 
-  var overriddenLocation = LOCATION_OVERRIDES.filter((ov:LocationOverride) => ov.eventId == rec.id)[0];
+  var overriddenLocation = locationOverrides.filter((ov:LocationOverride) => ov.eventId == rec.id)[0];
   if(overriddenLocation !== undefined){
     rec.lat = overriddenLocation.lat;
     rec.lng = overriddenLocation.lng;
     return rec;
   }
 
-  var locationFromEvent = LOCATION_OVERRIDES.filter((ov) => ov.eventName == rec.event)[0];
+  var locationFromEvent = locationOverrides.filter((ov) => ov.eventName == rec.event)[0];
   if(locationFromEvent !== undefined){
     rec.lat = locationFromEvent.lat;
     rec.lng = locationFromEvent.lng;
     return rec;
   }
 
-  var locationFromCity = LOCATION_OVERRIDES.filter((ov) => ov.city == rec.city)[0];
+  var locationFromCity = locationOverrides.filter((ov) => ov.city == rec.city)[0];
   if(locationFromCity !== undefined){
     rec.lat = locationFromCity.lat;
     rec.lng = locationFromCity.lng;
@@ -105,14 +101,14 @@ const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
   return `${loi.added}|${loi.updated}|${loi.event}|${loi.location}|${loi.city}|${loi.start},${loi.end},${loi.advice}|${loi.visibleInWebform}|${loi.exposureType}|${loi.lat}|${loi.lng}`
 }
 
-const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string, publishTime:Date, showAsAt:boolean) => `${key.quicklink ? key.quicklink?.title : 'Other'}${group.length > 1 ? ` - ${group.length} New Locations `: ''}${showAsAt ? ` ${asAtDateAlwaysNZ(publishTime)}`  : ''}:\n${group.map((loi) => getPrintableLocationOfInterestString(loi,key.city === 'Others')).join('')}\n${getQuickLinkURL(key.city, hardcodedURL)}\n\n\n`
+const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string, publishTime:Date, showAsAt:boolean, locationPresets:LocationPreset[]) => `${key.quicklink ? key.quicklink?.title : 'Other'}${group.length > 1 ? ` - ${group.length} New Locations `: ''}${showAsAt ? ` ${asAtDateAlwaysNZ(publishTime)}`  : ''}:\n${group.map((loi) => getPrintableLocationOfInterestString(loi,key.city === 'Others')).join('')}\n${getQuickLinkURL(locationPresets,key.city, hardcodedURL)}\n\n\n`
 
-const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
+const getQuickLinkURL = (quickLinks:LocationPreset[], cityString:string, hardcodedURL:string) => {
   if(cityString === undefined){
     console.error(`No city for ${cityString}`); 
     return ''
   }
-  let quickLink = PRESET_LOCATIONS.filter((pl) => pl.urlParam == cityString.toLowerCase())[0];
+  let quickLink = quickLinks.filter((pl) => pl.urlParam == cityString.toLowerCase())[0];
   if(quickLink){
       return `${hardcodedURL}/loc/${quickLink.urlParam}`
   }else{
@@ -120,8 +116,8 @@ const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
   }
 }
 
-const getLocationPresetPrimaryCity = (LocationPresets:LocationPreset[],mohCity:string) => {
-  let override = LocationPresets.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
+const getLocationPresetPrimaryCity = (locationPresets:LocationPreset[],mohCity:string) => {
+  let override = locationPresets.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
   if(override){
       return override.urlParam;
   }
