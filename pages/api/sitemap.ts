@@ -26,11 +26,11 @@ const sitemapApi = async (req:NextApiRequest, res:NextApiResponse) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}${url}` })
   });
 
-  PRESET_LOCATIONS.forEach((pl:PresetLocation) => {
+  PRESET_LOCATIONS.forEach((pl:LocationPreset) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}/loc/${pl.urlParam}` })
   });
 
-  PRESET_LOCATIONS.forEach((pl:PresetLocation) => {
+  PRESET_LOCATIONS.forEach((pl:LocationPreset) => {
     sitemapStream.write({ url: `${getHardCodedUrl()}/api/image/loc/${pl.urlParam}` })
   });
 

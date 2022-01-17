@@ -1,0 +1,40 @@
+title,cityTitle,urlParam,matchingMohCityString,lat,lng,title,zoom,active
+New Zealand,New Zealand,all,[],-40.8248,173.7304,5,false
+Auckland,Auckland,auckland,[Auckland,Takaanini],-36.85,174.7833,9,true
+Wellington,Wellington,wellington,[Wellington,Lower Hutt],-41.2889,174.7772,11,true
+Upper Hutt,Upper Hutt,upperhutt,[Upper Hutt],-41.119018383326164,175.06698171805942,12,true
+Hamilton,Hamilton,hamilton,[Hamilton],-37.7833,175.2833,11,true
+Tauranga,Tauranga,tauranga,[Tauranga,Mount Maunganui,Papamoa],-37.6858,176.1667,11,true
+Palmerston North,Palmerston North,palmerstonnorth,[Palmerston North],-40.3549,175.6095,11,true
+Whangarei,Whangarei,whangarei,[Whangarei],-35.725,174.3236,12,true
+Napier,Napier,napier,[Napier],-39.4833,176.9167,12,true
+Rotorua,Rotorua,rotorua,[Rotorua],-38.1378,176.2514,12,true
+Dunedin,Dunedin,dunedin,[Dunedin],-45.8667,170.5,12,true
+Christchurch,Christchurch,christchurch,[Christchurch],-43.5309,172.6365,11,true
+Invercargill,Invercargill,invercargill,[Invercargill],-46.429,168.362,11,true
+Nelson,Nelson,nelson,[Nelson],-41.2931,173.2381,12,true
+Whanganui,Whanganui,whanganui,[Whanganui],-39.9333,175.05,12,true
+Taupō,Taupō,taupo,[Taupo,Taupō],-38.690980140896016,176.08259535359113,12,true
+Bulls,Bulls,bulls,[Bulls],-40.174538700945355,175.38489529999998,12,true
+Waihi,Waihi,waihi,[Waihi,Waihi Beach],-37.391462000435894,175.84035379999997,12,true
+Queenstown,Queenstown,queenstown,[Queenstown],-45.02108559729038,168.69876199033442,12,true
+The Bay of Islands,The Bay of Islands,bayofislands,[Bay of Islands],-35.21386707198709,174.15347141745954,10,true
+Feilding,Feilding,feilding,[Feilding],-40.2253049740385,175.5684729604652,12,true
+Carterton,Carterton,carterton,[Carterton],-41.023569115843145,175.5221376193341,13,true
+Masterton,Masterton,masterton,[Masterton],-40.946190374524,175.66576287590723,12,true
+Whanganui,Whanganui,whanganui,[Whanganui],-39.93242412021889,175.02958355172697,13,true
+Kaikoura,Kaikoura,kaikoura,[Kaikoura,Kaikōura],-42.39200642596124,173.67887645158532,13,true
+Ōtaki,Ōtaki,otaki,[Otaki],-40.76018472420495,175.1568850510182,13,true
+Orewa,Orewa,orewa,[Orewa],-36.58622354488708,174.68657614155387,13,true
+Warkworth,Warkworth,warkworth,[Warkworth],-36.39825538554779,174.6622196622345,13,true
+Waimauku,Waimauku,waimauku,[Waimauku],-36.769535791859894,174.49177041557877,13,true
+Otorohanga,Otorohanga,otorohanga,[Otorohanga],-38.185506335511775,175.2103540378415,13,true
+New Plymouth,New Plymouth,newplymouth,[New Plymouth],-39.05531858908381,174.08590254313253,14,true
+Ōpōtiki,Ōpōtiki,opotiki,[Opotiki],-38.01207840880075,177.2829488360815,14,true
+Whitianga,Whitianga,whitianga,[Whitianga],-36.82538450146477,175.68297168174058,14,true
+Featherston,Featherston,featherston,[Featherston],-41.116043061438184,175.32472408859616,14,true
+Greytown,Greytown,greytown,[Greytown],-41.08030687803606,175.45934204204377,14,true
+Porirua,Porirua,porirua,[Porirua],-41.13384572024906,174.83780812384316,12,true
+Takanini,Takanini,takanini,[Takanini],-37.039130027785816,174.92993831188855,12,true
+Tūrangi,Tūrangi,turangi,[Tūrangi,Turangi],-38.98900179372025,175.80689878142314,12,true
+Hastings,Hastings,hastings,[Hastings],-39.639445524232414,176.83594225674403,12,true

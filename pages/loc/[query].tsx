@@ -5,7 +5,7 @@ import Head from 'next/head'
 import LocationsPage from '../../components/Locations/LocationsPage'
 import { getMatchingQuickLink, useSettings } from '../../components/Locations/useSettings'
 import { getHardCodedUrl } from '../../components/utils/utils'
-import LocationContext from "../../components/Locations/LocationAPI/LocationContext"
+import LocationContext from "../../components/Locations/MoHLocationClient/LocationContext"
 import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 import parseQuery from "../../components/utils/parseQuery"
@@ -15,7 +15,7 @@ import PRESET_LOCATIONS from "../../components/Locations/data/PRESET_LOCATIONS"
 
 
 type LocationPageProps = {
-  quickLink: PresetLocation
+  quickLink: LocationPreset
   publishTimeUTC: string // Allow for native next.js props usage
   hardcodedURL: string
 };

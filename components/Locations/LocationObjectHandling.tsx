@@ -120,8 +120,8 @@ const getQuickLinkURL = (cityString:string, hardcodedURL:string) => {
   }
 }
 
-const getPresetLocationPrimaryCity = (presetLocations:PresetLocation[],mohCity:string) => {
-  let override = presetLocations.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
+const getLocationPresetPrimaryCity = (LocationPresets:LocationPreset[],mohCity:string) => {
+  let override = LocationPresets.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
   if(override){
       return override.urlParam;
   }
@@ -142,5 +142,5 @@ export {
   , mapLocationRecordToLocation
   , metaImageURL
   , metaImageURLDirect
-  , getPresetLocationPrimaryCity
+  , getLocationPresetPrimaryCity
 }

@@ -7,16 +7,16 @@ type TodayLocationSummaryProps = {
     locationGroups: any
     hardcodedURL:string
     publishTime:Date
-    presetLocations:PresetLocation[]
+    LocationPresets:LocationPreset[]
 }
 
 const getTodayLocationSummary = (
-    presetLocations:PresetLocation[]
+    LocationPresets:LocationPreset[]
     , locationGroups: any
     , hardcodedURL: string
     , publishTime: Date
 ) => `${getTotalLocationsToday(locationGroups)} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${Object.keys(locationGroups)
-    .map((keyStr:string) => processGroupKey(presetLocations, keyStr))
+    .map((keyStr:string) => processGroupKey(LocationPresets, keyStr))
     .filter((keyObj:any) => onlyToday(keyObj.date))
     .sort((a, b) => {
         if(a.quicklink === undefined || b.quicklink === undefined || a.quicklink?.urlParam === 'all'){
@@ -42,11 +42,11 @@ const getTotalLocationsToday = (locationGroups:any) => {
 const getTotalLocationSummaryTitle = (publishTime:Date) => `New Locations of Interest - ${startOfDayFormatted(publishTime)}`
 
 
-const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, presetLocations}:TodayLocationSummaryProps) => {
+const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, LocationPresets}:TodayLocationSummaryProps) => {
 
     let copyText = 'invalid';
     if(locationGroups){
-        copyText = getTodayLocationSummary(presetLocations, locationGroups, hardcodedURL, publishTime)
+        copyText = getTodayLocationSummary(LocationPresets, locationGroups, hardcodedURL, publishTime)
     }
 
     let titleText = getTotalLocationSummaryTitle(publishTime);

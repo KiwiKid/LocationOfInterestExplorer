@@ -1,13 +1,8 @@
 // Libs
 import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
-import { processGroupKey } from '../../components/Locations/info/LocationInfoGrid';
-import { onlyToday, startOfDay } from '../../components/Locations/DateHandling';
-import { requestLocations } from '../../components/Locations/MoHLocationClient/requestLocations';
+
 import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
-import PRESET_LOCATIONS from '../../components/Locations/data/PRESET_LOCATIONS';
-import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
-import { LocationOfInterest } from '../../components/types/LocationOfInterest';
 var ReactDOMServer = require('react-dom/server');
 
 type LocationGroupSummary = {
@@ -25,7 +20,7 @@ type Summary = {
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const url = 'https://nzcovidmap.org'
     const now = new Date();
-
+/*
     if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL) throw 'No MoH URL set';
     let locations:LocationOfInterest[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
             .then((d:any) => d.map(mapLocationRecordToLocation))
@@ -54,9 +49,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     }
                 });*/
 
-    const summary:Summary = { todayTitle: todayTitle, todaySummary: todaySummary, newLocationCount: todayLocations.length }
-
-    res.status(200).json(summary);
+    //const summary:Summary = { todayTitle: todayTitle, todaySummary: todaySummary, newLocationCount: todayLocations.length }
+    
+    res.status(200).json({});
 }
 
 export default handler

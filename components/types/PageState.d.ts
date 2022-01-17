@@ -3,6 +3,6 @@ type PageState = {
     lng: number
     zoom: number
     daysInPastShown: number
-    quickLink?: PresetLocation
+    quickLink?: LocationPreset
     featureFlags: string[]
 }

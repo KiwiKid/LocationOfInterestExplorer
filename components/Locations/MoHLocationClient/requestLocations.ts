@@ -3,23 +3,19 @@ import get, { AxiosResponse, AxiosPromise } from 'axios'
 
 const requestLocations = (url:string):Promise<LocationOfInterestRecord[]> => {
 
-    var res = new Promise<LocationOfInterestRecord[]>((resolve, reject) => {
+    return new Promise<LocationOfInterestRecord[]>((resolve, reject) => {
       try{
         get({url: url})
-          .then(async (response:AxiosResponse<LocationOfInterestAPIResponse>) => {
-            var res = 
-            response.data.items
+          .then(async (response:AxiosResponse<LocationOfInterestAPIResponse>) => 
+            resolve(
+              response.data.items
               .map(mapLoITOLoIRecord)
-              .map(applyLocationOverrides) || []
-  
-            resolve(res);
-          });
+              .map(applyLocationOverrides) || [])
+            );
         }catch(err){
           reject(err);
         }
     })
-  
-    return res;
   }
 
 

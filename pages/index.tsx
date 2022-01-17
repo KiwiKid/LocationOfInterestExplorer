@@ -4,7 +4,7 @@ import LocationsPage from '../components/Locations/LocationsPage'
 import { useSettings } from '../components/Locations/useSettings'
 import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
-import LocationContext from '../components/Locations/LocationAPI/LocationContext'
+import LocationContext from '../components/Locations/MoHLocationClient/LocationContext'
 import { metaImageURLDirect } from '../components/Locations/LocationObjectHandling'
 
 type HomePageProps = {

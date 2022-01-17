@@ -2,7 +2,7 @@
   
 Adding a new Preset Location:
 ```
-type PresetLocation = {
+type LocationPreset = {
   title:string // The nice display title
     urlParam:string // The matching url param (via ?loc=[urlParm] or /loc/[urlParm])
     matchingMohCityString:string[] // All MoH locations will be mapped to this location based on these keys
@@ -18,7 +18,7 @@ type PresetLocation = {
 
 
 
-const PRESET_LOCATIONS:PresetLocation[] = [
+const PRESET_LOCATIONS:LocationPreset[] = [
     { 
       title: "New Zealand",
       urlParam: "all",

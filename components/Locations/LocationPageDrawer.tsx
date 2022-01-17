@@ -46,7 +46,7 @@ type LocationPageDrawerProps = {
     drawPositionY: number
     setDrawPositionY: any
     drawerRef: any
-    activePresetLocations:PresetLocation[]
+    activeLocationPresets:LocationPreset[]
 }
 
 
@@ -72,7 +72,7 @@ const LocationPageDrawer = ({
     drawPositionY,
     setDrawPositionY, 
     drawerRef,
-    activePresetLocations
+    activeLocationPresets
   }:LocationPageDrawerProps) => {
 
 
@@ -118,23 +118,23 @@ const LocationPageDrawer = ({
       }
     }
 
-    const [selectPresetLocation, setSelectPresetLocation] = useState<PresetLocation|undefined>(undefined);
+    const [selectLocationPreset, setSelectLocationPreset] = useState<LocationPreset|undefined>(undefined);
     
 
-    const goToLocation = (pl:PresetLocation) => {
-      setSelectPresetLocation(pl);
+    const goToLocation = (pl:LocationPreset) => {
+      setSelectLocationPreset(pl);
       resetScroll(drawerRef);
     }
 
 
     useEffect(() => {
-      if(map && !!selectPresetLocation){
+      if(map && !!selectLocationPreset){
         setDrawPositionY(PX_FROM_BOTTOM);
-        map.flyTo([selectPresetLocation.lat,selectPresetLocation.lng], selectPresetLocation.zoom);
+        map.flyTo([selectLocationPreset.lat,selectLocationPreset.lng], selectLocationPreset.zoom);
         
-        setSelectPresetLocation(undefined);
+        setSelectLocationPreset(undefined);
       }
-    }, [selectPresetLocation]);
+    }, [selectLocationPreset]);
 
     type ExternalLinkWithDetailsProps = {
       title: string
@@ -331,7 +331,7 @@ const LocationPageDrawer = ({
               : <Summary>Use these buttons to re-position the map at a specific location</Summary>}
                   {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') ? 
                     <div className="grid sm:grid-cols-2">
-                    {activePresetLocations.sort((a,b) => a.lat > b.lat ? -1 : 0).filter((pl) => pl.showInDrawer).map((pl) => <div key={`${pl.urlParam}_preview`}>
+                    {activeLocationPresets.sort((a,b) => a.lat > b.lat ? -1 : 0).filter((pl) => pl.showInDrawer).map((pl) => <div key={`${pl.urlParam}_preview`}>
                       <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl)}}>
                           <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
                           <div className="flex justify-center align-middle overflow-hidden p-6">
@@ -342,7 +342,7 @@ const LocationPageDrawer = ({
                     </div> )}
                   </div>
                   : <div className="grid grid-cols-2">
-                  {activePresetLocations.filter((p) => !!p.zoom).sort((a,b) => a.lat > b.lat ? -1 : 1).map((pl) => 
+                  {activeLocationPresets.filter((p) => !!p.zoom).sort((a,b) => a.lat > b.lat ? -1 : 1).map((pl) => 
                     <div key={pl.title} className="w-full">
                       <div className="w-4/5 m-auto p-3">
                         <InternalLink

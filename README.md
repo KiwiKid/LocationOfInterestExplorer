@@ -46,20 +46,7 @@ The page can enter quicklink mode through either:
 
 "/loc/[urlParam]" is perferred as a sharing meta image and page title is provided.
 
-QuickLinks are defined in the "PRESET_LOCATIONS" const:
-
-Adding a new Preset Location:
-```
-type PresetLocation = {
-  title:string // The nice display title
-    urlParam:string // The matching url param (via ?loc=[urlParm] or /loc/[urlParm]). Lowercase.
-    matchingMohCityString:string[] // All MoH locations will be mapped to this location based on the "city" field
-    lat:number 
-    lng:number
-    zoom:number // The react-leaflet map zoom for this location (see other similar sized cities)
-    showInDrawer:boolean // show in the preview section of the drawer
-}
-```
+QuickLinks & location overrides are defined in two notion db tables (get in touch to add to this).
 
 Screenshot mode system:
 This allows the app to display a custom appearance when generating a screenshot image. Triggered with the "?sm=preview" query string param. The screenshot mode is used by the API.
@@ -71,6 +58,8 @@ https://nzcovidmap.org/api/image/loc/dunedin
 
 I'm looking at extending this image API and allowing integration with NZCovidMap via image tags
 
+
+https://nzcovidmap.org/api/image/loc/dunedin
 
 (Planned)
 Text API: 
@@ -86,6 +75,7 @@ VERCEL_ENV=development
 VERCEL_URL=localhost
 // Google forms feedback link
 NEXT_PUBLIC_FEEDBACK_URL=http://google.com
+NOTION_TOKEN=//secret notion token to get the LocationPreset & LocationOverrides from notion.io
 ```
 <details>
 <summary>"VERCEL_" environment variables</summary>
@@ -95,8 +85,6 @@ Vercel will first build a "commit" specific environments, which will then be "pr
 Note: The "commit" specific environments will NOT have the correctly statically render URL - this largely doesn't matter as the URLs are mostly used for SEO/link preview reasons. For this reason, its preferred to use "window.location" when referencing the URL
 </p>
 </details>
-
-
 
 ## Getting Started
 

@@ -10,16 +10,7 @@ import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../com
 import { LocationOfInterest } from '../../components/types/LocationOfInterest';
 var ReactDOMServer = require('react-dom/server');
 
-type LocationGroupSummary = {
-    id:string
-    text: string
-}
 
-type Summary = {
-    todayTitle: string
-    todaySummary: string
-    newLocationCount: number
-}
 
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
@@ -42,7 +33,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
     const todaySummary:string = getTodayLocationSummary(PRESET_LOCATIONS, groupedLocations, url, now);
         
-
+    
     const todayTitle = getTotalLocationSummaryTitle(new Date());
     /*const locationGroupSummaries:LocationGroupSummary[] = Object.keys(groupedLocations)
                 .map((keyStr:string) => processGroupKey(PRESET_LOCATIONS, keyStr))
@@ -54,9 +45,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     }
                 });*/
 
-    const summary:Summary = { todayTitle: todayTitle, todaySummary: todaySummary, newLocationCount: todayLocations.length }
 
-    res.status(200).json(summary);
+    res.status(200).json({});//summary);
 }
 
 export default handler

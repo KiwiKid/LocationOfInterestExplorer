@@ -23,16 +23,16 @@ type LocationInfoGroupProps = {
     group: LocationOfInterest[]
     groupKey: LocationGroupKey
     hardcodedURL: string
-    presetLocations: PresetLocation[]
+    LocationPresets: LocationPreset[]
     publishTime: Date
 }
 
 
 const getLocationInfoGroupTitle = (groupKey:LocationGroupKey, groupSize:number, publishTime:Date, includeCount:boolean) => `${includeCount ? groupSize : ''} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n`
 
-const LocationInfoGroup = ({groupKey, group, hardcodedURL, presetLocations, publishTime}:LocationInfoGroupProps) => {
+const LocationInfoGroup = ({groupKey, group, hardcodedURL, LocationPresets, publishTime}:LocationInfoGroupProps) => {
 
-    //const groupKey = processGroupKey(presetLocations, groupKeyString);
+    //const groupKey = processGroupKey(LocationPresets, groupKeyString);
 
     const mostRecentLocationAdded = group.sort((a:LocationOfInterest, b:LocationOfInterest) => a.added > b.added ? 1 : -1)[0].added;
     
