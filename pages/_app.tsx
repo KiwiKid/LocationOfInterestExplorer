@@ -10,6 +10,8 @@ import { requestLocationPresets } from '../components/Locations/LocationSettings
 import { requestLocationOverrides } from '../components/Locations/LocationSettingsContext/requestLocationOverride';
 
 
+const applyOverrides = async (locations:any,overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterestRecord) => applyLocationOverrides(loiRec, overrides);
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [locations, setLocations] = useState<LocationOfInterest[]|undefined>(undefined);
   const [locationSettings, setLocationSettings] = useState<LocationSettings>();
@@ -17,38 +19,41 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
      async function req(){
-       console.log('start API calls');
-       if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.error('NEXT_PUBLIC_MOH_LOCATIONS_URL not set'); throw 'error' }
-//       if(!process.env.NOTION_LOCATION_OVERRIDE_DB_ID){ console.error('NEXT_PUBLIC_NOTION_LOCATION_OVERRIDE_DB_ID not set'); throw 'error' }
- //      if(!process.env.NOTION_LOCATION_PRESET_DB_ID){ console.error('NEXT_PUBLIC_NOTION_LOCATION_PRESET_DB_ID not set'); throw 'error' }
+        console.log('start API calls');
+        if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.error('NEXT_PUBLIC_MOH_LOCATIONS_URL not set'); throw 'error' }
+        if(!locationSettings){ console.error('locationSettings not set'); throw 'error' }
 
         console.log('init locations request')
 
-        const reqLocation = requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
-          .then((k) => k.map((loiRec) => applyLocationOverrides(loiRec, locationSettings.locationOverrides)))
-          .then((d) => d.map(mapLocationRecordToLocation))
+        
+        const reqOverrides = requestLocationOverrides();
         
         const reqPresets = requestLocationPresets();
 
-        const reqOverrides = requestLocationOverrides();
+
+        const overrides = await reqOverrides
+
+        const reqLocation = requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
+          .then((loi) => applyOverrides(loi, overrides))
+          .then((d) => d.map(mapLocationRecordToLocation))
+        
+
         
         console.log('Wait for responses')
 
         const [
           locations
-          , locationOverrides
           , locationPresets
         ] = await Promise.all([
           reqLocation ,
-          reqOverrides ,
-          reqPresets 
+          reqPresets
         ]);
             
         console.log('set results')
         setLocations(locations);
         setLocationSettings({
             locationPresets: locationPresets
-            , locationOverrides: locationOverrides
+            , locationOverrides: overrides
         });
 
         
