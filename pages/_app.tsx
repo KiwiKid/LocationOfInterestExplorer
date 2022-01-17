@@ -21,17 +21,14 @@ function MyApp({ Component, pageProps }: AppProps) {
      async function req(){
         console.log('start API calls');
         if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.error('NEXT_PUBLIC_MOH_LOCATIONS_URL not set'); throw 'error' }
-        if(!locationSettings){ console.error('locationSettings not set'); throw 'error' }
 
         console.log('init locations request')
 
         
-        const reqOverrides = requestLocationOverrides();
+        const overrides = await requestLocationOverrides();
         
         const reqPresets = requestLocationPresets();
 
-
-        const overrides = await reqOverrides
 
         const reqLocation = requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
           .then((loi) => applyOverrides(loi, overrides))
