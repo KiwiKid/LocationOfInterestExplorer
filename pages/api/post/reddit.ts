@@ -2,7 +2,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
 
-import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
 var ReactDOMServer = require('react-dom/server');
 
 type LocationGroupSummary = {
