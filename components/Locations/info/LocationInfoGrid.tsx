@@ -51,7 +51,6 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
     
 
     return (groupedLocations ? (locationSettings.locationPresets ? <div className="">
-        {JSON.stringify(locationSettings.locationPresets)}
                 <TodayLocationSummary 
                     locationGroups={groupedLocations} 
                     hardcodedURL={hardcodedURL}

@@ -35,9 +35,9 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings}) => {
     
     const [lastVisitTime, setLastVisitTime] = useState<Date|undefined>(undefined);
 
-    useEffect(() => {
-        setLastVisitTime(trySetLastVisitTime());
-    })
+  //  useEffect(() => {
+  //      setLastVisitTime(trySetLastVisitTime());
+   // })
 
     return (
         <>
