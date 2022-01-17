@@ -349,6 +349,48 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lng: 176.83594225674403,
     zoom: 12,
     showInDrawer: true
+  },{
+    title: 'Waipapa',
+    urlParam: 'waipapa',
+    matchingMohCityString: ['Waipapa'],
+    lat: -35.206424404197264, 
+    lng: 173.91758220197414,
+    zoom: 12,
+    showInDrawer: true
+  },{
+    title: 'Kerikeri',
+    urlParam: 'kerikeri',
+    matchingMohCityString: ['Kerikeri'],
+    lat: -35.22910458863335, 
+    lng: 173.9504831706487,
+    zoom: 12,
+    showInDrawer: true
+  },
+  {
+    title: 'Whangārei',
+    urlParam: 'whangarei',
+    matchingMohCityString: ['Whangārei'],
+    lat:-35.72422755133036, 
+    lng: 174.3180563221696,
+    zoom: 12,
+    showInDrawer: true
+  },
+  {
+    title: 'Kaitaia',
+    urlParam: 'kaitaia',
+    matchingMohCityString: ['Kaitaia'],
+    lat: -35.110512340177465, 
+    lng: 173.26008733259067,
+    zoom: 12,
+    showInDrawer: true
+  },{
+    title: 'Te Puke',
+    urlParam: 'tepuke',
+    matchingMohCityString: ['Te Puke'],
+    lat: -37.78913177829333, 
+    lng: 176.31944172075592,
+    zoom: 12,
+    showInDrawer: true
   }
 ];
 
