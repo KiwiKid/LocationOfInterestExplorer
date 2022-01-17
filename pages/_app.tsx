@@ -18,12 +18,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
      async function req(){
        console.log('start API calls');
-       if(!process.env.MOH_LOCATIONS_URL){ console.error('NEXT_PUBLIC_MOH_LOCATIONS_URL not set'); throw 'error' }
+       if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.error('NEXT_PUBLIC_MOH_LOCATIONS_URL not set'); throw 'error' }
 //       if(!process.env.NOTION_LOCATION_OVERRIDE_DB_ID){ console.error('NEXT_PUBLIC_NOTION_LOCATION_OVERRIDE_DB_ID not set'); throw 'error' }
  //      if(!process.env.NOTION_LOCATION_PRESET_DB_ID){ console.error('NEXT_PUBLIC_NOTION_LOCATION_PRESET_DB_ID not set'); throw 'error' }
 
         console.log('init locations request')
-        const reqLocation = requestLocations(process.env.MOH_LOCATIONS_URL)
+        const reqLocation = requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
           .then((d) => d.map(mapLocationRecordToLocation))
         
         const reqPresets = requestLocationPresets();
