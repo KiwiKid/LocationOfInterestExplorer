@@ -447,7 +447,7 @@ const LocationPageDrawer = ({
                 <div className="text-center mt-4">
                   <span className="underline">
                     <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>
-                    </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"><Link href="https://gregc.dev/about">About me</Link></span>
+                    </span> - Website by <span className="underline"><Link href="https://github.com/KiwiKid/">KiwiKid</Link></span> - <span className="underline"></span>
                     <details>
                       <summary>debug</summary>
                       <div>[{pageState.lat},{pageState.lng}]</div>
