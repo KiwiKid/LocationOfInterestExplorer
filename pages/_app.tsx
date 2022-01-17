@@ -23,9 +23,6 @@ function MyApp({ Component, pageProps }: AppProps) {
  //      if(!process.env.NOTION_LOCATION_PRESET_DB_ID){ console.error('NEXT_PUBLIC_NOTION_LOCATION_PRESET_DB_ID not set'); throw 'error' }
 
         console.log('init locations request')
-      while(!locationSettings){
-
-      }
 
         const reqLocation = requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
           .then((k) => k.map((loiRec) => applyLocationOverrides(loiRec, locationSettings.locationOverrides)))
