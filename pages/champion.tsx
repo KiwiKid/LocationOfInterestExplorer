@@ -1,4 +1,3 @@
-import { latLng } from "leaflet";
 import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -8,9 +7,6 @@ import LocationSettingsContext from '../components/Locations/LocationSettingsCon
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
 import { getMatchingQuickLink } from "../components/Locations/useSettings";
 import parseQuery from "../components/utils/parseQuery";
-
-import { getHardCodedUrl } from "../components/utils/utils";
-const { Client } = require("@notionhq/client")
 
 
 
@@ -59,7 +55,7 @@ const Champion: NextPage<InfoPageProps> = ({publishTimeUTC}) => {
                         })}
                         hardcodedURL={'https://nzcovidmap.org'} 
                         publishTime={publishTime}
-                        locationSettings={locationSettings.locationPresets}
+                        locationSettings={locationSettings}
                         />
                     </>
                     : <>No Location records</>

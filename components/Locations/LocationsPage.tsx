@@ -86,7 +86,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
         setDaysInPastShown(daysInPast);
     }
 
-    let activeLocationPresets = locationSettings.locationPresets .filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
+    let activeLocationPresets = locationSettings.locationPresets.filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
 
     
 
