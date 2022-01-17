@@ -61,7 +61,7 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
     return {
        props:{
          publishTimeUTC: new Date().toUTCString(),
-         locationSettings: settings
+         locationSettings: await settings
         }
     }
 }
