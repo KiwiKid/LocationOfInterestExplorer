@@ -391,6 +391,14 @@ const PRESET_LOCATIONS:PresetLocation[] = [
     lng: 176.31944172075592,
     zoom: 12,
     showInDrawer: true
+  },{
+    title: 'Hokitika',
+    urlParam: 'hokitika',
+    matchingMohCityString: ['Hokitika'],
+    lat: -42.71621334842089, 
+    lng: 170.96801677344956,
+    zoom: 13,
+    showInDrawer: true
   }
 ];
 
