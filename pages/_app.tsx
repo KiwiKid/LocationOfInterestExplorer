@@ -10,7 +10,7 @@ import { requestLocationPresets } from '../components/Locations/LocationSettings
 import { requestLocationOverrides } from '../components/Locations/LocationSettingsContext/requestLocationOverride';
 
 
-const applyOverrides = async (locations:any,overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterestRecord) => applyLocationOverrides(loiRec, overrides);
+const applyOverrides = async (locations:any,overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterestRecord) => applyLocationOverrides(loiRec, overrides));
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [locations, setLocations] = useState<LocationOfInterest[]|undefined>(undefined);
