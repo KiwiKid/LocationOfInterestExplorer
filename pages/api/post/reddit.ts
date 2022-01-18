@@ -17,6 +17,16 @@ const SOCIAL_POST_RUNS:RedditPostRuns[] = [
         subreddit: 'sircmpwn'
         , textUrlParams: ['wellington']
         , mainUrlParam: 'wellington'
+     },
+     {
+        subreddit: 'sircmpwn'
+        , textUrlParams: ['auckland']
+        , mainUrlParam: 'auckland'
+     },
+     {
+        subreddit: 'sircmpwn'
+        , textUrlParams: ['queenstown']
+        , mainUrlParam: 'queenstown'
      }
 ]
 
