@@ -12,8 +12,19 @@ import { onlyToday, startOfDay } from '../../../components/Locations/DateHandlin
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
+import RedditPostRunResult from '../../../components/Locations/APIClients/RedditPostRunResult';
 
-const SOCIAL_POST_RUNS:RedditPostRuns[] = [
+const SOCIAL_POST_RUNS:RedditPostRun[] = [
+    {
+        subreddit: 'sircmpwn' // r/nz subreddit daily thread
+        , textUrlParams: ['all']
+        , mainUrlParam: 'all'
+        , submissionTitleQuery: 'New Locations of Interest'
+     },{
+        subreddit: 'sircmpwn' //coronorvisuNZ
+        , textUrlParams: ['all']
+        , mainUrlParam: 'all'
+     },
     {  
         subreddit: 'sircmpwn' //wellington
         , textUrlParams: ['wellington']
@@ -28,11 +39,6 @@ const SOCIAL_POST_RUNS:RedditPostRuns[] = [
         subreddit: 'sircmpwn' //queenstown
         , textUrlParams: ['queenstown']
         , mainUrlParam: 'queenstown'
-     },
-     {
-        subreddit: 'sircmpwn' //coronorvisuNZ
-        , textUrlParams: ['all']
-        , mainUrlParam: 'all'
      },{
          subreddit: 'sircmpwn' // dunedin
          , textUrlParams: ['dunedin']
@@ -79,23 +85,23 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     
     const todaysLocations = locations.filter((lr) => onlyToday);
 
-    const locationGroups = _.groupBy(todaysLocations
+    const todayslocationGroups = _.groupBy(todaysLocations
         , function(lc){ 
             return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(settings.locationPresets, lc.city)}`
         })
 
         
     const redditClient = new RedditClient();
-    
-    
-        var tihn:Promise<RedditPostRunResult[]> = Promise.all(SOCIAL_POST_RUNS.map((run) => {
-            const matchingGroups = Object.keys(locationGroups)
+
+
+        var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(SOCIAL_POST_RUNS.map((run) => {
+            const matchingGroups = Object.keys(todayslocationGroups)
                     .map((keyStr:string) => processGroupKey(settings.locationPresets, keyStr))
                     .filter((lg) => run.textUrlParams.some((textUrlParm) => textUrlParm === lg.key))
 
-            if(!matchingGroups.some((mg) => locationGroups[mg.key] )){
-                const res:RedditPostRunResult = { subreddit: run.subreddit, success: true, isUpdate: false, isSkipped: true}
-                return res;
+            // Skip the group?
+            if(!matchingGroups.some((mg) => todayslocationGroups[mg.key] )){
+                return new RedditPostRunResult(false, false, true, run);
             }
 
             const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.mainUrlParam)[0];
@@ -105,12 +111,14 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             const title = `New Locations of Interest in ${mainMatchingPreset.title} ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(now)}`
             const text = getTodayLocationSummary(matchingGroups, url, now, settings, true);
 
+            if(run.submissionTitleQuery){
+                redditClient.updateRedditComment(run, title, text);
+            }
             return redditClient.updateRedditSubmissions(run, title, text);
             
-        }))/*.then((results) => {
-*/
-            let ti = await tihn;
-            res.status(200).json(ti); 
+        }))
+
+        res.status(200).json(await subRedditPosts); 
     }
 
     //const redditPostResults:RedditPostRunResult[] = 
