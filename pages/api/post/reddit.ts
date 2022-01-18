@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
 
 import RedditClient from '../../../components/Locations/APIClients/RedditClient';
-import NotionClient from '../../../components/Locations/data/NotionClient';
+import NotionClient from '../../../components/Locations/APIClients/NotionClient';
 import { requestLocations } from '../../../components/Locations/MoHLocationClient/requestLocations';
 import { LocationOfInterest } from '../../../components/types/LocationOfInterest';
 import { applyLocationOverride, applyLocationOverrides, getLocationInfoGroupTitle, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';

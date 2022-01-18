@@ -6,7 +6,7 @@ import { getHardCodedUrl } from '../components/utils/utils'
 import styles from '../styles/Home.module.css'
 import LocationContext from '../components/Locations/MoHLocationClient/LocationContext'
 import { metaImageURLDirect } from '../components/Locations/LocationObjectHandling'
-import NotionClient from '../components/Locations/data/NotionClient'
+import NotionClient from '../components/Locations/APIClients/NotionClient'
 
 type HomePageProps = {
   publishTimeUTC: string // Allow for native next.js props usage

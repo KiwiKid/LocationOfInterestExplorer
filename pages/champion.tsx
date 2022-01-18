@@ -1,7 +1,7 @@
 import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import NotionClient from "../components/Locations/data/NotionClient";
+import NotionClient from "../components/Locations/APIClients/NotionClient";
 import { NiceFullDate } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';

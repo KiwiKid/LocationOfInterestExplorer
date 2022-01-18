@@ -10,7 +10,7 @@ import { useRouter } from "next/router"
 import { metaImageURLDirect } from "../../components/Locations/LocationObjectHandling"
 import parseQuery from "../../components/utils/parseQuery"
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "../../components/Locations/FeatureFlags"
-import NotionClient from "../../components/Locations/data/NotionClient"
+import NotionClient from "../../components/Locations/APIClients/NotionClient"
 
 
 

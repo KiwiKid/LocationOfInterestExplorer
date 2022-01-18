@@ -1,7 +1,7 @@
 // Libs
 import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
-import NotionClient from '../../../../components/Locations/data/NotionClient';
+import NotionClient from '../../../../components/Locations/APIClients/NotionClient';
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const client = new NotionClient();

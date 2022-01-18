@@ -6,7 +6,7 @@ import { requestLocations } from '../../components/Locations/MoHLocationClient/r
 import { applyLocationOverrides, getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
 import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
 import { LocationOfInterest } from '../../components/types/LocationOfInterest';
-import NotionClient from '../../components/Locations/data/NotionClient';
+import NotionClient from '../../components/Locations/APIClients/NotionClient';
 
 type Summary = {
     todayTitle: string
