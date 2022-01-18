@@ -11,6 +11,7 @@ import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import { resetScroll } from "../utils/resetScroll";
+import { applyLocationOverride } from "./LocationObjectHandling";
 
 
 const CLOSED_DRAW_POS = -60;
@@ -36,7 +37,7 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
         })
     ,[]);
 
-    const locations:LocationOfInterest[] = rawLocations.map((rec) => applyLocationOverrides(rec, locationSettings.locationOverrides)) as LocationOfInterest[]
+    const locations:LocationOfInterest[] = rawLocations.map((rec) => applyLocationOverride(rec, locationSettings.locationOverrides)) as LocationOfInterest[]
 
     const [visibleLocations, setVisibleLocations] = useState<LocationOfInterestCalculated[]>([])
     const invalidLocations = locations.filter(isInvalidLocation);

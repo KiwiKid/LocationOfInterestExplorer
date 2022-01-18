@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         const overrides = await requestLocationOverrides();
         
         const locationRecords:LocationOfInterestRecord[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
-          .then((loi) => applyOverrides(loi, overrides))
+          .then((loi) => applyLocationOverrides(loi, overrides))
           .then((d) => d.map((rl) => mapLocationRecordToLocation(rl)))
         
 

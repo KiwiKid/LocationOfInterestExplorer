@@ -2,7 +2,7 @@ import { LocationOfInterest } from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
 import { NiceDate, NiceFullDate } from "../DateHandling";
-import { getPrintableLocationOfInterestGroupString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
+import { getLocationInfoGroupTitle, getPrintableLocationOfInterestGroupString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 
 const getBorderColor = (hoursAgo:number) => {
     if(hoursAgo == 0){
@@ -28,7 +28,6 @@ type LocationInfoGroupProps = {
 }
 
 
-const getLocationInfoGroupTitle = (groupKey:LocationGroupKey, groupSize:number, publishTime:Date, includeCount:boolean) => `${includeCount ? groupSize : ''} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n`
 
 const LocationInfoGroup = ({groupKey, group, hardcodedURL, locationSettings, publishTime}:LocationInfoGroupProps) => {
 

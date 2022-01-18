@@ -24,8 +24,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
     if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL) throw 'No MoH URL set';
     let locations:LocationOfInterest[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
-                .then((k) => k.map((loiRec) => applyLocationOverrides(loiRec, locationSettings.locationOverrides)))        
                 .then((d:any) => d.map(mapLocationRecordToLocation))
+                .then((loi) => applyLocationOverrides(loi, locationSettings.locationOverrides));        
       
     const todayLocations = locations.filter((l) => onlyToday(l.added))
 
@@ -37,7 +37,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         });
 
         
-    const todaySummary:string = getTodayLocationSummary(groupedLocations, url, now, locationSettings);
+    const todaySummary:string = getTodayLocationSummary(groupedLocations, url, now, locationSettings, true);
         
 
     const todayTitle = getTotalLocationSummaryTitle(new Date());

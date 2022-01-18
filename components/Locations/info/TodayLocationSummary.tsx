@@ -15,7 +15,8 @@ const getTodayLocationSummary = (
     , hardcodedURL: string
     , publishTime: Date
     , locationSettings: LocationSettings
-) => `${getTotalLocationsToday(locationGroups)} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${Object.keys(locationGroups)
+    , displayTotal: boolean
+) => `${displayTotal ? getTotalLocationsToday(locationGroups) : ''} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${Object.keys(locationGroups)
     .map((keyStr:string) => processGroupKey(locationSettings.locationPresets, keyStr))
     .filter((keyObj:any) => onlyToday(keyObj.date))
     .sort((a, b) => {
@@ -46,7 +47,7 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, locati
 
     let copyText = 'invalid';
     if(locationGroups){
-        copyText = getTodayLocationSummary(locationGroups, hardcodedURL, publishTime, locationSettings)
+        copyText = getTodayLocationSummary(locationGroups, hardcodedURL, publishTime, locationSettings, true)
     }
 
     let titleText = getTotalLocationSummaryTitle(publishTime);

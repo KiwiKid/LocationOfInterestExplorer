@@ -37,37 +37,7 @@ const visibleLocations = (state:any, action:any) => {
 }
 */
 
-
-//const applyRecordOverrides  = async (locations:LocationOfInterestRecord[],overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterestRecord) => applyLocationRecordOverride(loiRec, overrides));
-
-const applyOverrides = async (locations:LocationOfInterest[],overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterest) => applyLocationOverride(loiRec, overrides));
-
-
-/*const applyLocationRecordOverride = (rec:LocationOfInterestRecord, locationOverrides:LocationOverride[]):LocationOfInterestRecord => {
-
-  var overriddenLocation = locationOverrides.filter((ov:LocationOverride) => ov.eventId == rec.id)[0];
-  if(overriddenLocation !== undefined){
-    rec.lat = overriddenLocation.lat;
-    rec.lng = overriddenLocation.lng;
-    return rec;
-  }
-
-  var locationFromEvent = locationOverrides.filter((ov) => ov.eventName == rec.event)[0];
-  if(locationFromEvent !== undefined){
-    rec.lat = locationFromEvent.lat;
-    rec.lng = locationFromEvent.lng;
-    return rec;
-  }
-
-  var locationFromCity = locationOverrides.filter((ov) => ov.city == rec.city)[0];
-  if(locationFromCity !== undefined){
-    rec.lat = locationFromCity.lat;
-    rec.lng = locationFromCity.lng;
-    return rec;
-  }
-
-  return rec;
-}*/
+const applyLocationOverrides = async (locations:LocationOfInterest[],overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterest) => applyLocationOverride(loiRec, overrides));
 
 const applyLocationOverride = (rec:LocationOfInterest, locationOverrides:LocationOverride[]):LocationOfInterest => {
 
@@ -154,18 +124,20 @@ const metaImageURL = (hardcodedURL:string, key:string) => key ? `${hardcodedURL}
 const metaImageURLDirect = (hardcodedURL:string, key:string) => hardcodedURL === 'https://localhost:3000' ? 'https://nzcovidmap.org/img/previewDemo.png' : `${hardcodedURL}/api/image/loc/${encodeURIComponent(key.toLowerCase())}`
 
 
+const getLocationInfoGroupTitle = (groupKey:LocationGroupKey, groupSize:number, publishTime:Date, includeCount:boolean) => `${includeCount ? groupSize : ''} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n`
+
+
 export { 
   getQuickLinkURL
   , getPrintableLocationOfInterestGroupString
   , mapLoITOLoIRecord
   ,getPrintableLocationOfInterestString
   , getCSVLocationOfInterestString
+  , applyLocationOverrides
   , applyLocationOverride
-  , applyLocationRecordOverride
-  , applyRecordOverrides
-  , applyOverrides
   , mapLocationRecordToLocation
   , metaImageURL
   , metaImageURLDirect
   , getLocationPresetPrimaryCity
+  , getLocationInfoGroupTitle
 }
