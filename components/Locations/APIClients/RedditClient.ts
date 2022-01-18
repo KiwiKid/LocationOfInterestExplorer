@@ -43,19 +43,22 @@ class RedditClient {
                 
                 if(res.length > 0){
                     const postId = res[0].id;
-                    console.log('editing existing subscription');
+                    console.log(`editing existing subscription ${postId}`);
                     return this.r.getSubmission(postId)
                                     .edit(text)
                                     .then((r:any):RedditPostRunResult => {
                                         return { success: true, update: true, subreddit: run.subreddit, postId: postId  }
                                     });          
                 }else{
+                    console.log(`creating new subscription`);
                     return this.r.submitSelfpost({
                              subredditName: run.subreddit
                              , title: title
                              , text: text
                         }).then((r:any):RedditPostRunResult => {
-                            const postId = res[0].id
+                            console.log('new post');
+                            console.log(r);
+                            const postId = res.id
                             return { success: true, update: false, subreddit: run.subreddit, postId: postId }
                         })
                 }
