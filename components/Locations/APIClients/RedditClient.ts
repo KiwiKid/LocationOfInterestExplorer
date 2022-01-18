@@ -48,10 +48,10 @@ class RedditClient {
                         return this.r.getSubmission(postId)
                                         .edit(text)
                                         .then((r:any):RedditPostRunResult => {
-                                            return { success: true, update: true, subreddit: run.subreddit, postId: postId  }
+                                            return { success: true, isUpdate: true, subreddit: run.subreddit, postId: postId, isSkipped: true  }
                                         });      
                     } catch(err) {
-                        return { success: false, update: false, subreddit: run.subreddit }
+                        return { success: false, isUpdate: false, subreddit: run.subreddit }
                     }    
                 }else{
                     console.log(`creating new subscription`);
@@ -64,7 +64,7 @@ class RedditClient {
                                 console.log('new post');
                                 console.log(r);
                                 const postId = res.id
-                                return { success: true, update: false, subreddit: run.subreddit, postId: postId }
+                                return { success: true, isUpdate: false, subreddit: run.subreddit, postId: postId, isSkipped: true }
                             })
                     }catch(err){
                         return { success: false, update: false, subreddit: run.subreddit }

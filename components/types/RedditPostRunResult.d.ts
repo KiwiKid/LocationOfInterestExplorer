@@ -1,6 +1,7 @@
 type RedditPostRunResult = {
     success:boolean
-    update:boolean
-    postId:string
+    isUpdate:boolean
+    isSkipped:boolean
+    postId?:string
     subreddit:string
 }

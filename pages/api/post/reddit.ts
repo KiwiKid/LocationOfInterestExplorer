@@ -67,14 +67,17 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
     const redditClient = new RedditClient();
     
-
     
         var tihn:Promise<RedditPostRunResult[]> = Promise.all(SOCIAL_POST_RUNS.map((run) => {
             const matchingGroups = Object.keys(locationGroups)
                     .map((keyStr:string) => processGroupKey(settings.locationPresets, keyStr))
                     .filter((lg) => run.textUrlParams.some((textUrlParm) => textUrlParm === lg.key))
 
-        
+            if(!matchingGroups.some((mg) => locationGroups[mg.key] )){
+                const res:RedditPostRunResult = { subreddit: run.subreddit, success: true, isUpdate: false, isSkipped: true}
+                return res;
+            }
+
             const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.mainUrlParam)[0];
 
             if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
@@ -83,7 +86,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             const text = getTodayLocationSummary(matchingGroups, url, now, settings, true);
 
             return redditClient.updateRedditSubmissions(run, title, text);
-
+            
         }))/*.then((results) => {
 */
             let ti = await tihn;
