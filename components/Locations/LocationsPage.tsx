@@ -11,7 +11,6 @@ import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import { resetScroll } from "../utils/resetScroll";
-import { applyLocationOverrides } from "./LocationObjectHandling";
 
 
 const CLOSED_DRAW_POS = -60;

@@ -41,10 +41,10 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings}) => {
 
     return (
         <>
-        <NiceFullDate date={publishTime}/>
-        lastVisitTime: [{JSON.stringify(lastVisitTime)}]
-        locationSettings.locationPresets; {locationSettings.locationPresets.length}
-        locationSettings.locationOverrides; {locationSettings.locationOverrides.length}
+        <NiceFullDate date={publishTime}/><br/>
+        lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
+        locationPresets: {locationSettings.locationPresets.length}<br/>
+        locationOverrides: {locationSettings.locationOverrides.length}<br/>
         <LocationSettingsContext.Consumer>
             {locationSettings => 
             

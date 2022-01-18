@@ -1,8 +1,9 @@
 
 
 import { Client } from '@notionhq/client'
+import { last } from 'lodash';
 import { Touchscreen } from 'puppeteer-core';
-import { removeStringEnds } from '../../utils/utils';
+import { getMinutesAgo, removeStringEnds } from '../../utils/utils';
 
 const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
 
@@ -32,13 +33,14 @@ const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
         zoom: props.zoom.number
     }   
 }
-
+// TODO: add cache invalidation
 class NotionClient { 
     notionClient:Client;
     overrideDbId!:string;
     presetDbId!:string;
     cachedLocationOverrides!:LocationOverride[];
     cachedLocationPresets!:LocationPreset[];
+    lastUpdateTime:Date;
 
     constructor (){
 
@@ -53,8 +55,6 @@ class NotionClient {
         this.presetDbId = process.env.NOTION_LOCATION_PRESET_DB_ID;
         this.overrideDbId = process.env.NOTION_LOCATION_OVERRIDE_DB_ID
     }
-
-
 
     getLocationOverrides = async ():Promise<LocationOverride[]> => {
         if(!this.overrideDbId){ throw 'No override db set'}
@@ -72,6 +72,7 @@ class NotionClient {
                 return rs.results.map(mapNotionItemToOverride)
             }).then((rs) => {
                 this.cachedLocationOverrides = rs;
+                this.lastUpdateTime = new Date();
                 return rs;
             });
         }else{
@@ -79,11 +80,13 @@ class NotionClient {
         }
     }
 
-
     getLocationPresets = async ():Promise<LocationPreset[]> => {
         if(!this.presetDbId){ throw 'No preset db set'}
 
-        if(!this.cachedLocationPresets || this.cachedLocationPresets.length === 0){
+        if(!this.cachedLocationPresets 
+            || this.cachedLocationPresets.length === 0
+            || getMinutesAgo(this.lastUpdateTime) > 90
+        ){
             return this.notionClient.databases.query({
                 database_id: this.presetDbId,
                 filter: {
@@ -96,6 +99,7 @@ class NotionClient {
             .then((r) => r.results.map(mapNotionItemToLocationPreset))
             .then((rs) => {
                 this.cachedLocationPresets = rs;
+                this.lastUpdateTime = new Date();
                 return rs;
             });
         } else {

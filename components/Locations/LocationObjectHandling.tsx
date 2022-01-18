@@ -1,9 +1,4 @@
-import useSWR from "swr"
-import { LocationAPIResponse } from "../types/LocationAPIResponse"
 import { LocationOfInterest } from "../types/LocationOfInterest";
-import fetcher from "../utils/fetcher"
-import get, { AxiosResponse, AxiosPromise } from 'axios'
-import React, { useContext, useEffect, useReducer, useState } from "react";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 import { asAtDateAlwaysNZ } from "./DateHandling";
 
@@ -43,7 +38,12 @@ const visibleLocations = (state:any, action:any) => {
 */
 
 
-const applyLocationOverrides = (rec:LocationOfInterestRecord|LocationOfInterest, locationOverrides:LocationOverride[]):LocationOfInterestRecord|LocationOfInterest => {
+//const applyRecordOverrides  = async (locations:LocationOfInterestRecord[],overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterestRecord) => applyLocationRecordOverride(loiRec, overrides));
+
+const applyOverrides = async (locations:LocationOfInterest[],overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterest) => applyLocationOverride(loiRec, overrides));
+
+
+/*const applyLocationRecordOverride = (rec:LocationOfInterestRecord, locationOverrides:LocationOverride[]):LocationOfInterestRecord => {
 
   var overriddenLocation = locationOverrides.filter((ov:LocationOverride) => ov.eventId == rec.id)[0];
   if(overriddenLocation !== undefined){
@@ -63,6 +63,32 @@ const applyLocationOverrides = (rec:LocationOfInterestRecord|LocationOfInterest,
   if(locationFromCity !== undefined){
     rec.lat = locationFromCity.lat;
     rec.lng = locationFromCity.lng;
+    return rec;
+  }
+
+  return rec;
+}*/
+
+const applyLocationOverride = (rec:LocationOfInterest, locationOverrides:LocationOverride[]):LocationOfInterest => {
+
+  var overriddenLocation = locationOverrides.filter((ov:LocationOverride) => ov.eventId == rec.id)[0];
+  if(overriddenLocation !== undefined){
+    rec.lat = +overriddenLocation.lat;
+    rec.lng = +overriddenLocation.lng;
+    return rec;
+  }
+
+  var locationFromEvent = locationOverrides.filter((ov) => ov.eventName == rec.event)[0];
+  if(locationFromEvent !== undefined){
+    rec.lat = +locationFromEvent.lat;
+    rec.lng = +locationFromEvent.lng;
+    return rec;
+  }
+
+  var locationFromCity = locationOverrides.filter((ov) => ov.city == rec.city)[0];
+  if(locationFromCity !== undefined){
+    rec.lat = +locationFromCity.lat;
+    rec.lng = +locationFromCity.lng;
     return rec;
   }
 
@@ -134,7 +160,10 @@ export {
   , mapLoITOLoIRecord
   ,getPrintableLocationOfInterestString
   , getCSVLocationOfInterestString
-  , applyLocationOverrides
+  , applyLocationOverride
+  , applyLocationRecordOverride
+  , applyRecordOverrides
+  , applyOverrides
   , mapLocationRecordToLocation
   , metaImageURL
   , metaImageURLDirect
