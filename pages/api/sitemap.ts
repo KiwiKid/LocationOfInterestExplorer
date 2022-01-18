@@ -3,7 +3,7 @@ import { createGzip } from 'zlib'
 import { SitemapStream } from 'sitemap'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getHardCodedUrl } from '../../components/utils/utils'
-import NotionClient from '../../components/Locations/data/NotionClient'
+import NotionClient from '../../components/Locations/APIClients/NotionClient'
 
 
 
