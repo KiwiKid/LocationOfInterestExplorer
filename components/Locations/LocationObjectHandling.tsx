@@ -43,7 +43,7 @@ const visibleLocations = (state:any, action:any) => {
 */
 
 
-const applyLocationOverrides = (rec:LocationOfInterestRecord, locationOverrides:LocationOverride[]):LocationOfInterestRecord => {
+const applyLocationOverrides = (rec:LocationOfInterestRecord|LocationOfInterest, locationOverrides:LocationOverride[]):LocationOfInterestRecord|LocationOfInterest => {
 
   var overriddenLocation = locationOverrides.filter((ov:LocationOverride) => ov.eventId == rec.id)[0];
   if(overriddenLocation !== undefined){

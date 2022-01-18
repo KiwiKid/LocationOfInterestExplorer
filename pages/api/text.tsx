@@ -1,19 +1,12 @@
 // Libs
 import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
-import { processGroupKey } from '../../components/Locations/info/LocationInfoGrid';
 import { onlyToday, startOfDay } from '../../components/Locations/DateHandling';
 import { requestLocations } from '../../components/Locations/MoHLocationClient/requestLocations';
 import { applyLocationOverrides, getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
 import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
 import { LocationOfInterest } from '../../components/types/LocationOfInterest';
 import NotionClient from '../../components/Locations/data/NotionClient';
-var ReactDOMServer = require('react-dom/server');
-
-type LocationGroupSummary = {
-    id:string
-    text: string
-}
 
 type Summary = {
     todayTitle: string

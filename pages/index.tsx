@@ -98,7 +98,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL, locationSe
           <LocationContext.Consumer>
             {locations => 
               locations ? <LocationsPage
-                      locations={locations}
+                      rawLocations={locations}
                       startingPageState={settings}
                       publishState={{hardcodedURL: hardcodedURL, publishTime:new Date(publishTimeUTC)}}
                       locationSettings={locationSettings}

@@ -1,7 +1,4 @@
-import { applyLocationOverrides, mapLoITOLoIRecord } from "../LocationObjectHandling";
-import get, { AxiosResponse, AxiosPromise } from 'axios'
-import { Client } from "@notionhq/client";
-//const { Client } = require();
+import get, { AxiosResponse} from 'axios'
 
 const requestLocationPresets = async ():Promise<LocationPreset[]> => {
   

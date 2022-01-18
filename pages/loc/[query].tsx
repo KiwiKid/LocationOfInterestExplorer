@@ -116,7 +116,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
         <LocationContext.Consumer>
             {locationsRecords => 
               locationsRecords ? <LocationsPage
-                      locations={locationsRecords}
+                      rawLocations={locationsRecords}
                       startingPageState={{
                         daysInPastShown: 14,
                         quickLink: quickLink,

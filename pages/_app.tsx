@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         
         const overrides = await requestLocationOverrides();
         
-        const locationRecords = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
+        const locationRecords:LocationOfInterest[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
           .then((loi) => applyOverrides(loi, overrides))
           .then((d) => d.map(mapLocationRecordToLocation))
         
@@ -38,14 +38,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
            
         console.log('set results')
+        console.log(JSON.stringify(locationRecords))
         setLocations(locationRecords);
         setLocationSettings({
             locationPresets: presets
             , locationOverrides: overrides
         });
-
-        
-        
     }
     req();
   }, [])

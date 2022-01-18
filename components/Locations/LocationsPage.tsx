@@ -11,6 +11,7 @@ import {getOpenDrawPosition, LocationPageDrawer} from "./LocationPageDrawer";
 import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import { resetScroll } from "../utils/resetScroll";
+import { applyLocationOverrides } from "./LocationObjectHandling";
 
 
 const CLOSED_DRAW_POS = -60;
@@ -20,13 +21,13 @@ const isInvalidLocation = (loc:LocationOfInterest) => {
 }
 
 type LocationsPageProps ={
-  locations: LocationOfInterest[]
+  rawLocations: LocationOfInterest[]
   startingPageState: PageState
   publishState: PublishState
   locationSettings:LocationSettings
 }
 
-export default function LocationsPage({locations, startingPageState, publishState, locationSettings}:LocationsPageProps){
+export default function LocationsPage({rawLocations, startingPageState, publishState, locationSettings}:LocationsPageProps){
 
     const CovidMapSelector = useMemo(() => dynamic(
         () => import("./map/CovidMapSelector")
@@ -36,6 +37,7 @@ export default function LocationsPage({locations, startingPageState, publishStat
         })
     ,[]);
 
+    const locations:LocationOfInterest[] = rawLocations.map((rec) => applyLocationOverrides(rec, locationSettings.locationOverrides)) as LocationOfInterest[]
 
     const [visibleLocations, setVisibleLocations] = useState<LocationOfInterestCalculated[]>([])
     const invalidLocations = locations.filter(isInvalidLocation);
