@@ -59,7 +59,10 @@ class NotionClient {
     getLocationOverrides = async ():Promise<LocationOverride[]> => {
         if(!this.overrideDbId){ throw 'No override db set'}
 
-        if(!this.cachedLocationOverrides || this.cachedLocationOverrides.length === 0){
+        if(!this.cachedLocationOverrides 
+            || this.cachedLocationOverrides.length === 0
+            || getMinutesAgo(this.lastUpdateTime) > 90
+            ){
             return this.notionClient.databases.query({
                 database_id: this.overrideDbId,//process.env.,
                 filter: {
