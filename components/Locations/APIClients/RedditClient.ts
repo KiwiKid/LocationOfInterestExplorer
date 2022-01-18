@@ -39,7 +39,8 @@ class RedditClient {
                 .search({time: 'day', sort: 'new', query: title })
                 .first()
                 .map((thread:any) => this.r.getSubmission(thread).expandReplies().then((comments:any) => {
-                    debugger;
+                    console.log(comments);
+                    throw 'no comments yet...';
                     //const commentId = comments.filter((c) => c.)
                 }))
                 .then((res:any) => {
