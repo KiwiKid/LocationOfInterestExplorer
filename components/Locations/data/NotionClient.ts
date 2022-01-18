@@ -40,7 +40,7 @@ class NotionClient {
     presetDbId!:string;
     cachedLocationOverrides!:LocationOverride[];
     cachedLocationPresets!:LocationPreset[];
-    lastUpdateTime:Date;
+    lastUpdateTime!:Date;
 
     constructor (){
 
