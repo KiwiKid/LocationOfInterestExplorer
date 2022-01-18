@@ -14,19 +14,28 @@ import { processGroupKey } from '../../../components/Locations/info/LocationInfo
 
 const SOCIAL_POST_RUNS:RedditPostRuns[] = [
     {  
-        subreddit: 'sircmpwn'
+        subreddit: 'sircmpwn' //wellington
         , textUrlParams: ['wellington']
         , mainUrlParam: 'wellington'
      },
      {
-        subreddit: 'sircmpwn'
+        subreddit: 'sircmpwn' //auckland
         , textUrlParams: ['auckland']
         , mainUrlParam: 'auckland'
      },
      {
-        subreddit: 'sircmpwn'
+        subreddit: 'sircmpwn' //queenstown
         , textUrlParams: ['queenstown']
         , mainUrlParam: 'queenstown'
+     },
+     {
+        subreddit: 'sircmpwn' //coronorvisuNZ
+        , textUrlParams: ['all']
+        , mainUrlParam: 'all'
+     },{
+         subreddit: 'sircmpwn' // dunedin
+         , textUrlParams: ['dunedin']
+         , mainUrlParam: 'dunedin'
      }
 ]
 
