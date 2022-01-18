@@ -11,6 +11,7 @@ import { applyLocationOverride, applyLocationOverrides, getLocationInfoGroupTitl
 import { onlyToday, startOfDay } from '../../../components/Locations/DateHandling';
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
+import dayjs from 'dayjs';
 
 const SOCIAL_POST_RUNS:RedditPostRuns[] = [
     {  
@@ -51,7 +52,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     }
 
     const url = 'https://nzcovidmap.org'
-    const now = new Date();
+    const now = dayjs().tz("Pacific/Auckland").toDate();
 
     const client = new NotionClient();
 
@@ -101,7 +102,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
             if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
 
-            const title = `New Locations of Interest in ${mainMatchingPreset.title}`
+            const title = `New Locations of Interest in ${mainMatchingPreset.title} ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(now)}`
             const text = getTodayLocationSummary(matchingGroups, url, now, settings, true);
 
             return redditClient.updateRedditSubmissions(run, title, text);
