@@ -33,7 +33,7 @@ class RedditClient {
     }
 
     updateRedditSubmissions = async (run:RedditPostRuns, title:string, text:string):Promise<RedditPostRunResult> => {
-
+        try{ 
             return this.r.getSubreddit(run.subreddit).search({time: 'day', sort: 'new', query: title })
 
             .then((res:any) => {
@@ -44,25 +44,39 @@ class RedditClient {
                 if(res.length > 0){
                     const postId = res[0].id;
                     console.log(`editing existing subscription ${postId}`);
-                    return this.r.getSubmission(postId)
-                                    .edit(text)
-                                    .then((r:any):RedditPostRunResult => {
-                                        return { success: true, update: true, subreddit: run.subreddit, postId: postId  }
-                                    });          
+                    try{
+                        return this.r.getSubmission(postId)
+                                        .edit(text)
+                                        .then((r:any):RedditPostRunResult => {
+                                            return { success: true, update: true, subreddit: run.subreddit, postId: postId  }
+                                        });      
+                    } catch(err) {
+                        return { success: false, update: false, subreddit: run.subreddit }
+                    }    
                 }else{
                     console.log(`creating new subscription`);
-                    return this.r.submitSelfpost({
-                             subredditName: run.subreddit
-                             , title: title
-                             , text: text
-                        }).then((r:any):RedditPostRunResult => {
-                            console.log('new post');
-                            console.log(r);
-                            const postId = res.id
-                            return { success: true, update: false, subreddit: run.subreddit, postId: postId }
-                        })
+                    try{
+                        return this.r.submitSelfpost({
+                                subredditName: run.subreddit
+                                , title: title
+                                , text: text
+                            }).then((r:any):RedditPostRunResult => {
+                                console.log('new post');
+                                console.log(r);
+                                const postId = res.id
+                                return { success: true, update: false, subreddit: run.subreddit, postId: postId }
+                            })
+                    }catch(err){
+                        return { success: false, update: false, subreddit: run.subreddit }
+                    }
+
                 }
             })
+        }catch(err){
+            console.error('Update Reddit Submissions failed')
+            console.error(err);
+            throw err
+        }
     }
 }
 
