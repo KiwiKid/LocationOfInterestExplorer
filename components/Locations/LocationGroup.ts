@@ -19,7 +19,7 @@ class LocationGroup {
 
     totalLocations = () => this.locations.length
 
-    toString = (showCount:boolean) => `${showCount ? `${this.totalLocations()} - ` : ''}New Locations in ${this.locationPreset.title} ${this.locations.reduce((prev,curr) => prev += getPrintableLocationOfInterestString(curr, true), '')}`
+    toString = (showCount:boolean, showDate?:boolean) => `${showCount ? `${this.totalLocations()} - ` : ''}New Locations in ${this.locationPreset.title} ${this.locations.reduce((prev,curr) => prev += getPrintableLocationOfInterestString(curr, showDate ? true : false), '')}`
 }
 
 export default LocationGroup
