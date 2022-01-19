@@ -4,4 +4,5 @@ type RedditPostRunResult = {
     isSkipped:boolean
     postId?:string
     subreddit:string
+    error?: any
 }

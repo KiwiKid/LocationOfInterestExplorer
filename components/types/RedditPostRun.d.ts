@@ -4,5 +4,4 @@ type RedditPostRun = {
     textUrlParams:string[]
     submissionTitleQuery?:string // For commenting on threads
     flare?:string // Not yet implemented
-    
 }

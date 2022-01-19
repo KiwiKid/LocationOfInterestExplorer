@@ -11,15 +11,19 @@ class RedditPostRunResult {
     isSkipped:boolean
     postId?:string
     run:RedditPostRun
+    error:any
 
 
-    constructor (isSuccess:boolean, isUpdate:boolean,isSkipped:boolean, run:RedditPostRun, postId?:string){
+    constructor (isSuccess:boolean,isUpdate:boolean,isSkipped:boolean, run:RedditPostRun, postId?:string, error:any = null){
         this.isSuccess = isSuccess;
         this.isSkipped = isSkipped;
         this.isUpdate = isUpdate;
         this.run = run;
         if(postId){
             this.postId = postId;
+        }
+        if(error){
+            this.error = error;
         }
     }
 }
