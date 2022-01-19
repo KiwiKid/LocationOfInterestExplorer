@@ -92,6 +92,10 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(settings.locationPresets, lc.city)}`
         })*/
 
+        const isInteresting = (runs:RedditPostRunResult) => {
+            if(runs.isSuccess && runs.isSkipped){ return false}
+            return true;
+        }
         const todaysLocationGroups:LocationGroup[] = createLocationGroups(todaysLocations, settings.locationPresets);
 
         
@@ -131,8 +135,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             return new Promise<RedditPostRunResult>((resolve, reject) => resolve(fakeRes));*/
             
         }))
-
-        res.status(200).json(await subRedditPosts); 
+        res.status(200).json((await subRedditPosts).filter(isInteresting)); 
     }
 
     //const redditPostResults:RedditPostRunResult[] = 
