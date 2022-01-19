@@ -1,6 +1,8 @@
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 import { asAtDateAlwaysNZ } from "./DateHandling";
+import LocationGroup from "./LocationGroup";
+import { Dictionary } from "lodash";
 
 
 
@@ -36,6 +38,24 @@ const visibleLocations = (state:any, action:any) => {
   }
 }
 */
+
+const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]) => {
+  return locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0]
+}
+
+const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
+  const res:Dictionary<LocationGroup> = {};
+
+  locations.forEach((l) => {
+    const preset = getMatchingLocationPreset(l, locationPresets);
+    if(!res[preset.urlParam]){
+      res[preset.urlParam] = new LocationGroup(preset.title, preset)
+    }
+    res[preset.urlParam].pushLocation(l);
+  })
+
+  return Object.keys(res).map((r) => res[r]);
+}
 
 const applyLocationOverrides = async (locations:LocationOfInterest[],overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterest) => applyLocationOverride(loiRec, overrides));
 
@@ -90,14 +110,16 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 
   return res;
 }
-const getPrintableLocationOfInterestString = (l:LocationOfInterest,includeCity:boolean) => `- ${l.event}${includeCity ? ` - ${l.city}`: ''} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
+
+
+const getPrintableLocationOfInterestString = (l:LocationOfInterest,includeCity:boolean):string => `- ${l.event}${includeCity ? ` - ${l.city}`: ''} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
 
 // This isn't dependable CSV conversion and it doesn't need to be (its just for debugging)
 const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
   return `${loi.added}|${loi.updated}|${loi.event}|${loi.location}|${loi.city}|${loi.start},${loi.end},${loi.advice}|${loi.visibleInWebform}|${loi.exposureType}|${loi.lat}|${loi.lng}`
 }
 
-const getPrintableLocationOfInterestGroupString = (key:LocationGroupKey, group:LocationOfInterest[], hardcodedURL:string, publishTime:Date, showAsAt:boolean, locationPresets:LocationPreset[]) => `${key.quicklink ? key.quicklink?.title : 'Other'}${group.length > 1 ? ` - ${group.length} New Locations `: ''}${showAsAt ? ` ${asAtDateAlwaysNZ(publishTime)}`  : ''}:\n${group.map((loi) => getPrintableLocationOfInterestString(loi,key.city === 'Others')).join('')}\n${getQuickLinkURL(locationPresets,key.city, hardcodedURL)}\n\n\n`
+
 
 const getQuickLinkURL = (quickLinks:LocationPreset[], cityString:string, hardcodedURL:string) => {
   if(cityString === undefined){
@@ -124,14 +146,13 @@ const metaImageURL = (hardcodedURL:string, key:string) => key ? `${hardcodedURL}
 const metaImageURLDirect = (hardcodedURL:string, key:string) => hardcodedURL === 'https://localhost:3000' ? 'https://nzcovidmap.org/img/previewDemo.png' : `${hardcodedURL}/api/image/loc/${encodeURIComponent(key.toLowerCase())}`
 
 
-const getLocationInfoGroupTitle = (groupKey:LocationGroupKey, groupSize:number, publishTime:Date, includeCount:boolean) => `${includeCount ? groupSize : ''} New Locations of Interest in ${groupKey.quicklink?.title ? groupKey.quicklink?.title :  groupKey.city} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n`
+const getLocationInfoGroupTitle = (group:LocationGroup, publishTime:Date, includeCount:boolean) => `${includeCount ? group.totalLocations : ''} New Locations of Interest in ${group.locationPreset.title ? group.locationPreset.title :  'Others..'} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n`
 
 
 export { 
   getQuickLinkURL
-  , getPrintableLocationOfInterestGroupString
   , mapLoITOLoIRecord
-  ,getPrintableLocationOfInterestString
+  , getPrintableLocationOfInterestString
   , getCSVLocationOfInterestString
   , applyLocationOverrides
   , applyLocationOverride
@@ -140,4 +161,5 @@ export {
   , metaImageURLDirect
   , getLocationPresetPrimaryCity
   , getLocationInfoGroupTitle
+  , createLocationGroups
 }

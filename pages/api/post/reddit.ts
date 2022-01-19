@@ -7,12 +7,13 @@ import RedditClient from '../../../components/Locations/APIClients/RedditClient'
 import NotionClient from '../../../components/Locations/APIClients/NotionClient';
 import { requestLocations } from '../../../components/Locations/MoHLocationClient/requestLocations';
 import { LocationOfInterest } from '../../../components/types/LocationOfInterest';
-import { applyLocationOverride, applyLocationOverrides, getLocationInfoGroupTitle, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
+import { applyLocationOverride, applyLocationOverrides, createLocationGroups, getLocationInfoGroupTitle, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
 import { onlyToday, startOfDay } from '../../../components/Locations/DateHandling';
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
 import RedditPostRunResult from '../../../components/Locations/APIClients/RedditPostRunResult';
+import LocationGroup from '../../../components/Locations/LocationGroup';
 
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
     {
@@ -83,36 +84,34 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         .then((d) => d.map(mapLocationRecordToLocation))
         .then((loi) => applyLocationOverrides(loi, settings.locationOverrides))
     
-    const todaysLocations = locations.filter((lr) => onlyToday);
+    const todaysLocations = locations.filter((lr) => onlyToday(lr.added));
 
-    const todayslocationGroups = _.groupBy(todaysLocations
+    /*const todayslocationGroups = _.groupBy(todaysLocations
         , function(lc){ 
             return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(settings.locationPresets, lc.city)}`
-        })
+        })*/
+
+        const todaysLocationGroups:LocationGroup[] = createLocationGroups(todaysLocations, settings.locationPresets);
 
         
     const redditClient = new RedditClient();
 
+        const relevantSocialPostRuns = SOCIAL_POST_RUNS
+                                            .filter((sp) => todaysLocations
+                                                .some((tl) => sp.textUrlParams
+                                                    .some((urlParam) => urlParam === tl.city)));
 
-        var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(SOCIAL_POST_RUNS.map((run) => {
-            const matchingGroups = Object.keys(todayslocationGroups)
-                    .map((keyStr:string) => processGroupKey(settings.locationPresets, keyStr))
-                    .filter((lg) => run.textUrlParams.some((textUrlParm) => textUrlParm === lg.key))
-
-            // Skip the group?
-            if(!matchingGroups.some((mg) => todayslocationGroups[mg.key] )){
-                return new RedditPostRunResult(false, false, true, run);
-            }
+        var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(relevantSocialPostRuns.map((run) => {
 
             const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.mainUrlParam)[0];
 
             if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
 
             const title = `New Locations of Interest in ${mainMatchingPreset.title} ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(now)}`
-            const text = getTodayLocationSummary(matchingGroups, url, now, settings, true);
+            const text = getTodayLocationSummary(todaysLocationGroups, url, now, settings, true);
 
             if(run.submissionTitleQuery){
-                redditClient.updateRedditComment(run, title, text);
+                return redditClient.updateRedditComment(run, title, text);
             }
             return redditClient.updateRedditSubmissions(run, title, text);
             

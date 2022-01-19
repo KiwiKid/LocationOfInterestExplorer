@@ -2,7 +2,8 @@ import { LocationOfInterest } from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
 import { NiceDate, NiceFullDate } from "../DateHandling";
-import { getLocationInfoGroupTitle, getPrintableLocationOfInterestGroupString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
+import LocationGroup from "../LocationGroup";
+import { getLocationInfoGroupTitle, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 
 const getBorderColor = (hoursAgo:number) => {
     if(hoursAgo == 0){
@@ -20,8 +21,7 @@ const getBorderColor = (hoursAgo:number) => {
 
 
 type LocationInfoGroupProps = {
-    group: LocationOfInterest[]
-    groupKey: LocationGroupKey
+    group: LocationGroup
     hardcodedURL: string
     locationSettings: LocationSettings
     publishTime: Date
@@ -29,33 +29,33 @@ type LocationInfoGroupProps = {
 
 
 
-const LocationInfoGroup = ({groupKey, group, hardcodedURL, locationSettings, publishTime}:LocationInfoGroupProps) => {
+const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:LocationInfoGroupProps) => {
 
     //const groupKey = processGroupKey(LocationPresets, groupKeyString);
 
-    const mostRecentLocationAdded = group.sort((a:LocationOfInterest, b:LocationOfInterest) => a.added > b.added ? 1 : -1)[0].added;
+    const mostRecentLocationAdded = group.locations.sort((a:LocationOfInterest, b:LocationOfInterest) => a.added > b.added ? 1 : -1)[0].added;
     
 
     return (
         <>
-            <details className={`m-4 p-4 border-4  border-${getBorderColor(getHoursAgo(groupKey.date))}`}>
+            <details className={`m-4 p-4 border-4  border-${getBorderColor(getHoursAgo(mostRecentLocationAdded))}`}>
             <summary className="">
-            (after) <NiceDate date={groupKey.date}/> - {group.length} Locations - {groupKey.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(groupKey.date)}) {group.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
+            (after) <NiceDate date={publishTime}/> - {group.totalLocations()} Locations - {group.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishTime)}) {group.locations.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
             (most recent was {getHoursAgo(mostRecentLocationAdded)} hours ago)
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {getLocationInfoGroupTitle(groupKey, group.length, groupKey.date, false)}
+                        {getLocationInfoGroupTitle(group, publishTime, false)}
                 />
                 <CopyBox 
                         id="copybox"
-                        copyText={getLocationInfoGroupTitle(groupKey, group.length, groupKey.date, true)}
+                        copyText={getLocationInfoGroupTitle(group, publishTime, true)}
                         //{`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)}\n\n`}
                 />
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={getPrintableLocationOfInterestGroupString(groupKey, group, hardcodedURL, publishTime, true, locationSettings.locationPresets)}
+                    copyText={group.toString(true)}
                     textarea={true} 
                 />
             </summary>
@@ -73,7 +73,7 @@ const LocationInfoGroup = ({groupKey, group, hardcodedURL, locationSettings, pub
                 <div>advice</div>
                 <div>lat</div>
                 <div>lng</div>
-                {group
+                {group.locations
                 .sort((a, b) => a.added > b.added ? -1 : 1)
                 .map((lr:LocationOfInterest) => <>
                     <div>{lr.id}</div>
@@ -95,8 +95,8 @@ const LocationInfoGroup = ({groupKey, group, hardcodedURL, locationSettings, pub
                
             </div>
             <div>{metaImageURL}</div>
-            <img src={metaImageURL(hardcodedURL, groupKey.city)}/>
-            <img src={metaImageURLDirect(hardcodedURL, groupKey.city)}/>
+            <img src={metaImageURL(hardcodedURL, group.city)}/>
+            <img src={metaImageURLDirect(hardcodedURL, group.city)}/>
         </details>
         </>
     )

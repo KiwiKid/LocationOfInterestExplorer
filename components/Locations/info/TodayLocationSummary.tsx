@@ -1,6 +1,6 @@
 import CopyBox from "../../utils/CopyBox";
 import { asAtDateAlwaysNZ, onlyToday, startOfDay, startOfDayFormatted, subtractHours } from "../DateHandling";
-import { getPrintableLocationOfInterestGroupString } from "../LocationObjectHandling";
+import LocationGroup from "../LocationGroup";
 import { processGroupKey } from "./LocationInfoGrid";
 
 type TodayLocationSummaryProps = {
@@ -11,16 +11,19 @@ type TodayLocationSummaryProps = {
 }
 
 const getTodayLocationSummary = (
-    locationGroups: any
+    locationGroups:LocationGroup[]
     , hardcodedURL: string
     , publishTime: Date
     , locationSettings: LocationSettings
     , displayTotal: boolean
-) => `${displayTotal ? getTotalLocationsToday(locationGroups) : ''} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${Object.keys(locationGroups)
-    .map((keyStr:string) => processGroupKey(locationSettings.locationPresets, keyStr))
-    .filter((keyObj:any) => onlyToday(keyObj.date))
+) => `${displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : ''} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${locationGroups
+    .map((lg) => lg.toString(true))
+    //.filter((keyObj:any) => onlyToday(keyObj.date))
+    
+    /*
+    TODO
     .sort((a, b) => {
-        if(a.quicklink === undefined || b.quicklink === undefined || a.quicklink?.urlParam === 'all'){
+        if(a.preset.quicklink === undefined || b.quicklink === undefined || a.quicklink?.urlParam === 'all'){
              return 0
         }
 
@@ -28,8 +31,8 @@ const getTodayLocationSummary = (
         if(b.city === 'Others'){ return -1 }
         // @ts-ignore
         return a.quicklink?.lat > b.quicklink?.lat ? -1 : 1
-    })
-    .map((keyObj:LocationGroupKey) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups[keyObj.key], hardcodedURL, publishTime, false, locationSettings.locationPresets))
+    })*/
+    //.map((keyObj:LocationGroupKey) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups.locations, hardcodedURL, publishTime, false, locationSettings.locationPresets))
     .join(`\n`)}`
 
 const getTotalLocationsToday = (locationGroups:any) => {

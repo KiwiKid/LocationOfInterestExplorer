@@ -31,13 +31,14 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
 
 
-    var groupedLocations = _.groupBy(todayLocations
+   /* var groupedLocations = _.groupBy(todayLocations
         , function(lc){ 
             return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(locationSettings.locationPresets, lc.city)}`
         });
-
+*/
+        const todaysLocationGroups =  createLocationGroups(todayLocations, locationSettings.locationPresets)
         
-    const todaySummary:string = getTodayLocationSummary(groupedLocations, url, now, locationSettings, true);
+    const todaySummary:string = getTodayLocationSummary(todaysLocationGroups, url, now, locationSettings, true);
         
 
     const todayTitle = getTotalLocationSummaryTitle(new Date());

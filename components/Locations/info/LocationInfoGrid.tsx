@@ -5,7 +5,8 @@ import { LocationOfInterest } from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "../DateHandling";
-import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
+import LocationGroup from "../LocationGroup";
+import { createLocationGroups, getLocationPresetPrimaryCity, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "../LocationSummaryDateDisplay";
 import LocationInfoGroup from "./LocationInfoGroup";
 
@@ -38,16 +39,14 @@ const processGroupKey = (locationPresets:LocationPreset[],keyString:string):Loca
 const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSettings}:LocationInfoGridProps) => {
     
 
-    const [groupedLocations, setGroupedLocations] = useState<any|undefined>(undefined);
+    const [groupedLocations, setGroupedLocations] = useState<LocationGroup[]>([]);
 
     useEffect(()=> {
         if(!groupedLocations){
-            setGroupedLocations(_.groupBy(locations
-                , function(lc){ 
-                    return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(locationSettings.locationPresets, lc.city)}`
-                }));
-            }
-    }, [groupedLocations]);
+            const locationGroup = createLocationGroups(locations, locationSettings.locationPresets);
+            setGroupedLocations(locationGroup);
+        }
+    }, []);
     
 
     return (groupedLocations ? (locationSettings.locationPresets ? <div className="">
@@ -57,16 +56,12 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
                     publishTime={publishTime}
                     locationSettings={locationSettings}
                     />                 
-                {Object.keys(groupedLocations)
-                .map((keyStr:string) => processGroupKey(locationSettings.locationPresets, keyStr))
-                .sort((a:LocationGroupKey,b:LocationGroupKey) => a.date > b.date ? -1 : 1)
-                .map((groupKey) => {
+                {groupedLocations.map((group) => {
                     return <LocationInfoGroup 
                         publishTime={publishTime}
                         locationSettings={locationSettings}
-                        key={groupKey.key}
-                        groupKey={groupKey}
-                        group={groupedLocations[groupKey.key]}
+                        key={group.locationPreset.urlParam}
+                        group={group}
                         hardcodedURL={hardcodedURL}
                     />
                 })}
