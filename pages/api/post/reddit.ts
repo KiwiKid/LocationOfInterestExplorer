@@ -14,6 +14,7 @@ import { processGroupKey } from '../../../components/Locations/info/LocationInfo
 import dayjs from 'dayjs';
 import RedditPostRunResult from '../../../components/Locations/APIClients/RedditPostRunResult';
 import LocationGroup from '../../../components/Locations/LocationGroup';
+import { resolve } from 'path/posix';
 
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
    /* {
@@ -100,17 +101,34 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(SOCIAL_POST_RUNS.map((run) => {
 
             const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.mainUrlParam)[0];
-            const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam)
-
             if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
 
-            const title = `New Locations of Interest in ${mainMatchingPreset.title} ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(now)}`
+            const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam)
+            if(matchingLocationGroups.length === 0){ 
+                return new RedditPostRunResult(true, false, true, run, "No Locations");
+            }
+
+
+
+
+
+            const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(now)}`
             const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
 
+
+
+
            // if(run.submissionTitleQuery){
+            
            //     return redditClient.updateRedditComment(run, title, text);
            // }
-            return redditClient.updateRedditSubmissions(run, title, text);
+           return redditClient.updateRedditSubmissions(run, title, text);
+
+            /*
+            Faking it: 
+            console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
+            const fakeRes:RedditPostRunResult = new RedditPostRunResult(false, false, true, run, "Fake")
+            return new Promise<RedditPostRunResult>((resolve, reject) => resolve(fakeRes));*/
             
         }))
 
