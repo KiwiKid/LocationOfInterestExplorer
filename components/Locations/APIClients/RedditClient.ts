@@ -94,6 +94,7 @@ class RedditClient {
                                             .edit(text)
                                             .then((r:any):RedditPostRunResult => new RedditPostRunResult(true, true, false, run, postId));      
                         } catch(err) {
+                            console.error(err);
                             return { success: false, isUpdate: false, subreddit: run.subreddit }
                         }    
                     }else{
@@ -110,6 +111,7 @@ class RedditClient {
                                     return new RedditPostRunResult(true, false, false, run, postId);
                                 })
                         }catch(err){
+                            console.error(err)
                             return { success: false, update: false, subreddit: run.subreddit }
                         }
 

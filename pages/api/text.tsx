@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
 import { onlyToday, startOfDay } from '../../components/Locations/DateHandling';
 import { requestLocations } from '../../components/Locations/MoHLocationClient/requestLocations';
-import { applyLocationOverrides, getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
+import { applyLocationOverrides, createLocationGroups, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
 import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
 import { LocationOfInterest } from '../../components/types/LocationOfInterest';
 import NotionClient from '../../components/Locations/APIClients/NotionClient';
@@ -29,14 +29,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
       
     const todayLocations = locations.filter((l) => onlyToday(l.added))
 
-
-
-   /* var groupedLocations = _.groupBy(todayLocations
-        , function(lc){ 
-            return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(locationSettings.locationPresets, lc.city)}`
-        });
-*/
-        const todaysLocationGroups =  createLocationGroups(todayLocations, locationSettings.locationPresets)
+    const todaysLocationGroups = createLocationGroups(todayLocations, locationSettings.locationPresets)
         
     const todaySummary:string = getTodayLocationSummary(todaysLocationGroups, url, now, locationSettings, true);
         

@@ -96,19 +96,16 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
     const redditClient = new RedditClient();
 
-        const relevantSocialPostRuns = SOCIAL_POST_RUNS
-                                            .filter((sp) => todaysLocations
-                                                .some((tl) => sp.textUrlParams
-                                                    .some((urlParam) => urlParam === tl.city)));
 
-        var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(relevantSocialPostRuns.map((run) => {
+        var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(SOCIAL_POST_RUNS.map((run) => {
 
             const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.mainUrlParam)[0];
+            const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam)
 
             if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
 
             const title = `New Locations of Interest in ${mainMatchingPreset.title} ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(now)}`
-            const text = getTodayLocationSummary(todaysLocationGroups, url, now, settings, true);
+            const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
 
             if(run.submissionTitleQuery){
                 return redditClient.updateRedditComment(run, title, text);
