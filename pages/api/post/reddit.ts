@@ -16,12 +16,12 @@ import RedditPostRunResult from '../../../components/Locations/APIClients/Reddit
 import LocationGroup from '../../../components/Locations/LocationGroup';
 
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
-    {
+   /* {
         subreddit: 'sircmpwn' // r/nz subreddit daily thread
         , textUrlParams: ['all']
         , mainUrlParam: 'all'
         , submissionTitleQuery: 'New Locations of Interest'
-     },{
+     },*/{
         subreddit: 'sircmpwn' //coronorvisuNZ
         , textUrlParams: ['all']
         , mainUrlParam: 'all'
@@ -107,9 +107,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             const title = `New Locations of Interest in ${mainMatchingPreset.title} ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(now)}`
             const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
 
-            if(run.submissionTitleQuery){
-                return redditClient.updateRedditComment(run, title, text);
-            }
+           // if(run.submissionTitleQuery){
+           //     return redditClient.updateRedditComment(run, title, text);
+           // }
             return redditClient.updateRedditSubmissions(run, title, text);
             
         }))
