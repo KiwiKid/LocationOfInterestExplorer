@@ -52,7 +52,7 @@ class RedditClient {
                             return this.r.getSubmission(postId).po
                                             .then((r:any):RedditPostRunResult => new RedditPostRunResult(true, true, false, run, postId));      
                         } catch(err) {
-                            return { success: false, isUpdate: false, subreddit: run.subreddit, error: err }
+                            return new RedditPostRunResult(false, false, true, run, 'NA', err); //{ success: false, update: false, subreddit: run.subreddit, error: err }
                         }    
                     }else{
                         console.log(`creating new subscription`);
@@ -68,14 +68,14 @@ class RedditClient {
                                     return new RedditPostRunResult(true, false, false, run, postId);
                                 })
                         }catch(err){
-                            return { success: false, update: false, subreddit: run.subreddit, error: err }
+                            return new RedditPostRunResult(false, false, true, run, 'NA', err); //{ success: false, update: false, subreddit: run.subreddit, error: err }
                         }
                     }
                 });
         }catch(err){
             console.error('Update Reddit Submissions failed')
             console.error(err);
-            throw err
+            return new RedditPostRunResult(false, false, true, run, 'NA', err); //{ success: false, update: false, subreddit: run.subreddit, error: err }
         }
     }
 
@@ -95,8 +95,8 @@ class RedditClient {
                                             .then((r:any):RedditPostRunResult => new RedditPostRunResult(true, true, false, run, postId));      
                         } catch(err) {
                             console.error(err);
-                            return { success: false, isUpdate: false, subreddit: run.subreddit, error: err }
-                        }    
+                            return new RedditPostRunResult(false, false, true, run, 'NA', err); //{ success: false, update: false, subreddit: run.subreddit, error: err }
+                        }
                     }else{
                         console.log(`creating new comment`);
                         try{
@@ -112,7 +112,7 @@ class RedditClient {
                                 })
                         }catch(err){
                             console.error(err)
-                            return { success: false, update: false, subreddit: run.subreddit, error: err }
+                            return new RedditPostRunResult(false, false, true, run, 'NA', err); //{ success: false, update: false, subreddit: run.subreddit, error: err }
                         }
 
                     }
@@ -120,7 +120,7 @@ class RedditClient {
             }catch(err){
                 console.error('Update Reddit Submissions failed')
                 console.error(err);
-                throw err
+                return new RedditPostRunResult(false, false, true, run, 'NA', err); //{ isSuccess: false, isUpdate: false, subreddit: run.subreddit, error: err }
             }
         }
 }
