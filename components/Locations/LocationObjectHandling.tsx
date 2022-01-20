@@ -3,6 +3,7 @@ import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 import { asAtDateAlwaysNZ } from "./DateHandling";
 import LocationGroup from "./LocationGroup";
 import { Dictionary } from "lodash";
+import { platform } from "os";
 
 
 
@@ -45,15 +46,25 @@ const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:L
 
 const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
   const res:Dictionary<LocationGroup> = {};
-
+  const others = new LocationGroup("Others", locationPresets.filter((lp) => lp.urlParam === 'all')[0]);
+  
   locations.forEach((l) => {
     const preset = getMatchingLocationPreset(l, locationPresets);
-    if(!res[preset.urlParam]){
+    console.log(`${preset ? preset.urlParam : 'none'} -- ${l.city}`)
+
+    if(!preset){
+      others.pushLocation(l);
+      return;
+    }
+
+    if(preset && !res[preset.urlParam]){
       res[preset.urlParam] = new LocationGroup(preset.title, preset)
     }
+
     res[preset.urlParam].pushLocation(l);
   })
-
+  
+  res["Others"] = others;
   return Object.keys(res).map((r) => res[r]);
 }
 
@@ -134,6 +145,14 @@ const getQuickLinkURL = (quickLinks:LocationPreset[], cityString:string, hardcod
   }
 }
 
+
+const mostRecentlyAdded = (a:LocationOfInterest,b:LocationOfInterest) => {
+  if(!a || !b){
+    return -1
+  }
+  return a.added > b.added ? 1 : -1
+}
+
 const getLocationPresetPrimaryCity = (locationPresets:LocationPreset[],mohCity:string) => {
   let override = locationPresets.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
   if(override){
@@ -146,7 +165,7 @@ const metaImageURL = (hardcodedURL:string, key:string) => key ? `${hardcodedURL}
 const metaImageURLDirect = (hardcodedURL:string, key:string) => hardcodedURL === 'https://localhost:3000' ? 'https://nzcovidmap.org/img/previewDemo.png' : `${hardcodedURL}/api/image/loc/${encodeURIComponent(key.toLowerCase())}`
 
 
-const getLocationInfoGroupTitle = (group:LocationGroup, publishTime:Date, includeCount:boolean) => `${includeCount ? group.totalLocations : ''} New Locations of Interest in ${group.locationPreset.title ? group.locationPreset.title :  'Others..'} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n`
+const getLocationInfoGroupTitle = (group:LocationGroup, publishTime:Date, includeCount:boolean) => `${includeCount ? group.totalLocations() : ''} New Locations of Interest in ${group.locationPreset.title ? group.locationPreset.title :  'Others..'} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)} \n`
 
 
 export { 
@@ -162,4 +181,5 @@ export {
   , getLocationPresetPrimaryCity
   , getLocationInfoGroupTitle
   , createLocationGroups
+  , mostRecentlyAdded
 }

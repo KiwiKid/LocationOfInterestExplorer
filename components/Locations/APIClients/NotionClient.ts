@@ -61,7 +61,7 @@ class NotionClient {
 
         if(!this.cachedLocationOverrides 
             || this.cachedLocationOverrides.length === 0
-            || getMinutesAgo(this.lastUpdateTime) > 90
+            || getMinutesAgo(this.lastUpdateTime) > 30
             ){
             return this.notionClient.databases.query({
                 database_id: this.overrideDbId,//process.env.,
@@ -88,7 +88,7 @@ class NotionClient {
 
         if(!this.cachedLocationPresets 
             || this.cachedLocationPresets.length === 0
-            || getMinutesAgo(this.lastUpdateTime) > 90
+            || getMinutesAgo(this.lastUpdateTime) > 30
         ){
             return this.notionClient.databases.query({
                 database_id: this.presetDbId,

@@ -32,16 +32,13 @@ type LocationInfoGroupProps = {
 const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:LocationInfoGroupProps) => {
 
     //const groupKey = processGroupKey(LocationPresets, groupKeyString);
-
-    const mostRecentLocationAdded = group.locations.sort((a:LocationOfInterest, b:LocationOfInterest) => a.added > b.added ? 1 : -1)[0].added;
-    
-
+    const mostRecent = group.mostRecentLocationAdded();
     return (
         <>
-            <details className={`m-4 p-4 border-4  border-${getBorderColor(getHoursAgo(mostRecentLocationAdded))}`}>
+            <details className={`m-4 p-4 border-4  border-${group.mostRecent ? getBorderColor(getHoursAgo(group.mostRecent)) :'' }`}>
             <summary className="">
             (after) <NiceDate date={publishTime}/> - {group.totalLocations()} Locations - {group.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishTime)}) {group.locations.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
-            (most recent was {getHoursAgo(mostRecentLocationAdded)} hours ago)
+            {mostRecent ? `(most recent was ${getHoursAgo(mostRecent?.added)} hours ago)`: ''}
                 <CopyBox 
                         id="copybox"
                         copyText=

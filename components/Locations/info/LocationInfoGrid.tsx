@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { LocationOfInterest } from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
-import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate} from "../DateHandling";
+import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate, onlyToday} from "../DateHandling";
 import LocationGroup from "../LocationGroup";
 import { createLocationGroups, getLocationPresetPrimaryCity, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "../LocationSummaryDateDisplay";
@@ -42,14 +42,15 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
     const [groupedLocations, setGroupedLocations] = useState<LocationGroup[]>([]);
 
     useEffect(()=> {
-        if(!groupedLocations){
-            const locationGroup = createLocationGroups(locations, locationSettings.locationPresets);
+        if(locations){
+            const locationGroup = createLocationGroups(locations.filter((l) => { console.log(JSON.stringify(l)); return onlyToday(l.added) } ), locationSettings.locationPresets);
             setGroupedLocations(locationGroup);
         }
-    }, []);
+    }, [locations, locationSettings.locationPresets]);
     
 
     return (groupedLocations ? (locationSettings.locationPresets ? <div className="">
+                
                 <TodayLocationSummary 
                     locationGroups={groupedLocations} 
                     hardcodedURL={hardcodedURL}

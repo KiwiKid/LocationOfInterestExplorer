@@ -22,16 +22,16 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
         , textUrlParams: ['all']
         , mainUrlParam: 'all'
         , submissionTitleQuery: 'New Locations of Interest'
-     },*/{
+     },{
         subreddit: 'sircmpwn' //coronorvisuNZ
         , textUrlParams: ['all']
         , mainUrlParam: 'all'
-     },
+     },*/
     {  
         subreddit: 'sircmpwn' //wellington
         , textUrlParams: ['wellington']
         , mainUrlParam: 'wellington'
-     },
+     }/*,
      {
         subreddit: 'sircmpwn' //auckland
         , textUrlParams: ['auckland']
@@ -45,7 +45,7 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
          subreddit: 'sircmpwn' // dunedin
          , textUrlParams: ['dunedin']
          , mainUrlParam: 'dunedin'
-     }
+     }*/
 ]
 
 //const processRun = async(client:RedditClient, post:RedditPostRuns):Promise<RedditPostRunResult> => {
@@ -135,6 +135,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             return new Promise<RedditPostRunResult>((resolve, reject) => resolve(fakeRes));*/
             
         }))
+        
         res.status(200).json((await subRedditPosts).filter(isInteresting)); 
     }
 

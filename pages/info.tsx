@@ -45,6 +45,7 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings}) => {
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
+        
         <LocationSettingsContext.Consumer>
             {locationSettings => 
             
