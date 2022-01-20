@@ -59,7 +59,6 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings, reddit
                         <div>{rpr.flareId}</div>
                         <div className="col-span-full border-black border-4">
                             Checked:<div><NiceFullAlwaysNZDate date={new Date(rpr.lastCheckTime)}/></div>
-                            Edited: <div><NiceFullAlwaysNZDate date={new Date(rpr.lastEditTime)}/></div>
                             <div>{rpr.postId}</div>
                             <div>{rpr.postTitle}</div>
                         </div>
