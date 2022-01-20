@@ -1,7 +1,7 @@
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 import { asAtDateAlwaysNZ } from "./DateHandling";
-import LocationGroup from "./LocationGroup";
+import { LocationGroup }  from "./LocationGroup";
 import { Dictionary } from "lodash";
 import { platform } from "os";
 
@@ -40,33 +40,9 @@ const visibleLocations = (state:any, action:any) => {
 }
 */
 
-const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]) => {
-  return locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0]
-}
 
-const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
-  const res:Dictionary<LocationGroup> = {};
-  const others = new LocationGroup("Others", locationPresets.filter((lp) => lp.urlParam === 'all')[0]);
-  
-  locations.forEach((l) => {
-    const preset = getMatchingLocationPreset(l, locationPresets);
-    console.log(`${preset ? preset.urlParam : 'none'} -- ${l.city}`)
 
-    if(!preset){
-      others.pushLocation(l);
-      return;
-    }
 
-    if(preset && !res[preset.urlParam]){
-      res[preset.urlParam] = new LocationGroup(preset.title, preset)
-    }
-
-    res[preset.urlParam].pushLocation(l);
-  })
-  
-  res["Others"] = others;
-  return Object.keys(res).map((r) => res[r]);
-}
 
 const applyLocationOverrides = async (locations:LocationOfInterest[],overrides:LocationOverride[]) => locations.map((loiRec:LocationOfInterest) => applyLocationOverride(loiRec, overrides));
 
@@ -180,6 +156,5 @@ export {
   , metaImageURLDirect
   , getLocationPresetPrimaryCity
   , getLocationInfoGroupTitle
-  , createLocationGroups
   , mostRecentlyAdded
 }

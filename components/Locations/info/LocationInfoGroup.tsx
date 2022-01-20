@@ -2,7 +2,7 @@ import { LocationOfInterest } from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
 import { NiceDate, NiceFullDate } from "../DateHandling";
-import LocationGroup from "../LocationGroup";
+import { LocationGroup }  from "../LocationGroup";
 import { getLocationInfoGroupTitle, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 
 const getBorderColor = (hoursAgo:number) => {
@@ -52,7 +52,7 @@ const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={group.toString(true)}
+                    copyText={group.toString(true, true, publishTime)}
                     textarea={true} 
                 />
             </summary>

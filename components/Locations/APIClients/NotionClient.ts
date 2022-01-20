@@ -4,6 +4,7 @@ import { Client } from '@notionhq/client'
 import { last } from 'lodash';
 import { Touchscreen } from 'puppeteer-core';
 import { getMinutesAgo, removeStringEnds } from '../../utils/utils';
+import RedditPostRunResult from './RedditPostRunResult';
 
 const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
 
@@ -20,6 +21,24 @@ const getNotionRichText = (notionParam:any):string => {
 }
 
 
+const mapNotionItemToRedditPostRun = (notionRow:any):RedditPostRun => {
+
+    const props = notionRow.properties;
+    return {
+        primaryUrlParam: 'newzealand',
+        subreddit: 'newzealand',
+        textUrlParams: ['all'],
+       /* showInDrawer: props.showInDrawer.checkbox,
+        lat: props.lat.number,
+        lng: props.lng.number,
+        matchingMohCityString: removeStringEnds(getNotionRichText(props.matchingMohCityString)).split(',') ,
+        title: getNotionRichText(props.cityTitle),
+        urlParam: getNotionRichText(props.urlParam),
+        zoom: props.zoom.number*/
+
+    }   
+}
+
 const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
 
     const props = notionRow.properties;
@@ -33,14 +52,22 @@ const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
         zoom: props.zoom.number
     }   
 }
+
 // TODO: add cache invalidation
 class NotionClient { 
     notionClient:Client;
     overrideDbId!:string;
     presetDbId!:string;
+    redditDbId:string
+
     cachedLocationOverrides!:LocationOverride[];
+    cachedLocationOverridesUpdateTime!:Date;
     cachedLocationPresets!:LocationPreset[];
-    lastUpdateTime!:Date;
+    cachedLocationPresetsUpdateTime!:Date;
+
+    cachedRedditPosts!:RedditPostRun[];
+    cachedRedditPostsUpdateTime!:Date;
+    
 
     constructor (){
 
@@ -49,11 +76,13 @@ class NotionClient {
         
         if(!process.env.NOTION_LOCATION_OVERRIDE_DB_ID){ console.error('NOTION_LOCATION_OVERRIDE_DB_ID not set'); throw 'error' }
         if(!process.env.NOTION_LOCATION_PRESET_DB_ID){ console.error('NOTION_LOCATION_PRESET_DB_ID not set'); throw 'error' }
-        
+        if(!process.env.NOTION_REDDIT_DB_ID){ console.error('NOTION_REDDIT_DB_ID not set'); throw 'error' }
+
 
         this.notionClient = client;
         this.presetDbId = process.env.NOTION_LOCATION_PRESET_DB_ID;
         this.overrideDbId = process.env.NOTION_LOCATION_OVERRIDE_DB_ID
+        this.redditDbId = process.env.NOTION_REDDIT_DB_ID
     }
 
     getLocationOverrides = async ():Promise<LocationOverride[]> => {
@@ -61,7 +90,7 @@ class NotionClient {
 
         if(!this.cachedLocationOverrides 
             || this.cachedLocationOverrides.length === 0
-            || getMinutesAgo(this.lastUpdateTime) > 30
+            || getMinutesAgo(this.cachedLocationOverridesUpdateTime) > 30
             ){
             return this.notionClient.databases.query({
                 database_id: this.overrideDbId,//process.env.,
@@ -75,7 +104,7 @@ class NotionClient {
                 return rs.results.map(mapNotionItemToOverride)
             }).then((rs) => {
                 this.cachedLocationOverrides = rs;
-                this.lastUpdateTime = new Date();
+                this.cachedLocationOverridesUpdateTime = new Date();
                 return rs;
             });
         }else{
@@ -88,7 +117,7 @@ class NotionClient {
 
         if(!this.cachedLocationPresets 
             || this.cachedLocationPresets.length === 0
-            || getMinutesAgo(this.lastUpdateTime) > 30
+            || getMinutesAgo(this.cachedLocationPresetsUpdateTime) > 30
         ){
             return this.notionClient.databases.query({
                 database_id: this.presetDbId,
@@ -102,8 +131,8 @@ class NotionClient {
             .then((r) => r.results.map(mapNotionItemToLocationPreset))
             .then((rs) => {
                 this.cachedLocationPresets = rs;
-                this.lastUpdateTime = new Date();
-                return rs;
+                this.cachedLocationPresetsUpdateTime = new Date();
+                return this.cachedLocationPresets;
             });
         } else {
             return this.cachedLocationPresets;
@@ -128,8 +157,37 @@ class NotionClient {
                     , locationPresets: res[1]
                 }
             });
-
     }
+
+
+    getRedditPostRuns = async ():Promise<RedditPostRun[]> => {
+        if(!this.redditDbId){ throw 'No reddit posts db set'}
+
+        // This is mainly to keep the heat of the reddit API during local development.
+        if(!this.cachedRedditPosts 
+            || this.cachedRedditPosts.length === 0
+            || getMinutesAgo(this.cachedRedditPostsUpdateTime) > 1
+        ){
+            return this.notionClient.databases.query({
+                database_id: this.redditDbId,
+                filter: {
+                property: "active",
+                checkbox: {
+                    equals: true,
+                },
+                },
+            })
+            .then((r) => r.results.map(mapNotionItemToRedditPostRun))
+            .then((rs) => {
+                this.cachedRedditPosts = rs;
+                this.cachedRedditPostsUpdateTime = new Date();
+                return rs;
+            });
+        } else {
+            return this.cachedRedditPosts;
+        }
+    }
+
 }
 
 

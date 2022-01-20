@@ -1,7 +1,9 @@
 type RedditPostRun = {
     subreddit:string // eg newzealand
-    mainUrlParam:string
+    primaryUrlParam:string
     textUrlParams:string[]
-    submissionTitleQuery?:string // For commenting on threads
-    flare?:string // Not yet implemented
+    postTitle?:string
+    postId?:string
+    //submissionTitleQuery?:string // For commenting on threads
+    flareId?:string // Not yet implemented
 }

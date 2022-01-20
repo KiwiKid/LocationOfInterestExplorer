@@ -5,8 +5,8 @@ import { LocationOfInterest } from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
 import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate, onlyToday} from "../DateHandling";
-import LocationGroup from "../LocationGroup";
-import { createLocationGroups, getLocationPresetPrimaryCity, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
+import { LocationGroup, createLocationGroups }  from "../LocationGroup";
+import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "../LocationSummaryDateDisplay";
 import LocationInfoGroup from "./LocationInfoGroup";
 

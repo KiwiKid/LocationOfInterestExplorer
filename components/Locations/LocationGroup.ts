@@ -1,5 +1,7 @@
 
+import { Dictionary } from 'lodash';
 import { LocationOfInterest } from '../types/LocationOfInterest'
+import { asAtDateAlwaysNZ } from './DateHandling';
 import { getPrintableLocationOfInterestString, mostRecentlyAdded } from './LocationObjectHandling';
 
 class LocationGroup {
@@ -18,7 +20,7 @@ class LocationGroup {
     pushLocation(location:LocationOfInterest){
         this.locations.push(location);
         const mostRecentExisting = this.locations.sort(mostRecentlyAdded)[0]
-        if(mostRecentExisting.added > location.added){
+        if(!this.mostRecent || mostRecentExisting.added > this.mostRecent){
             this.mostRecent = location.added;
         }
     }
@@ -38,7 +40,40 @@ class LocationGroup {
         
     totalLocations = () => this.locations.length
 
-    toString = (showCount:boolean, showDate?:boolean) => `${showCount ? `${this.totalLocations()} - ` : ''}New Locations in ${this.locationPreset.title} ${this.locations.reduce((prev,curr) => prev += getPrintableLocationOfInterestString(curr, showDate ? true : false), '')}`
+    toTitleString = (showTitleCount:boolean,publishTime?:Date) => `${showTitleCount ? `${this.totalLocations()} ` : ''}New Locations in ${this.locationPreset.title}${publishTime ? ` ${asAtDateAlwaysNZ(publishTime)}`: ''}`
+
+    toString = (showTitleCount:boolean, showDate:boolean, publishTime?:Date) => `${this.toTitleString(showTitleCount,publishTime)}:\n\n${this.locations.reduce((prev,curr) => `${prev} ${getPrintableLocationOfInterestString(curr, showDate ? true : false)}`, '')}\n${this.toUrl()}\n\n`
+
+    toUrl = () => `https://nzcovidmap.org/loc/${this.locationPreset.urlParam}`
 }
 
-export default LocationGroup
+const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]) => {
+    return locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0]
+  }
+
+const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
+    const res:Dictionary<LocationGroup> = {};
+    const others = new LocationGroup("Others", locationPresets.filter((lp) => lp.urlParam === 'all')[0]);
+    
+    locations.forEach((l) => {
+      const preset = getMatchingLocationPreset(l, locationPresets);
+      console.log(`${preset ? preset.urlParam : 'none'} -- ${l.city}`)
+  
+      if(!preset){
+        others.pushLocation(l);
+        return;
+      }
+  
+      if(preset && !res[preset.urlParam]){
+        res[preset.urlParam] = new LocationGroup(preset.title, preset)
+      }
+  
+      res[preset.urlParam].pushLocation(l);
+    })
+    if(others.locations.length > 0){
+        res["Others"] = others;
+    }
+    return Object.keys(res).map((r) => res[r]);
+  }
+
+export { LocationGroup, createLocationGroups }

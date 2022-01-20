@@ -13,7 +13,7 @@ import { getTodayLocationSummary } from '../../../components/Locations/info/Toda
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
 import RedditPostRunResult from '../../../components/Locations/APIClients/RedditPostRunResult';
-import LocationGroup from '../../../components/Locations/LocationGroup';
+import { LocationGroup }  from '../../../components/Locations/LocationGroup';
 import { resolve } from 'path/posix';
 
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
@@ -30,12 +30,12 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
     {  
         subreddit: 'sircmpwn' //wellington
         , textUrlParams: ['wellington']
-        , mainUrlParam: 'wellington'
+        , primaryUrlParam: 'wellington'
      },
      {
         subreddit: 'sircmpwn' //auckland
         , textUrlParams: ['auckland']
-        , mainUrlParam: 'auckland'
+        , primaryUrlParam: 'auckland'
      }/*,
      {
         subreddit: 'sircmpwn' //queenstown
