@@ -40,7 +40,7 @@ class LocationGroup {
         
     totalLocations = () => this.locations.length
 
-    toTitleString = (showTitleCount:boolean,publishTime?:Date) => `${showTitleCount ? `${this.totalLocations()} ` : ''}New Locations in ${this.locationPreset.title}${publishTime ? ` ${asAtDateAlwaysNZ(publishTime)}`: ''}`
+    toTitleString = (showTitleCount:boolean,publishTime?:Date) => `${showTitleCount ? `${this.totalLocations()} ` : ''}New Locations in ${this.city}${publishTime ? ` ${asAtDateAlwaysNZ(publishTime)}`: ''}`
 
     toString = (showTitleCount:boolean, showDate:boolean, publishTime?:Date) => `${this.toTitleString(showTitleCount,publishTime)}:\n\n${this.locations.reduce((prev,curr) => `${prev} ${getPrintableLocationOfInterestString(curr, showDate ? true : false)}`, '')}\n${this.toUrl()}\n\n`
 
@@ -57,7 +57,6 @@ const createLocationGroups = (locations:LocationOfInterest[],locationPresets:Loc
     
     locations.forEach((l) => {
       const preset = getMatchingLocationPreset(l, locationPresets);
-      console.log(`${preset ? preset.urlParam : 'none'} -- ${l.city}`)
   
       if(!preset){
         others.pushLocation(l);

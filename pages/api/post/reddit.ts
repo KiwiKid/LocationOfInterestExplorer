@@ -93,7 +93,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         })*/
 
         const isInteresting = (runs:RedditPostRunResult) => {
-            if(runs.isSuccess && runs.isSkipped){ return false}
+           // if(runs.isSuccess && runs.isSkipped){ return false}
             return true;
         }
         const todaysLocationGroups:LocationGroup[] = createLocationGroups(todaysLocations, settings.locationPresets);
@@ -109,7 +109,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
                 if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
 
-                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam)
+                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
                 if(matchingLocationGroups.length === 0){
 
                     return new RedditPostRunResult(true, false, true, run);
@@ -137,13 +137,20 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 return new Promise<RedditPostRunResult>((resolve, reject) => resolve(fakeRes));*/
             
             }catch(err){
-                return new RedditPostRunResult(false, false, true, run, undefined, err);
+                return new RedditPostRunResult(false, false, true, run, undefined, undefined, err);
             }
         }))
 
         const runs = await subRedditPosts;
 
-        runs.forEach((sp) => client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate, sp.run.postTitle, sp.postId))
+        runs.forEach((sp) => {
+            if(sp.isSuccess && sp.postTitle && sp.postId && sp.run.notionPageId){
+                console.log('sp.postTitle   '+ sp.postTitle)
+                client.setRedditPostProcessedSuccess(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
+            }else{
+                client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
+            }
+        })
         
         res.status(200).json((runs).filter(isInteresting)); 
     }

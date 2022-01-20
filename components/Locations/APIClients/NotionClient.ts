@@ -1,10 +1,7 @@
 
 
 import { Client } from '@notionhq/client'
-import { last } from 'lodash';
-import { Touchscreen } from 'puppeteer-core';
 import { getMinutesAgo, removeStringEnds } from '../../utils/utils';
-import RedditPostRunResult from './RedditPostRunResult';
 
 const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
 
@@ -194,16 +191,11 @@ class NotionClient {
         }
     }
 
-    setRedditPostProcessed = async (notionPageId:string, checkTime:Date, postTitle?:string, postId?:string):Promise<void> => { 
+    setRedditPostProcessed = async (notionPageId:string, checkTime:Date):Promise<void> => { 
 
         let newProps:any = {};
 
-        newProps['lastCheckTime'] = checkTime.toISOString();
-
-        if(postTitle || postId){
-            newProps['currentPostTitle'] = postTitle;
-            newProps['currentPostId'] = postId;
-        }
+        newProps['lastCheckTime'] = getNotionRichTextObject(checkTime.toISOString())
 
         return this.notionClient.pages.update({
             page_id: notionPageId,
@@ -211,6 +203,24 @@ class NotionClient {
         }).then(() => { return; });
     }
 
+    setRedditPostProcessedSuccess = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
+
+        return this.notionClient.pages.update({
+            page_id: notionPageId,
+            properties: {
+                "currentPostTitle": getNotionRichTextObject(postTitle),
+                "currentPostId": getNotionRichTextObject(postId),
+                "lastCheckTime": getNotionRichTextObject(checkTime.toISOString())
+            }
+        }).then(() => { return; });
+    }
+
+
+
+}
+
+const getNotionRichTextObject = (value:string) => {
+    return { rich_text: [{ text: { content: value } }]}
 }
 
 

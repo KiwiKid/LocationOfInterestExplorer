@@ -79,26 +79,20 @@ class RedditClient {
     }
 */
 
+
     updateRedditSubmissions = async (run:RedditPostRun, title:string, text:string):Promise<RedditPostRunResult> => {
         try{ 
 
             if(run.postId){
                 console.log(`updateRedditSubmissions - edit`);
-                const sub = this.r.getSubmission(run.postId);
-
-                return sub.edit(text).then((rr:any):RedditPostRunResult => new RedditPostRunResult(true, true, false, run, sub.id, undefined)); 
-
+                return await this.r.getSubmission(run.postId).edit(text).then((sub:Submission) => processRedditSubmission(run, sub, title));
             } else{
                 console.log(`updateRedditSubmissions - submitSelfpost`);
-                    const newSubId = await this.r.submitSelfpost({
-                        subredditName: run.subreddit
-                        , title: title
-                        , text: text
-                    }).id;
-                    
-                // .then((newSub:Submission>):RedditPostRunResult => {
-                console.log('new post'+newSubId);
-                return new RedditPostRunResult(true, false, false, run, newSubId, title);       
+                return await this.r.submitSelfpost({
+                    subredditName: run.subreddit
+                    , title: title
+                    , text: text
+                }).then((sub:Submission) => processRedditSubmission(run, sub, title));
             }
         
         }catch(err){
@@ -107,6 +101,10 @@ class RedditClient {
             return new RedditPostRunResult(false, false, true, run, undefined, undefined, err); //{ isSuccess: false, isUpdate: false, subreddit: run.subreddit, error: err }
         }
     }
+}
+
+const processRedditSubmission = async (run:RedditPostRun, sub:Submission, title:string):Promise<RedditPostRunResult> => { 
+    return new RedditPostRunResult(true, false, false, run, title, sub.name);
 }
 
 export default RedditClient;

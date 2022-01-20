@@ -15,14 +15,16 @@ class RedditPostRunResult {
     error:any
     createdDate:Date
 
-    constructor (isSuccess:boolean,isUpdate:boolean,isSkipped:boolean, run:RedditPostRun, submission:Submission|null = null, error:any = null){
+    constructor (isSuccess:boolean,isUpdate:boolean,isSkipped:boolean, run:RedditPostRun, postTitle?:string, postId?:string, error:any = null){
         this.isSuccess = isSuccess;
         this.isSkipped = isSkipped;
         this.isUpdate = isUpdate;
         this.run = run;
-        if(submission){
-            this.postTitle = submission.title;
-            this.postId = submission.id;
+        if(postTitle){
+            this.postTitle = postTitle;
+        }
+        if(postId){
+            this.postId = postId;
         }
         if(error){
             this.error = error;
