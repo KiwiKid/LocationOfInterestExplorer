@@ -69,6 +69,7 @@ const createLocationGroups = (locations:LocationOfInterest[],locationPresets:Loc
   
       res[preset.urlParam].pushLocation(l);
     })
+    
     if(others.locations.length > 0){
         res["Others"] = others;
     }
