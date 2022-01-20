@@ -1,7 +1,7 @@
 import { GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
-import { NiceFullDate } from "../components/Locations/DateHandling";
+import { NiceFullAlwaysNZDate, NiceFullDate } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
@@ -44,8 +44,29 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings, reddit
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
 
-        <div>{JSON.stringify(redditPostRuns)}</div>
-
+        <div className="grid grid-cols-5">
+            <th>notionPageId</th>
+            <th>subreddit</th>
+            <th>primaryUrlParam</th>
+            <th>textUrlParams</th>
+            <th>flareId</th>
+            {redditPostRuns.map((rpr) => {
+                return (<>
+                        <div>{rpr.notionPageId}</div>
+                        <div>{rpr.subreddit}</div>
+                        <div>{rpr.primaryUrlParam}</div>
+                        <div>{rpr.textUrlParams}</div>
+                        <div>{rpr.flareId}</div>
+                        <div className="col-span-full border-black border-4">
+                            Checked:<div><NiceFullAlwaysNZDate date={new Date(rpr.lastCheckTime)}/></div>
+                            Edited: <div><NiceFullAlwaysNZDate date={new Date(rpr.lastEditTime)}/></div>
+                            <div>{rpr.postId}</div>
+                            <div>{rpr.postTitle}</div>
+                        </div>
+                    </>
+                )
+            })}
+        </div>
         {/*
         <LocationSettingsContext.Consumer>
             {locationSettings => 

@@ -17,21 +17,27 @@ const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
 }
 
 const getNotionRichText = (notionParam:any):string => {
-    return notionParam.rich_text[0].plain_text;
+    return notionParam.rich_text.length > 0 && notionParam.rich_text[0].plain_text ? notionParam.rich_text[0].plain_text : '';
 }
 
+// "[bla bla,another bla]" => ["bla bla", "another bla"]
+const getNotionHackyArray = (notionParam:any):string[] => removeStringEnds(getNotionRichText(notionParam)).split(',')
 
 const mapNotionItemToRedditPostRun = (notionRow:any):RedditPostRun => {
 
     const props = notionRow.properties;
     return {
-        primaryUrlParam: 'newzealand',
-        subreddit: 'newzealand',
-        textUrlParams: ['all'],
+        primaryUrlParam: getNotionRichText(props.primaryUrlParam) ,
+        subreddit: getNotionRichText(props.subreddit),
+        textUrlParams: getNotionHackyArray(props.textUrlParams),
+        postId: getNotionRichText(props.currentPostId),
+        postTitle: getNotionRichText(props.currentPostTitle),
+        notionPageId: notionRow.id,
+        lastCheckTime: getNotionRichText(props.lastCheckTime)
        /* showInDrawer: props.showInDrawer.checkbox,
         lat: props.lat.number,
         lng: props.lng.number,
-        matchingMohCityString: removeStringEnds(getNotionRichText(props.matchingMohCityString)).split(',') ,
+        matchingMohCityString:  ,
         title: getNotionRichText(props.cityTitle),
         urlParam: getNotionRichText(props.urlParam),
         zoom: props.zoom.number*/
@@ -46,7 +52,7 @@ const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
         showInDrawer: props.showInDrawer.checkbox,
         lat: props.lat.number,
         lng: props.lng.number,
-        matchingMohCityString: removeStringEnds(getNotionRichText(props.matchingMohCityString)).split(',') ,
+        matchingMohCityString: getNotionHackyArray(props.matchingMohCityString),
         title: getNotionRichText(props.cityTitle),
         urlParam: getNotionRichText(props.urlParam),
         zoom: props.zoom.number
@@ -186,6 +192,23 @@ class NotionClient {
         } else {
             return this.cachedRedditPosts;
         }
+    }
+
+    setRedditPostProcessed = async (notionPageId:string, checkTime:Date, postTitle?:string, postId?:string):Promise<void> => { 
+
+        let newProps:any = {};
+
+        newProps['lastCheckTime'] = checkTime.toISOString();
+
+        if(postTitle || postId){
+            newProps['currentPostTitle'] = postTitle;
+            newProps['currentPostId'] = postId;
+        }
+
+        return this.notionClient.pages.update({
+            page_id: notionPageId,
+            properties: newProps
+        }).then(() => { return; });
     }
 
 }
