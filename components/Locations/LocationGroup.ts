@@ -49,7 +49,7 @@ class LocationGroup {
 
 const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]) => {
     return locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0]
-  }
+}
 
 const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
     const res:Dictionary<LocationGroup> = {};

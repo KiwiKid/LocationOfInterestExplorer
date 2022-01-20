@@ -3,10 +3,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
 import { onlyToday, startOfDay } from '../../components/Locations/DateHandling';
 import { requestLocations } from '../../components/Locations/MoHLocationClient/requestLocations';
-import { applyLocationOverrides, createLocationGroups, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
+import { applyLocationOverrides, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
 import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
 import { LocationOfInterest } from '../../components/types/LocationOfInterest';
 import NotionClient from '../../components/Locations/APIClients/NotionClient';
+import { createLocationGroups } from '../../components/Locations/LocationGroup';
 
 type Summary = {
     todayTitle: string
