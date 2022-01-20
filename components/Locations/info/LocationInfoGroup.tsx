@@ -64,7 +64,6 @@ const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:
                 <div>to</div>
                 <div>event</div>
                 <div>location</div>
-
                 <div>city</div>
                 <div>exposureType</div>
                 <div>advice</div>

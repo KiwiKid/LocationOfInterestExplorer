@@ -31,12 +31,12 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
         subreddit: 'sircmpwn' //wellington
         , textUrlParams: ['wellington']
         , mainUrlParam: 'wellington'
-     }/*,
+     },
      {
         subreddit: 'sircmpwn' //auckland
         , textUrlParams: ['auckland']
         , mainUrlParam: 'auckland'
-     },
+     }/*,
      {
         subreddit: 'sircmpwn' //queenstown
         , textUrlParams: ['queenstown']
