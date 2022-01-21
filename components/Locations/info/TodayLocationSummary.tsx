@@ -1,5 +1,6 @@
+import dayjs from "dayjs";
 import CopyBox from "../../utils/CopyBox";
-import { asAtDateAlwaysNZ, onlyToday, startOfDayNZ, startOfDayFormatted, subtractHours } from "../DateHandling";
+import { asAtDateAlwaysNZ, onlyToday, startOfDayNZ, startOfDayFormatted, subtractHours, dateDebugging } from "../DateHandling";
 import { LocationGroup }  from "../LocationGroup";
 import { processGroupKey } from "./LocationInfoGrid";
 
@@ -16,23 +17,8 @@ const getTodayLocationSummary = (
     , publishTime: Date
     , locationSettings: LocationSettings
     , displayTotal: boolean
-) => `${displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : ''} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${locationGroups
+) => `${displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : ''} ${dateDebugging(new Date())}  New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${dateDebugging(dayjs().tz('Pacific/Auckland').toDate())}${locationGroups
     .map((lg) => lg.toString(true, false, undefined))
-    //.filter((keyObj:any) => onlyToday(keyObj.date))
-    
-    /*
-    TODO
-    .sort((a, b) => {
-        if(a.preset.quicklink === undefined || b.quicklink === undefined || a.quicklink?.urlParam === 'all'){
-             return 0
-        }
-
-        if(a.city === 'Others'){ return 1 }
-        if(b.city === 'Others'){ return -1 }
-        // @ts-ignore
-        return a.quicklink?.lat > b.quicklink?.lat ? -1 : 1
-    })*/
-    //.map((keyObj:LocationGroupKey) => getPrintableLocationOfInterestGroupString(keyObj, locationGroups.locations, hardcodedURL, publishTime, false, locationSettings.locationPresets))
     .join(`\n`)}`
 
 const getTotalLocationsToday = (locationGroups:any) => {
