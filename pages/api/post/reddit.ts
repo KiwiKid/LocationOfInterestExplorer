@@ -167,7 +167,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }
             })
         }catch(err){
-            res.status(500).end();
+            console.error(err);
+            res.status(500).json({ error: err});
         }
         if(req.method === 'OPTIONS'){
             res.setHeader("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET")
