@@ -52,6 +52,16 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
   //  return client.updateRedditSubmissions(sp)
 //}
 
+const oldestCreateDateFirst = (a:RedditPostRun,b:RedditPostRun):number => {
+    if(!a || !a.lastCheckTime){
+        return -1;
+    }
+    if(!b || !b.lastCheckTime){
+        return 1;
+    }
+    return new Date(a.lastCheckTime) > new Date(b.lastCheckTime) ? -1 : 1;
+}
+
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
     if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.error('no process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL'); throw 'err'}
@@ -75,7 +85,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     
         return {
             key: keyString,
-            date: new Date(keyString.substring(0,keyString.indexOf('|'))),
+            date: new Date(keyString.substring(0,keyStr ing.indexOf('|'))),
             city: cityParam,
             quicklink: qLink
         }
@@ -103,7 +113,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
 
 
-        var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(redditPosts.map((run) => {
+        var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(redditPosts.sort(oldestCreateDateFirst).map((run) => {
             try{
                 
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
@@ -148,7 +158,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             if(sp.isSuccess){
                 if(sp.postTitle && sp.postId && sp.run.notionPageId){
                     console.log('sp.postTitle   '+ sp.postTitle)
-                    client.setRedditPostProcessedSuccess(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
+                    client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
                 }else{
                     client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
                 }

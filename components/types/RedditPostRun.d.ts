@@ -5,7 +5,7 @@ type RedditPostRun = {
     textUrlParams:string[]
     postTitle?:string
     postId?:string
-    lastCheckTime:string
+    lastCheckTime:Date|null
     //submissionTitleQuery?:string // For commenting on threads
     flareId?:string // Not yet implemented
 }

@@ -20,6 +20,10 @@ const getNotionRichText = (notionParam:any):string => {
 // "[bla bla,another bla]" => ["bla bla", "another bla"]
 const getNotionHackyArray = (notionParam:any):string[] => removeStringEnds(getNotionRichText(notionParam)).split(',')
 
+const getNotionDate = (notionParam:any):Date|null => {
+    return notionParam.date ? notionParam.date.start : null
+}
+
 const mapNotionItemToRedditPostRun = (notionRow:any):RedditPostRun => {
 
     const props = notionRow.properties;
@@ -30,7 +34,7 @@ const mapNotionItemToRedditPostRun = (notionRow:any):RedditPostRun => {
         postId: getNotionRichText(props.currentPostId),
         postTitle: getNotionRichText(props.currentPostTitle),
         notionPageId: notionRow.id,
-        lastCheckTime: getNotionRichText(props.lastCheckTime)
+        lastCheckTime: getNotionDate(props.lastCheckTime)
        /* showInDrawer: props.showInDrawer.checkbox,
         lat: props.lat.number,
         lng: props.lng.number,
@@ -203,7 +207,7 @@ class NotionClient {
         }).then(() => { return; });
     }
 
-    setRedditPostProcessedSuccess = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
+    setRedditPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
 
         return this.notionClient.pages.update({
             page_id: notionPageId,

@@ -24,26 +24,42 @@ const trySetLastVisitTime = () => {
     
 }
 
-type InfoPageProps = {
+
+
+
+type SocialPostsProps = {
     publishTimeUTC: string;
     locationSettings: LocationSettings;
-    redditPostRuns: RedditPostRun[]
+    redditPostRuns: RedditPostRun[];
+    reddit:string
 }
 
-const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings, redditPostRuns}) => {
+const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, redditPostRuns, reddit}) => {
 
     const publishTime = new Date(publishTimeUTC);
     
     const [lastVisitTime, setLastVisitTime] = useState<Date|undefined>(undefined);
+    
+    const [redditRunResults, setRedditRunResults] = useState<RedditPostRunResult[]>([]);
 
 
+
+    const refreshReddit = async (reddit:string):Promise<void> => {
+        fetch(`https://nzcovidmap.org/api/post/reddit?pass=${reddit}`)
+            .then((res) => res.json())
+            .then((res) => {
+                setRedditRunResults(res)
+            })
+                    
+                         
+    }
     return (
         <>
         <NiceFullDate date={publishTime}/><br/>
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
-
+        
         <div className="grid grid-cols-5">
             <th>notionPageId</th>
             <th>subreddit</th>
@@ -58,14 +74,30 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings, reddit
                         <div>{rpr.textUrlParams}</div>
                         <div>{rpr.flareId}</div>
                         <div className="col-span-full border-black border-4">
-                            Checked:<div><NiceFullAlwaysNZDate date={new Date(rpr.lastCheckTime)}/></div>
-                            <div>{rpr.postId}</div>
-                            <div>{rpr.postTitle}</div>
+                            <div className="col-span-full">Runs:</div>
+                            <div >
+                            {rpr.lastCheckTime ? <>Checked:<div><NiceFullAlwaysNZDate date={new Date(rpr.lastCheckTime)}/></div></> : null}
+                                <div>{rpr.postId}</div>
+                                <div>{rpr.postTitle}</div>
+                            </div>
                         </div>
                     </>
                 )
             })}
         </div>
+        <div>
+            <button onClick={() => refreshReddit(reddit)}>Reddit Runs:</button>
+            {redditRunResults.map((rr) => {
+                <>
+                <div>{rr.success}</div>
+                <div>{rr.subreddit}</div>
+                <div>{rr.isSkipped}</div>
+                <div>{rr.isUpdate}</div>
+                <div>{rr.postId}</div>
+                <div>{JSON.stringify(rr)}</div>
+                </>
+            })}
+            </div>
         {/*
         <LocationSettingsContext.Consumer>
             {locationSettings => 
@@ -108,10 +140,11 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
        props:{
          publishTimeUTC: new Date().toUTCString(),
          locationSettings: await settings,
-         redditPostRuns: await redditPostRuns
+         redditPostRuns: await redditPostRuns,
+         reddit: process.env.SOCIAL_POST_PASS
         }
     }
 }
     
 
-export default Info;
+export default SocialPosts;
