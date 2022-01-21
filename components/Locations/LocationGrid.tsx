@@ -6,7 +6,7 @@ import { LocationOfInterest } from '../types/LocationOfInterest';
 import LargeLocationGrid from './LargeLocationGrid';
 import { Sort } from '../types/Sort';
 import Location from './Location';
-import { startOfDay } from './DateHandling';
+import { startOfDayNZ } from './DateHandling';
 
 
 type Props = {
@@ -46,7 +46,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
             .map((l:LocationOfInterestCalculated) => {
                 return l
             })
-            .groupBy((lc) => startOfDay(lc.loi.start))
+            .groupBy((lc) => startOfDayNZ(lc.loi.start))
             .value();
 
     function isOpen(loc:LocationOfInterest){

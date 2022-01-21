@@ -1,7 +1,7 @@
 // Libs
 import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
-import { onlyToday, startOfDay } from '../../components/Locations/DateHandling';
+import { onlyToday, startOfDayNZ } from '../../components/Locations/DateHandling';
 import { requestLocations } from '../../components/Locations/MoHLocationClient/requestLocations';
 import { applyLocationOverrides, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
 import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';

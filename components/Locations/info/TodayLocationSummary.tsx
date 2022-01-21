@@ -1,5 +1,5 @@
 import CopyBox from "../../utils/CopyBox";
-import { asAtDateAlwaysNZ, onlyToday, startOfDay, startOfDayFormatted, subtractHours } from "../DateHandling";
+import { asAtDateAlwaysNZ, onlyToday, startOfDayNZ, startOfDayFormatted, subtractHours } from "../DateHandling";
 import { LocationGroup }  from "../LocationGroup";
 import { processGroupKey } from "./LocationInfoGrid";
 

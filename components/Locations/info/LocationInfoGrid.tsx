@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { LocationOfInterest } from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
-import { startOfDay , NiceFullDate, NiceTimeFromNow, NiceDate, onlyToday} from "../DateHandling";
+import { startOfDayNZ , NiceFullDate, NiceTimeFromNow, NiceDate, onlyToday} from "../DateHandling";
 import { LocationGroup, createLocationGroups }  from "../LocationGroup";
 import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "../LocationSummaryDateDisplay";

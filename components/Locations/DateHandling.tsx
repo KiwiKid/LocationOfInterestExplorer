@@ -31,8 +31,12 @@ const NiceFullDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('D 
 // Use when generating dates for screenshots
 const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).tz('Pacific/Auckland').format('D MMM h:mm A') : 'no date'}</>
 
-const startOfDay = (date:Date|Dayjs) => {
+const startOfDayNZ = (date:Date|Dayjs) => {
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format();
+}
+
+const todayNZ = () => {
+    return dayjs().tz("Pacific/Auckland");
 }
 
 const subtractHours = (a:Dayjs, hours:number) => {
@@ -40,7 +44,7 @@ const subtractHours = (a:Dayjs, hours:number) => {
 }
 // (Debugging: allow more locations to be considered today -  "dayjs().subtract(24,'hours')")
 const onlyToday = (a:Dayjs|Date):boolean => {
-    return startOfDay(a) === startOfDay(dayjs().tz("Pacific/Auckland"));  //subtractHours(dayjs(),24) < dayjs(a)
+    return startOfDayNZ(a) === startOfDayNZ(dayjs().tz("Pacific/Auckland"));  //subtractHours(dayjs(),24) < dayjs(a)
 };
 
 
@@ -54,4 +58,4 @@ const releaseDateAndCity = (date:Date) => {
 const asAtDateAlwaysNZ = (date:Date) => `(as at ${new Intl.DateTimeFormat('en-NZ', {timeStyle: 'short'}).format(date)} ${new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(date)})`
 
 
-export {onlyToday, subtractHours, NiceTimeFromNow, asAtDateAlwaysNZ, NiceDateWithTime,NiceFullDate,NiceFullAlwaysNZDate,NiceDate, startOfDay, startOfDayFormatted, NiceShortTime}
+export {onlyToday, subtractHours, NiceTimeFromNow, asAtDateAlwaysNZ, NiceDateWithTime,NiceFullDate,NiceFullAlwaysNZDate,NiceDate, startOfDayNZ,todayNZ, startOfDayFormatted, NiceShortTime}

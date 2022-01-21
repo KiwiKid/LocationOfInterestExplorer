@@ -4,6 +4,8 @@ import getConfig from 'next/config';
 import { getNodeEnv } from '../../utils/getNodeEnv';
 import { debug, error } from 'console';
 import RedditPostRunResult from './RedditPostRunResult';
+import { startOfDayNZ, todayNZ } from '../DateHandling';
+import dayjs from 'dayjs';
 
 
 class RedditClient { 
@@ -82,10 +84,11 @@ class RedditClient {
 
     updateRedditSubmissions = async (run:RedditPostRun, title:string, text:string):Promise<RedditPostRunResult> => {
         try{ 
-
-            if(run.postId){
+            const isUpdate = run.postId && run.lastCheckTime && startOfDayNZ(run.lastCheckTime) === startOfDayNZ(todayNZ())
+            if(isUpdate){
                 console.log(`updateRedditSubmissions - edit`);
                 return await this.r.getSubmission(run.postId).edit(text).then((sub:Submission) => processRedditSubmission(true, true, false, run, sub, title));
+                //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
             } else{
                 console.log(`updateRedditSubmissions - submit`);
                 return await this.r.submitSelfpost({
@@ -93,6 +96,7 @@ class RedditClient {
                     , title: title
                     , text: text
                 }).then((sub:Submission) => processRedditSubmission(true, false, false, run, sub, title));
+                //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
             }
         
         }catch(err){

@@ -8,7 +8,7 @@ import NotionClient from '../../../components/Locations/APIClients/NotionClient'
 import { requestLocations } from '../../../components/Locations/MoHLocationClient/requestLocations';
 import { LocationOfInterest } from '../../../components/types/LocationOfInterest';
 import { applyLocationOverride, applyLocationOverrides, getLocationInfoGroupTitle, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
-import { onlyToday, startOfDay } from '../../../components/Locations/DateHandling';
+import { onlyToday, startOfDayNZ } from '../../../components/Locations/DateHandling';
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
@@ -159,10 +159,13 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 // Unsuccessful attempts should keep the existing date and be updated again
                 if(sp.isSuccess){
                     if(sp.postTitle && sp.postId && sp.run.notionPageId){
-                        console.log('sp.postTitle   '+ sp.postTitle)
-                        client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
+                        console.log('Setting post processing updated title: '+ sp.postTitle)
+                        
+                        //client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
                     }else{
-                        client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
+                        console.log('Setting post processing (no change): '+ sp.postTitle)
+
+                        //client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
                     }
                 }
             })
@@ -196,7 +199,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
     var groupedLocations = _.groupBy(todayLocations
         , function(lc){ 
-            return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(PRESET_LOCATIONS, lc.city)}`
+            return `${startOfDayNZ(lc.added)}|${getLocationPresetPrimaryCity(PRESET_LOCATIONS, lc.city)}`
         });
 
         
