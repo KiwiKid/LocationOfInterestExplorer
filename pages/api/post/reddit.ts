@@ -161,11 +161,11 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     if(sp.postTitle && sp.postId && sp.run.notionPageId){
                         console.log('Setting post processing updated title: '+ sp.postTitle)
                         
-                        //client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
+                        client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
                     }else{
                         console.log('Setting post processing (no change): '+ sp.postTitle)
 
-                        //client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
+                        client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
                     }
                 }
             })
