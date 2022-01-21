@@ -169,10 +169,13 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         }catch(err){
             res.status(500).end();
         }
-
+        if(req.method === 'OPTIONS'){
+            res.setHeader("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET")
+        }
         
-        
-        res.status(200).json((runs).filter(isInteresting)); 
+        res.status(200)
+                .setHeader("Access-Control-Allow-Origin", "*")
+                .json((runs).filter(isInteresting)); 
     }
 
     //const redditPostResults:RedditPostRunResult[] = 
