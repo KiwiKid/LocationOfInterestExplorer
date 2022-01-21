@@ -16,7 +16,7 @@ const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
 
 /* START - Notion types ==> NZCovidMap types */
 const getNotionRichText = (notionParam:any):string => {
-    return notionParam.rich_text.length > 0 && notionParam.rich_text[0].plain_text ? notionParam.rich_text[0].plain_text : '';
+    return notionParam.rich_text && notionParam.rich_text.length > 0 && notionParam.rich_text[0].plain_text ? notionParam.rich_text[0].plain_text : '';
 }
 
 // "[bla bla,another bla]" => ["bla bla", "another bla"]
