@@ -85,14 +85,14 @@ class RedditClient {
 
             if(run.postId){
                 console.log(`updateRedditSubmissions - edit`);
-                return await this.r.getSubmission(run.postId).edit(text).then((sub:Submission) => processRedditSubmission(run, sub, title));
+                return await this.r.getSubmission(run.postId).edit(text).then((sub:Submission) => processRedditSubmission(true, true, false, run, sub, title));
             } else{
                 console.log(`updateRedditSubmissions - submit`);
                 return await this.r.submitSelfpost({
                     subredditName: run.subreddit
                     , title: title
                     , text: text
-                }).then((sub:Submission) => processRedditSubmission(run, sub, title));
+                }).then((sub:Submission) => processRedditSubmission(true, false, false, run, sub, title));
             }
         
         }catch(err){
@@ -103,8 +103,8 @@ class RedditClient {
     }
 }
 
-const processRedditSubmission = async (run:RedditPostRun, sub:Submission, title:string):Promise<RedditPostRunResult> => { 
-    return new RedditPostRunResult(true, false, false, run, title, sub.name);
+const processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:RedditPostRun, sub:Submission, title:string):Promise<RedditPostRunResult> => { 
+    return new RedditPostRunResult(isSuccess, isUpdate, isSkipped, run, title, sub.name);
 }
 
 export default RedditClient;

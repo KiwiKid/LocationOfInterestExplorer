@@ -70,7 +70,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
         
-        <div className="grid grid-cols-5">
+        <div className="grid grid-cols-5 p-5">
             <th>notionPageId</th>
             <th>subreddit</th>
             <th>primaryUrlParam</th>
@@ -99,7 +99,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             
         </div>
         <button onClick={() => refreshReddit(reddit)}>Reddit Runs ({redditRunResults.length}):</button>
-        <div className="grid grid-cols-7">
+        <div className="grid grid-cols-7 p-5">
             <div>PrimaryUrl</div> 
             <div>Success?</div> 
             <div>Skipped?</div> 
