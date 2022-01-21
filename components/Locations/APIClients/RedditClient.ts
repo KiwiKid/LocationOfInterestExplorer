@@ -91,11 +91,17 @@ class RedditClient {
                 //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
             } else{
                 console.log(`updateRedditSubmissions - submit`);
-                return await this.r.submitSelfpost({
+                const selfPost = this.r.submitSelfpost({
                     subredditName: run.subreddit
                     , title: title
                     , text: text
-                }).then((sub:Submission) => processRedditSubmission(true, false, false, run, sub, title));
+                })
+
+                if(run.flareId){
+                    selfPost.assignFlair({id: run.flareId})
+                }
+                
+                return selfPost.then((sub:Submission) => processRedditSubmission(true, false, false, run, sub, title));
                 //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
             }
         
