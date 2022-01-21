@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime'
 // Libs
 import { NextApiRequest, NextApiResponse } from 'next';
-import _, { rangeRight } from 'lodash';
+import _, { rangeRight, reject } from 'lodash';
 
 import RedditClient from '../../../components/Locations/APIClients/RedditClient';
 import NotionClient from '../../../components/Locations/APIClients/NotionClient';
@@ -128,7 +128,11 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         }
                     }
                     return rr;
-                });
+                }).catch((err) => {
+                    var rrr = new RedditPostRunResult(false, false, true, run, undefined, undefined, err)
+                    reject(rrr);
+                    return rrr;
+                })
 
 
                 resolve(update)
@@ -169,11 +173,21 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
 
         const results:RedditPostRunResult[] = []
+
+        const comeon = await Promise.all(redditPosts.sort(oldestCreateDateFirst).map(async (rp) =>{
+            return new Promise<RedditPostRunResult>(async (resolve, reject) => {
+                try{
+
+                    resolve(await processRedditPostRun(rp));
+                }catch(err){
+                    reject(new RedditPostRunResult(false, false, true, rp, undefined, undefined, err));
+                }
+            })
+        }))
+
+        /*
+        const comeon = redditPosts.sort(oldestCreateDateFirst)*/
         
-        redditPosts.sort(oldestCreateDateFirst).forEach(async (rp) =>{
-            const redditRes = await processRedditPostRun(rp);
-            results.push(redditRes);
-        });
 
         if(req.method === 'OPTIONS'){
             res.setHeader("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET")
@@ -181,7 +195,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
         res.status(200)
                 .setHeader("Access-Control-Allow-Origin", "*")
-                .json((results).filter(isInteresting)); 
+                .json((comeon).filter(isInteresting)); 
     }
 
     //const redditPostResults:RedditPostRunResult[] = 

@@ -87,7 +87,10 @@ class RedditClient {
             const isUpdate = run.postId && run.lastCheckTime && startOfDayNZ(run.lastCheckTime) === startOfDayNZ(todayNZ())
             if(isUpdate){
                 console.log(`updateRedditSubmissions - edit`);
-                return await this.r.getSubmission(run.postId).edit(text).then((sub:Submission) => processRedditSubmission(true, true, false, run, sub, title));
+                return await this.r.getSubmission(run.postId)
+                                    .edit(text)
+                                    .then((sub:Submission) => processRedditSubmission(true, true, false, run, sub, title))
+                                    
                 //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
             } else{
                 console.log(`updateRedditSubmissions - submit`);
