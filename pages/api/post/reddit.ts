@@ -153,17 +153,23 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const runs = await subRedditPosts;
 
-        runs.forEach((sp) => {
-            // Unsuccessful attempts should keep the existing date and be updated again
-            if(sp.isSuccess){
-                if(sp.postTitle && sp.postId && sp.run.notionPageId){
-                    console.log('sp.postTitle   '+ sp.postTitle)
-                    client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
-                }else{
-                    client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
+        try{
+            runs.forEach((sp) => {
+                // Unsuccessful attempts should keep the existing date and be updated again
+                if(sp.isSuccess){
+                    if(sp.postTitle && sp.postId && sp.run.notionPageId){
+                        console.log('sp.postTitle   '+ sp.postTitle)
+                        client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
+                    }else{
+                        client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
+                    }
                 }
-            }
-        })
+            })
+        }catch(err){
+            res.status(500).end();
+        }
+
+        
         
         res.status(200).json((runs).filter(isInteresting)); 
     }

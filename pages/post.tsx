@@ -5,7 +5,7 @@ import { NiceFullAlwaysNZDate, NiceFullDate } from "../components/Locations/Date
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
-import { getHoursAgo, getMinutesAgo } from "../components/utils/utils";
+import { getHardCodedUrl, getHoursAgo, getMinutesAgo } from "../components/utils/utils";
 
 const { Client } = require("@notionhq/client")
 
@@ -31,10 +31,11 @@ type SocialPostsProps = {
     publishTimeUTC: string;
     locationSettings: LocationSettings;
     redditPostRuns: RedditPostRun[];
-    reddit:string
+    reddit:string;
+    hardcodedURL:string
 }
 
-const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, redditPostRuns, reddit}) => {
+const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, redditPostRuns, reddit, hardcodedURL}) => {
 
     const publishTime = new Date(publishTimeUTC);
     
@@ -42,13 +43,16 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
     
     const [redditRunResults, setRedditRunResults] = useState<RedditPostRunResult[]>([]);
 
+    const [error, setError] = useState<any>(null);
 
 
     const refreshReddit = async (reddit:string):Promise<void> => {
-        fetch(`https://nzcovidmap.org/api/post/reddit?pass=${reddit}`)
+        return fetch(`${hardcodedURL}/api/post/reddit?pass=${reddit}`)
             .then((res) => res.json())
             .then((res) => {
                 setRedditRunResults(res)
+            }).catch((er) => {
+                setError(er)
             })
                     
                          
@@ -84,6 +88,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                     </>
                 )
             })}
+            
         </div>
         <div>
             <button onClick={() => refreshReddit(reddit)}>Reddit Runs:</button>
@@ -98,6 +103,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                 </>
             })}
             </div>
+            {error && <div>{JSON.stringify(error)}</div>}
         {/*
         <LocationSettingsContext.Consumer>
             {locationSettings => 
@@ -141,7 +147,8 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
          publishTimeUTC: new Date().toUTCString(),
          locationSettings: await settings,
          redditPostRuns: await redditPostRuns,
-         reddit: process.env.SOCIAL_POST_PASS
+         reddit: process.env.SOCIAL_POST_PASS,
+         hardcodedURL: getHardCodedUrl()
         }
     }
 }
