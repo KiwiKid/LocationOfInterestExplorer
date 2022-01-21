@@ -18,7 +18,7 @@ type Props = {
 }
 
 export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
-    return startOfDay(loi.start);
+    return startOfDayNZ(loi.start);
     try{
 
         switch(sortField){
