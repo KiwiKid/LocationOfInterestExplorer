@@ -1,7 +1,7 @@
 
 import { Dictionary } from 'lodash';
 import { LocationOfInterest } from '../types/LocationOfInterest'
-import { asAtDateAlwaysNZ } from './DateHandling';
+import { asAtDateAlwaysNZ, startOfDayFormattedNZ } from './DateHandling';
 import { getPrintableLocationOfInterestString, mostRecentlyAdded } from './LocationObjectHandling';
 
 class LocationGroup {
@@ -40,7 +40,7 @@ class LocationGroup {
         
     totalLocations = () => this.locations.length
 
-    toTitleString = (showTitleCount:boolean,publishTime?:Date) => `${showTitleCount ? `${this.totalLocations()} ` : ''}New Locations in ${this.city}${publishTime ? ` ${asAtDateAlwaysNZ(publishTime)}`: ''}`
+    toTitleString = (showTitleCount:boolean,publishTime?:Date) => `${showTitleCount ? `${this.totalLocations()} ` : ''}New Locations in ${this.city}${publishTime ? ` ${startOfDayFormattedNZ(publishTime)}`: ''}`
 
     toString = (showTitleCount:boolean, showDate:boolean, publishTime?:Date) => `${this.toTitleString(showTitleCount,publishTime)}:\n\n${this.locations.reduce((prev,curr) => `${prev} ${getPrintableLocationOfInterestString(curr, showDate ? true : false)}`, '')}\n${this.toUrl()}\n\n`
 

@@ -51,20 +51,33 @@ const dateDebugging = (passedInDate:Date):string => {
     return `${passedInDate}
                 \n\n isOnlyToday: ${onlyToday(passedInDate)}
                 \n\n startOfDayNZ: ${startOfDayNZ(passedInDate)}
-                \n\n todayNZ: ${todayNZ()}
+                \n\n todayNZ: ${asAtDateAlwaysNZ(new Date())}
                 \n\n startOfDayFormatted (direct): ${dayjs().tz("Pacific/Auckland").startOf('day').format('D MMM')}
-                \n\n startOfDayFormatted (via new Date()): ${startOfDayFormatted(new Date())}
+                \n\n startOfDayFormatted (via new Date()): ${startOfDayFormattedNZ(new Date())}
             `;
 }
 
-const startOfDayFormatted = (date:Date) => {
+const startOfDayFormattedNZ = (date:Date) => {
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format('D MMM');
 }
 
 const releaseDateAndCity = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
-const asAtDateAlwaysNZ = (date:Date) => `(as at ${new Intl.DateTimeFormat('en-NZ', {timeStyle: 'short'}).format(date)} ${new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(date)})`
+const asAtDateAlwaysNZ = (date:Date) => `(as at ${dayjs(date).tz("Pacific/Auckland").startOf('day').format('h:mm a D/M/YYY')})`
 
 
-export {dateDebugging, onlyToday, subtractHours, NiceTimeFromNow, asAtDateAlwaysNZ, NiceDateWithTime,NiceFullDate,NiceFullAlwaysNZDate,NiceDate, startOfDayNZ,todayNZ, startOfDayFormatted, NiceShortTime}
+export {
+    onlyToday
+    , subtractHours
+    , NiceTimeFromNow
+    , asAtDateAlwaysNZ
+    , NiceDateWithTime
+    , NiceFullDate
+    , NiceFullAlwaysNZDate
+    , NiceDate
+    , startOfDayNZ
+    , todayNZ
+    , startOfDayFormattedNZ
+    , NiceShortTime
+}
