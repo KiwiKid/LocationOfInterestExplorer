@@ -54,8 +54,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         return axios.get(`/api/post/reddit?pass=${reddit}`)
             .then((res) => {
                 if(res.status == 200){
-                    
-                    setRedditRunResults(res.data)
+                    setRedditRunResults(redditRunResults.concat(res.data));
                 }else{
                     setError(res.data);
                 }
