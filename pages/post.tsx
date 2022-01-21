@@ -115,8 +115,8 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                 <div>{rr.run.primaryUrlParam}</div>
                 <div>{rr.run.textUrlParams}</div>
                 <div>{rr.isSuccess ? 'Success' : 'Failed'}</div>
-                <div>{rr.isSkipped ? '[Skipped]': 'Ran'}</div>
-                <div>{rr.isUpdate ? 'Update' : 'Create'}</div>
+                 <div>{!rr.isSuccess ? '' : rr.isSkipped ? '[Skipped]': 'Ran'}</div>
+                <div>{!rr.isSuccess ? '' : rr.isUpdate ? 'Update' : 'Create'}</div>
                 <div>{rr.postTitle}</div>
                 <div>{rr.postId}</div>
                 <div><NiceFullAlwaysNZDate date={rr.createdDate}/></div>
