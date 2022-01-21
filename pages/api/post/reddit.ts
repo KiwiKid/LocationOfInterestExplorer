@@ -8,7 +8,7 @@ import NotionClient from '../../../components/Locations/APIClients/NotionClient'
 import { requestLocations } from '../../../components/Locations/MoHLocationClient/requestLocations';
 import { LocationOfInterest } from '../../../components/types/LocationOfInterest';
 import { applyLocationOverride, applyLocationOverrides, getLocationInfoGroupTitle, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
-import { onlyToday, startOfDayNZ } from '../../../components/Locations/DateHandling';
+import { dayFormattedNZ, onlyToday, startOfDayNZ } from '../../../components/Locations/DateHandling';
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
@@ -128,7 +128,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
 
 
-                const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(now)}`
+                const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
                 const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
 
 

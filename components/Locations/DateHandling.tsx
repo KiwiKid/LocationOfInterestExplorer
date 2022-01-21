@@ -61,6 +61,10 @@ const startOfDayFormattedNZ = (date:Date) => {
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format('D MMM');
 }
 
+const dayFormattedNZ = (date:Date) => {
+    return dayjs(date).tz("Pacific/Auckland").format('D MMM');
+}
+
 const releaseDateAndCity = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
@@ -80,4 +84,5 @@ export {
     , todayNZ
     , startOfDayFormattedNZ
     , NiceShortTime
+    , dayFormattedNZ
 }
