@@ -54,6 +54,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         return axios.get(`/api/post/reddit?pass=${reddit}`)
             .then((res) => {
                 if(res.status == 200){
+                    
                     setRedditRunResults(res.data)
                 }else{
                     setError(res.data);
@@ -83,11 +84,13 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                         <div>{rpr.textUrlParams}</div>
                         <div>{rpr.flareId}</div>
                         <div className="col-span-full border-black border-4">
-                            <div className="col-span-full">Runs:</div>
-                            <div >
-                            {rpr.lastCheckTime ? <>Checked:<div><NiceFullAlwaysNZDate date={new Date(rpr.lastCheckTime)}/></div></> : null}
-                                <div>{rpr.postId}</div>
-                                <div>{rpr.postTitle}</div>
+                            <div>
+                                <div className="col-span-full">Runs:</div>
+                                <div className="grid grid-cols-3">
+                                {rpr.lastCheckTime ? <div>Checked:<NiceFullAlwaysNZDate date={new Date(rpr.lastCheckTime)}/></div> : null}
+                                    <div>{rpr.postId}</div>
+                                    <div>{rpr.postTitle}</div>
+                                </div>
                             </div>
                         </div>
                     </>
@@ -95,19 +98,27 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             })}
             
         </div>
-        <div className="grid grid-col-6">
-            <button onClick={() => refreshReddit(reddit)}>Reddit Runs:</button>
+        <button onClick={() => refreshReddit(reddit)}>Reddit Runs ({redditRunResults.length}):</button>
+        <div className="grid grid-cols-7">
+            <div>PrimaryUrl</div> 
+            <div>Success?</div> 
+            <div>Skipped?</div> 
+            <div>Update?</div> 
+            <div>title</div> 
+            <div>id</div> 
+            <div>created</div> 
             {redditRunResults.map((rr) => {
-                <>
-                <div>{rr.isSuccess}</div>
-                <div>{rr.isSkipped}</div>
-                <div>{rr.isUpdate}</div>
+                return (<>
+                <div>{rr.run.primaryUrlParam}</div>
+                <div>{rr.isSuccess ? 'Success' : 'Failed'}</div>
+                <div>{rr.isSkipped ? '[Skipped]': 'Ran'}</div>
+                <div>{rr.isUpdate ? 'Update' : 'Create'}</div>
                 <div>{rr.postTitle}</div>
                 <div>{rr.postId}</div>
-                <div>{JSON.stringify(rr)}</div>
-                </>
+                <div><NiceFullAlwaysNZDate date={rr.createdDate}/></div>
+                </>)
             })}
-            </div>
+        </div>
             {error && <div>{JSON.stringify(error)}</div>}
         {/*
         <LocationSettingsContext.Consumer>
