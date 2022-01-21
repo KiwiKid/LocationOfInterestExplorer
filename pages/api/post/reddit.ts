@@ -131,7 +131,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
                 const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
 
-
+                const botFeedbackMsg = `\n\nThis post was made by a bot, please contact this account with any feedback`
 
 
             // if(run.submissionTitleQuery){
@@ -139,7 +139,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             //     return redditClient.updateRedditComment(run, title, text);
             // }
             console.log(`updating submission ${title}`);
-            return redditClient.updateRedditSubmissions(run, title, text);
+            return redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg);
 
                 /*
                 Faking it: 
@@ -151,10 +151,18 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 return new RedditPostRunResult(false, false, true, run, undefined, undefined, err);
             }
         }))
+        const runs:RedditPostRunResult[] = [];
+        try{
+            runs.concat(await subRedditPosts);
+            console.log(`ran ${runs.length} reddit runs`)
+        }catch(err){
+            console.log(err);
+            res.status(500).json({ error: 'Failed in await'});
+            return;
+        }
+        
 
-        const runs = await subRedditPosts;
 
-        console.log(`ran ${runs.length} reddit runs`)
 
         try{
             runs.forEach((sp) => {
