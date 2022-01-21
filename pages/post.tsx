@@ -7,6 +7,7 @@ import LocationSettingsContext from '../components/Locations/LocationSettingsCon
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
 import { getHardCodedUrl, getHoursAgo, getMinutesAgo } from "../components/utils/utils";
 import axios from 'axios'
+import RedditPostRunResult from "../components/Locations/APIClients/RedditPostRunResult";
 
 
 const { Client } = require("@notionhq/client")
@@ -98,10 +99,10 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <button onClick={() => refreshReddit(reddit)}>Reddit Runs:</button>
             {redditRunResults.map((rr) => {
                 <>
-                <div>{rr.success}</div>
-                <div>{rr.subreddit}</div>
+                <div>{rr.isSuccess}</div>
                 <div>{rr.isSkipped}</div>
                 <div>{rr.isUpdate}</div>
+                <div>{rr.postTitle}</div>
                 <div>{rr.postId}</div>
                 <div>{JSON.stringify(rr)}</div>
                 </>
