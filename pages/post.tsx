@@ -60,8 +60,6 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             }).catch((er) => {
                 setError(er)
             })
-                    
-                         
     }
     return (
         <>
@@ -96,7 +94,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             })}
             
         </div>
-        <div>
+        <div className="grid grid-col-6">
             <button onClick={() => refreshReddit(reddit)}>Reddit Runs:</button>
             {redditRunResults.map((rr) => {
                 <>

@@ -203,7 +203,7 @@ class NotionClient {
 
         let newProps:any = {};
 
-        newProps['lastCheckTime'] = getNotionRichTextObject(checkTime.toISOString())
+        newProps['lastCheckTime'] = getNotionDateObject(checkTime);
 
         return this.notionClient.pages.update({
             page_id: notionPageId,
@@ -231,8 +231,8 @@ const getNotionRichTextObject = (value:string):any => {
     return { rich_text: [{ text: { content: value } }]}
 }
 
-const getNotionDateObject = (date:Date):any => {
-    return { date: { start: date } }
+const getNotionDateObject = (da:Date):any => {
+    return { date: { start: da, end: null } }
 }
 
 

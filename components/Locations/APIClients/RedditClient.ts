@@ -87,7 +87,7 @@ class RedditClient {
                 console.log(`updateRedditSubmissions - edit`);
                 return await this.r.getSubmission(run.postId).edit(text).then((sub:Submission) => processRedditSubmission(run, sub, title));
             } else{
-                console.log(`updateRedditSubmissions - submitSelfpost`);
+                console.log(`updateRedditSubmissions - submit`);
                 return await this.r.submitSelfpost({
                     subredditName: run.subreddit
                     , title: title
