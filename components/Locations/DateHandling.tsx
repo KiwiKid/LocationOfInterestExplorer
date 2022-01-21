@@ -68,7 +68,7 @@ const dayFormattedNZ = (date:Date) => {
 const releaseDateAndCity = (date:Date) => {
     return dayjs(date).startOf('day').format();
 }
-const asAtDateAlwaysNZ = (date:Date) => `(as at ${dayjs(date).tz("Pacific/Auckland").startOf('day').format('h:mm a D/M/YYY')})`
+const asAtDateAlwaysNZ = (date:Date) => `(as at ${dayjs(date).tz("Pacific/Auckland").format('h:mm a D/MM/YYYY')})`
 
 
 export {

@@ -154,6 +154,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const runs = await subRedditPosts;
 
+        console.log(`ran ${runs.length} reddit runs`)
+
         try{
             runs.forEach((sp) => {
                 // Unsuccessful attempts should keep the existing date and be updated again
@@ -162,6 +164,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         console.log('Setting post processing updated title: '+ sp.postTitle)
                         
                         client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
+                        
                     }else{
                         console.log('Setting post processing (no change): '+ sp.postTitle)
 
