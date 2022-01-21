@@ -6,6 +6,8 @@ import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid"
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
 import { getHardCodedUrl, getHoursAgo, getMinutesAgo } from "../components/utils/utils";
+import axios from 'axios'
+
 
 const { Client } = require("@notionhq/client")
 
@@ -47,10 +49,14 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
 
 
     const refreshReddit = async (reddit:string):Promise<void> => {
-        return fetch(`${hardcodedURL}/api/post/reddit?pass=${reddit}`)
-            .then((res) => res.json())
+        setError('');
+        return axios.get(`/api/post/reddit?pass=${reddit}`)
             .then((res) => {
-                setRedditRunResults(res)
+                if(res.status == 200){
+                    setRedditRunResults(res.data)
+                }else{
+                    setError(res.data);
+                }
             }).catch((er) => {
                 setError(er)
             })

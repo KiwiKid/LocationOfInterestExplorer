@@ -13,6 +13,8 @@ const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
     }   
 }
 
+
+/* START - Notion types ==> NZCovidMap types */
 const getNotionRichText = (notionParam:any):string => {
     return notionParam.rich_text.length > 0 && notionParam.rich_text[0].plain_text ? notionParam.rich_text[0].plain_text : '';
 }
@@ -23,6 +25,8 @@ const getNotionHackyArray = (notionParam:any):string[] => removeStringEnds(getNo
 const getNotionDate = (notionParam:any):Date|null => {
     return notionParam.date ? notionParam.date.start : null
 }
+/* END - Notion types ==> NZCovidMap types */
+
 
 const mapNotionItemToRedditPostRun = (notionRow:any):RedditPostRun => {
 
@@ -214,7 +218,7 @@ class NotionClient {
             properties: {
                 "currentPostTitle": getNotionRichTextObject(postTitle),
                 "currentPostId": getNotionRichTextObject(postId),
-                "lastCheckTime": getNotionRichTextObject(checkTime.toISOString())
+                "lastCheckTime": getNotionDateObject(checkTime)
             }
         }).then(() => { return; });
     }
@@ -223,8 +227,12 @@ class NotionClient {
 
 }
 
-const getNotionRichTextObject = (value:string) => {
+const getNotionRichTextObject = (value:string):any => {
     return { rich_text: [{ text: { content: value } }]}
+}
+
+const getNotionDateObject = (date:Date):any => {
+    return { date: { start: date } }
 }
 
 

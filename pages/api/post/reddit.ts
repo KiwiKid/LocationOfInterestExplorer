@@ -138,6 +138,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 
             //     return redditClient.updateRedditComment(run, title, text);
             // }
+            console.log(`updating submission ${title}`);
             return redditClient.updateRedditSubmissions(run, title, text);
 
                 /*
