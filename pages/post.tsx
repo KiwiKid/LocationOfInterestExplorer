@@ -98,9 +98,11 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             })}
             
         </div>
-        <button onClick={() => refreshReddit(reddit)}>Reddit Runs ({redditRunResults.length}):</button>
-        <div className="grid grid-cols-7 p-5">
-            <div>PrimaryUrl</div> 
+        <button className="pt-10" onClick={() => refreshReddit(reddit)}>Reddit Runs ({redditRunResults.length}):</button>
+        <div className="grid grid-cols-9 p-5">
+            <div>SubReddit</div> 
+            <div>primaryUrlParam</div> 
+            <div>textUrlParams</div> 
             <div>Success?</div> 
             <div>Skipped?</div> 
             <div>Update?</div> 
@@ -109,7 +111,9 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <div>created</div> 
             {redditRunResults.map((rr) => {
                 return (<>
+                <div>{rr.run.subreddit}</div>
                 <div>{rr.run.primaryUrlParam}</div>
+                <div>{rr.run.textUrlParams}</div>
                 <div>{rr.isSuccess ? 'Success' : 'Failed'}</div>
                 <div>{rr.isSkipped ? '[Skipped]': 'Ran'}</div>
                 <div>{rr.isUpdate ? 'Update' : 'Create'}</div>
