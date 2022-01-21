@@ -17,7 +17,7 @@ const getTodayLocationSummary = (
     , publishTime: Date
     , locationSettings: LocationSettings
     , displayTotal: boolean
-) => `${displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : ''} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n${locationGroups
+) => `${displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : ''} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n\n${locationGroups
     .map((lg) => lg.toString(true, false, undefined))
     .join(`\n`)}`
 
