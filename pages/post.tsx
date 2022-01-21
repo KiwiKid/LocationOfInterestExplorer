@@ -47,10 +47,12 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
     const [redditRunResults, setRedditRunResults] = useState<RedditPostRunResult[]>([]);
 
     const [error, setError] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
 
     const refreshReddit = async (reddit:string):Promise<void> => {
         setError('');
+        setLoading(true);
         return axios.get(`/api/post/reddit?pass=${reddit}`)
             .then((res) => {
                 if(res.status == 200){
@@ -60,6 +62,8 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                 }
             }).catch((er) => {
                 setError(er)
+            }).finally(() =>{
+                setLoading(false);
             })
     }
     return (
@@ -97,7 +101,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             })}
             
         </div>
-        <button className="pt-10" onClick={() => refreshReddit(reddit)}>Reddit Runs ({redditRunResults.length}):</button>
+        <button className="pt-10" onClick={() => refreshReddit(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({redditRunResults.length}):</button>
         <div className="grid grid-cols-9 p-5">
             <div>SubReddit</div> 
             <div>primaryUrlParam</div> 
@@ -107,7 +111,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <div>Update?</div> 
             <div>title</div> 
             <div>id</div> 
-            <div>created</div> 
+            <div>created</div>
             {redditRunResults.map((rr) => {
                 return (<>
                 <div>{rr.run.subreddit}</div>

@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime'
 // Libs
 import { NextApiRequest, NextApiResponse } from 'next';
-import _ from 'lodash';
+import _, { rangeRight } from 'lodash';
 
 import RedditClient from '../../../components/Locations/APIClients/RedditClient';
 import NotionClient from '../../../components/Locations/APIClients/NotionClient';
@@ -91,6 +91,62 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         }
     }*/
 
+    const processRedditPostRun = async (run:RedditPostRun):Promise<RedditPostRunResult> => {
+        return new Promise(async (resolve, reject) => {
+            try{
+            
+                const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
+                if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
+    
+                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
+                if(matchingLocationGroups.length === 0){
+                    resolve(new RedditPostRunResult(true, false, true, run));
+                }
+    
+    
+    
+    
+                const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
+                const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
+    
+                const botFeedbackMsg = `\n\nThis post was made by a bot, please contact this account with any feedback`
+    
+    
+            // if(run.submissionTitleQuery){
+                
+            //     return redditClient.updateRedditComment(run, title, text);
+            // }
+            console.log(`updating submission ${title}`);
+            const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
+                .then((rr) => {
+                    if(rr.isSuccess){
+                        if(rr.postTitle && rr.postId && rr.run.notionPageId){
+                            client.setRedditPostProcessedUpdated(run.notionPageId, rr.createdDate, rr.postTitle ? rr.postTitle : 'No post Title', rr.postId ? rr.postId : 'No post id?')
+    
+                        } else {
+                        client.setRedditPostProcessed(rr.run.notionPageId, rr.createdDate);
+                        }
+                    }
+                    return rr;
+                });
+
+
+                resolve(update)
+                /*
+                Faking it: 
+                console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
+                const fakeRes:RedditPostRunResult = new RedditPostRunResult(false, false, true, run, "Fake")
+                return new Promise<RedditPostRunResult>((resolve, reject) => resolve(fakeRes));*/
+            
+            }catch(err){
+                reject(new RedditPostRunResult(false, false, true, run, undefined, undefined, err));
+            }
+        })
+
+
+    }
+    
+
     const locations:LocationOfInterest[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
         .then((d) => d.map(mapLocationRecordToLocation))
         .then((loi) => applyLocationOverrides(loi, settings.locationOverrides))
@@ -112,85 +168,20 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         const redditClient = new RedditClient();
 
 
-
-        var subRedditPosts:Promise<RedditPostRunResult[]> = Promise.all(redditPosts.sort(oldestCreateDateFirst).map((run) => {
-            try{
-                
-                const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
-                if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
-
-                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
-                if(matchingLocationGroups.length === 0){
-
-                    return new RedditPostRunResult(true, false, true, run);
-                }
-
-
-
-
-                const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
-                const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
-
-                const botFeedbackMsg = `\n\nThis post was made by a bot, please contact this account with any feedback`
-
-
-            // if(run.submissionTitleQuery){
-                
-            //     return redditClient.updateRedditComment(run, title, text);
-            // }
-            console.log(`updating submission ${title}`);
-            return redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg);
-
-                /*
-                Faking it: 
-                console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
-                const fakeRes:RedditPostRunResult = new RedditPostRunResult(false, false, true, run, "Fake")
-                return new Promise<RedditPostRunResult>((resolve, reject) => resolve(fakeRes));*/
-            
-            }catch(err){
-                return new RedditPostRunResult(false, false, true, run, undefined, undefined, err);
-            }
-        }))
-        const runs:RedditPostRunResult[] = [];
-        try{
-            runs.concat(await subRedditPosts);
-            console.log(`ran ${runs.length} reddit runs`)
-        }catch(err){
-            console.log(err);
-            res.status(500).json({ error: 'Failed in await'});
-            return;
-        }
+        const results:RedditPostRunResult[] = []
         
+        redditPosts.sort(oldestCreateDateFirst).forEach(async (rp) =>{
+            const redditRes = await processRedditPostRun(rp);
+            results.push(redditRes);
+        });
 
-
-
-        try{
-            runs.forEach((sp) => {
-                // Unsuccessful attempts should keep the existing date and be updated again
-                if(sp.isSuccess){
-                    if(sp.postTitle && sp.postId && sp.run.notionPageId){
-                        console.log('Setting post processing updated title: '+ sp.postTitle)
-                        
-                        client.setRedditPostProcessedUpdated(sp.run.notionPageId, sp.createdDate, sp.postTitle ? sp.postTitle : 'No post Title', sp.postId);
-                        
-                    }else{
-                        console.log('Setting post processing (no change): '+ sp.postTitle)
-
-                        client.setRedditPostProcessed(sp.run.notionPageId, sp.createdDate);
-                    }
-                }
-            })
-        }catch(err){
-            console.error(err);
-            res.status(500).json({ error: err});
-        }
         if(req.method === 'OPTIONS'){
             res.setHeader("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET")
         }
         
         res.status(200)
                 .setHeader("Access-Control-Allow-Origin", "*")
-                .json((runs).filter(isInteresting)); 
+                .json((results).filter(isInteresting)); 
     }
 
     //const redditPostResults:RedditPostRunResult[] = 
