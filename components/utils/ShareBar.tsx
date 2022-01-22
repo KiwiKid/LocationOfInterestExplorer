@@ -23,6 +23,9 @@ function ShareBar({children, url}:ShareBarProps) {
 
     const title = 'Locations of Interest Explorer';
 
+    // The facebook messager dialog does not work in installed PWA mode
+    const isInPWA = localStorage.getItem('AppInstalled') === '1'
+
     return (
       <>{!url.length ? <div>Loading</div> :
       <>
@@ -42,7 +45,7 @@ function ShareBar({children, url}:ShareBarProps) {
                 </FacebookShareCount>
               </div>
             </div>
-        {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID &&
+        {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && !isInPWA &&
           <div className="m-auto">
             <FacebookMessengerShareButton
               url={url}
