@@ -31,7 +31,7 @@ class RedditClient {
             
         });
         //TODO: can this be 1?
-        r.config({requestDelay: 1500, warnings: false});
+        r.config({requestDelay: 1500, warnings: false, continueAfterRatelimitError: true});
 
         if(!r){ console.error('failed to generate reddit client'); throw 'err'}
 
