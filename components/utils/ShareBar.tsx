@@ -42,16 +42,16 @@ function ShareBar({children, url}:ShareBarProps) {
                 </FacebookShareCount>
             </div>
         </div>
-
+        {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID &&
         <div className="Demo__some-network">
           <FacebookMessengerShareButton
             url={url}
-            appId="521270401588372"
+            appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}
             className="Demo__some-network__share-button"
           >
             <FacebookMessengerIcon size={32} round />
           </FacebookMessengerShareButton>
-        </div>
+        </div>}
 
         <div className="Demo__some-network">
           <TwitterShareButton
