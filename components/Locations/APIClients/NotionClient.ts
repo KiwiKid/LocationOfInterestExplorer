@@ -200,7 +200,7 @@ class NotionClient {
     }
 
     setRedditPostProcessed = async (notionPageId:string, checkTime:Date):Promise<void> => { 
-
+        console.log('Updating notion db entry with runtime')
         let newProps:any = {};
 
         newProps['lastCheckTime'] = getNotionDateObject(checkTime);
@@ -212,7 +212,7 @@ class NotionClient {
     }
 
     setRedditPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
-
+        console.log('Updating notion db entry with post details')
         return this.notionClient.pages.update({
             page_id: notionPageId,
             properties: {

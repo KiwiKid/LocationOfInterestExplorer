@@ -101,6 +101,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
                 if(matchingLocationGroups.length === 0){
                     resolve(new RedditPostRunResult(true, false, true, run));
+                    return;
                 }
     
     
@@ -124,7 +125,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                             client.setRedditPostProcessedUpdated(run.notionPageId, rr.createdDate, rr.postTitle ? rr.postTitle : 'No post Title', rr.postId ? rr.postId : 'No post id?')
     
                         } else {
-                        client.setRedditPostProcessed(rr.run.notionPageId, rr.createdDate);
+                            client.setRedditPostProcessed(rr.run.notionPageId, rr.createdDate);
                         }
                     }
                     return rr;
