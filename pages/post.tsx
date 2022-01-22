@@ -46,7 +46,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
     
     const [lastVisitTime, setLastVisitTime] = useState<Date|undefined>(undefined);
     
-    const [socialRunResults, setSocialRunResults] = useState<SocialPostRunResult[]>([]);
+    const [socialRuns, setSocialRuns] = useState<SocialPostRun[]>(socialPostRuns);
 
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -58,7 +58,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         return axios.get(`/api/post/reddit?pass=${reddit}`)
             .then((res) => {
                 if(res.status == 200){
-                    setSocialRunResults(socialRunResults.concat(res.data));
+                    setSocialRuns(res.data);
                 }else{
                     setError(res.data);
                 }
@@ -81,7 +81,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <th>primary</th>
             <th>text</th>
             <th>flareId</th>
-            {socialPostRuns.map((rpr) => {
+            {socialRuns.map((rpr) => {
                 return (<>
                 
                         <div>{rpr.notionPageId}</div>
@@ -89,6 +89,18 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                         <div>{rpr.primaryUrlParam}</div>
                         <div>{rpr.textUrlParams}</div>
                         <div>{rpr.flairId}</div>
+                        {rpr.result && <div className="col-span-full">
+                        <details>
+                            <summary>{!rpr.result ? 'Did not run' : 
+                                    !rpr.result.isSuccess ? 'Failed' 
+                                    : rpr.result.isSkipped ? '(skipped)' 
+                                    : rpr.result.isUpdate ? 'Updated' : 'Created' }</summary>
+                                <div>{rpr.result?.postTitle}</div>
+                                <div>{rpr.result?.postTitle}</div>
+                                <div><NiceFullAlwaysNZDate date={new Date(rpr.createdDate)}/></div>
+                                <div className="col-span-full">{JSON.stringify(rpr.error)}</div>
+                            </details>
+                        </div>}
                     </>
                 )
             })}
