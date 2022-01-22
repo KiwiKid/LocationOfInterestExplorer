@@ -31,7 +31,7 @@ class RedditClient {
             
         });
         //TODO: can this be 1?
-        r.config({requestDelay: 1500, warnings: false, continueAfterRatelimitError: true});
+        r.config({requestDelay: 1500, warnings: false, continueAfterRatelimitError: true, debug:true});
 
         if(!r){ console.error('failed to generate reddit client'); throw 'err'}
 
@@ -113,7 +113,7 @@ class RedditClient {
             }
         
         }catch(err){
-            console.error(`Update Reddit Submissions failed for ${run.subreddit} ${run.textUrlParams}`)
+            console.error(`Update Reddit Submissions failed for r/${run.subreddit} ${run.textUrlParams}`)
             console.error(err);
             return new RedditPostRunResult(false, false, true, run, undefined, undefined, err); //{ isSuccess: false, isUpdate: false, subreddit: run.subreddit, error: err }
         }
