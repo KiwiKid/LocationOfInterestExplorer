@@ -99,7 +99,8 @@ class RedditClient {
                     , title: title
                     , text: text
                 })
-
+                // Use https://www.reddit.com/r/[INSERT_SUBREDDIT_HERE]/api/link_flair_v2.json?raw_json=1
+                // to find the Flair id
                 if(run.flareId){
                     selfPost.assignFlair({id: run.flareId})
                 }

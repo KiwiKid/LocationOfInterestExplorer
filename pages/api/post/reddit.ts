@@ -109,7 +109,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
                 const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
     
-                const botFeedbackMsg = `\n\nThis post was made by a bot, please contact this account with any feedback`
+                const botFeedbackMsg = `\n\n\nThis is a automated post, please contact this account with any feedback`
     
     
             // if(run.submissionTitleQuery){
