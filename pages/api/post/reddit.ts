@@ -118,6 +118,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             //     return redditClient.updateRedditComment(run, title, text);
             // }
             console.log(`updating submission ${title}`);
+            try{
+                
             const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
                 .then((rr) => {
                     if(rr.isSuccess){
@@ -135,8 +137,13 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     return rrr;
                 })
 
-
                 resolve(update)
+            }catch(err){
+                console.error('This is getting ridiculous.. ')
+                console.error(err)
+                reject(new RedditPostRunResult(false, false, true, run, undefined, undefined, err))
+            }
+
                 /*
                 Faking it: 
                 console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
@@ -185,9 +192,6 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }
             })
         }))
-
-        /*
-        const comeon = redditPosts.sort(oldestCreateDateFirst)*/
         
 
         if(req.method === 'OPTIONS'){
