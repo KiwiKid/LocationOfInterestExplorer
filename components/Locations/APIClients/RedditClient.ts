@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 
 
 class RedditClient { 
-    r:any;
+    r:snoowrap;
 
 
     constructor (){
@@ -101,16 +101,17 @@ class RedditClient {
                 //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
             } else{
                 console.log(`updateRedditSubmissions - submit ${run.subreddit}`);
-                const selfPost = this.r.submitSelfpost({
-                    subredditName: run.subreddit
-                    , title: title
-                    , text: text
-                })
+
+                    var selfPost = this.r.submitSelfpost({
+                        subredditName: run.subreddit
+                        , title: title
+                        , text: text
+                        , flairId: run.flareId
+                    })
+                
+                //9bc8c692-2377-11ec-97a0-722625a13049
                 // Use https://www.reddit.com/r/[INSERT_SUBREDDIT_HERE]/api/link_flair_v2.json?raw_json=1
                 // to find the Flair id
-                if(run.flareId){
-                    selfPost.assignFlair({id: run.flareId})
-                }
                 
                 return selfPost.then((sub:Submission) => processRedditSubmission(true, false, false, run, sub.name, title));
                 //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);

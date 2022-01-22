@@ -5,6 +5,12 @@ const reallyBadDataFixes = (loi:LocationOfInterestRecord) => {
   if(loi.id == 'a0l4a0000006v95AAA' && !loi.city.length){
     loi.city = 'Rotorua'
   }
+
+  if(['a0l4a0000006wceAAA','a0l4a0000006wcjAAA'].some((r) => r === loi.id) && loi.city.length == 0){
+    loi.city = 'Auckland'
+    loi.lat = '-37.0036884804696'
+    loi.lng = '174.78644185846255'
+  }
   return loi
 }
 

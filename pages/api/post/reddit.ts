@@ -92,7 +92,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     }*/
 
     const processRedditPostRun = async (run:RedditPostRun):Promise<RedditPostRunResult> => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise<RedditPostRunResult>(async (resolve, reject) => {
             try{
             
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
@@ -130,11 +130,15 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 client.setRedditPostProcessed(rr.run.notionPageId, rr.createdDate);
                             }
                         }
+                        
+                        //resolve(rr);
                         return rr;
                     }).catch((err) => {
                         console.error('This one?')
+                        console.error(err.message)
+                        console.error(err)
                         var rrr = new RedditPostRunResult(false, false, true, run, undefined, undefined, err)
-                        reject(rrr);
+                        //resolve(rrr);
                         return rrr;
                     })
 
@@ -142,7 +146,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             }catch(err){
                 console.error('This is getting ridiculous.. ')
                 console.error(err)
-                reject(new RedditPostRunResult(false, false, true, run, undefined, undefined, err))
+                resolve(new RedditPostRunResult(false, false, true, run, undefined, undefined, err))
             }
 
                 /*
@@ -153,7 +157,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             
             }catch(err){
                 console.error('Over here?')
-                reject(new RedditPostRunResult(false, false, true, run, undefined, undefined, err));
+                resolve(new RedditPostRunResult(false, false, true, run, undefined, undefined, err));
             }
         })
 

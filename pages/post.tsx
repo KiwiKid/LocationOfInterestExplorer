@@ -73,7 +73,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
         
-        <div className="grid grid-cols-5 p-5">
+        <div className="grid grid-cols-5 p-5 text-left">
             <th>notionPageId</th>
             <th>subreddit</th>
             <th>primaryUrlParam</th>
@@ -86,16 +86,6 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                         <div>{rpr.primaryUrlParam}</div>
                         <div>{rpr.textUrlParams}</div>
                         <div>{rpr.flareId}</div>
-                        <div className="col-span-full border-black border-4">
-                            <div>
-                                <div className="col-span-full">Runs:</div>
-                                <div className="grid grid-cols-3">
-                                {rpr.lastCheckTime ? <div>Checked:<NiceFullAlwaysNZDate date={new Date(rpr.lastCheckTime)}/></div> : null}
-                                    <div>{rpr.postId}</div>
-                                    <div>{rpr.postTitle}</div>
-                                </div>
-                            </div>
-                        </div>
                     </>
                 )
             })}

@@ -12,10 +12,10 @@ class RedditPostRunResult {
     postId?:string
     postTitle?:string
     run:RedditPostRun
-    error:any
+    error?:any
     createdDate:Date
 
-    constructor (isSuccess:boolean,isUpdate:boolean,isSkipped:boolean, run:RedditPostRun, postTitle?:string, postId?:string, error:any = null){
+    constructor (isSuccess:boolean,isUpdate:boolean,isSkipped:boolean, run:RedditPostRun, postTitle?:string, postId?:string, error?:any){
         this.isSuccess = isSuccess;
         this.isSkipped = isSkipped;
         this.isUpdate = isUpdate;

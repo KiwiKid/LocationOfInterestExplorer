@@ -38,7 +38,8 @@ const mapNotionItemToRedditPostRun = (notionRow:any):RedditPostRun => {
         postId: getNotionRichText(props.currentPostId),
         postTitle: getNotionRichText(props.currentPostTitle),
         notionPageId: notionRow.id,
-        lastCheckTime: getNotionDate(props.lastCheckTime)
+        lastCheckTime: getNotionDate(props.lastCheckTime),
+        flareId: getNotionRichText(props.flareId)
        /* showInDrawer: props.showInDrawer.checkbox,
         lat: props.lat.number,
         lng: props.lng.number,
