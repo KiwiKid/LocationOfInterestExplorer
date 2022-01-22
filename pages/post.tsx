@@ -74,13 +74,14 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
         
         <div className="grid grid-cols-5 p-5 text-left">
-            <th>notionPageId</th>
+            <th>NotionId</th>
             <th>subreddit</th>
-            <th>primaryUrlParam</th>
-            <th>textUrlParams</th>
+            <th>primary</th>
+            <th>text</th>
             <th>flareId</th>
             {redditPostRuns.map((rpr) => {
                 return (<>
+                
                         <div>{rpr.notionPageId}</div>
                         <div>{rpr.subreddit}</div>
                         <div>{rpr.primaryUrlParam}</div>
@@ -92,28 +93,28 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             
         </div>
         <button className="pt-10" onClick={() => refreshReddit(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({redditRunResults.length}):</button>
-        <div className="grid grid-cols-9 p-5">
+        <div className="grid grid-cols-3 p-5">
             <div>SubReddit</div> 
-            <div>primaryUrlParam</div> 
-            <div>textUrlParams</div> 
-            <div>Success?</div> 
-            <div>Skipped?</div> 
+            <div>primary</div> 
+            <div>text</div> 
+            {/*<div>Skipped?</div> 
             <div>Update?</div> 
             <div>title</div> 
             <div>id</div> 
-            <div>created</div>
+            <div>created</div>*/}
             {redditRunResults.map((rr) => {
                 return (<>
                 <div>{rr.run.subreddit}</div>
                 <div>{rr.run.primaryUrlParam}</div>
                 <div>{rr.run.textUrlParams}</div>
-                <div>{rr.isSuccess ? 'Success' : 'Failed'}</div>
-                 <div>{!rr.isSuccess ? '' : rr.isSkipped ? '[Skipped]': 'Ran'}</div>
-                <div>{!rr.isSuccess ? '' : rr.isUpdate ? 'Update' : 'Create'}</div>
-                <div>{rr.postTitle}</div>
-                <div>{rr.postId}</div>
-                <div><NiceFullAlwaysNZDate date={rr.createdDate}/></div>
-                <div className="col-span-full">{JSON.stringify(rr.error)}</div>
+                <div className="col-span-3"><details>
+                    <summary>{!rr.isSuccess ? 'Failed' : rr.isSkipped ? '(skipped)' : rr.isUpdate ? 'Updated' : 'Created'} </summary>
+                        <div>{rr.postTitle}</div>
+                        <div>{rr.postId}</div>
+                        <div><NiceFullAlwaysNZDate date={rr.createdDate}/></div>
+                        <div className="col-span-full">{JSON.stringify(rr.error)}</div>
+                    </details>
+                </div>
                 </>)
             })}
         </div>
