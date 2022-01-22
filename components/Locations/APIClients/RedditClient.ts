@@ -27,8 +27,11 @@ class RedditClient {
             clientId: process.env.REDDIT_CLIENT_ID,
             clientSecret: process.env.REDDIT_CLIENT_SECRET,
             username: process.env.REDDIT_USER,
-            password: process.env.REDDIT_USER_PASS
+            password: process.env.REDDIT_USER_PASS,
+            
         });
+        //TODO: can this be 1?
+        r.config({requestDelay: 1500, warnings: false});
 
         if(!r){ console.error('failed to generate reddit client'); throw 'err'}
 

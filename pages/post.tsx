@@ -123,7 +123,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                 <div>{rr.postTitle}</div>
                 <div>{rr.postId}</div>
                 <div><NiceFullAlwaysNZDate date={rr.createdDate}/></div>
-                <div className="col-span-full">{rr.error}</div>
+                <div className="col-span-full">{JSON.stringify(rr.error)}</div>
                 </>)
             })}
         </div>

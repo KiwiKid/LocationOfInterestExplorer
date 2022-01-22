@@ -120,22 +120,23 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             console.log(`updating submission ${title}`);
             try{
                 
-            const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
-                .then((rr) => {
-                    if(rr.isSuccess){
-                        if(rr.postTitle && rr.postId && rr.run.notionPageId){
-                            client.setRedditPostProcessedUpdated(run.notionPageId, rr.createdDate, rr.postTitle ? rr.postTitle : 'No post Title', rr.postId ? rr.postId : 'No post id?')
-    
-                        } else {
-                            client.setRedditPostProcessed(rr.run.notionPageId, rr.createdDate);
+                const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
+                    .then((rr) => {
+                        if(rr.isSuccess){
+                            if(rr.postTitle && rr.postId && rr.run.notionPageId){
+                                client.setRedditPostProcessedUpdated(run.notionPageId, rr.createdDate, rr.postTitle ? rr.postTitle : 'No post Title', rr.postId ? rr.postId : 'No post id?')
+        
+                            } else {
+                                client.setRedditPostProcessed(rr.run.notionPageId, rr.createdDate);
+                            }
                         }
-                    }
-                    return rr;
-                }).catch((err) => {
-                    var rrr = new RedditPostRunResult(false, false, true, run, undefined, undefined, err)
-                    reject(rrr);
-                    return rrr;
-                })
+                        return rr;
+                    }).catch((err) => {
+                        console.error('This one?')
+                        var rrr = new RedditPostRunResult(false, false, true, run, undefined, undefined, err)
+                        reject(rrr);
+                        return rrr;
+                    })
 
                 resolve(update)
             }catch(err){
@@ -151,11 +152,12 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 return new Promise<RedditPostRunResult>((resolve, reject) => resolve(fakeRes));*/
             
             }catch(err){
+                console.error('Over here?')
                 reject(new RedditPostRunResult(false, false, true, run, undefined, undefined, err));
             }
         })
 
-
+        
     }
     
 
