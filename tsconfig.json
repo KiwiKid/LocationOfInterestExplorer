@@ -7,6 +7,9 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    "types": [
+      "facebook-js-sdk"
+    ],
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
