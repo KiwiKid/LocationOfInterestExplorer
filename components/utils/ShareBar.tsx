@@ -45,7 +45,7 @@ function ShareBar({children, url}:ShareBarProps) {
                 </FacebookShareCount>
               </div>
             </div>
-        {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && !isInPWA &&
+        {false && process.env.NEXT_PUBLIC_FACEBOOK_APP_ID && !isInPWA &&
           <div className="m-auto">
             <FacebookMessengerShareButton
               url={url}
