@@ -87,8 +87,8 @@ class RedditClient {
 
     updateRedditSubmissions = async (run:RedditPostRun, title:string, text:string):Promise<RedditPostRunResult> => {
         try{ 
-            const isUpdate = run.postId && run.lastCheckTime && startOfDayNZ(run.lastCheckTime) === startOfDayNZ(todayNZ())
-            if(isUpdate){
+            const isUpdate = run.lastCheckTime && startOfDayNZ(run.lastCheckTime) === startOfDayNZ(todayNZ())
+            if(isUpdate && run.postId){
                 console.log(`Reddit Submission - edit ${run.subreddit} ${run.postId}`);
                 return await this.r.getSubmission(run.postId)
                                     .edit(text)
