@@ -327,7 +327,7 @@ const LocationPageDrawer = ({
             <Toggle id="fastTravel" title="Quickview" extendClassName="border-gray-800 border-b-4">
               <>
               {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') 
-              ? <Summary>Click to re-position the map at a specific location<br/>(After about 10 seconds preview images should show)</Summary>
+              ? <Summary>Click to re-position the map at a specific location<br/>(Wait about 10 seconds for preview images to show)</Summary>
               : <Summary>Use these buttons to re-position the map at a specific location</Summary>}
                   {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') ? 
                     <div className="grid sm:grid-cols-2">
