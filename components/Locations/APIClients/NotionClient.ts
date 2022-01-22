@@ -208,7 +208,10 @@ class NotionClient {
         return this.notionClient.pages.update({
             page_id: notionPageId,
             properties: newProps
-        }).then(() => { return; });
+        }).then(() => { 
+            console.log(`updated check time for ${notionPageId}`)
+            return; 
+        });
     }
 
     setRedditPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
@@ -220,7 +223,10 @@ class NotionClient {
                 "currentPostId": getNotionRichTextObject(postId),
                 "lastCheckTime": getNotionDateObject(checkTime)
             }
-        }).then(() => { return; });
+        }).then(() => { 
+            console.log(`updated notion db entry with post details ${notionPageId}`)
+            return;
+         });
     }
 
 

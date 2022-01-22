@@ -89,10 +89,14 @@ class RedditClient {
         try{ 
             const isUpdate = run.postId && run.lastCheckTime && startOfDayNZ(run.lastCheckTime) === startOfDayNZ(todayNZ())
             if(isUpdate){
-                console.log(`updateRedditSubmissions - edit ${run.subreddit} ${run.postId}`);
+                console.log(`Reddit Submission - edit ${run.subreddit} ${run.postId}`);
                 return await this.r.getSubmission(run.postId)
                                     .edit(text)
-                                    .then((sub:Submission) => processRedditSubmission(true, true, false, run, sub, title))
+                                    .then((sub:any) => {
+                                        console.log('Reddit Submission edited')
+                                        return processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title)
+                                        
+                                    }) 
                                     
                 //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
             } else{
@@ -108,7 +112,7 @@ class RedditClient {
                     selfPost.assignFlair({id: run.flareId})
                 }
                 
-                return selfPost.then((sub:Submission) => processRedditSubmission(true, false, false, run, sub, title));
+                return selfPost.then((sub:Submission) => processRedditSubmission(true, false, false, run, sub.name, title));
                 //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
             }
         
@@ -120,8 +124,8 @@ class RedditClient {
     }
 }
 
-const processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:RedditPostRun, sub:Submission, title:string):Promise<RedditPostRunResult> => { 
-    return new RedditPostRunResult(isSuccess, isUpdate, isSkipped, run, title, sub.name);
+const processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:RedditPostRun, subId:string, title:string):Promise<RedditPostRunResult> => { 
+    return new RedditPostRunResult(isSuccess, isUpdate, isSkipped, run, title, subId);
 }
 
 export default RedditClient;
