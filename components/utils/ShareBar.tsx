@@ -27,85 +27,61 @@ function ShareBar({children, url}:ShareBarProps) {
       <>{!url.length ? <div>Loading</div> :
       <>
         {children}
-        <div className="grid grid-flow-col pt-4">
-            <div className="Demo__some-network">
-                <FacebookShareButton
-                    url={url}
-                    quote={title}
-                    className="Demo__some-network__share-button"
-                >
-                    <FacebookIcon size={32} round />
-                </FacebookShareButton>
-            <div>
+        <div className="grid grid-flow-col pt-4 items-center px-2">
+            <div className="m-auto">
+              <FacebookShareButton
+                  url={url}
+                  quote={title}
+                  className="Demo__some-network__share-button"
+              >
+                    <FacebookIcon size={40} round />
+              </FacebookShareButton>
+              <div>
                 <FacebookShareCount url={url} className="Demo__some-network__share-count">
-                {count => count}
+                  {count => count}
                 </FacebookShareCount>
+              </div>
             </div>
-        </div>
         {process.env.NEXT_PUBLIC_FACEBOOK_APP_ID &&
-        <div className="Demo__some-network">
-          <FacebookMessengerShareButton
-            url={url}
-            appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}
-            className="Demo__some-network__share-button"
-          >
-            <FacebookMessengerIcon size={32} round />
-          </FacebookMessengerShareButton>
-        </div>}
-
-        <div className="Demo__some-network">
+          <div className="m-auto">
+            <FacebookMessengerShareButton
+              url={url}
+              appId={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}
+              className="Demo__some-network__share-button"
+            >
+              <FacebookMessengerIcon size={40} round />
+            </FacebookMessengerShareButton>
+          </div>}
+        <div className="m-auto">
           <TwitterShareButton
             url={url}
             title={title}
             className="Demo__some-network__share-button"
           >
-            <TwitterIcon size={32} round />
+            <TwitterIcon size={40} round />
           </TwitterShareButton>
-
-          <div className="Demo__some-network__share-count">&nbsp;</div>
         </div>
-
-
-
-        <div className="Demo__some-network">
+        <div className="m-auto">
           <EmailShareButton
             url={url}
             subject={title}
             body="body"
             className="Demo__some-network__share-button"
           >
-            <EmailIcon size={32} round />
+            <EmailIcon size={40} round />
           </EmailShareButton>
         </div>
-
-
-     {/*   <div className="Demo__some-network">
-          <PinterestShareButton
-            url={String(window.location)}
-         //   media={`${String(window.location)}/${exampleImage}`}
-            className="Demo__some-network__share-button"
-          >
-            <PinterestIcon size={32} round />
-          </PinterestShareButton>
-
-          <div>
-            <PinterestShareCount url={shareUrl} className="Demo__some-network__share-count" />
-          </div>
-        </div>*/}
-
-        <div className="Demo__some-network">
+        <div className="m-auto">
           <WhatsappShareButton
             url={url}
             title={title}
             separator=":: "
             className="Demo__some-network__share-button"
           >
-            <WhatsappIcon size={32} round />
+            <WhatsappIcon size={40} round />
           </WhatsappShareButton>
-
-          <div className="Demo__some-network__share-count">&nbsp;</div>
-            </div>
-    </div>
+        </div>
+      </div>
       </>}
     </>)
 }
