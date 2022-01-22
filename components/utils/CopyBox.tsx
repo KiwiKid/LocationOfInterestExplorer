@@ -12,7 +12,7 @@ type CopyBoxProps = {
 }
 
 
-export default function CopyBox({id, copyText, successText = "Copied", promptText = "Copy", textarea = false, children}:CopyBoxProps) {
+export default function CopyBox({id, copyText, successText = "Copied", promptText = "Copy", textarea = false, children = undefined}:CopyBoxProps) {
     const [isCopied, setIsCopied] = useState(false);
   
     // TODO: Implement copy to clipboard functionality

@@ -191,8 +191,13 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         const results = await Promise.all(redditPosts.sort(oldestCreateDateFirst).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
                 try{
-
-                    resolve(await processRedditPostRun(run));
+                    switch(run.type){
+                        case "Reddit_Post": resolve(await processRedditPostRun(run));
+                            break;
+                        default: 
+                            console.error(`(${run.type}) run type is not valid for r/${run.subreddit}`)
+                    }
+                    
                 }catch(err){
                     run.setError(err);
                     reject(run);

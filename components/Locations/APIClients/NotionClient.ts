@@ -29,7 +29,7 @@ const getNotionDate = (notionParam:any):string => {
 
 
 const getNotionMultiSelectFirst = (notionParam:any):string => {
-    return notionParam && notionParam.multi_select.length > 1 ?  notionParam.multi_select[0].name : ''
+    return notionParam && notionParam.multi_select.length > 0 ?  notionParam.multi_select[0].name : ''
 }
 /* END - Notion types ==> NZCovidMap types */
 

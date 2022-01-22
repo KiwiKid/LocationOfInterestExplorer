@@ -166,8 +166,8 @@ const LocationPageDrawer = ({
 
     const USEFUL_LINKS:UsefulLink[] = [
       {
-        title: "Official Location of Interest list (MoH)",
-        description: "Official Location list",
+        title: "Official Location list",
+        description: "Official Location of Interest list (MoH)",
         href: "https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-health-advice-public/contact-tracing-covid-19/covid-19-contact-tracing-locations-interest"
       },
       {
@@ -218,9 +218,9 @@ const LocationPageDrawer = ({
 
 
     function getPageUrl(pageState:PageState){
-      if(pageState.quickLink){
-        return `/loc/${pageState.quickLink.urlParam}`;
-      }
+     // if(pageState.quickLink){
+      //  return `/loc/${pageState.quickLink.urlParam}`;
+      //}
       return `?lat=${pageState.lat.toFixed(5)}&lng=${pageState.lng.toFixed(5)}&zoom=${pageState.zoom}&daysInPastShown=${pageState.daysInPastShown}`;
   }
 
@@ -295,15 +295,15 @@ const LocationPageDrawer = ({
             </>
           </Toggle>
             <ShareBar url={url}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 pt-4 border border-black p-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 pt-4 border border-black p-2">
                 <div className="col-span-full">
                   <AddToHomeScreenButton /> 
                 </div>
+                {pageState.quickLink && <CopyBox id="quickLinkCopy" copyText={`${url}/loc/${pageState.quickLink.urlParam}`} promptText={`Copy link to ${pageState.quickLink.title} circle`} successText={`Link to ${pageState.quickLink.title} circle copied`}/>}
                 <div className="">
-                  <CopyBox id="locatedCopy" copyText={`${url}${getPageUrl(pageState)}`} promptText="Copy link to THIS circle" successText="Link to THIS circle has been copied!">
+                  <CopyBox id="locatedCopy" copyText={`${url}${getPageUrl(pageState)}`} promptText="Copy link to this specific circle" successText="Link to this specific circle has been copied!">
                     {mapIsLocated ? <div className="text-center">🚨 This link includes your current location 🚨</div>: undefined}  
                   </CopyBox>
-                  
                 </div>
                 <div className="">
                   <CopyBox id="basicCopy" copyText={`${url}`} promptText="Copy link to page" successText="Link copied" />
