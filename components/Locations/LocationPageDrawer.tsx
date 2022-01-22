@@ -295,7 +295,7 @@ const LocationPageDrawer = ({
             </>
           </Toggle>
             <ShareBar url={url}>
-              <div className="grid grid-cols-1 md:grid-cols-3 pt-4 border border-black p-2">
+              <div className={`grid grid-cols-1 md:grid-cols-${pageState.quickLink ? '3' : '2'} pt-4 border border-black p-2`}>
                 <div className="col-span-full">
                   <AddToHomeScreenButton /> 
                 </div>
