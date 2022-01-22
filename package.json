@@ -15,6 +15,7 @@
     "@types/lodash": "^4.14.177",
     "@types/react-dom": "^17.0.11",
     "axios": "^0.24.0",
+    "babel-plugin-superjson-next": "^0.4.2",
     "chrome-aws-lambda": "^10.1.0",
     "csv-parse": "^5.0.3",
     "dayjs": "^1.10.7",
@@ -33,6 +34,7 @@
     "sharp": "^0.29.3",
     "sitemap": "^7.0.0",
     "snoowrap": "^1.23.0",
+    "superjson": "^1.8.0",
     "swr": "^1.1.0"
   },
   "devDependencies": {

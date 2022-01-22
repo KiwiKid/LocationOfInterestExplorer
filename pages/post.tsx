@@ -7,7 +7,9 @@ import LocationSettingsContext from '../components/Locations/LocationSettingsCon
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
 import { getHardCodedUrl, getHoursAgo, getMinutesAgo } from "../components/utils/utils";
 import axios from 'axios'
-import RedditPostRunResult from "../components/Locations/APIClients/RedditPostRunResult";
+import RedditPostRunResult from "../components/Locations/APIClients/SocialPostRunResult";
+import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
+import SocialPostRunResult from "../components/Locations/APIClients/SocialPostRunResult";
 
 
 const { Client } = require("@notionhq/client")
@@ -33,30 +35,30 @@ const trySetLastVisitTime = () => {
 type SocialPostsProps = {
     publishTimeUTC: string;
     locationSettings: LocationSettings;
-    redditPostRuns: RedditPostRun[];
+    socialPostRuns: SocialPostRun[];
     reddit:string;
     hardcodedURL:string
 }
 
-const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, redditPostRuns, reddit, hardcodedURL}) => {
+const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, socialPostRuns, reddit, hardcodedURL}) => {
 
     const publishTime = new Date(publishTimeUTC);
     
     const [lastVisitTime, setLastVisitTime] = useState<Date|undefined>(undefined);
     
-    const [redditRunResults, setRedditRunResults] = useState<RedditPostRunResult[]>([]);
+    const [socialRunResults, setSocialRunResults] = useState<SocialPostRunResult[]>([]);
 
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
 
-    const refreshReddit = async (reddit:string):Promise<void> => {
+    const refreshSocials = async (reddit:string):Promise<void> => {
         setError('');
         setLoading(true);
         return axios.get(`/api/post/reddit?pass=${reddit}`)
             .then((res) => {
                 if(res.status == 200){
-                    setRedditRunResults(redditRunResults.concat(res.data));
+                    setSocialRunResults(socialRunResults.concat(res.data));
                 }else{
                     setError(res.data);
                 }
@@ -79,20 +81,20 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <th>primary</th>
             <th>text</th>
             <th>flareId</th>
-            {redditPostRuns.map((rpr) => {
+            {socialPostRuns.map((rpr) => {
                 return (<>
                 
                         <div>{rpr.notionPageId}</div>
                         <div>{rpr.subreddit}</div>
                         <div>{rpr.primaryUrlParam}</div>
                         <div>{rpr.textUrlParams}</div>
-                        <div>{rpr.flareId}</div>
+                        <div>{rpr.flairId}</div>
                     </>
                 )
             })}
             
         </div>
-        <button className="pt-10" onClick={() => refreshReddit(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({redditRunResults.length}):</button>
+        <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialPostRuns.length}):</button>
         <div className="grid grid-cols-3 p-5">
             <div>SubReddit</div> 
             <div>primary</div> 
@@ -102,21 +104,24 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <div>title</div> 
             <div>id</div> 
             <div>created</div>*/}
-            {redditRunResults.map((rr) => {
+            {/*socialPostRuns.map((rr) => {
                 return (<>
-                <div>{rr.run.subreddit}</div>
-                <div>{rr.run.primaryUrlParam}</div>
-                <div>{rr.run.textUrlParams}</div>
+                <div>{rr.subreddit}</div>
+                <div>{rr.primaryUrlParam}</div>
+                <div>{rr.textUrlParams}</div>
                 <div className="col-span-3"><details>
-                    <summary>{!rr.isSuccess ? 'Failed' : rr.isSkipped ? '(skipped)' : rr.isUpdate ? 'Updated' : 'Created'} </summary>
-                        <div>{rr.postTitle}</div>
-                        <div>{rr.postId}</div>
-                        <div><NiceFullAlwaysNZDate date={rr.createdDate}/></div>
+                    <summary>{!rr.result ? 'Did not run' : 
+                            !rr.result.isSuccess ? 'Failed' 
+                             : rr.result.isSkipped ? '(skipped)' 
+                             : rr.result.isUpdate ? 'Updated' : 'Created' }</summary>
+                        <div>{rr.result?.postTitle}</div>
+                        <div>{rr.result?.postTitle}</div>
+                        <div><NiceFullAlwaysNZDate date={new Date(rr.createdDate)}/></div>
                         <div className="col-span-full">{JSON.stringify(rr.error)}</div>
                     </details>
                 </div>
                 </>)
-            })}
+            })*/}
         </div>
             {error && <div>{JSON.stringify(error)}</div>}
         {/*
@@ -155,16 +160,19 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
     const client = new NotionClient();
     const settings = client.getLocationSettings();
-    const redditPostRuns = client.getRedditPostRuns();
+    const socialPostRuns = await client.getSocialPostRuns();
+
+
+    const nextJSHacky:SocialPostsProps = JSON.parse(JSON.stringify({
+        publishTimeUTC: new Date().toUTCString(),
+        locationSettings: await settings,
+        socialPostRuns: socialPostRuns,
+        reddit: process.env.SOCIAL_POST_PASS,
+        hardcodedURL: getHardCodedUrl()
+    }));
 
     return {
-       props:{
-         publishTimeUTC: new Date().toUTCString(),
-         locationSettings: await settings,
-         redditPostRuns: await redditPostRuns,
-         reddit: process.env.SOCIAL_POST_PASS,
-         hardcodedURL: getHardCodedUrl()
-        }
+       props: nextJSHacky
     }
 }
     

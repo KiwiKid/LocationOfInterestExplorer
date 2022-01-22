@@ -12,9 +12,10 @@ import { dayFormattedNZ, onlyToday, startOfDayNZ } from '../../../components/Loc
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
-import RedditPostRunResult from '../../../components/Locations/APIClients/RedditPostRunResult';
 import { createLocationGroups, LocationGroup }  from '../../../components/Locations/LocationGroup';
 import { resolve } from 'path/posix';
+import SocialPostRunResult from '../../../components/Locations/APIClients/SocialPostRunResult';
+import SocialPostRun from '../../../components/Locations/APIClients/SocialPostRun';
 /*
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
    /* {
@@ -52,7 +53,7 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
   //  return client.updateRedditSubmissions(sp)
 //}
 
-const oldestCreateDateFirst = (a:RedditPostRun,b:RedditPostRun):number => {
+const oldestCreateDateFirst = (a:SocialPostRun,b:SocialPostRun):number => {
     if(!a || !a.lastCheckTime){
         return -1;
     }
@@ -75,7 +76,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const client = new NotionClient();
 
     const settings = await client.getLocationSettings();
-    const redditPosts = await client.getRedditPostRuns();
+    const redditPosts = await client.getSocialPostRuns();
 
    /* const processSocialRunGroupKey = (locationPresets:LocationPreset[],keyString:string):LocationGroupKey => {
         let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
@@ -91,8 +92,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         }
     }*/
 
-    const processRedditPostRun = async (run:RedditPostRun):Promise<RedditPostRunResult> => {
-        return new Promise<RedditPostRunResult>(async (resolve, reject) => {
+    const processRedditPostRun = async (run:SocialPostRun):Promise<SocialPostRun> => {
+        return new Promise<SocialPostRun>(async (resolve, reject) => {
             try{
             
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
@@ -100,7 +101,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     
                 const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
                 if(matchingLocationGroups.length === 0){
-                    resolve(new RedditPostRunResult(true, false, true, run));
+                    run.setResults(new SocialPostRunResult(true, false, true));
+                    resolve(run)
                     return;
                 }
     
@@ -115,19 +117,18 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     
             // if(run.submissionTitleQuery){
                 
-            //     return redditClient.updateRedditComment(run, title, text);
+            //     return redditClient.updateSocialComment(run, title, text);
             // }
             console.log(`updating submission ${title}`);
             try{
                 
                 const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
                     .then((rr) => {
-                        if(rr.isSuccess){
-                            if(rr.postTitle && rr.postId && rr.run.notionPageId){
-                                client.setRedditPostProcessedUpdated(run.notionPageId, rr.createdDate, rr.postTitle ? rr.postTitle : 'No post Title', rr.postId ? rr.postId : 'No post id?')
-        
+                        if(rr.result){
+                            if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
+                                client.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
                             } else {
-                                client.setRedditPostProcessed(rr.run.notionPageId, rr.createdDate);
+                                client.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
                             }
                         }
                         
@@ -137,27 +138,29 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         console.error('This one?')
                         console.error(err.message)
                         console.error(err)
-                        var rrr = new RedditPostRunResult(false, false, true, run, undefined, undefined, err)
+                        run.setError(err);
                         //resolve(rrr);
-                        return rrr;
+                        return run;
                     })
 
                 resolve(update)
             }catch(err){
                 console.error('This is getting ridiculous.. ')
                 console.error(err)
-                resolve(new RedditPostRunResult(false, false, true, run, undefined, undefined, err))
+                run.setError(err);
+                resolve(run)
             }
 
                 /*
                 Faking it: 
                 console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
-                const fakeRes:RedditPostRunResult = new RedditPostRunResult(false, false, true, run, "Fake")
-                return new Promise<RedditPostRunResult>((resolve, reject) => resolve(fakeRes));*/
+                const fakeRes:SocialPostRunResult = new SocialPostRunResult(false, false, true, run, "Fake")
+                return new Promise<SocialPostRunResult>((resolve, reject) => resolve(fakeRes));*/
             
             }catch(err){
                 console.error('Over here?')
-                resolve(new RedditPostRunResult(false, false, true, run, undefined, undefined, err));
+                run.setError(err);
+                resolve(run);
             }
         })
 
@@ -176,7 +179,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(settings.locationPresets, lc.city)}`
         })*/
 
-        const isInteresting = (runs:RedditPostRunResult) => {
+        const isInteresting = (runs:SocialPostRun) => {
            // if(runs.isSuccess && runs.isSkipped){ return false}
             return true;
         }
@@ -185,16 +188,14 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
         const redditClient = new RedditClient();
 
-
-        const results:RedditPostRunResult[] = []
-
-        const comeon = await Promise.all(redditPosts.sort(oldestCreateDateFirst).map(async (rp) =>{
-            return new Promise<RedditPostRunResult>(async (resolve, reject) => {
+        const results = await Promise.all(redditPosts.sort(oldestCreateDateFirst).map(async (run) =>{
+            return new Promise<SocialPostRun>(async (resolve, reject) => {
                 try{
 
-                    resolve(await processRedditPostRun(rp));
+                    resolve(await processRedditPostRun(run));
                 }catch(err){
-                    reject(new RedditPostRunResult(false, false, true, rp, undefined, undefined, err));
+                    run.setError(err);
+                    reject(run);
                 }
             })
         }))
@@ -206,7 +207,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
         res.status(200)
                 .setHeader("Access-Control-Allow-Origin", "*")
-                .json((comeon).filter(isInteresting)); 
+                .json((results).filter(isInteresting)); 
     }
 
     //const redditPostResults:RedditPostRunResult[] = 

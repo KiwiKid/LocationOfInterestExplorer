@@ -2,6 +2,7 @@
 
 import { Client } from '@notionhq/client'
 import { getMinutesAgo, removeStringEnds } from '../../utils/utils';
+import SocialPostRun from './SocialPostRun';
 
 const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
 
@@ -22,24 +23,34 @@ const getNotionRichText = (notionParam:any):string => {
 // "[bla bla,another bla]" => ["bla bla", "another bla"]
 const getNotionHackyArray = (notionParam:any):string[] => removeStringEnds(getNotionRichText(notionParam)).split(',')
 
-const getNotionDate = (notionParam:any):Date|null => {
+const getNotionDate = (notionParam:any):string => {
     return notionParam.date ? notionParam.date.start : null
+}
+
+
+const getNotionMultiSelectFirst = (notionParam:any):string => {
+    return notionParam && notionParam.multi_select.length > 1 ?  notionParam.multi_select[0].name : ''
 }
 /* END - Notion types ==> NZCovidMap types */
 
 
-const mapNotionItemToRedditPostRun = (notionRow:any):RedditPostRun => {
+const mapNotionItemToSocialPostRun = (notionRow:any):SocialPostRun => {
 
     const props = notionRow.properties;
-    return {
-        primaryUrlParam: getNotionRichText(props.primaryUrlParam) ,
-        subreddit: getNotionRichText(props.subreddit),
-        textUrlParams: getNotionHackyArray(props.textUrlParams),
-        postId: getNotionRichText(props.currentPostId),
-        postTitle: getNotionRichText(props.currentPostTitle),
-        notionPageId: notionRow.id,
-        lastCheckTime: getNotionDate(props.lastCheckTime),
-        flareId: getNotionRichText(props.flareId)
+
+    
+    return new SocialPostRun(
+            notionRow.id
+            , getNotionRichText(props.subreddit)
+            , getNotionRichText(props.primaryUrlParam)
+            , getNotionHackyArray(props.textUrlParams)
+            , getNotionMultiSelectFirst(props.type)//getSocialPostRunType(props.type)
+            , getNotionRichText(props.currentPostTitle)
+            , getNotionRichText(props.currentPostId)
+            , getNotionDate(props.lastCheckTime)
+            , getNotionRichText(props.flareId)
+
+    )
        /* showInDrawer: props.showInDrawer.checkbox,
         lat: props.lat.number,
         lng: props.lng.number,
@@ -47,8 +58,6 @@ const mapNotionItemToRedditPostRun = (notionRow:any):RedditPostRun => {
         title: getNotionRichText(props.cityTitle),
         urlParam: getNotionRichText(props.urlParam),
         zoom: props.zoom.number*/
-
-    }   
 }
 
 const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
@@ -77,8 +86,8 @@ class NotionClient {
     cachedLocationPresets!:LocationPreset[];
     cachedLocationPresetsUpdateTime!:Date;
 
-    cachedRedditPosts!:RedditPostRun[];
-    cachedRedditPostsUpdateTime!:Date;
+    cachedSocialPosts!:SocialPostRun[];
+    cachedSocialPostsUpdateTime!:Date;
     
 
     constructor (){
@@ -172,13 +181,13 @@ class NotionClient {
     }
 
 
-    getRedditPostRuns = async ():Promise<RedditPostRun[]> => {
+    getSocialPostRuns = async ():Promise<SocialPostRun[]> => {
         if(!this.redditDbId){ throw 'No reddit posts db set'}
 
         // This is mainly to keep the heat of the reddit API during local development.
-        if(!this.cachedRedditPosts 
-            || this.cachedRedditPosts.length === 0
-            || getMinutesAgo(this.cachedRedditPostsUpdateTime) > 1
+        if(!this.cachedSocialPosts 
+            || this.cachedSocialPosts.length === 0
+            || getMinutesAgo(this.cachedSocialPostsUpdateTime) > 1
         ){
             return this.notionClient.databases.query({
                 database_id: this.redditDbId,
@@ -189,18 +198,18 @@ class NotionClient {
                 },
                 },
             })
-            .then((r) => r.results.map(mapNotionItemToRedditPostRun))
+            .then((r) => r.results.map(mapNotionItemToSocialPostRun))
             .then((rs) => {
-                this.cachedRedditPosts = rs;
-                this.cachedRedditPostsUpdateTime = new Date();
+                this.cachedSocialPosts = rs;
+                this.cachedSocialPostsUpdateTime = new Date();
                 return rs;
             });
         } else {
-            return this.cachedRedditPosts;
+            return this.cachedSocialPosts;
         }
     }
 
-    setRedditPostProcessed = async (notionPageId:string, checkTime:Date):Promise<void> => { 
+    setSocialPostProcessed = async (notionPageId:string, checkTime:Date):Promise<void> => { 
         console.log(`Setting check time for notionPageId: ${notionPageId}`)
         let newProps:any = {};
 
@@ -215,7 +224,7 @@ class NotionClient {
         });
     }
 
-    setRedditPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
+    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
         console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
         return this.notionClient.pages.update({
             page_id: notionPageId,

@@ -3,23 +3,28 @@ import snoowrap, { Submission } from 'snoowrap'
 import getConfig from 'next/config';
 import { getNodeEnv } from '../../utils/getNodeEnv';
 import { error } from 'console';
+import SocialPostRun from './SocialPostRun';
 
 
-class RedditPostRunResult { 
+
+// This class is pretty gross, but it works...
+class SocialPostRunResult { 
     isSuccess:boolean
     isUpdate:boolean
     isSkipped:boolean
     postId?:string
     postTitle?:string
-    run:RedditPostRun
     error?:any
     createdDate:Date
 
-    constructor (isSuccess:boolean,isUpdate:boolean,isSkipped:boolean, run:RedditPostRun, postTitle?:string, postId?:string, error?:any){
+    constructor (isSuccess:boolean,isUpdate:boolean,isSkipped:boolean, postTitle?:string, postId?:string){
+        
         this.isSuccess = isSuccess;
         this.isSkipped = isSkipped;
         this.isUpdate = isUpdate;
-        this.run = run;
+
+
+
         if(postTitle){
             this.postTitle = postTitle;
         }
@@ -31,6 +36,11 @@ class RedditPostRunResult {
         }
         this.createdDate = new Date();
     }
+
+
+    setError(err:any){
+        this.error(err);
+    }
 }
 
-export default RedditPostRunResult;
+export default SocialPostRunResult;

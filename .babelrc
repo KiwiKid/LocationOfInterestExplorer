@@ -1,4 +1,4 @@
 {
     "presets": ["next/babel"],
-    "plugins": ["react-optimized-image/plugin", "@babel/plugin-proposal-class-properties"]
+    "plugins": ["react-optimized-image/plugin", "@babel/plugin-proposal-class-properties", "superjson-next"]
   }
