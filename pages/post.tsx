@@ -89,10 +89,10 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                         <div>{rpr.primaryUrlParam}</div>
                         <div>{rpr.textUrlParams}</div>
                         <div>{rpr.flairId}</div>
-                        {rpr.result && <div className="col-span-full">
+                        <div className="col-span-full">
                         <details>
-                            <summary>{!rpr.result ? 'Did not run' : 
-                                    !rpr.result.isSuccess ? 'Failed' 
+                            <summary>{rpr.existingPostId ? `${rpr.existingPostId} ` : ''}  {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '(Skipped)' : 
+                                    !rpr.result.isSuccess ? '(Failed)' 
                                     : rpr.result.isSkipped ? '(skipped)' 
                                     : rpr.result.isUpdate ? 'Updated' : 'Created' }</summary>
                                 <div>{rpr.result?.postTitle}</div>
@@ -100,7 +100,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                                 <div><NiceFullAlwaysNZDate date={new Date(rpr.createdDate)}/></div>
                                 <div className="col-span-full">{JSON.stringify(rpr.error)}</div>
                             </details>
-                        </div>}
+                        </div>
                     </>
                 )
             })}

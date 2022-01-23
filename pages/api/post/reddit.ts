@@ -115,7 +115,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         return new Promise<SocialPostRun>(async (resolve, reject) => {
             try{
 
-                const botFeedbackMsg = `\n\n\nPlease contact this account with any feedback`
+                const botFeedbackMsg = `\n\n\nThis comment will be automatically updated. Please contact this account with any feedback`
     
                 console.log(`updating submission ${title}`);
             try{

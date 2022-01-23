@@ -54,7 +54,7 @@ class FacebookClient {
                    
                     //this.app.Nodes.PagePost('pageid_'+run.existingPostId).read(
                     const res = await axios.post(this.getFacebookEditUrl(run.existingPostId), { message: text})
-                                        .then((rr) => processFacebookSubmission(true, true, false, rr.data.id, title));
+                                        .then((rr) => processFacebookSubmission(true, true, false, rr.data.id, title, text));
 
                     run.setResults(res)
 
@@ -73,7 +73,7 @@ class FacebookClient {
                     }
                     console.log('Post Id: ' + res.id);*/
                     //@ts-ignore
-                    run.setResults(await processFacebookSubmission(true, false, false, res.id, title));
+                    run.setResults(await processFacebookSubmission(true, false, false, res.id, title, text));
                     resolve(run)
                 }
             }catch(err){
@@ -85,8 +85,8 @@ class FacebookClient {
 }
 
 
-const processFacebookSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, subId:string, title:string):Promise<SocialPostRunResult> => { 
-    return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
+const processFacebookSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, subId:string, title:string,text:string):Promise<SocialPostRunResult> => { 
+    return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId, text);
 }
 
 

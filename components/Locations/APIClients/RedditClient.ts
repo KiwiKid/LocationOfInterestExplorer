@@ -54,9 +54,11 @@ class RedditClient {
 
                 await this.r.getComment(run.existingPostId)
                         .edit(text)
-                            .then((redditRun) => {
-                                console.log(`updated reddit comment (${JSON.stringify(redditRun)})`);
-                                run.setResults(new SocialPostRunResult(true, true, false, title, redditRun.id))
+                            .then((res) => {
+                                //@ts-ignore
+                                const comment = res.json.data.things[0];
+                                console.log(`updated reddit comment (${JSON.stringify(comment)})`);
+                                run.setResults(new SocialPostRunResult(true, true, false, title, comment.id, text, comment.ups))
                                 resolve(run)
                                 return run;                
                             }).catch((err) => {
@@ -71,7 +73,7 @@ class RedditClient {
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery })
                 
                 const match = submissions.values.name;
-                run.setResults(new SocialPostRunResult(true, false, false, title, match))
+                run.setResults(new SocialPostRunResult(true, false, false, title, match, text))
                 resolve(run)
             }
         })
