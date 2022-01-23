@@ -2,6 +2,7 @@
 
 import { Client } from '@notionhq/client'
 import { getMinutesAgo, removeStringEnds } from '../../utils/utils';
+import { getSecondsAgo } from '../DateHandling';
 import SocialPostRun from './SocialPostRun';
 
 const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
@@ -187,7 +188,7 @@ class NotionClient {
         // This is mainly to keep the heat of the reddit API during local development.
         if(!this.cachedSocialPosts 
             || this.cachedSocialPosts.length === 0
-            || getMinutesAgo(this.cachedSocialPostsUpdateTime) > 1
+            || getSecondsAgo(this.cachedSocialPostsUpdateTime) > 20
         ){
             return this.notionClient.databases.query({
                 database_id: this.redditDbId,

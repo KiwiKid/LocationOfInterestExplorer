@@ -39,6 +39,10 @@ const todayNZ = () => {
     return dayjs().tz("Pacific/Auckland");
 }
 
+const getSecondsAgo = (date:Date) => {
+    return dayjs().tz("Pacific/Auckland").diff(dayjs(date).tz("Pacific/Auckland"), 'seconds')
+}
+
 const subtractHours = (a:Dayjs, hours:number) => {
     return dayjs(a).subtract(hours, 'hours');
 }
@@ -56,6 +60,8 @@ const dateDebugging = (passedInDate:Date):string => {
                 \n\n startOfDayFormatted (via new Date()): ${startOfDayFormattedNZ(new Date())}
             `;
 }
+
+
 
 const startOfDayFormattedNZ = (date:Date) => {
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format('D MMM');
@@ -85,4 +91,5 @@ export {
     , startOfDayFormattedNZ
     , NiceShortTime
     , dayFormattedNZ
+    , getSecondsAgo
 }
