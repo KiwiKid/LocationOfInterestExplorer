@@ -167,7 +167,7 @@ class RedditClient {
 
 }
 
-const processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:SocialPostRun, subId:string, title:string):Promise<RedditPostRunResult> => { 
+const processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:SocialPostRun, subId:string, title:string):Promise<SocialPostRunResult> => { 
     return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
 }
 
