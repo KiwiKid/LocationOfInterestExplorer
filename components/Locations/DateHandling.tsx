@@ -4,6 +4,7 @@ import calendar from 'dayjs/plugin/calendar'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import DayJSUtc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import SocialPostRun from './APIClients/SocialPostRun'
 
 
 type DateProps = {
@@ -77,6 +78,16 @@ const releaseDateAndCity = (date:Date) => {
 const asAtDateAlwaysNZ = (date:Date) => `(as at ${dayjs(date).tz("Pacific/Auckland").format('h:mm a D/MM/YYYY')})`
 
 
+const oldestCreateDateFirst = (a:SocialPostRun,b:SocialPostRun):number => {
+    if(!a || !a.lastCheckTime){
+        return -1;
+    }
+    if(!b || !b.lastCheckTime){
+        return 1;
+    }
+    return new Date(a.lastCheckTime) > new Date(b.lastCheckTime) ? -1 : 1;
+}
+
 export {
     onlyToday
     , subtractHours
@@ -92,4 +103,5 @@ export {
     , NiceShortTime
     , dayFormattedNZ
     , getSecondsAgo
+    , oldestCreateDateFirst
 }

@@ -77,7 +77,8 @@ class FacebookClient {
                     resolve(run)
                 }
             }catch(err){
-                run.setError(err);
+                console.error(err);
+                run.setError('Failed to update facebook');
                 reject(run);
             }
         })

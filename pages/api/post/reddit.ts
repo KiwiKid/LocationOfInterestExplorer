@@ -8,7 +8,7 @@ import NotionClient from '../../../components/Locations/APIClients/NotionClient'
 import { requestLocations } from '../../../components/Locations/MoHLocationClient/requestLocations';
 import { LocationOfInterest } from '../../../components/types/LocationOfInterest';
 import { applyLocationOverride, applyLocationOverrides, getLocationInfoGroupTitle, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
-import { dayFormattedNZ, onlyToday, startOfDayNZ } from '../../../components/Locations/DateHandling';
+import { dayFormattedNZ, oldestCreateDateFirst, onlyToday, startOfDayNZ } from '../../../components/Locations/DateHandling';
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
@@ -53,16 +53,6 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
 //const processRun = async(client:RedditClient, post:RedditPostRuns):Promise<RedditPostRunResult> => {
   //  return client.updateRedditSubmissions(sp)
 //}
-
-const oldestCreateDateFirst = (a:SocialPostRun,b:SocialPostRun):number => {
-    if(!a || !a.lastCheckTime){
-        return -1;
-    }
-    if(!b || !b.lastCheckTime){
-        return 1;
-    }
-    return new Date(a.lastCheckTime) > new Date(b.lastCheckTime) ? -1 : 1;
-}
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
@@ -113,53 +103,42 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
     const processRedditPostRun = async (run:SocialPostRun, title:string,text:string):Promise<SocialPostRun> => {
         return new Promise<SocialPostRun>(async (resolve, reject) => {
-            try{
-
-                const botFeedbackMsg = `\n\n\nThis comment will be automatically updated. Please contact this account with any feedback`
+                const botFeedbackMsg = `\n\n\nThis post will be automatically updated. Please contact this account with any feedback`
     
-                console.log(`updating submission ${title}`);
-            try{
-                
-                const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
-                    .then((rr) => {
-                        if(rr.result){
-                            if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
-                                notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
-                            } else {
-                                notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
+                    console.log(`updating submission ${title}`);
+                try{
+                    
+                    const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
+                        .then((rr) => {
+                            if(rr.result){
+                                if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
+                                    notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
+                                } else {
+                                    notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
+                                }
                             }
-                        }
-                        
-                        //resolve(rr);
-                        return rr;
-                    }).catch((err) => {
-                        console.error('This one?')
-                        console.error(err.message)
-                        console.error(err)
-                        run.setError(err);
-                        //resolve(rrr);
-                        return run;
-                    })
+                            
+                            //resolve(rr);
+                            return rr;
+                        }).catch((err) => {
+                            console.error(err)
+                            run.setError(err.message);
+                            //resolve(rrr);
+                            return run;
+                        })
 
-                resolve(update)
-            }catch(err){
-                console.error('This is getting ridiculous.. ')
-                console.error(err)
-                run.setError(err);
-                resolve(run)
-            }
+                    resolve(update)
+                }catch(err){
+                    console.error(err)
+                    run.setError('Failed to update reddit submissions (processRedditPostRun)');
+                    resolve(run)
+                }
 
                 /*
                 Faking it: 
                 console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
                 const fakeRes:SocialPostRunResult = new SocialPostRunResult(false, false, true, run, "Fake")
                 return new Promise<SocialPostRunResult>((resolve, reject) => resolve(fakeRes));*/
-            
-            }catch(err){
-                console.error('Over here?')
-                run.setError(err);
-                resolve(run);
-            }
         })
 
         
@@ -170,7 +149,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         return new Promise<SocialPostRun>(async (resolve, reject) => {
             try{
 
-                const botFeedbackMsg = `\n\n\nPlease contact this account with any feedback`
+                const botFeedbackMsg = `\n\n\nThis comment will be automatically updated. Please contact this account with any feedback`
     
                 console.log(`updating submission ${title}`);
 
@@ -198,9 +177,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
                 resolve(update)
             }catch(err){
-                console.error('This is getting ridiculous.. ')
-                console.error(err)
-                run.setError(err);
+                console.error(err);
+                run.setError('Failed to process reddit comment run');
                 resolve(run)
             }
 
@@ -265,7 +243,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     }
                     
                 }catch(err){
-                    run.setError(err);
+                    run.setError(`Failed to process run ${run.subreddit} ${run.primaryUrlParam}`);
                     reject(run);
                 }
             })

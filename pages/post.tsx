@@ -1,7 +1,7 @@
 import { GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
-import { NiceFullAlwaysNZDate, NiceFullDate } from "../components/Locations/DateHandling";
+import { NiceFullAlwaysNZDate, NiceFullDate, oldestCreateDateFirst } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
@@ -81,7 +81,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <th>primary</th>
             <th>text</th>
             <th>flareId</th>
-            {socialRuns.map((rpr) => {
+            {socialRuns.sort(oldestCreateDateFirst).map((rpr) => {
                 return (<>
                 
                         <div>{rpr.type}</div>
@@ -99,7 +99,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                                 <div>{rpr.result?.postTitle}</div>
                                 <div>{rpr.result?.positivity}</div>
                                 <div><NiceFullAlwaysNZDate date={new Date(rpr.createdDate)}/></div>
-                                <div className="col-span-full">{JSON.stringify(rpr.error)}</div>
+                                {rpr.errorMsg && <div className="col-span-full">{rpr.errorMsg}</div>}
                             </details>
                         </div>
                     </>

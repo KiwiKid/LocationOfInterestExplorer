@@ -18,7 +18,7 @@ class SocialPostRun {
     lastCheckTime?:string
 
     result?:SocialPostRunResult
-    error?:any
+    errorMsg?:string
 
     constructor (
         notionPageId:string
@@ -60,8 +60,8 @@ class SocialPostRun {
     }
 
 
-    setError(err:any) {
-        this.error = err;
+    setError(errorMsg:string) {
+        this.errorMsg = errorMsg;
     }
 
     setResults(result:SocialPostRunResult){

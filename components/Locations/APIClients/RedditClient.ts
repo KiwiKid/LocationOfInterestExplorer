@@ -32,9 +32,9 @@ class RedditClient {
             
         });
         //TODO: can this be 1?
-        r.config({requestDelay: 5000, warnings: false, continueAfterRatelimitError: true, debug:true});
+        r.config({requestDelay: 1000, warnings: false, continueAfterRatelimitError: true, debug:true});
 
-        if(!r){ console.error('failed to generate reddit client'); throw 'err'}
+        if(!r){ console.error('Failed to generate reddit client'); throw 'err'}
 
         this.r = r;
     }
@@ -43,7 +43,7 @@ class RedditClient {
         return new Promise(async (resolve,reject) => {
 
             if(!run.subredditSubmissionTitleQuery){
-                run.setError({error: 'No Subreddit submission title on Reddit_Comment type'})
+                run.setError('No Subreddit submission title on Reddit_Comment type');
                 reject(run);
                 return;
             }
@@ -62,7 +62,8 @@ class RedditClient {
                                 resolve(run)
                                 return run;                
                             }).catch((err) => {
-                                run.setError(err);
+                                console.error(err)
+                                run.setError('Could not edit existing reddit comment');
                                 reject(run);
                             });
 
@@ -162,7 +163,7 @@ class RedditClient {
         }catch(err){
             console.error(`Update Reddit Submissions failed for r/${run.subreddit} ${run.textUrlParams}`)
             console.error(err);
-            run.setError(err);
+            run.setError('Failed to update reddit submission');
             return run;
         }
     }
