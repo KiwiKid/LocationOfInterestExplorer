@@ -18,15 +18,19 @@ class FacebookClient {
 
     constructor (){
 
-        if(!process.env.FB_ACCESS_TOKEN){ console.error('FB_ACCESS_TOKEN not set'); throw 'Config error 01' }
         if(!process.env.NEXT_PUBLIC_FACEBOOK_APP_ID){ console.error('NEXT_PUBLIC_FACEBOOK_APP_ID not set'); throw 'Config error 02' }
+
+        if(!process.env.FB_ACCESS_TOKEN){ console.error('FB_ACCESS_TOKEN not set'); throw 'Config error 01' }
         if(!process.env.FB_APP_SECRET){ console.error('FB_APP_SECRET not set'); throw 'Config error 03' }
+
         if(!process.env.FB_PAGE_ID){ console.error('FB_PAGE_ID not set'); throw 'Config error 04' }
 
         
         this.appId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID
-        this.appSecret = process.env.FB_ACCESS_TOKEN    
+
         this.appAccessToken = process.env.FB_ACCESS_TOKEN;
+        this.appSecret = process.env.FB_APP_SECRET
+
         this.facebookPageID = process.env.FB_PAGE_ID
 
         this.app = new FacebookApp({
@@ -59,7 +63,7 @@ class FacebookClient {
                         //const res = this.app.Nodes.Page('pageid').Edges.Posts (this.appAccessToken, {  app_id: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID, message: text})
                 }else{
                     //@ts-ignore
-                    const res = this.app.Nodes.Page('pageid').Edges.Posts.create(this.appAccessToken, {  app_id: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID, message: text})
+                    const res = await this.app.Nodes.Page(this.facebookPageID).Edges.Posts.create(this.appAccessToken, {  app_id: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID, message: text})
 /*
                     FB.api('me/feed', 'post', { message: text, access_token: process.env.FB_ACCESS_TOKEN }, async function (res:any) {
                     if(!res || res.error) {

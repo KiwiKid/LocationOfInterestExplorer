@@ -5,6 +5,7 @@ import SocialPostRunResult from './SocialPostRunResult';
 class SocialPostRun { 
     notionPageId:string
     subreddit:string // eg newzealand
+    subredditSubmissionTitleQuery?:string // only for "Reddit_Comment" types
     primaryUrlParam:string
     textUrlParams:string[]
     
@@ -21,18 +22,25 @@ class SocialPostRun {
 
     constructor (
         notionPageId:string
-        ,subreddit:string
-        ,primaryUrlParam:string
+        , subreddit:string
+        , primaryUrlParam:string
         , textUrlParams:string[]
-        ,type:string
+        , type:string
         , existingPostTitle?:string
-        ,existingPostId?:string
-        ,lastCheckTime?:string
-        ,flairId?:string
+        , existingPostId?:string
+        , lastCheckTime?:string
+        , flairId?:string
     ){
         
         this.notionPageId = notionPageId;
-        this.subreddit = subreddit;
+
+        let slashIndex = subreddit.indexOf('/');
+        if(slashIndex > 0){
+            this.subreddit = subreddit.substring(0, slashIndex);
+            this.subredditSubmissionTitleQuery = subreddit.substring(slashIndex+1, subreddit.length);
+        }else{
+            this.subreddit = subreddit;
+        }
         this.primaryUrlParam = primaryUrlParam;
         this.textUrlParams = textUrlParams;
         if(existingPostTitle){
@@ -48,11 +56,12 @@ class SocialPostRun {
         this.createdDate = new Date().toISOString();
         this.type = type
         this.lastCheckTime = lastCheckTime;
+        
     }
 
 
     setError(err:any) {
-        this.error(err);
+        this.error = err;
     }
 
     setResults(result:SocialPostRunResult){

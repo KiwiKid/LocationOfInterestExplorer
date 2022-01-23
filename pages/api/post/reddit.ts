@@ -164,6 +164,55 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         
     }
+
+
+    const processRedditCommentRun = async (run:SocialPostRun, title: string, text:string):Promise<SocialPostRun> => {
+        return new Promise<SocialPostRun>(async (resolve, reject) => {
+            try{
+
+                const botFeedbackMsg = `\n\n\nPlease contact this account with any feedback`
+    
+                console.log(`updating submission ${title}`);
+
+            
+                    
+                const update = await redditClient.updateRedditComment(run, title, text+botFeedbackMsg)
+                    .then((rr) => {
+                        if(rr.result){
+                            if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
+                                notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
+                            } else {
+                                notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
+                            }
+                        }
+                        
+                        //resolve(rr);
+                        return rr;
+                    }).catch((err) => {
+                        console.error('This one?')
+                        console.error(err)
+                        run.setError(err);
+                        //resolve(rrr);
+                        return run;
+                    })
+
+                resolve(update)
+            }catch(err){
+                console.error('This is getting ridiculous.. ')
+                console.error(err)
+                run.setError(err);
+                resolve(run)
+            }
+
+                /*
+                Faking it: 
+                console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
+                const fakeRes:SocialPostRunResult = new SocialPostRunResult(false, false, true, run, "Fake")
+                return new Promise<SocialPostRunResult>((resolve, reject) => resolve(fakeRes));*/
+        })
+
+        
+    }
     
 
     const locations:LocationOfInterest[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
@@ -208,7 +257,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     switch(run.type){
                         case "Reddit_Post": resolve(await processRedditPostRun(run, title, text));
                             break;
-                        case "Reddit_Comment": throw 'not implemented' //resolve(await processRedditPostRun(run, title, text));
+                        case "Reddit_Comment": resolve(await processRedditCommentRun(run,title,text)) //resolve(await processRedditPostRun(run, title, text));
                             break;
                         case "Facebook_Post": resolve(await processFacebookPostRun(run, title, text))
                         default: 

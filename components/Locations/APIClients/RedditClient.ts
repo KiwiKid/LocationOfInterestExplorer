@@ -3,7 +3,6 @@ import snoowrap, { Submission } from 'snoowrap'
 import getConfig from 'next/config';
 import { getNodeEnv } from '../../utils/getNodeEnv';
 import { debug, error } from 'console';
-import RedditPostRunResult from './SocialPostRunResult';
 import { startOfDayNZ, todayNZ } from '../DateHandling';
 import dayjs from 'dayjs';
 import SocialPostRunResult from './SocialPostRunResult';
@@ -39,11 +38,46 @@ class RedditClient {
 
         this.r = r;
     }
-/*
-    updateRedditComment = async (run:SocialPostRun, SubredditSubmissionTitleQuery:string, text:string):Promise<SocialPostRunResult> => {
-        try{ 
-            return this.r.getSubreddit(run.subreddit)
-                .search({time: 'day', sort: 'new', query: SubredditSubmissionTitleQuery })
+
+    updateRedditComment = async (run:SocialPostRun,title:string, text:string):Promise<SocialPostRun> => {
+        return new Promise(async (resolve,reject) => {
+
+            if(!run.subredditSubmissionTitleQuery){
+                run.setError({error: 'No Subreddit submission title on Reddit_Comment type'})
+                reject(run);
+                return;
+            }
+
+            const isUpdate = run.lastCheckTime && startOfDayNZ(new Date(run.lastCheckTime)) === startOfDayNZ(todayNZ())
+            if(isUpdate && run.existingPostId){
+                console.log(`updating reddit comment (${run.existingPostId})`);
+
+                await this.r.getComment(run.existingPostId)
+                        .edit(text)
+                            .then((redditRun) => {
+                                console.log(`updated reddit comment (${JSON.stringify(redditRun)})`);
+                                run.setResults(new SocialPostRunResult(true, true, false, title, redditRun.id))
+                                resolve(run)
+                                return run;                
+                            }).catch((err) => {
+                                run.setError(err);
+                                reject(run);
+                            });
+
+                
+                
+            }else{
+                const submissions = await this.r.getSubreddit(run.subreddit)
+                    .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery })
+                
+                const match = submissions.values.name;
+                run.setResults(new SocialPostRunResult(true, false, false, title, match))
+                resolve(run)
+            }
+        })
+    }
+           /* return this.r.getSubreddit(run.subreddit)
+                .search({time: 'day', sort: 'new', query: subredditSubmissionTitleQuery })
                 .first()
                 .map((thread:any) => this.r.getSubmission(thread).expandReplies().then((comments:any) => {
                     console.log(comments);
@@ -83,9 +117,9 @@ class RedditClient {
             console.error(err);
             return new RedditPostRunResult(false, false, true, run, undefined, undefined, err); //{ success: false, update: false, subreddit: run.subreddit, error: err }
         }
-    }
+    }*/
 
-*/
+
 
     updateRedditSubmissions = async (run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> => {
         try{ 
@@ -134,7 +168,7 @@ class RedditClient {
 }
 
 const processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:SocialPostRun, subId:string, title:string):Promise<RedditPostRunResult> => { 
-    return new RedditPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
+    return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
 }
 
 export default RedditClient;

@@ -39,7 +39,7 @@ class SocialPostRunResult {
 
 
     setError(err:any){
-        this.error(err);
+        this.error = err;
     }
 }
 

@@ -85,7 +85,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                 return (<>
                 
                         <div>{rpr.type}</div>
-                        <div>{rpr.subreddit}</div>
+                        <div>{rpr.subreddit}{`${rpr.subredditSubmissionTitleQuery ? `(${rpr.subredditSubmissionTitleQuery})`: ''}`}</div>
                         <div>{rpr.primaryUrlParam}</div>
                         <div>{rpr.textUrlParams}</div>
                         <div>{rpr.flairId}</div>
