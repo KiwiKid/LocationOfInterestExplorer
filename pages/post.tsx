@@ -84,7 +84,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             {socialRuns.map((rpr) => {
                 return (<>
                 
-                        <div>{rpr.notionPageId}</div>
+                        <div>{rpr.type}</div>
                         <div>{rpr.subreddit}</div>
                         <div>{rpr.primaryUrlParam}</div>
                         <div>{rpr.textUrlParams}</div>

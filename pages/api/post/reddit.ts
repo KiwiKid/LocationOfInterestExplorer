@@ -16,6 +16,7 @@ import { createLocationGroups, LocationGroup }  from '../../../components/Locati
 import { resolve } from 'path/posix';
 import SocialPostRunResult from '../../../components/Locations/APIClients/SocialPostRunResult';
 import SocialPostRun from '../../../components/Locations/APIClients/SocialPostRun';
+import FacebookClient from '../../../components/Locations/APIClients/FacebookClient';
 /*
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
    /* {
@@ -73,10 +74,12 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const url = 'https://nzcovidmap.org'
     const now = dayjs().tz("Pacific/Auckland").toDate();
 
-    const client = new NotionClient();
+    const notionClient = new NotionClient();
 
-    const settings = await client.getLocationSettings();
-    const redditPosts = await client.getSocialPostRuns();
+    const settings = await notionClient.getLocationSettings();
+    const redditPosts = await notionClient.getSocialPostRuns();
+    
+    const facebookClient = new FacebookClient();
 
    /* const processSocialRunGroupKey = (locationPresets:LocationPreset[],keyString:string):LocationGroupKey => {
         let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
@@ -92,43 +95,38 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         }
     }*/
 
-    const processRedditPostRun = async (run:SocialPostRun):Promise<SocialPostRun> => {
+
+    const processFacebookPostRun = (run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> => {
+        return new Promise<SocialPostRun>((resolve, reject) => {
+            facebookClient.updateFacebook(run, title, text)
+                .then((res) => {
+                    resolve(res)
+                }).catch((err) => {
+                    console.error(err);
+                    reject(err);
+                })
+
+        })
+        
+        
+    }
+
+    const processRedditPostRun = async (run:SocialPostRun, title:string,text:string):Promise<SocialPostRun> => {
         return new Promise<SocialPostRun>(async (resolve, reject) => {
             try{
-            
-                const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
-                if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
-    
-                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
-                if(matchingLocationGroups.length === 0){
-                    run.setResults(new SocialPostRunResult(true, false, true));
-                    resolve(run)
-                    return;
-                }
-    
-    
-    
-    
-                const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
-                const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
-    
+
                 const botFeedbackMsg = `\n\n\nPlease contact this account with any feedback`
     
-    
-            // if(run.submissionTitleQuery){
-                
-            //     return redditClient.updateSocialComment(run, title, text);
-            // }
-            console.log(`updating submission ${title}`);
+                console.log(`updating submission ${title}`);
             try{
                 
                 const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
                     .then((rr) => {
                         if(rr.result){
                             if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
-                                client.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
+                                notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
                             } else {
-                                client.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
+                                notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
                             }
                         }
                         
@@ -190,10 +188,29 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const results = await Promise.all(redditPosts.sort(oldestCreateDateFirst).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
+                const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
+                if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
+    
+                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
+                if(matchingLocationGroups.length === 0){
+                    run.setResults(new SocialPostRunResult(true, false, true));
+                    resolve(run)
+                    return;
+                }
+    
+    
+    
+    
+                const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
+                const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
+    
                 try{
                     switch(run.type){
-                        case "Reddit_Post": resolve(await processRedditPostRun(run));
+                        case "Reddit_Post": resolve(await processRedditPostRun(run, title, text));
                             break;
+                        case "Reddit_Comment": throw 'not implemented' //resolve(await processRedditPostRun(run, title, text));
+                            break;
+                        case "Facebook_Post": resolve(await processFacebookPostRun(run, title, text))
                         default: 
                             console.error(`(${run.type}) run type is not valid for r/${run.subreddit}`)
                     }
