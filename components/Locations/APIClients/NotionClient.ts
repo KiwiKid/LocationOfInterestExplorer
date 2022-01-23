@@ -87,8 +87,8 @@ class NotionClient {
     cachedLocationPresets!:LocationPreset[];
     cachedLocationPresetsUpdateTime!:Date;
 
-    cachedSocialPosts!:SocialPostRun[];
-    cachedSocialPostsUpdateTime!:Date;
+   // cachedSocialPosts!:SocialPostRun[];
+  //  cachedSocialPostsUpdateTime!:Date;
     
 
     constructor (){
@@ -186,10 +186,10 @@ class NotionClient {
         if(!this.redditDbId){ throw 'No reddit posts db set'}
 
         // This is mainly to keep the heat of the reddit API during local development.
-        if(!this.cachedSocialPosts 
+        /*if(!this.cachedSocialPosts 
             || this.cachedSocialPosts.length === 0
             || getSecondsAgo(this.cachedSocialPostsUpdateTime) > 20
-        ){
+        ){*/
             return this.notionClient.databases.query({
                 database_id: this.redditDbId,
                 filter: {
@@ -200,14 +200,14 @@ class NotionClient {
                 },
             })
             .then((r) => r.results.map(mapNotionItemToSocialPostRun))
-            .then((rs) => {
-                this.cachedSocialPosts = rs;
-                this.cachedSocialPostsUpdateTime = new Date();
-                return rs;
-            });
-        } else {
+            //.then((rs) => {
+            //    this.cachedSocialPosts = rs;
+           //     this.cachedSocialPostsUpdateTime = new Date();
+          //      return rs;
+           // });
+       /* } else {
             return this.cachedSocialPosts;
-        }
+        }*/
     }
 
     setSocialPostProcessed = async (notionPageId:string, checkTime:Date):Promise<void> => { 
