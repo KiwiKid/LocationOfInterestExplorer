@@ -226,8 +226,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(settings.locationPresets, lc.city)}`
         })*/
 
-        const isInteresting = (runs:SocialPostRun) => {
-           // if(runs.isSuccess && runs.isSkipped){ return false}
+        const isInteresting = (run:SocialPostRun) => {
+            if(run.result && run.result.isSuccess && run.result.isSkipped){ return false}
             return true;
         }
         const todaysLocationGroups:LocationGroup[] = createLocationGroups(todaysLocations, settings.locationPresets);
