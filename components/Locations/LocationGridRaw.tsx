@@ -7,11 +7,11 @@ import LargeLocationGrid from './LargeLocationGrid';
 import { Sort } from '../types/Sort';
 import Location from './Location';
 import { startOfDayNZ } from './DateHandling';
+import LocationGridAdaptorItem from './LocationGridAdaptor';
 
 
-type LocationGridProps = {
-    locations: LocationOfInterestCalculated[] //LocationOfInterest[]
-    showGrid: boolean
+type LocationGridRawProps = {
+    locations: LocationOfInterest[]
     openLocations: string[]
     setOpenLocations: any
     sortField: Sort
@@ -40,13 +40,15 @@ export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
     }
 }
 
-export default function LocationGrid({locations, showGrid, openLocations, setOpenLocations, sortField}:LocationGridProps) {
+function LocationGridRaw({locations, openLocations, setOpenLocations, sortField}:LocationGridRawProps) {
 
     var groupedLocations = _.chain(locations)
-            .groupBy((lc) => startOfDayNZ(lc.loi.start))
+            .groupBy((lc) => startOfDayNZ(lc.start))
             .value();
 
-    const isOpen = (loc:LocationOfInterest):boolean => openLocations.some((l) => l === loc.id)
+    function isOpen(loc:LocationOfInterest){
+        return openLocations.some((ol) => ol === loc.id);
+    }
 
     function toggleOpenLocation(id:string){
         
@@ -79,21 +81,13 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
         {Object.keys(groupedLocations).sort().reverse().map((d) => {
                 return ( 
                     <div key={`${d}_LG`}>
-                        <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].loi.start} locationCount={groupedLocations[d].length}/>
-                        {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => {
-                            return (
-                                <div key={`${l.loi.id}_C`} className="border-b border-black">
-                                    <div key={`${l.loi.id}_SS`} className="lg:hidden">
-                                        <Location loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={() => toggleOpenLocation(l.loi.id)} />
-                                    </div>
-                                    <div key={`${l.loi.id}_SL`} className="hidden lg:block border-b border-black">
-                                        <LargeLocationGrid loi={l.loi} isOpen={isOpen(l.loi)} showDistance={false} showHeader={false} toggleOpenLocation={toggleOpenLocation}/>
-                                    </div>
-                                </div>
-                        )})}
+                        <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].start} locationCount={groupedLocations[d].length}/>
+                        {groupedLocations[d].sort((a,b) => a.added > b.added ? 1 : -1).map((l:LocationOfInterest) => <LocationGridAdaptorItem loi={l} isOpen={isOpen(l)} toggleOpenLocation={toggleOpenLocation} /> )}
                     </div>
                 )
         })}
     </div>
     );
 }
+
+export default LocationGridRaw

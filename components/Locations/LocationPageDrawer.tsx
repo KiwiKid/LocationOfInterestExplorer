@@ -25,6 +25,8 @@ import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
 import Image from 'next/image';
 import { resetScroll } from "../utils/resetScroll";
+import LocationGrid from "./LocationGrid";
+import LocationGridRaw from "./LocationGridRaw";
 
 // TODO: consoidate most of this into "PageState"
 type LocationPageDrawerProps = { 
@@ -294,6 +296,19 @@ const LocationPageDrawer = ({
                 />}
             </>
           </Toggle>
+          {invalidLocations.length > 0 || true && <Toggle id="nomapped"  title="Locations not on map">
+            <>
+              <Summary>
+                These locations have not been provided by the Ministry of Health. These will be updated to, either manually by myself, or corrected by the Ministry of Health.
+              </Summary>
+              <LocationGridRaw
+                  locations={visibleLocations.map((vl) => vl.loi)}
+                  openLocations={openLocations}
+                  setOpenLocations={setOpenLocations}
+                  sortField={sortField}
+                />
+            </>
+          </Toggle>}
             <ShareBar url={url}>
               <div className={`grid grid-cols-1 md:grid-cols-${pageState.quickLink ? '3' : '2'} pt-4 border border-black p-2`}>
                 <div className="col-span-full">
@@ -422,28 +437,6 @@ const LocationPageDrawer = ({
                       {USEFUL_LINKS.map((ul) => <ExternalLinkWithDetails key={ul.href} href={ul.href} title={ul.title} description={ul.description}/>)}
                     </div>
                   </Toggle>
-                  {invalidLocations.length > 0 && <Toggle id="invalidLocations" title="Locations not yet mapped:" >
-                    <div className="grid grid-cols-2 sm:grid-cols-6 border-separate border-black" >
-                      <>
-                          <div>id</div>
-                          <div>event</div>
-                          <div>City</div>
-                          <div>Location</div>
-                          <div>Advice</div>
-                          <div>Timeframe</div>
-                      </>
-                        {invalidLocations.map((invLoc) => (
-                          <>
-                            <div>{invLoc.id}</div>
-                            <div>{invLoc.event}</div>
-                            <div>{invLoc.city}</div>
-                            <div>{invLoc.location}</div>
-                            <div>{invLoc.advice}</div>
-                            <div><LocationSummaryDateDisplay loi={invLoc} includeDate={true}/> <NiceDateWithTime date={invLoc.start}/></div>
-                          </>
-                        ))}
-                    </div>
-            </Toggle>}
                 <div className="text-center mt-4">
                   <span className="underline">
                     <Link href="https://github.com/KiwiKid/LocationOfInterestExplorer">View source code on github</Link>

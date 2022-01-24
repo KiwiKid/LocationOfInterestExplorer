@@ -50,7 +50,7 @@ export const shortTimeWithHourMin24ToNZ = new Intl.DateTimeFormat("en",  {timeSt
 
 //export const detailedLongTime =  new Intl.DateTimeFormat("en", { timeStyle: "medium", dateStyle:'medium', timeZone: 'UTC' }) 
 
-export const detailedLongTimeToNZ =  new Intl.DateTimeFormat("en", { timeStyle: "medium", dateStyle:'medium' }) 
+export const detailedLongTimeToNZ =  new Intl.DateTimeFormat("en", { timeStyle: "medium", dateStyle:'medium', timeZone: "Pacific/Auckland" }) 
 
 export const removeStringEnds = (input:string) => input.length < 2 ? input : input.substring(1, input.length-1);
 
