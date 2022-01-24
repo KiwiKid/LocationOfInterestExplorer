@@ -68,6 +68,9 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
                 setLoading(false);
             })
     }
+
+
+    const anyResults = socialRuns.some((sr) => sr.result);
     return (
         <>
         <NiceFullDate date={publishTime}/><br/>
@@ -82,9 +85,10 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <th>text</th>
             <th>flareId</th>
             
-            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.result)} />
-            <div className="col-span-full pb-10">In-Active:</div>
-            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.result)} />
+            <div className="col-span-full py-5">Active:</div>
+            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
+            <div className="col-span-full py-5">In-Active:</div>
+            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
         </div>
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialPostRuns.length}):</button>
         <div className="grid grid-cols-3 p-5">

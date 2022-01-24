@@ -22,8 +22,8 @@ const SocialRuns = ({socialRuns}:SocialRunsProps) => {
                 <div>{rpr.textUrlParams}</div>
                 <div>{rpr.flairId}</div>
                 <div className="col-span-full">
-                <details>
-                    <summary>{rpr.existingPostId ? `${rpr.existingPostId} ` : ''}  {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '' : 
+                {rpr.existingPostId ? <details>
+                    <summary>{rpr.existingPostId} {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '' : 
                             !rpr.result.isSuccess ? '(Failed)' 
                             : rpr.result.isSkipped ? '(skipped)' 
                             : rpr.result.isUpdate ? 'Updated' : 'Created' }</summary>
@@ -32,7 +32,7 @@ const SocialRuns = ({socialRuns}:SocialRunsProps) => {
                         <div>{rpr.result?.positivity}</div>
                         <div><NiceFullAlwaysNZDate date={new Date(rpr.createdDate)}/></div>
                         {rpr.errorMsg && <div className="col-span-full">{rpr.errorMsg}</div>}
-                    </details>
+                    </details>: ''}
                 </div>
             </>
         )
