@@ -57,28 +57,33 @@ class RedditClient {
                             .then((res) => {
                                 //@ts-ignore
                                 const comment = res.json.data.things[0];
-                                console.log(`updated reddit comment (${JSON.stringify(comment)})`);
+                                console.log(`updated reddit comment (${comment.id})`);
                                 run.setResults(new SocialPostRunResult(true, true, false, title, comment.id, text, comment.ups))
                                 resolve(run)
                                 return run;                
                             }).catch((err) => {
                                 console.error(err)
-                                run.setError('Could not edit existing reddit comment');
+                                run.setError(`Could not edit existing reddit comment for ${run.subreddit}`);
                                 reject(run);
                             });
-
-                
-                
             }else{
-                const submissions = await this.r.getSubreddit(run.subreddit)
-                    .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery })
-                
-                const match = submissions.values.name;
-                run.setResults(new SocialPostRunResult(true, false, false, title, match, text))
-                resolve(run)
+                const matchingThreads = await this.r.getSubreddit(run.subreddit)
+                    .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
+                    
+                matchingThreads.map((thread:any) => {
+                    return this.r.getSubmission(thread).reply(text).then((res) => {
+                        console.log(`created reddit comment (${res.id})`);
+                        run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
+                        resolve(run);
+                    }).catch((err) => { 
+                        run.setError(`Could not create new reddit post for ${run.subreddit}`);
+                        resolve(run);
+                    });                        
+                });
             }
-        })
-    }
+    })
+}
+    
            /* return this.r.getSubreddit(run.subreddit)
                 .search({time: 'day', sort: 'new', query: subredditSubmissionTitleQuery })
                 .first()

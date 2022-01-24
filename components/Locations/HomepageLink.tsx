@@ -12,7 +12,7 @@ const saveHomepage = () => {
 
 
 const HomepageLink = ({setHomepagePromptVisible,homepage}:HomepageLinkProps) => {
-
+return (<></>)
     return (
         <>
             {homepage && <InternalLink
@@ -31,12 +31,11 @@ const HomepageLink = ({setHomepagePromptVisible,homepage}:HomepageLinkProps) => 
 
 
 function saveMapSettingsLocally(centerLat:number, centerLng:number, zoom:number, daysInPastShown:number){
-    if(allowedLocationRestore){
-        localStorage.setItem("lat", centerLat.toString());
-        localStorage.setItem("lng", centerLng.toString());
-        localStorage.setItem("zoom", zoom.toString());
-        localStorage.setItem("daysInPastShown", daysInPastShown.toString());
-    }
+    localStorage.setItem("lat", centerLat.toString());
+    localStorage.setItem("lng", centerLng.toString());
+    localStorage.setItem("zoom", zoom.toString());
+    localStorage.setItem("daysInPastShown", daysInPastShown.toString());
+
 }
 
 type HomepagePromptProps = {
@@ -44,7 +43,7 @@ type HomepagePromptProps = {
 }
 
 const HomepagePrompt = ({setLocationPromptVisible}:HomepagePromptProps) => {
-
+    return (<></>)
     const setHomepage = () => {
 
     }
