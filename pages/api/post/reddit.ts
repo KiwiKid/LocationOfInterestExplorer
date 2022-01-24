@@ -55,7 +55,6 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
 //}
 
 // 10 second vercel timeout + reddit rate limiting :(
-const BATCH_SIZE = 2;
 
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
@@ -215,7 +214,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
         const redditClient = new RedditClient();
 
-        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).slice(0, BATCH_SIZE).map(async (run) =>{
+        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
                 if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
@@ -243,6 +242,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         default: 
                             console.error(`(${run.type}) run type is not valid for r/${run.subreddit}`)
                     }
+
                     
                 }catch(err){
                     run.setError(`Failed to process run ${run.subreddit} ${run.primaryUrlParam}`);
