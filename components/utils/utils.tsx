@@ -22,31 +22,29 @@ export const ShortDayFormat = {
     , day: '2-digit'
 }
 
-export const sortFormatToNZ = new Intl.DateTimeFormat("en", { timeStyle: "long", dateStyle:'short' })
+export const sortFormatToNZ = new Intl.DateTimeFormat("en-NZ", { timeStyle: "long", dateStyle:'short', timeZone: "Pacific/Auckland" })
 
 //export const shortDayMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
-export const shortDayMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric',}) 
+export const shortDayMonthToNZ = new Intl.DateTimeFormat("en-NZ",  {month:'long', day:'numeric', timeZone: "Pacific/Auckland"}) 
 
 // Nov 9
 //export const shortDayShortMonth = new Intl.DateTimeFormat("en",  {month:'short', day:'numeric', timeZone: 'UTC'}) 
-export const shortDayShortMonthToNZ = new Intl.DateTimeFormat("en",  {month:'numeric', day:'numeric'}) 
+export const shortDayShortMonthToNZ = new Intl.DateTimeFormat("en-NZ",  {month:'numeric', day:'numeric', timeZone: "Pacific/Auckland"}) 
 
 //export const shortDayLongMonth = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric', timeZone: 'UTC'}) 
 // December 7
-export const shortDayLongMonthToNZ = new Intl.DateTimeFormat("en",  {month:'long', day:'numeric'}) 
-
-export const shortNormalFormat = new Intl.DateTimeFormat("en-NZ",  {})
+export const shortDayLongMonthToNZ = new Intl.DateTimeFormat("en-NZ",  {month:'long', day:'numeric', timeZone: "Pacific/Auckland"}) 
 
 // Thursday
-export const longDayToNZ = new Intl.DateTimeFormat("en",  {weekday:'long'}) 
+export const longDayToNZ = new Intl.DateTimeFormat("en",  {weekday:'long', timeZone: "Pacific/Auckland"}) 
 
 // Dec 7, 2021
-export const shortDateToNZ = new Intl.DateTimeFormat("en",  { dateStyle:"medium"}) 
+export const shortDateToNZ = new Intl.DateTimeFormat("en",  { dateStyle:"medium", timeZone: "Pacific/Auckland"}) 
 
 // 1:13 PM
-export const shortTimeWithHourMinToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short'})
+export const shortTimeWithHourMinToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short', timeZone: "Pacific/Auckland"})
 
-export const shortTimeWithHourMin24ToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short', hour12: false })
+export const shortTimeWithHourMin24ToNZ = new Intl.DateTimeFormat("en",  {timeStyle:'short', hour12: false, timeZone: "Pacific/Auckland" })
 
 //export const shortTimeWithHourMin = new Intl.DateTimeFormat("en", {timeStyle:'short', timeZone: 'UTC'}) 
 

@@ -1,5 +1,5 @@
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
-import { getDateInPastByXDays, getHoursAgo, shortDayLongMonthToNZ, shortDayMonthToNZ, shortDayShortMonthToNZ, shortNormalFormat, shortTimeWithHourMin24ToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
+import { getDateInPastByXDays, getHoursAgo, shortDayLongMonthToNZ, shortTimeWithHourMin24ToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
 import LocationGridContainer from "./LocationGridContainer";
 import Question from "./Questions";
 // @ts-ignore
