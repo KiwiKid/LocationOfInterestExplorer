@@ -1,5 +1,6 @@
 import SocialPostRun from "./APIClients/SocialPostRun";
-import { NiceFullAlwaysNZDate, oldestCreateDateFirst } from "./DateHandling";
+import { NiceFullAlwaysNZDate } from "./DateHandling";
+import { downTheCountry } from "./LocationObjectHandling";
 
 const getSocialsStatusColor = (socialPostRun: SocialPostRun) => {
     if(socialPostRun.errorMsg){ return 'red' }
@@ -13,7 +14,7 @@ const SocialRuns = ({socialRuns}:SocialRunsProps) => {
     
 
     return ( 
-        <>{socialRuns.sort(oldestCreateDateFirst).map((rpr) => {
+        <>{socialRuns.sort((a,b) => a.lastCheckTime > b.lastCheckTime ? 1 : -1).map((rpr) => {
         return (<>
         
                 <div className={`bg-${getSocialsStatusColor(rpr)}`}>{rpr.type}</div>

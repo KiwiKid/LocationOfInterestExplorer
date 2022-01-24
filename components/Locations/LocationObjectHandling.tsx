@@ -4,6 +4,7 @@ import { asAtDateAlwaysNZ, dayFormattedNZ } from "./DateHandling";
 import { LocationGroup }  from "./LocationGroup";
 import { Dictionary } from "lodash";
 import { platform } from "os";
+import SocialPostRun from "./APIClients/SocialPostRun";
 
 
 
@@ -147,6 +148,9 @@ const getLocationInfoGroupTitle = (group:LocationGroup, publishTime:Date, includ
 const downTheCountryPreset = (a:LocationPreset,b:LocationPreset) => a.lat > b.lat ? -1 : 1
 
 const downTheCountry = (a:LocationOfInterest,b:LocationOfInterest) => a.lat > b.lat ? -1 : 1
+
+//const downTheCountry = (a:SocialPostRun,b:LocationOfInterest) => a.lat > b.lat ? -1 : 1
+
 
 const downTheCountryGrp = (a:LocationGroup,b:LocationGroup) => a.locationPreset.lat > b.locationPreset.lat ? -1 : 1
 
