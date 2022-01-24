@@ -5,4 +5,5 @@ type PageState = {
     daysInPastShown: number
     quickLink?: LocationPreset
     featureFlags: string[]
+    homepage?:LocationPreset
 }

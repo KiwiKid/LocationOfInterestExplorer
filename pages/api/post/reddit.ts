@@ -54,6 +54,10 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
   //  return client.updateRedditSubmissions(sp)
 //}
 
+// 10 second vercel timeout + reddit rate limiting :(
+const BATCH_SIZE = 2;
+
+
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
     if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.error('no process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL'); throw 'err'}
@@ -211,7 +215,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
         const redditClient = new RedditClient();
 
-        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).map(async (run) =>{
+        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).slice(0, BATCH_SIZE).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
                 if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}

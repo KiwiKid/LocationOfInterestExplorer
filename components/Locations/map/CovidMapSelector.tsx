@@ -26,6 +26,7 @@ import { CircleSelectableMarkers, updateAndReturnCircleSelectedStatus } from './
 import { getHoursAgo } from "../../utils/utils";
 import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
 import { useRouter } from "next/router";
+import { HomepageLink, HomepagePrompt} from "../HomepageLink";
 
 
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
@@ -90,6 +91,8 @@ function CovidMapSelector({
     const [isViewingAll, setIsViewingAll] = useState(false);
     const [mapIsLocating, setMapIsLocating] = useState(false);
     const [locationPromptVisible, setLocationPromptVisible] = useState(false);
+
+    const [homepagePromptVisible, setHomepagePromptVisible] = useState(false);
 
     const [subscribeEmail, setSubscribeEmail] = useState<string|undefined>(undefined);
     const [subscribePromptVisible, setSubscribePromptVisible] = useState(false);
@@ -265,14 +268,7 @@ function CovidMapSelector({
        // refreshShareUrl(center.lat, center.lng, zoom, daysInPastShown);
     }
 /*
-    function saveMapSettingsLocally(centerLat:number, centerLng:number, zoom:number, daysInPastShown:number){
-        if(allowedLocationRestore){
-            localStorage.setItem("lat", centerLat.toString());
-            localStorage.setItem("lng", centerLng.toString());
-            localStorage.setItem("zoom", zoom.toString());
-            localStorage.setItem("daysInPastShown", daysInPastShown.toString());
-        }
-    }
+    
 */
     function triggerViewAll(){
         setIsViewingAll(true);
@@ -333,6 +329,10 @@ function CovidMapSelector({
             <div>
             {pageState.featureFlags.some((ff) => ff === 'mapNavigateControls') && <div id="use-my-location" className="fixed top-0 -right-0 z-3000">
             <label className="h-4 hidden" htmlFor="ViewAllButton">Request GPS location:</label>
+                <HomepageLink 
+                    homepage={pageState.homepage}
+                    setHomepagePromptVisible={setHomepagePromptVisible}
+                />
                 <InternalLink
                     id="ViewAllButton"
                      onClick={() => triggerViewAll()}  
@@ -344,6 +344,7 @@ function CovidMapSelector({
                     onClick={() => setLocationPromptVisible(true)}  
                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
                 >Near Me</InternalLink>
+                
                 {/*<InternalLink
                     id="Subscribe"
                     onClick={() => setSubscribePromptVisible(true)}  
@@ -394,6 +395,7 @@ function CovidMapSelector({
                         </div>
                     </div>
                 </div>}
+                
                 <div >
                     <MapContainer 
                         center={activeLocation}
