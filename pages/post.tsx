@@ -10,6 +10,7 @@ import axios from 'axios'
 import RedditPostRunResult from "../components/Locations/APIClients/SocialPostRunResult";
 import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
 import SocialPostRunResult from "../components/Locations/APIClients/SocialPostRunResult";
+import SocialRuns from "../components/Locations/SocialRuns";
 
 
 const { Client } = require("@notionhq/client")
@@ -28,7 +29,6 @@ const trySetLastVisitTime = () => {
     }
     
 }
-
 
 
 
@@ -81,31 +81,10 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <th>primary</th>
             <th>text</th>
             <th>flareId</th>
-            {socialRuns.sort(oldestCreateDateFirst).map((rpr) => {
-                return (<>
-                
-                        <div>{rpr.type}</div>
-                        <div>{rpr.subreddit}{`${rpr.subredditSubmissionTitleQuery ? `(${rpr.subredditSubmissionTitleQuery})`: ''}`}</div>
-                        <div>{rpr.primaryUrlParam}</div>
-                        <div>{rpr.textUrlParams}</div>
-                        <div>{rpr.flairId}</div>
-                        <div className="col-span-full">
-                        <details>
-                            <summary>{rpr.existingPostId ? `${rpr.existingPostId} ` : ''}  {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '' : 
-                                    !rpr.result.isSuccess ? '(Failed)' 
-                                    : rpr.result.isSkipped ? '(skipped)' 
-                                    : rpr.result.isUpdate ? 'Updated' : 'Created' }</summary>
-                                <div>{rpr.result?.postId}</div>
-                                <div>{rpr.result?.postTitle}</div>
-                                <div>{rpr.result?.positivity}</div>
-                                <div><NiceFullAlwaysNZDate date={new Date(rpr.createdDate)}/></div>
-                                {rpr.errorMsg && <div className="col-span-full">{rpr.errorMsg}</div>}
-                            </details>
-                        </div>
-                    </>
-                )
-            })}
             
+            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.result)} />
+            <div className="col-span-full pb-10">In-Active:</div>
+            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.result)} />
         </div>
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialPostRuns.length}):</button>
         <div className="grid grid-cols-3 p-5">
