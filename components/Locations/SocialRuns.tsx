@@ -14,7 +14,7 @@ const SocialRuns = ({socialRuns}:SocialRunsProps) => {
     
 
     return ( 
-        <>{socialRuns.sort((a,b) => a.lastCheckTime > b.lastCheckTime ? 1 : -1).map((rpr) => {
+        <>{socialRuns.sort((a,b) =>  !a.lastCheckTime ? -1 : !b.lastCheckTime ? 1 : a.lastCheckTime > b.lastCheckTime ? 1 : -1 ).map((rpr) => {
         return (<>
         
                 <div className={`bg-${getSocialsStatusColor(rpr)}`}>{rpr.type}</div>

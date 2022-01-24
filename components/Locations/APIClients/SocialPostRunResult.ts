@@ -15,7 +15,7 @@ class SocialPostRunResult {
     postId?:string
     postTitle?:string
     postText?:string
-    error?:any
+    error?:string
     createdDate:Date
     positivity?:number
 
@@ -34,9 +34,8 @@ class SocialPostRunResult {
         if(postId){
             this.postId = postId;
         }
-        if(error){
-            this.error = error;
-        }
+
+
         if(positivity){
             this.positivity = positivity;
         }
@@ -48,7 +47,7 @@ class SocialPostRunResult {
     }
 
 
-    setError(err:any){
+    setError(err:string){
         this.error = err;
     }
 }
