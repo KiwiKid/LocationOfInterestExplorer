@@ -39,7 +39,7 @@ class RedditClient {
         this.r = r;
     }
 
-    updateRedditComment = async (run:SocialPostRun,title:string, text:string):Promise<SocialPostRun> => {
+    upsertRedditComment = async (run:SocialPostRun,title:string, text:string):Promise<SocialPostRun> => {
         return new Promise(async (resolve,reject) => {
 
             if(!run.subredditSubmissionTitleQuery){

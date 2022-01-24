@@ -296,13 +296,13 @@ const LocationPageDrawer = ({
                 />}
             </>
           </Toggle>
-          {invalidLocations.length > 0 || true && <Toggle id="nomapped"  title="Locations not on map">
+          {invalidLocations.length > 0 && <Toggle id="nomapped"  title="Locations not on map">
             <>
               <Summary>
                 These locations have not been provided by the Ministry of Health. These will be updated to, either manually by myself, or corrected by the Ministry of Health.
               </Summary>
               <LocationGridRaw
-                  locations={visibleLocations.map((vl) => vl.loi)}
+                  locations={invalidLocations}
                   openLocations={openLocations}
                   setOpenLocations={setOpenLocations}
                   sortField={sortField}

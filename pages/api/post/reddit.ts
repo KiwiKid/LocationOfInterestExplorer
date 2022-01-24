@@ -153,7 +153,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
             
                     
-                const update = await redditClient.updateRedditComment(run, title, text+botFeedbackMsg)
+                const update = await redditClient.upsertRedditComment(run, title, text+botFeedbackMsg)
                     .then((rr) => {
                         if(rr.result){
                             if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
