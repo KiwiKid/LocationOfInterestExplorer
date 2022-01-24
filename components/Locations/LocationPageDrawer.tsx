@@ -20,7 +20,7 @@ import Link from "next/link";
 import { NiceDateWithTime, NiceFullAlwaysNZDate, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
-import { metaImageURLDirect } from "./LocationObjectHandling";
+import { downTheCountry, downTheCountryPreset, metaImageURLDirect } from "./LocationObjectHandling";
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
 import Image from 'next/image';
@@ -342,7 +342,7 @@ const LocationPageDrawer = ({
                     </div> )}
                   </div>
                   : <div className="grid grid-cols-2">
-                  {activeLocationPresets.filter((p) => !!p.zoom).sort((a,b) => a.lat > b.lat ? -1 : 1).map((pl) => 
+                  {activeLocationPresets.filter((p) => !!p.zoom).sort(downTheCountryPreset).map((pl) => 
                     <div key={pl.title} className="w-full">
                       <div className="w-4/5 m-auto p-3">
                         <InternalLink

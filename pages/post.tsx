@@ -1,7 +1,7 @@
 import { GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
-import { NiceFullAlwaysNZDate, NiceFullDate, oldestCreateDateFirst } from "../components/Locations/DateHandling";
+import { NiceFullAlwaysNZDate, NiceFullDate } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";

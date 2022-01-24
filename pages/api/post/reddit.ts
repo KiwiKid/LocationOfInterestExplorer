@@ -8,7 +8,7 @@ import NotionClient from '../../../components/Locations/APIClients/NotionClient'
 import { requestLocations } from '../../../components/Locations/MoHLocationClient/requestLocations';
 import { LocationOfInterest } from '../../../components/types/LocationOfInterest';
 import { applyLocationOverride, applyLocationOverrides, getLocationInfoGroupTitle, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
-import { dayFormattedNZ, oldestCreateDateFirst, onlyToday, startOfDayNZ } from '../../../components/Locations/DateHandling';
+import { dayFormattedNZ, oldestLastCheckTimeFirst, onlyToday, startOfDayNZ } from '../../../components/Locations/DateHandling';
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
@@ -97,8 +97,6 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 })
 
         })
-        
-        
     }
 
     const processRedditPostRun = async (run:SocialPostRun, title:string,text:string):Promise<SocialPostRun> => {
@@ -213,7 +211,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
         const redditClient = new RedditClient();
 
-        const results = await Promise.all(redditPosts.sort(oldestCreateDateFirst).map(async (run) =>{
+        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
                 if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}

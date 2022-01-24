@@ -78,7 +78,7 @@ const releaseDateAndCity = (date:Date) => {
 const asAtDateAlwaysNZ = (date:Date) => `(as at ${dayjs(date).tz("Pacific/Auckland").format('h:mm a D/MM/YYYY')})`
 
 
-const oldestCreateDateFirst = (a:SocialPostRun,b:SocialPostRun):number => {
+const oldestLastCheckTimeFirst = (a:SocialPostRun,b:SocialPostRun):number => {
     if(!a || !a.lastCheckTime){
         return -1;
     }
@@ -103,5 +103,5 @@ export {
     , NiceShortTime
     , dayFormattedNZ
     , getSecondsAgo
-    , oldestCreateDateFirst
+    , oldestLastCheckTimeFirst
 }

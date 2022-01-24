@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import CopyBox from "../../utils/CopyBox";
 import { asAtDateAlwaysNZ, onlyToday, startOfDayNZ, startOfDayFormattedNZ, subtractHours, dayFormattedNZ } from "../DateHandling";
 import { LocationGroup }  from "../LocationGroup";
+import { downTheCountryGrp } from "../LocationObjectHandling";
 import { processGroupKey } from "./LocationInfoGrid";
 
 type TodayLocationSummaryProps = {
@@ -18,16 +19,9 @@ const getTodayLocationSummary = (
     , locationSettings: LocationSettings
     , displayTotal: boolean
 ) => `${displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : ''} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n\n${locationGroups
+    .sort(downTheCountryGrp)
     .map((lg) => lg.toString(true, false, undefined))
     .join(`\n`)}`
-
-const getTotalLocationsToday = (locationGroups:any) => {
-    let totalLocationsToday = 0;
-    Object.keys(locationGroups).forEach((grp:any) => {
-        totalLocationsToday += locationGroups[grp].filter((grp:any) => onlyToday(grp.added)).length;
-    });
-    return totalLocationsToday
-}
 
 const getTotalLocationSummaryTitle = (publishTime:Date) => `New Locations of Interest - ${dayFormattedNZ(publishTime)}`
 
