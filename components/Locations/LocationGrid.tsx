@@ -81,7 +81,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                     return ( 
                         <div key={`${d}_LG`}>
                             <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].loi.start} locationCount={groupedLocations[d].length}/>
-                            {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => <LocationGridAdaptorItem key={`LGA_${l.loi.id}`}loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={toggleOpenLocation} showIds={false}/>)}
+                            {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => <LocationGridAdaptorItem key={`LGA_${l.loi.id}`}loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={toggleOpenLocation} showIds={true}/>)}
                         </div>
                     )
             })}
