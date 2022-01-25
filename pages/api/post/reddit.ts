@@ -8,7 +8,7 @@ import NotionClient from '../../../components/Locations/APIClients/NotionClient'
 import { requestLocations } from '../../../components/Locations/MoHLocationClient/requestLocations';
 import { LocationOfInterest } from '../../../components/types/LocationOfInterest';
 import { applyLocationOverride, applyLocationOverrides, getLocationInfoGroupTitle, getLocationPresetPrimaryCity, mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
-import { dayFormattedNZ, oldestLastCheckTimeFirst, onlyToday, startOfDayNZ } from '../../../components/Locations/DateHandling';
+import { dayFormattedNZ, oldestLastCheckTimeFirst, onlyToday, startOfDayNZ, subtractMinutes } from '../../../components/Locations/DateHandling';
 import { getTodayLocationSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import { processGroupKey } from '../../../components/Locations/info/LocationInfoGrid';
 import dayjs from 'dayjs';
@@ -70,7 +70,10 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const notionClient = new NotionClient();
 
     const settings = await notionClient.getLocationSettings();
-    const redditPosts = await notionClient.getSocialPostRuns();
+
+
+    const beforeDateString = subtractMinutes(new Date(), 10).toISOString();
+    const redditPosts = await notionClient.getSocialPostRuns(beforeDateString);
     
     const facebookClient = new FacebookClient();
 

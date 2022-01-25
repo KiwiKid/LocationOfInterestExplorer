@@ -56,9 +56,6 @@ export const removeStringEnds = (input:string) => input.length < 2 ? input : inp
 
 
 
-export const getMinutesAgo = (date:Date) => {
-    return dayjs().tz('Pacific/Auckland').diff(date, 'minutes')// Math.floor((Math.abs(new Date(date).getTime() - new Date().getTime())/1000/60))
-}
 
 const ADDED_RECENTLY_HOURS = 48;
 export const getHoursAgo = (date:Date) => {

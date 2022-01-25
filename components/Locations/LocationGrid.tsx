@@ -76,15 +76,15 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
     }
 
     return (
-    <div className="mt-3 text-center pb-3">
-        {Object.keys(groupedLocations).sort().reverse().map((d) => {
-                return ( 
-                    <div key={`${d}_LG`}>
-                        <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].loi.start} locationCount={groupedLocations[d].length}/>
-                        {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => <LocationGridAdaptorItem key={`LGA_${l.loi.id}`}loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={toggleOpenLocation} />)}
-                    </div>
-                )
-        })}
-    </div>
+        <div className="mt-3 text-center pb-3">
+            {Object.keys(groupedLocations).sort().reverse().map((d) => {
+                    return ( 
+                        <div key={`${d}_LG`}>
+                            <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].loi.start} locationCount={groupedLocations[d].length}/>
+                            {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => <LocationGridAdaptorItem key={`LGA_${l.loi.id}`}loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={toggleOpenLocation} />)}
+                        </div>
+                    )
+            })}
+        </div>
     );
 }

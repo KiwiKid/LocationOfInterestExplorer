@@ -1,5 +1,6 @@
+import { getHoursAgo} from "../utils/utils";
 import SocialPostRun from "./APIClients/SocialPostRun";
-import { NiceFullAlwaysNZDate } from "./DateHandling";
+import { getMinutesAgo, NiceFullAlwaysNZDate } from "./DateHandling";
 import { downTheCountry } from "./LocationObjectHandling";
 
 const getSocialsStatusColor = (socialPostRun: SocialPostRun) => {
@@ -19,20 +20,19 @@ const SocialRuns = ({socialRuns}:SocialRunsProps) => {
             .map((rpr) => {
                 return (<>
                 
-                        <div className={`bg-${getSocialsStatusColor(rpr)}`}>{rpr.type}</div>
-                        <div>{rpr.subreddit}{`${rpr.subredditSubmissionTitleQuery ? `(${rpr.subredditSubmissionTitleQuery})`: ''}`}</div>
-                        <div>{rpr.primaryUrlParam}</div>
-                        <div>{rpr.textUrlParams}</div>
-                        <div>{rpr.flairId}</div>
-                        <div className="col-span-full">
+                        <div className={`bg-${getSocialsStatusColor(rpr)}`}>{rpr.type} ({rpr.subreddit}{`${rpr.subredditSubmissionTitleQuery ? `(${rpr.subredditSubmissionTitleQuery})`: ''}`})</div>
+                        {rpr.flairId ? <div><details><summary>{rpr.primaryUrlParam} ({rpr.textUrlParams})</summary><div>{rpr.flairId}</div></details></div> :
+                        <div>{rpr.primaryUrlParam} ({rpr.textUrlParams})</div>}
+                        <div >
                         {rpr.existingPostId ? <details>
-                            <summary>{rpr.existingPostId} {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '' : 
+                            <summary>{rpr.lastCheckTime ? `${getMinutesAgo(new Date(rpr.lastCheckTime))} mins ago - ` : 'None'} {rpr.existingPostId} {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '' : 
                                     !rpr.result.isSuccess ? '(Failed)' 
                                     : rpr.result.isSkipped ? '(skipped)' 
                                     : rpr.result.isUpdate ? 'Updated' : 'Created' }</summary>
                                 <div>{rpr.result?.postId}</div>
                                 <div>{rpr.result?.postTitle}</div>
                                 <div>{rpr.result?.positivity}</div>
+                                
                                 <div><NiceFullAlwaysNZDate date={new Date(rpr.createdDate)}/></div>
                                 {rpr.errorMsg && <div className="col-span-full">{rpr.errorMsg}</div>}
                             </details>: ''}

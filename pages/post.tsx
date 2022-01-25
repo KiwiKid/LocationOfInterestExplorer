@@ -1,11 +1,11 @@
 import { GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
-import { NiceFullAlwaysNZDate, NiceFullDate } from "../components/Locations/DateHandling";
+import { getMinutesAgo, NiceFullAlwaysNZDate, NiceFullDate } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
-import { getHardCodedUrl, getHoursAgo, getMinutesAgo } from "../components/utils/utils";
+import { getHardCodedUrl } from "../components/utils/utils";
 import axios from 'axios'
 import RedditPostRunResult from "../components/Locations/APIClients/SocialPostRunResult";
 import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
@@ -78,12 +78,9 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
         
-        <div className="grid grid-cols-5 p-5 text-left">
-            <th>NotionId</th>
+        <div className="grid grid-cols-3 p-5 text-left">
             <th>subreddit</th>
             <th>primary</th>
-            <th>text</th>
-            <th>flareId</th>
             
             <div className="col-span-full py-5">Active:</div>
             <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />

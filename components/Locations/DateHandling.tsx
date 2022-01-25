@@ -44,7 +44,15 @@ const getSecondsAgo = (date:Date) => {
     return dayjs().tz("Pacific/Auckland").diff(dayjs(date).tz("Pacific/Auckland"), 'seconds')
 }
 
+export const getMinutesAgo = (date:Date) => {
+    return dayjs().tz('Pacific/Auckland').diff(date, 'minutes')// Math.floor((Math.abs(new Date(date).getTime() - new Date().getTime())/1000/60))
+}
+
 const subtractHours = (a:Dayjs, hours:number) => {
+    return dayjs(a).subtract(hours, 'hours');
+}
+
+const subtractMinutes = (a:Dayjs|Date, hours:number) => {
     return dayjs(a).subtract(hours, 'hours');
 }
 // (Debugging: allow more locations to be considered today -  "dayjs().subtract(24,'hours')")
@@ -104,4 +112,5 @@ export {
     , dayFormattedNZ
     , getSecondsAgo
     , oldestLastCheckTimeFirst
+    , subtractMinutes
 }

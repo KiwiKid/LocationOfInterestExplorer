@@ -1,8 +1,9 @@
 
 
 import { Client } from '@notionhq/client'
-import { getMinutesAgo, removeStringEnds } from '../../utils/utils';
-import { getSecondsAgo } from '../DateHandling';
+import { before } from 'lodash';
+import { removeStringEnds } from '../../utils/utils';
+import { getMinutesAgo, getSecondsAgo, subtractMinutes } from '../DateHandling';
 import SocialPostRun from './SocialPostRun';
 
 const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
@@ -149,6 +150,7 @@ class NotionClient {
                     equals: true,
                 },
                 },
+
             })
             .then((r) => r.results.map(mapNotionItemToLocationPreset))
             .then((rs) => {
@@ -182,24 +184,60 @@ class NotionClient {
     }
 
 
-    getSocialPostRuns = async ():Promise<SocialPostRun[]> => {
+    getSocialPostRuns = async (editedBeforeUTCMaybeeee:string = ''):Promise<SocialPostRun[]> => {
         if(!this.redditDbId){ throw 'No reddit posts db set'}
-
         // This is mainly to keep the heat of the reddit API during local development.
         /*if(!this.cachedSocialPosts 
             || this.cachedSocialPosts.length === 0
             || getSecondsAgo(this.cachedSocialPostsUpdateTime) > 20
         ){*/
-            return this.notionClient.databases.query({
+            let params = null;
+           if(editedBeforeUTCMaybeeee.length > 0){
+               params = {
                 database_id: this.redditDbId,
                 filter: {
-                property: "active",
-                checkbox: {
-                    equals: true,
+                    and:[{
+                            property: "active",
+                            checkbox: {
+                                equals: true,
+                            },
+                        },{
+                            property: 'last_edited_time',
+                            date: {
+                                before: editedBeforeUTCMaybeeee
+                            }
+                        }
+                    ]
+                    
+                    
                 },
+            }
+        }else{
+            params = {
+                database_id: this.redditDbId,
+                filter: {
+                    and:[{
+                            property: "active",
+                            checkbox: {
+                                equals: true,
+                            },
+                        },{
+                            property: 'last_edited_time',
+                            date: {
+                                before: editedBeforeUTCMaybeeee
+                            }
+                        }
+                    ]
+                    
+                    
                 },
-            })
+            }
+        }
+
+            return this.notionClient.databases.query(params)
             .then((r) => r.results.map(mapNotionItemToSocialPostRun))
+    }
+            
             //.then((rs) => {
             //    this.cachedSocialPosts = rs;
            //     this.cachedSocialPostsUpdateTime = new Date();
