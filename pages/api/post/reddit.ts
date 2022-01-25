@@ -176,19 +176,19 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             
                     
                 await redditClient.upsertRedditComment(run, title, text+botFeedbackMsg)
-                    .then((rr) => {
+                    .then(async (rr) => {
                         if(rr.result){
                             if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
-                                notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
+                                await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
                                     .then((nUpdate) => resolveNotionUpdate(resolve,run,nUpdate))
                             } else {
-                                notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate))
+                                await notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate))
                                     .then((nUpdate) => resolveNotionUpdate(resolve,run,nUpdate))
                             }
                         }
                         
                         //resolve(rr);
-                        return rr;
+                        //return rr;
                     }).catch((err) => {
                         const errorMsg = getLogMsg(run, 'failed to update reddit comment', true, err);
                         run.setError(errorMsg);
