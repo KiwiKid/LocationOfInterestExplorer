@@ -42,7 +42,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         <div className="text-center">{loi.location}</div>
                         <div className="col-span-3 text-center">{loi.advice}</div>
                     </div>
-                    <div className="grid grid-cols-2 py-4 px-40 space-x-10">
+                    <div className={`grid grid-cols-${loi.visibleInWebform ? '2' : '1'} py-4 px-40 space-x-10`}>
                         <RegisterVisit loi={loi}/>
                         <RegisterIncorrectLocation loi={loi}/>
                         
