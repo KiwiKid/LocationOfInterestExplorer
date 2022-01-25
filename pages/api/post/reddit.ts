@@ -57,7 +57,7 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
 // 10 second vercel timeout + reddit rate limiting :(
 
     const getLogMsg = (run:SocialPostRun, text:string, isError:boolean = false, error:unknown = null):string => {
-        const msg = `${run.notionPageId} - ${text}`
+        const msg = `${run.notionPageId} (${run.result ? run.result.postId : run.existingPostId ? run.existingPostId : 'No Post ID'}) - ${text}`
         if(isError){
             console.error(msg)
         }else{
