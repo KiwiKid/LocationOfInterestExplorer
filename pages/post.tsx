@@ -151,8 +151,9 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
     const settings = client.getLocationSettings();
 
 
-    const beforeDateString = dayjs().tz('Pacific/Auckland').subtract(10, 'minutes').toISOString()
+    const beforeDateString = dayjs().subtract(10, 'minutes').toISOString()
     const socialPostRuns = await client.getSocialPostRuns(beforeDateString);
+
 
 
     const nextJSHacky:SocialPostsProps = JSON.parse(JSON.stringify({
