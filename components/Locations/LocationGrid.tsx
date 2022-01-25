@@ -7,6 +7,7 @@ import LargeLocationGrid from './LargeLocationGrid';
 import { Sort } from '../types/Sort';
 import Location from './Location';
 import { startOfDayNZ } from './DateHandling';
+import LocationGridAdaptorItem from './LocationGridAdaptor';
 
 
 type LocationGridProps = {
@@ -80,17 +81,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                 return ( 
                     <div key={`${d}_LG`}>
                         <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].loi.start} locationCount={groupedLocations[d].length}/>
-                        {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => {
-                            return (
-                                <div key={`${l.loi.id}_C`} className="border-b border-black">
-                                    <div key={`${l.loi.id}_SS`} className="lg:hidden">
-                                        <Location loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={() => toggleOpenLocation(l.loi.id)} />
-                                    </div>
-                                    <div key={`${l.loi.id}_SL`} className="hidden lg:block border-b border-black">
-                                        <LargeLocationGrid loi={l.loi} isOpen={isOpen(l.loi)} showDistance={false} showHeader={false} toggleOpenLocation={toggleOpenLocation}/>
-                                    </div>
-                                </div>
-                        )})}
+                        {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => <LocationGridAdaptorItem loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={toggleOpenLocation} />)}
                     </div>
                 )
         })}
