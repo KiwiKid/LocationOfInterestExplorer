@@ -82,7 +82,7 @@ function LocationGridRaw({locations, openLocations, setOpenLocations, sortField}
                 return ( 
                     <div key={`${d}_LG`}>
                         <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].start} locationCount={groupedLocations[d].length}/>
-                        {groupedLocations[d].sort((a,b) => a.added > b.added ? 1 : -1).map((l:LocationOfInterest) => <LocationGridAdaptorItem key={`GA_${l.id}`} loi={l} isOpen={isOpen(l)} toggleOpenLocation={toggleOpenLocation} /> )}
+                        {groupedLocations[d].sort((a,b) => a.added > b.added ? 1 : -1).map((l:LocationOfInterest) => <LocationGridAdaptorItem key={`GA_${l.id}`} loi={l} isOpen={isOpen(l)} toggleOpenLocation={toggleOpenLocation} showIds={true}/> )}
                     </div>
                 )
         })}

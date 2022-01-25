@@ -23,6 +23,7 @@ const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInt
     advice: rec.advice,
     lat: +rec.lat,
     lng: +rec.lng,
+    isOmicron: rec.advice.indexOf('Omicron') > 0
   }
 }
 

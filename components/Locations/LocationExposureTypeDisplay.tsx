@@ -1,8 +1,14 @@
 
+import { LocationOfInterest}  from '../types/LocationOfInterest'
 
-export default function LocationExposureTypeDisplay({exposureType, detailed}:any){
-    switch(exposureType.toLowerCase()){
-        case 'close': return <div className="bg-red-300 text-red-800 p-1 text-center">Close Contact{detailed ? " - Test Immediately - Elevated Level of risk at this location" : null}</div>
+type LocationExposureTypeDisplay ={
+  loi:LocationOfInterest
+  detailed:boolean
+}
+
+export default function LocationExposureTypeDisplay({loi, detailed}:LocationExposureTypeDisplay){
+    switch(loi.exposureType.toLowerCase()){
+        case 'close': return <div className="bg-red-300 text-red-800 p-1 text-center">Close Contact{loi.isOmicron && <span className="text-black" > (Omicron) </span>}{detailed ? " - Test Immediately - Elevated Level of risk at this location" : null}</div>
         case 'casual plus': return <div className="bg-red-100 text-red-600 p-1 text-center">Casual+ Contact{detailed ? "" : <></>}</div>
         default:
         case 'casual': return detailed ? <div className="bg-gray-200 text-gray-600 text-center">Casual Contact</div> : <></>

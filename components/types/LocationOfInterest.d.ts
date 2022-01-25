@@ -15,7 +15,7 @@ export type LocationOfInterest = {
     lng: number;
     exposureType: string;
     visibleInWebform: boolean;
-  //  ref?: any?;
+    isOmicron: boolean
   }
 
 

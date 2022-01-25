@@ -15,10 +15,11 @@ type LargeLocationGridProps = {
     showHeader: boolean
     isOpen: boolean
     toggleOpenLocation: any
+    showId: boolean 
 }
 
 
-export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen, toggleOpenLocation}:LargeLocationGridProps) {
+export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen, toggleOpenLocation, showId = false}:LargeLocationGridProps) {
 
     const addedDateIsRecent = getHoursAgo(loi.added) < 48;
 
@@ -34,7 +35,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         {isOpen !== undefined ? 
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
-                        <div className="text-center col-span-full"><LocationExposureTypeDisplay detailed={isOpen} exposureType={loi.exposureType}/></div>
+                        <div className="text-center col-span-full"><LocationExposureTypeDisplay detailed={isOpen} loi={loi}/></div>
                     </div>
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
@@ -44,6 +45,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                     <div className="grid grid-cols-2 py-4 px-40 space-x-10">
                         <RegisterVisit loi={loi}/>
                         <RegisterIncorrectLocation loi={loi}/>
+                        
                         {false && <div className="m-auto">
                             <a target="_blank"
                                 rel="noreferrer"
@@ -53,6 +55,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                                 </div>
                             </a>
                         </div>}
+                        {showId && <div className="col-span-full text-xs"> id: {loi.id}</div>}
                     </div>
                     </>}
                 </div>

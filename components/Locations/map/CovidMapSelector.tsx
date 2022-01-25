@@ -438,21 +438,24 @@ function CovidMapSelector({
                                     selectingCircleRef={activeCircleRef}
                                     setRef={(el:any) => activeLocationMarkerRefs.current[i] = { ref: el, key: al.loi.id } }
                                     radius={activeZoom*0.8}
-
+                                    
                                     // Not sure i even need this...
-                                    onSelected={() => null}
+                                    onSelected={() => {null}}
                                     onAdded={(inCircle:boolean, e:any) => {
                                         // TODO: need to debounce this update
                                         let maxPossibleHours = 14*24;
                                         let hoursAgo = getHoursAgo(al.loi.start)
                                         let circleOpacity = (1-(hoursAgo/maxPossibleHours));
                                         e.target.setStyle({opacity: Math.max(circleOpacity, 0.6) });
-                                        if(hoursAgo < 48){
+                                        if(al.loi.isOmicron){ 
+                                            e.target.setStyle({fillColor: 'black' });
+                                        }else if(hoursAgo < 48){
                                             e.target.setStyle({fillColor: tailwindClassToHex(getDaysAgoClassName(hoursAgo/24)) });
                                         }
+                                        e.target.setStyle({color: '#0163FF' })
                                     }}
                                 >
-                                        <Pane name={`click_${al.loi.id}`} style={{zIndex: 499 }}>
+                                        <Pane name={`click_${al.loi.id}`} style={{zIndex: 499, border: '' }}>
                                             <LocationCirclePopup l={al} showDistance={false}  />
                                         </Pane>
                                 </CircleSelectableMarkers>

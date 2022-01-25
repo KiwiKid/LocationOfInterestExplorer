@@ -15,11 +15,12 @@ import RegisterVisit from "./RegisterVisit"
         loi: LocationOfInterest
         isOpen: boolean
         toggleOpenLocation: any
+        showId: boolean
     }
 
 
 
-    export default function Location({loi,isOpen, toggleOpenLocation}:LocationProps){
+    export default function Location({loi,isOpen, toggleOpenLocation, showId}:LocationProps){
 
         const addedDateIsRecent = getHoursAgo(loi.added) < 48;
 
@@ -31,7 +32,7 @@ import RegisterVisit from "./RegisterVisit"
                     <div className="text-left">{loi.city} - {loi.event}</div>
                     <LocationSummaryDateDisplay loi={loi} includeDate={isOpen}/>
                     <div className="md:text-lg col-span-full text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
-                    <div className="text-left col-span-full"><LocationExposureTypeDisplay detailed={isOpen} exposureType={loi.exposureType}/></div>
+                    <div className="text-left col-span-full"><LocationExposureTypeDisplay detailed={isOpen} loi={loi}/></div>
 
                 </div>
                 {isOpen ? 
@@ -50,6 +51,7 @@ import RegisterVisit from "./RegisterVisit"
                             I was here! ↗️ (Official MoH link)
                         </div>
                      </a>*/}
+                     {showId && <div className="col-span-full text-xs"> id: {loi.id}</div>}
                 </div>
             </div> : null}
         </div>
