@@ -299,7 +299,7 @@ const LocationPageDrawer = ({
           {invalidLocations.length > 0 && <Toggle id="nomapped"  title="Locations not on map">
             <>
               <Summary>
-                These locations have not been provided by the Ministry of Health. These will be updated to, either manually by myself, or corrected by the Ministry of Health.
+                The exact coordinates have not been provided by the Ministry of Health. These will be updated, either manually by myself, or by the Ministry of Health.
               </Summary>
               <LocationGridRaw
                   locations={invalidLocations}
