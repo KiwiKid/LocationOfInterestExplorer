@@ -39,6 +39,7 @@ class RedditClient {
         this.r = r;
     }
 
+
     upsertRedditComment = async (run:SocialPostRun,title:string, text:string):Promise<SocialPostRun> => {
         return new Promise(async (resolve,reject) => {
 
@@ -60,13 +61,14 @@ class RedditClient {
                                 console.log(`updated reddit comment (${comment.id})`);
                                 run.setResults(new SocialPostRunResult(true, true, false, title, comment.id, text, comment.ups))
                                 resolve(run)
-                                return run;                
+                                //return run;                
                             }).catch((err) => {
                                 console.error(err)
                                 run.setError(`Could not edit existing reddit comment for ${run.subreddit}`);
                                 reject(run);
                             });
             }else{
+
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
                     
@@ -77,7 +79,7 @@ class RedditClient {
                         resolve(run);
                     }).catch((err) => { 
                         run.setError(`Could not create new reddit post for ${run.subreddit}`);
-                        resolve(run);
+                        reject(run);
                     });                        
                 });
             }
