@@ -296,7 +296,7 @@ const LocationPageDrawer = ({
                 />}
             </>
           </Toggle>
-          {invalidLocations.length > 0 && <Toggle id="nomapped"  title="Locations not on map">
+          {invalidLocations.length > 0 && <Toggle id="nomapped"  title="Locations unable to be mapped">
             <>
               <Summary>
                 The exact coordinates have not been provided by the Ministry of Health. These will be updated, either manually by myself, or by the Ministry of Health.
