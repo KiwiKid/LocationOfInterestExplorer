@@ -1,16 +1,12 @@
 import { GetStaticProps, NextPage } from "next";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
-import { getMinutesAgo, NiceFullAlwaysNZDate, NiceFullDate } from "../components/Locations/DateHandling";
-import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
-import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
-import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
+import { getMinutesAgo, NiceFullDate, subtractMinutes } from "../components/Locations/DateHandling";
 import { getHardCodedUrl } from "../components/utils/utils";
 import axios from 'axios'
-import RedditPostRunResult from "../components/Locations/APIClients/SocialPostRunResult";
 import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
-import SocialPostRunResult from "../components/Locations/APIClients/SocialPostRunResult";
 import SocialRuns from "../components/Locations/SocialRuns";
+import dayjs from "dayjs";
 
 
 const { Client } = require("@notionhq/client")
@@ -153,7 +149,10 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
     const client = new NotionClient();
     const settings = client.getLocationSettings();
-    const socialPostRuns = await client.getSocialPostRuns();
+
+
+    const beforeDateString = dayjs().tz('Pacific/Auckland').subtract(10, 'minutes').toISOString()
+    const socialPostRuns = await client.getSocialPostRuns(beforeDateString);
 
 
     const nextJSHacky:SocialPostsProps = JSON.parse(JSON.stringify({
