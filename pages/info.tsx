@@ -1,11 +1,11 @@
 import { GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
-import { NiceFullDate } from "../components/Locations/DateHandling";
+import { getMinutesAgo, NiceFullDate } from "../components/Locations/DateHandling";
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
-import { getHoursAgo, getMinutesAgo } from "../components/utils/utils";
+import { getHoursAgo } from "../components/utils/utils";
 
 const { Client } = require("@notionhq/client")
 
