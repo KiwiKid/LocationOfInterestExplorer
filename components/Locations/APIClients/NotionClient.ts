@@ -76,7 +76,6 @@ const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
     }   
 }
 
-// TODO: add cache invalidation
 class NotionClient { 
     notionClient:Client;
     overrideDbId!:string;

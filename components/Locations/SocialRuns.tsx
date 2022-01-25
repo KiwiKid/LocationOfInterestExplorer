@@ -25,7 +25,7 @@ const SocialRuns = ({socialRuns}:SocialRunsProps) => {
                         <div>{rpr.primaryUrlParam} ({rpr.textUrlParams})</div>}
                         <div >
                         {rpr.existingPostId ? <details>
-                            <summary>{rpr.lastCheckTime ? `${getMinutesAgo(new Date(rpr.lastCheckTime))} mins ago - ` : 'None'} {rpr.existingPostId} {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '' : 
+                            <summary>{rpr.lastCheckTime ? `${rpr.result?.createdDate ? getMinutesAgo(rpr.result?.createdDate) : getMinutesAgo(new Date(rpr.lastCheckTime))} mins ago - ` : 'None'} {rpr.existingPostId} {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '' : 
                                     !rpr.result.isSuccess ? '(Failed)' 
                                     : rpr.result.isSkipped ? '(skipped)' 
                                     : rpr.result.isUpdate ? 'Updated' : 'Created' }</summary>
