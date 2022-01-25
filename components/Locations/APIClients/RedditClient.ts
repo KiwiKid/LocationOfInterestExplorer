@@ -32,7 +32,7 @@ class RedditClient {
             
         });
         //TODO: can this be 1?
-        r.config({requestDelay: 1500, warnings: false, continueAfterRatelimitError: true, debug:true});
+        r.config({requestDelay: 5000, warnings: false, continueAfterRatelimitError: true, debug:true});
 
         if(!r){ console.error('Failed to generate reddit client'); throw 'err'}
 
@@ -72,7 +72,7 @@ class RedditClient {
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
                     
-                matchingThreads.map(async (thread:any) => {
+                matchingThreads.forEach(async (thread:any) => {
                     await this.r.getSubmission(thread).reply(text).then((res) => {
                         console.log(`created reddit comment (${res.id})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
