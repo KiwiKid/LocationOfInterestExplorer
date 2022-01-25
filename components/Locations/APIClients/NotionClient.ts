@@ -246,7 +246,7 @@ class NotionClient {
        /* } else {
             return this.cachedSocialPosts;
         }*/
-    }
+    
 
     setSocialPostProcessed = async (notionPageId:string, checkTime:Date):Promise<void> => { 
         console.log(`Setting check time for notionPageId: ${notionPageId}`)
