@@ -72,8 +72,8 @@ class RedditClient {
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
                     
-                matchingThreads.map((thread:any) => {
-                    return this.r.getSubmission(thread).reply(text).then((res) => {
+                matchingThreads.map(async (thread:any) => {
+                    await this.r.getSubmission(thread).reply(text).then((res) => {
                         console.log(`created reddit comment (${res.id})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
                         resolve(run);
