@@ -52,8 +52,8 @@ const subtractHours = (a:Dayjs, hours:number) => {
     return dayjs(a).subtract(hours, 'hours');
 }
 
-const subtractMinutes = (a:Dayjs|Date, hours:number) => {
-    return dayjs(a).subtract(hours, 'hours');
+const subtractMinutes = (a:Dayjs|Date, minutes:number) => {
+    return dayjs(a).subtract(minutes, 'minutes');
 }
 // (Debugging: allow more locations to be considered today -  "dayjs().subtract(24,'hours')")
 const onlyToday = (a:Dayjs|Date):boolean => {
