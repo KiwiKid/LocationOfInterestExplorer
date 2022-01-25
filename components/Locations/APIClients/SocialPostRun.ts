@@ -12,6 +12,7 @@ class SocialPostRun {
     type:string // "Reddit_Comment", "Reddit_Comment"
     createdDate:string
     flairId?:string
+    alwaysPost:boolean
     
     existingPostTitle?:string
     existingPostId?:string
@@ -19,6 +20,7 @@ class SocialPostRun {
 
     result?:SocialPostRunResult
     errorMsg?:string
+    
 
     constructor (
         notionPageId:string
@@ -56,6 +58,8 @@ class SocialPostRun {
         this.createdDate = new Date().toISOString();
         this.type = type
         this.lastCheckTime = lastCheckTime;
+
+        this.alwaysPost = this.type == 'Reddit_Comment'
         
     }
 

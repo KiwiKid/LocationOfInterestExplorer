@@ -55,9 +55,9 @@ const subtractHours = (a:Dayjs, hours:number) => {
 const subtractMinutes = (a:Dayjs|Date, minutes:number) => {
     return dayjs(a).subtract(minutes, 'minutes');
 }
-// (Debugging: allow more locations to be considered today -  "dayjs().subtract(24,'hours')")
+// (Debugging: allow more locations to be considered today -  "dayjs()")
 const onlyToday = (a:Dayjs|Date):boolean => {
-    return startOfDayNZ(a) === startOfDayNZ(dayjs().tz("Pacific/Auckland"));  //subtractHours(dayjs(),24) < dayjs(a)
+    return startOfDayNZ(a) === startOfDayNZ(dayjs().subtract(24,'hours').tz("Pacific/Auckland"));  //subtractHours(dayjs(),24) < dayjs(a)
 };
 
 const dateDebugging = (passedInDate:Date):string => {

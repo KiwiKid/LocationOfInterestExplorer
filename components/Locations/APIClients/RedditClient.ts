@@ -81,7 +81,7 @@ class RedditClient {
                     });                        
                 });
             }
-    })
+    });
 }
     
            /* return this.r.getSubreddit(run.subreddit)
@@ -126,57 +126,58 @@ class RedditClient {
             return new RedditPostRunResult(false, false, true, run, undefined, undefined, err); //{ success: false, update: false, subreddit: run.subreddit, error: err }
         }
     }*/
-
+    processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:SocialPostRun, subId:string, title:string):Promise<SocialPostRunResult> => { 
+        return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
+    }
 
 
     updateRedditSubmissions = async (run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> => {
-        try{ 
-            const isUpdate = run.lastCheckTime && startOfDayNZ(new Date(run.lastCheckTime)) === startOfDayNZ(todayNZ())
-            if(isUpdate && run.existingPostId){
-                console.log(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
-                return await this.r.getSubmission(run.existingPostId)
-                                    .edit(text)
-                                    .then(async (sub:any) => {
-                                        console.log('Reddit Submission edited');
-                                        run.setResults(await processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
-                                        return run;
-                                    }) 
-                                    
-                //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
-            } else{
-                console.log(`updateRedditSubmissions - submit ${run.subreddit}`);
+        return new Promise<SocialPostRun>(async (resolve,reject) => {
+            try{
+                const isUpdate = run.lastCheckTime && startOfDayNZ(new Date(run.lastCheckTime)) === startOfDayNZ(todayNZ())
+                if(isUpdate && run.existingPostId){
+                    console.log(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
+                    return await this.r.getSubmission(run.existingPostId)
+                                        .edit(text)
+                                        .then(async (sub:any) => {
+                                            console.log('Reddit Submission edited');
+                                            run.setResults(await this.processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
+                                            resolve(run);
+                                        }) 
+                                        
+                } else{
+                    console.log(`updateRedditSubmissions - submit ${run.subreddit}`);
 
-                    var selfPost = this.r.submitSelfpost({
-                        subredditName: run.subreddit
-                        , title: title
-                        , text: text
-                        , flairId: run.flairId
-                    })
+                        await this.r.submitSelfpost({
+                            subredditName: run.subreddit
+                            , title: title
+                            , text: text
+                            , flairId: run.flairId
+                        }).then(async (sub:Submission) => {
+                            const res = await this.processRedditSubmission(true, false, false, run, sub.name, title);
+                            run.setResults(res);
+                            resolve(run);
+                        }).catch((err) => {
+                            console.error(err)
+                            run.setError(`Could not create reddit submission r/${run.subreddit} ${run.textUrlParams}. This can be cause a invalid FlairId`)
+                            reject(run);
+                        })
+                    
+                    //9bc8c692-2377-11ec-97a0-722625a13049
+                    // Use https://www.reddit.com/r/[INSERT_SUBREDDIT_HERE]/api/link_flair_v2.json?raw_json=1
+                    // to find the Flair id
                 
-                //9bc8c692-2377-11ec-97a0-722625a13049
-                // Use https://www.reddit.com/r/[INSERT_SUBREDDIT_HERE]/api/link_flair_v2.json?raw_json=1
-                // to find the Flair id
-                
-                return selfPost.then(async (sub:Submission) => {
-                    const res = await processRedditSubmission(true, false, false, run, sub.name, title);
-                    run.setResults(res);
-                    return run;
-                });
-                //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
+                    //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
+                }
+
+            }catch(err:any){
+                console.error(`Update Reddit Submissions failed for r/${run.subreddit} ${run.textUrlParams}`)
+                console.error(err);
+                run.setError('Failed to update reddit submission ('+err.message+')');
+                reject(run);
             }
-        
-        }catch(err:any){
-            console.error(`Update Reddit Submissions failed for r/${run.subreddit} ${run.textUrlParams}`)
-            console.error(err);
-            run.setError('Failed to update reddit submission ('+err.message+')');
-            return run;
-        }
+        });
     }
-
-}
-
-const processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:SocialPostRun, subId:string, title:string):Promise<SocialPostRunResult> => { 
-    return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
 }
 
 export default RedditClient;

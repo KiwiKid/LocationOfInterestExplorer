@@ -72,7 +72,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const settings = await notionClient.getLocationSettings();
 
 
-    const beforeDateString = subtractMinutes(new Date(), 10).toISOString();
+    const beforeDateString = dayjs().utc().subtract(10, 'minutes').toISOString()
     const redditPosts = await notionClient.getSocialPostRuns(beforeDateString);
     
     const facebookClient = new FacebookClient();
@@ -109,10 +109,10 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         return new Promise<SocialPostRun>(async (resolve, reject) => {
                 const botFeedbackMsg = `\n\n\nThis post will be automatically updated. Please contact this account with any feedback`
     
-                    console.log(`updating submission ${title}`);
+                    console.log(`${run.notionPageId} - updating submission ${title}`);
                 try{
                     
-                    const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
+                    await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
                         .then((rr) => {
                             if(rr.result){
                                 if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
@@ -122,20 +122,20 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 }
                             }
                             
-                            //resolve(rr);
-                            return rr;
+                            resolve(rr);
+                            //return rr;
                         }).catch((err) => {
                             console.error(err)
                             run.setError(err.message);
-                            //resolve(rrr);
-                            return run;
+                            reject(run)
+                            //return run;
                         })
 
-                    resolve(update)
+                    //resolve(update)
                 }catch(err){
                     console.error(err)
                     run.setError('Failed to update reddit submissions (processRedditPostRun)');
-                    resolve(run)
+                    reject(run)
                 }
 
                 /*
@@ -223,7 +223,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
     
                 const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
-                if(matchingLocationGroups.length === 0){
+                if(matchingLocationGroups.length === 0 && !run.alwaysPost){
                     run.setResults(new SocialPostRunResult(true, false, true));
                     resolve(run)
                     return;
@@ -235,13 +235,14 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
                 const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
     
+                const textWithTitle = `${dayFormattedNZ(now)} - ${text}`
                 try{
                     switch(run.type){
                         case "Reddit_Post": resolve(await processRedditPostRun(run, title, text));
                             break;
                         case "Reddit_Comment": resolve(await processRedditCommentRun(run,title,text)) //resolve(await processRedditPostRun(run, title, text));
                             break;
-                        case "Facebook_Post": resolve(await processFacebookPostRun(run, title, text))
+                        case "Facebook_Post": resolve(await processFacebookPostRun(run, title, textWithTitle))
                         default: 
                             console.error(`(${run.type}) run type is not valid for r/${run.subreddit}`)
                     }
