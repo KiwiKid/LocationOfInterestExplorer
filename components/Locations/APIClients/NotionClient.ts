@@ -184,7 +184,7 @@ class NotionClient {
     }
 
 
-    getSocialPostRuns = async (editedBeforeUTCMaybeeee:string = ''):Promise<SocialPostRun[]> => {
+    getSocialPostRuns = async (editedBeforeUTC:string = ''):Promise<SocialPostRun[]> => {
         if(!this.redditDbId){ throw 'No reddit posts db set'}
         // This is mainly to keep the heat of the reddit API during local development.
         /*if(!this.cachedSocialPosts 
@@ -192,28 +192,8 @@ class NotionClient {
             || getSecondsAgo(this.cachedSocialPostsUpdateTime) > 20
         ){*/
             let params = null;
-           if(editedBeforeUTCMaybeeee.length > 0){
+           if(editedBeforeUTC.length > 0){
                params = {
-                database_id: this.redditDbId,
-                filter: {
-                    and:[{
-                            property: "active",
-                            checkbox: {
-                                equals: true,
-                            },
-                        },{
-                            property: 'last_edited_time',
-                            date: {
-                                before: editedBeforeUTCMaybeeee
-                            }
-                        }
-                    ]
-                    
-                    
-                },
-            }
-        }else{
-            params = {
                 database_id: this.redditDbId,
                 filter: {
                     and:[{
@@ -224,14 +204,22 @@ class NotionClient {
                         },{
                             property: 'lastCheckTime',
                             date: {
-                                before: editedBeforeUTCMaybeeee
+                                before: editedBeforeUTC
                             }
                         }
                     ]
-                    
-                    
                 },
             }
+        }else{
+            params = {
+                database_id: this.redditDbId,
+                filter: {
+                            property: "active",
+                            checkbox: {
+                                equals: true,
+                            },
+                        },
+                }
         }
 
             return this.notionClient.databases.query(params)
