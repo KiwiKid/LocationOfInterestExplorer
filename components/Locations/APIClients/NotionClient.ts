@@ -222,7 +222,7 @@ class NotionClient {
                                 equals: true,
                             },
                         },{
-                            property: 'last_edited_time',
+                            property: 'lastCheckTime',
                             date: {
                                 before: editedBeforeUTCMaybeeee
                             }
