@@ -11,6 +11,11 @@ const reallyBadDataFixes = (loi:LocationOfInterestRecord) => {
     loi.lat = '-37.0036884804696'
     loi.lng = '174.78644185846255'
   }
+
+  if(loi.id == 'a0l4a0000006yzUAAQ'){
+    loi.city = 'Hamilton'
+  }
+
   return loi
 }
 
