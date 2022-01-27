@@ -249,7 +249,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     
     
                 const title = `New Locations of Interest in ${mainMatchingPreset.title} - ${dayFormattedNZ(now)}`
-                const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true);
+                const text = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true, false);
+
+                const facebookText = getTodayLocationSummary(matchingLocationGroups, url, now, settings, true, true);
     
                 try{
                     switch(run.type){
@@ -257,7 +259,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                             break;
                         case "Reddit_Comment": resolve(await processRedditCommentRun(run,title,text)) //resolve(await processRedditPostRun(run, title, text));
                             break;
-                        case "Facebook_Post": resolve(await processFacebookPostRun(run, title, text))
+                        case "Facebook_Post": resolve(await processFacebookPostRun(run, title, facebookText))
                         default: 
                             console.error(`(${run.type}) run type is not valid for r/${run.subreddit}`)
                     }
