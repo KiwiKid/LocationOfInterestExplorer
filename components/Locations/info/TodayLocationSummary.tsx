@@ -18,7 +18,8 @@ const getTodayLocationSummary = (
     , publishTime: Date
     , locationSettings: LocationSettings
     , displayTotal: boolean
-) => `${displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : ''} New Locations of Interest ${asAtDateAlwaysNZ(publishTime)}\n\n\n${locationGroups
+    , includeDayInTitle: boolean
+) => `${displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : ''} New Locations of Interest ${includeDayInTitle ? `- ${dayFormattedNZ(publishTime)} - ` : ''}${asAtDateAlwaysNZ(publishTime)}\n\n\n${locationGroups
     .sort(downTheCountryGrp)
     .map((lg) => lg.toString(true, false, undefined))
     .join(`\n`)}`
@@ -29,8 +30,13 @@ const getTotalLocationSummaryTitle = (publishTime:Date) => `New Locations of Int
 const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, locationSettings}:TodayLocationSummaryProps) => {
 
     let copyText = 'invalid';
+    let facebookCopyText = 'invalid';
     if(locationGroups){
-        copyText = getTodayLocationSummary(locationGroups, hardcodedURL, publishTime, locationSettings, true)
+        copyText = getTodayLocationSummary(locationGroups, hardcodedURL, publishTime, locationSettings, true, true)
+    }
+
+    if(locationGroups){
+        facebookCopyText = getTodayLocationSummary(locationGroups, hardcodedURL, publishTime, locationSettings, true, false)
     }
 
     let titleText = getTotalLocationSummaryTitle(publishTime);
@@ -40,7 +46,11 @@ const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, locati
             id="copybox"
             copyText={titleText}
             textarea={true}
-        />
+        /> <CopyBox 
+        id="copybox"
+        copyText={facebookCopyText}
+        textarea={true}
+    />
         <CopyBox 
             id="copybox"
             copyText={copyText}
