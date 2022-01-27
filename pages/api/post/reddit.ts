@@ -116,7 +116,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         .then((rr) => {
                             if(rr.result){
                                 if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
-                                    notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', "Create")
+                                    notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
                                 } else {
                                     notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
                                 }
