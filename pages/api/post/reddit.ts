@@ -116,7 +116,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         .then((rr) => {
                             if(rr.result){
                                 if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
-                                    notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
+                                    notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', "Create")
                                 } else {
                                     notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
                                 }
@@ -148,6 +148,22 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
     }
 
+    const getActionString = (rr:SocialPostRun) => {
+        if(rr.errorMsg || rr.result?.error){
+            return `Error: ${rr.errorMsg}${rr.result?.error}`
+        }
+        if(!rr.result){
+            return 'No Result'
+        }
+        if(!rr.result.isSuccess){
+            return 'Failed'
+        }
+        if(rr.result.isUpdate){
+            return "Updated"
+        }
+        return 'None'
+    }
+
 
     const processRedditCommentRun = async (run:SocialPostRun, title: string, text:string):Promise<SocialPostRun> => {
         return new Promise<SocialPostRun>(async (resolve, reject) => {
@@ -163,7 +179,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     .then((rr) => {
                         if(rr.result){
                             if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
-                                notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?')
+                                notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
                             } else {
                                 notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
                             }

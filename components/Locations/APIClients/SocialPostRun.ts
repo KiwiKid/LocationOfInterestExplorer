@@ -19,6 +19,8 @@ class SocialPostRun {
 
     result?:SocialPostRunResult
     errorMsg?:string
+    lastAction?:string
+    lastPostTime?:string
 
     constructor (
         notionPageId:string
@@ -30,6 +32,8 @@ class SocialPostRun {
         , existingPostId?:string
         , lastCheckTime?:string
         , flairId?:string
+        , lastPostTime?:string
+        , lastAction?:string
     ){
         
         this.notionPageId = notionPageId;
@@ -51,6 +55,12 @@ class SocialPostRun {
         }
         if(flairId){
             this.flairId = flairId
+        }
+        if(lastPostTime){
+            this.lastPostTime = lastPostTime
+        }
+        if(lastAction){
+            this.lastAction = lastAction
         }
 
         this.createdDate = new Date().toISOString();

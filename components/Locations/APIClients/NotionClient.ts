@@ -51,7 +51,8 @@ const mapNotionItemToSocialPostRun = (notionRow:any):SocialPostRun => {
             , getNotionRichText(props.currentPostId)
             , getNotionDate(props.lastCheckTime)
             , getNotionRichText(props.flareId)
-
+            , getNotionDate(props.lastPostTime)
+            , getNotionRichText(props.lastAction)
     )
        /* showInDrawer: props.showInDrawer.checkbox,
         lat: props.lat.number,
@@ -241,6 +242,7 @@ class NotionClient {
         let newProps:any = {};
 
         newProps['lastCheckTime'] = getNotionDateObject(checkTime);
+        newProps['lastAction'] = getNotionRichText('Skipped')
 
         return this.notionClient.pages.update({
             page_id: notionPageId,
@@ -251,14 +253,16 @@ class NotionClient {
         });
     }
 
-    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
+    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
         console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
         return this.notionClient.pages.update({
             page_id: notionPageId,
             properties: {
                 "currentPostTitle": getNotionRichTextObject(postTitle),
                 "currentPostId": getNotionRichTextObject(postId),
-                "lastCheckTime": getNotionDateObject(checkTime)
+                "lastCheckTime": getNotionDateObject(checkTime),
+                "lastPostTime": getNotionDateObject(postTime),
+                "lastAction": getNotionRichTextObject(action)
             }
         }).then(() => { 
             console.log(`updated notion db entry with post details ${notionPageId}`)

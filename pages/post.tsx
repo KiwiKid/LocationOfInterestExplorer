@@ -151,7 +151,7 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
     const settings = client.getLocationSettings();
 
 
-    const beforeDateString = dayjs().subtract(10, 'minutes').toISOString()
+    const beforeDateString = dayjs().tz('utc').subtract(10, 'minutes').toISOString()
     const socialPostRuns = await client.getSocialPostRuns(beforeDateString);
 
 

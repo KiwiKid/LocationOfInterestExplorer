@@ -32,12 +32,13 @@ class RedditClient {
             
         });
         //TODO: can this be 1?
-        r.config({requestDelay: 1500, warnings: false, continueAfterRatelimitError: true, debug:true});
+        r.config({requestDelay: 5000, warnings: false, continueAfterRatelimitError: true, debug:true});
 
         if(!r){ console.error('Failed to generate reddit client'); throw 'err'}
 
         this.r = r;
     }
+
 
     upsertRedditComment = async (run:SocialPostRun,title:string, text:string):Promise<SocialPostRun> => {
         return new Promise(async (resolve,reject) => {
@@ -60,28 +61,29 @@ class RedditClient {
                                 console.log(`updated reddit comment (${comment.id})`);
                                 run.setResults(new SocialPostRunResult(true, true, false, title, comment.id, text, comment.ups))
                                 resolve(run)
-                                return run;                
+                                //return run;                
                             }).catch((err) => {
                                 console.error(err)
                                 run.setError(`Could not edit existing reddit comment for ${run.subreddit}`);
                                 reject(run);
                             });
             }else{
+
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
                     
-                matchingThreads.map((thread:any) => {
-                    return this.r.getSubmission(thread).reply(text).then((res) => {
+                matchingThreads.forEach(async (thread:any) => {
+                    await this.r.getSubmission(thread).reply(text).then((res) => {
                         console.log(`created reddit comment (${res.id})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
                         resolve(run);
                     }).catch((err) => { 
                         run.setError(`Could not create new reddit post for ${run.subreddit}`);
-                        resolve(run);
+                        reject(run);
                     });                        
                 });
             }
-    })
+    });
 }
     
            /* return this.r.getSubreddit(run.subreddit)
@@ -126,57 +128,58 @@ class RedditClient {
             return new RedditPostRunResult(false, false, true, run, undefined, undefined, err); //{ success: false, update: false, subreddit: run.subreddit, error: err }
         }
     }*/
-
+    processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:SocialPostRun, subId:string, title:string):Promise<SocialPostRunResult> => { 
+        return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
+    }
 
 
     updateRedditSubmissions = async (run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> => {
-        try{ 
-            const isUpdate = run.lastCheckTime && startOfDayNZ(new Date(run.lastCheckTime)) === startOfDayNZ(todayNZ())
-            if(isUpdate && run.existingPostId){
-                console.log(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
-                return await this.r.getSubmission(run.existingPostId)
-                                    .edit(text)
-                                    .then(async (sub:any) => {
-                                        console.log('Reddit Submission edited');
-                                        run.setResults(await processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
-                                        return run;
-                                    }) 
-                                    
-                //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
-            } else{
-                console.log(`updateRedditSubmissions - submit ${run.subreddit}`);
+        return new Promise<SocialPostRun>(async (resolve,reject) => {
+            try{
+                const isUpdate = run.lastCheckTime && startOfDayNZ(new Date(run.lastCheckTime)) === startOfDayNZ(todayNZ())
+                if(isUpdate && run.existingPostId){
+                    console.log(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
+                    return await this.r.getSubmission(run.existingPostId)
+                                        .edit(text)
+                                        .then(async (sub:any) => {
+                                            console.log('Reddit Submission edited');
+                                            run.setResults(await this.processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
+                                            resolve(run);
+                                        }) 
+                                        
+                } else{
+                    console.log(`updateRedditSubmissions - submit ${run.subreddit}`);
 
-                    var selfPost = this.r.submitSelfpost({
-                        subredditName: run.subreddit
-                        , title: title
-                        , text: text
-                        , flairId: run.flairId
-                    })
+                        await this.r.submitSelfpost({
+                            subredditName: run.subreddit
+                            , title: title
+                            , text: text
+                            , flairId: run.flairId
+                        }).then(async (sub:Submission) => {
+                            const res = await this.processRedditSubmission(true, false, false, run, sub.name, title);
+                            run.setResults(res);
+                            resolve(run);
+                        }).catch((err) => {
+                            console.error(err)
+                            run.setError(`Could not create reddit submission r/${run.subreddit} ${run.textUrlParams}. This can be cause a invalid FlairId`)
+                            reject(run);
+                        })
+                    
+                    //9bc8c692-2377-11ec-97a0-722625a13049
+                    // Use https://www.reddit.com/r/[INSERT_SUBREDDIT_HERE]/api/link_flair_v2.json?raw_json=1
+                    // to find the Flair id
                 
-                //9bc8c692-2377-11ec-97a0-722625a13049
-                // Use https://www.reddit.com/r/[INSERT_SUBREDDIT_HERE]/api/link_flair_v2.json?raw_json=1
-                // to find the Flair id
-                
-                return selfPost.then(async (sub:Submission) => {
-                    const res = await processRedditSubmission(true, false, false, run, sub.name, title);
-                    run.setResults(res);
-                    return run;
-                });
-                //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
+                    //return new RedditPostRunResult(false, false, true, run, "FAKE", undefined);
+                }
+
+            }catch(err:any){
+                console.error(`Update Reddit Submissions failed for r/${run.subreddit} ${run.textUrlParams}`)
+                console.error(err);
+                run.setError('Failed to update reddit submission ('+err.message+')');
+                reject(run);
             }
-        
-        }catch(err:any){
-            console.error(`Update Reddit Submissions failed for r/${run.subreddit} ${run.textUrlParams}`)
-            console.error(err);
-            run.setError('Failed to update reddit submission ('+err.message+')');
-            return run;
-        }
+        });
     }
-
-}
-
-const processRedditSubmission = async (isSuccess:boolean, isUpdate:boolean, isSkipped: boolean, run:SocialPostRun, subId:string, title:string):Promise<SocialPostRunResult> => { 
-    return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
 }
 
 export default RedditClient;
