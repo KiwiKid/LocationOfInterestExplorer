@@ -4,6 +4,7 @@ import getConfig from 'next/config';
 import { getNodeEnv } from '../../utils/getNodeEnv';
 import { error } from 'console';
 import SocialPostRun from './SocialPostRun';
+import dayjs from 'dayjs';
 
 
 
@@ -48,7 +49,7 @@ class SocialPostRunResult {
             this.postText = postText;
         }
 
-        this.createdDate = new Date();
+        this.createdDate = dayjs().tz('Pacific/Auckland').toDate();
     }
 
 
