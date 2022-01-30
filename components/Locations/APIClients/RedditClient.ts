@@ -16,7 +16,7 @@ class RedditClient {
 
     constructor (){
         
-        const version = '0.1'
+        const version = '0.2'
        
       //  if(!process.env.REDDIT_USER_AGENT){ console.error('REDDIT_USER_AGENT not set'); throw 'error' }
         if(!process.env.REDDIT_CLIENT_ID){ console.error('REDDIT_CLIENT_ID not set'); throw 'error' }
