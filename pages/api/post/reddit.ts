@@ -17,6 +17,7 @@ import { resolve } from 'path/posix';
 import SocialPostRunResult from '../../../components/Locations/APIClients/SocialPostRunResult';
 import SocialPostRun from '../../../components/Locations/APIClients/SocialPostRun';
 import FacebookClient from '../../../components/Locations/APIClients/FacebookClient';
+import { getActionString } from '../../../components/utils/utils';
 /*
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
    /* {
@@ -112,29 +113,29 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     console.log(`updating submission ${title}`);
                 try{
                     
-                    const update = await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
-                        .then((rr) => {
-                            if(rr.result){
-                                if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
-                                    notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
-                                } else {
-                                    notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
-                                }
+                    await redditClient.updateRedditSubmissions(run, title, text+botFeedbackMsg)
+                        .then(async (rr) => {
+                            if(!rr.result || !rr.result.postTitle || !rr.result.postId || !rr.notionPageId){
+                                console.error(rr);
+                                throw `Failed to create update/create post `
                             }
-                            
-                            //resolve(rr);
-                            return rr;
-                        }).catch((err) => {
-                            console.error(err)
+                            await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
+                           // resolve(rr);
+                            //return run
+                        }).catch(async (err) => {
+                            console.error(err);
+                            await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), getActionString(run));
                             run.setError(err.message);
-                            //resolve(rrr);
-                            return run;
+                            //resolve(run);
+                            //return run;
+                        }).finally(() => {
+                            resolve(run);
                         })
 
-                    resolve(update)
+                    //resolve(update)
                 }catch(err){
                     console.error(err)
-                    run.setError('Failed to update reddit submissions (processRedditPostRun)');
+                    run.setError('Failed to update reddit submissions (processRedditPostRun). Did this update notion?');
                     resolve(run)
                 }
 
@@ -148,21 +149,6 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         
     }
 
-    const getActionString = (rr:SocialPostRun) => {
-        if(rr.errorMsg || rr.result?.error){
-            return `Error: ${rr.errorMsg}${rr.result?.error}`
-        }
-        if(!rr.result){
-            return 'No Result'
-        }
-        if(!rr.result.isSuccess){
-            return 'Failed'
-        }
-        if(rr.result.isUpdate){
-            return "Updated"
-        }
-        return 'None'
-    }
 
 
     const processRedditCommentRun = async (run:SocialPostRun, title: string, text:string):Promise<SocialPostRun> => {
@@ -175,27 +161,26 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
             
                     
-                const update = await redditClient.upsertRedditComment(run, title, text+botFeedbackMsg)
-                    .then((rr) => {
-                        if(rr.result){
-                            if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
-                                notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
-                            } else {
-                                notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate));
-                            }
+                await redditClient.upsertRedditComment(run, title, text+botFeedbackMsg)
+                    .then(async (rr) => {
+                        if(!rr.result || !rr.result.postTitle || !rr.result.postId || !rr.notionPageId){
+                            throw `Failed to update reddit comment ${JSON.stringify(rr.errorMsg)}`
                         }
                         
-                        //resolve(rr);
-                        return rr;
-                    }).catch((err) => {
+                        await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
+                        
+                    }).catch(async (err) => {
                         console.error('This one?')
                         console.error(err)
-                        run.setError(err);
+                        await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), getActionString(run));
+                        run.setError('Failed to update reddit comment');
                         //resolve(rrr);
-                        return run;
+                        //return run;
+                    }).finally(() => {
+                        resolve(run)
                     })
 
-                resolve(update)
+                
             }catch(err){
                 console.error(err);
                 run.setError('Failed to process reddit comment run');
