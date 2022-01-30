@@ -81,12 +81,6 @@ class SocialPostRun {
         }
     }
 
-    getUrl(){
-        
-        
-    }
-
-
     setError(errorMsg:string) {
         this.errorMsg = errorMsg;
     }

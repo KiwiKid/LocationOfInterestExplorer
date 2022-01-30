@@ -36,7 +36,6 @@ const SocialRun =  ({run}:SocialRunProps) => {
 
     const title = `${run.primaryUrlParam} (${run.textUrlParams})  ${run.lastAction}`
 
-    const url = run.getUrl();
     return (
         <>
             <div className={`bg-${getSocialsStatusColor(run)} divide-blue-500`}>{run.type} ({run.subreddit}{`${run.subredditSubmissionTitleQuery ? `(${run.subredditSubmissionTitleQuery})`: ''}`})</div>
