@@ -46,23 +46,14 @@ import InternalLink from "../utils/InternalLink"
                     {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
                     <div className="col-span-2 p-4">{loi.advice}</div>
                     <div className="col-span-2 w-4/5 m-auto py-2 space-y-2">
-                            <InternalLink
-                                id={`GoTo_${loi.id}`}
-                                onClick={(evt:any) => goToLocation(loi.lat, loi.lng, 13)}
-                            >View on map</InternalLink>
-                            <RegisterVisit loi={loi}/>
-                            
-                            <RegisterIncorrectLocation loi={loi}/>
-                            
-                    {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
-                    {/*<a target="_blank" 
-                        rel="noreferrer"
-                        href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}>
-                        <div className="pt-2 text-center align-middle border-b-1 border-green-900 border-b-4 bg-green-600 w-full h-10 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800">
-                            I was here! ↗️ (Official MoH link)
-                        </div>
-                     </a>*/}
-                     {showId && <div className="col-span-full text-xs"> id: {loi.id}</div>}
+                        {goToLocation ? <InternalLink
+                            id={`GoTo_${loi.id}`}
+                            onClick={(evt:any) => goToLocation(loi.lat, loi.lng, 13)}
+                        >View on map</InternalLink>: null}
+                        <RegisterVisit loi={loi}/>
+                        <RegisterIncorrectLocation loi={loi}/>
+                        {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
+                        {showId && <div className="col-span-full text-xs"> id: {loi.id}</div>}
                 </div>
             </div> : null}
         </div>
