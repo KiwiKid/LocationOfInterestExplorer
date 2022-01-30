@@ -5,9 +5,9 @@ import { getMinutesAgo, NiceFullDate, subtractMinutes } from "../components/Loca
 import { getHardCodedUrl } from "../components/utils/utils";
 import axios from 'axios'
 import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
-import SocialRuns from "../components/Locations/SocialRuns";
 import dayjs from "dayjs";
 import { requestLocations } from "../components/Locations/MoHLocationClient/requestLocations";
+import SocialRuns from "../components/Locations/SocialRuns";
 
 
 const { Client } = require("@notionhq/client")
@@ -78,15 +78,11 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
         {error ? <div>{JSON.stringify(error)}</div> : null}
-        <div className="grid grid-cols-3 p-5 text-left">
-            <th>subreddit</th>
-            <th>primary</th>
-            
-            <div className="col-span-full py-5">Active:</div>
-            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
-            <div className="col-span-full py-5">In-Active:</div>
-            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
-        </div>
+           
+        <div className="col-span-full py-5">Active:</div>
+        <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
+        <div className="col-span-full py-5">In-Active:</div>
+        <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialPostRuns.length}):</button>
         <div className="w-full h-2 bg-yellow-700"/>
         <SocialRuns socialRuns={socialRunResults} />

@@ -14,7 +14,7 @@ type SocialRunsProps = {
 const SocialRuns = ({socialRuns}:SocialRunsProps) => {
     
     return ( 
-        <div className="grid grid-cols-3">{socialRuns
+        <div className="grid grid-cols-2 ">{socialRuns
             .sort((a,b) =>  !a.lastCheckTime ? -1 : !b.lastCheckTime ? 1 : a.lastCheckTime > b.lastCheckTime ? 1 : -1 )
             .map((rpr) => <SocialRun key={rpr.notionPageId} run={rpr}/>)
         }</div>
@@ -29,22 +29,29 @@ type SocialRunProps = {
 }
 
 const SocialRun =  ({run}:SocialRunProps) => {
-    const updatedMinutesAgo = run.result?.createdDate ? getMinutesAgo(run.result?.createdDate) : run.lastCheckTime ?  getMinutesAgo(new Date(run.lastCheckTime)) : 'Never'
+    const updatedMinutesAgo = !!run.lastCheckTime ? getMinutesAgo(new Date(run.lastCheckTime)) :  'Never'
 
     const mostRecentAction = !!run.result ? getActionString(run) : !!run.lastAction ? run.lastAction : 'None'
 
+
+    const title = `${run.primaryUrlParam} (${run.textUrlParams})  ${run.lastAction}`
+
+    const url = run.getUrl();
     return (
         <>
-            <div className={`bg-${getSocialsStatusColor(run)}`}>{run.type} ({run.subreddit}{`${run.subredditSubmissionTitleQuery ? `(${run.subredditSubmissionTitleQuery})`: ''}`})</div>
-            {run.flairId ? <div><details><summary>{run.primaryUrlParam} ({run.textUrlParams})</summary><div>{run.flairId}</div></details></div> :
-            <div>{run.primaryUrlParam} ({run.textUrlParams})</div>}
-            <div >
-            {run.existingPostId ? <details>
+            <div className={`bg-${getSocialsStatusColor(run)} divide-blue-500`}>{run.type} ({run.subreddit}{`${run.subredditSubmissionTitleQuery ? `(${run.subredditSubmissionTitleQuery})`: ''}`})</div>
+            {run.flairId ? 
+                <div><details><summary>{title}</summary><div>{run.flairId}</div></details></div> :
+                <div>{title}</div>
+            }
+            {run.lastAction ? <div><link rel="_blank" href={run.url}> {run.lastAction} {run.lastCheckTime ? ` ${getMinutesAgo(new Date(run.lastCheckTime))} mins ago - `:null } </link></div>:<div> </div> }
+            
+            {/*run.existingPostId ? <details>
                 <summary>
-                    {mostRecentAction} (last was {updatedMinutesAgo} mins ago) - 
-                    
-                    {run.existingPostId} 
-                    {run.existingPostTitle ? `${run.existingPostTitle} ` : ''} 
+                   
+                     - 
+                    {run.existingPostId} - 
+                    {run.existingPostTitle ? ` ${run.existingPostTitle} ` : ' '} 
                     {!run.result ? '' : 
                         !run.result.isSuccess ? '(Failed)' 
                         : run.result.isSkipped ? '(skipped)' 
@@ -55,13 +62,11 @@ const SocialRun =  ({run}:SocialRunProps) => {
                     
                     <div><NiceFullAlwaysNZDate date={new Date(run.createdDate)}/></div>
                     
-                </details>: ''}
-            </div>
+            </details>: ''*/}
+           
             {run.result?.error && <div className="col-span-full bg-red-500">{run.result?.error}</div>}
             {run.errorMsg && <div className="col-span-full bg-red-500">{run.errorMsg}</div>}
-            <textarea value={JSON.stringify(run)}/>
         </>
-        
     )
         
 }

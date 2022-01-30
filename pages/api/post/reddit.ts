@@ -245,7 +245,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
     
                 const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
-                if(matchingLocationGroups.length === 0 && !run.alwaysPost){
+                if(matchingLocationGroups.length === 0){
                     run.setResults(new SocialPostRunResult(true, false, true));
                     resolve(run)
                     return;

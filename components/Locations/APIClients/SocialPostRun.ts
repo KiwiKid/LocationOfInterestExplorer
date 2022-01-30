@@ -12,7 +12,6 @@ class SocialPostRun {
     type:string // "Reddit_Comment", "Reddit_Comment"
     createdDate:string
     flairId?:string
-    alwaysPost:boolean
     
     existingPostTitle?:string
     existingPostId?:string
@@ -22,6 +21,7 @@ class SocialPostRun {
     errorMsg?:string
     lastAction?:string
     lastPostTime?:string
+    url:string
 
     constructor (
         notionPageId:string
@@ -68,7 +68,21 @@ class SocialPostRun {
         this.type = type
         this.lastCheckTime = lastCheckTime;
 
-        this.alwaysPost = this.type == 'Reddit_Comment'
+        switch(this.type){
+            case 'Reddit_Comment': 
+            // TODO: this wont work..we dont know the thread id...
+                this.url = `https://www.reddit.com/r/${this.subreddit}/comments/${this.existingPostId}/comment/${this.existingPostId}`;
+                break;
+            case 'Reddit_Post': 
+                this.url = `https://www.reddit.com/r/${this.subreddit}/comments/${this.existingPostId}`;
+                break;
+            default:
+                this.url = 'https://google.com'
+        }
+    }
+
+    getUrl(){
+        
         
     }
 
