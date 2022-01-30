@@ -49,6 +49,7 @@ type LocationPageDrawerProps = {
     setDrawPositionY: any
     drawerRef: any
     activeLocationPresets:LocationPreset[]
+    goToLocation:any
 }
 
 
@@ -74,7 +75,8 @@ const LocationPageDrawer = ({
     drawPositionY,
     setDrawPositionY, 
     drawerRef,
-    activeLocationPresets
+    activeLocationPresets,
+    goToLocation
   }:LocationPageDrawerProps) => {
 
 
@@ -121,13 +123,6 @@ const LocationPageDrawer = ({
     }
 
     const [selectLocationPreset, setSelectLocationPreset] = useState<LocationPreset|undefined>(undefined);
-    
-
-    const goToLocation = (pl:LocationPreset) => {
-      setSelectLocationPreset(pl);
-      resetScroll(drawerRef);
-    }
-
 
     useEffect(() => {
       if(map && !!selectLocationPreset){
@@ -293,6 +288,7 @@ const LocationPageDrawer = ({
                     setOpenLocations={setOpenLocations}
                     sortField={sortField}
                     pageState={pageState}
+                    goToLocation={goToLocation}
                 />}
             </>
           </Toggle>
@@ -347,7 +343,7 @@ const LocationPageDrawer = ({
                   {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') ? 
                     <div className="grid sm:grid-cols-2">
                     {activeLocationPresets.sort((a,b) => a.lat > b.lat ? -1 : 0).filter((pl) => pl.showInDrawer).map((pl) => <div key={`${pl.urlParam}_preview`}>
-                      <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl)}}>
+                      <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl.lat, pl.lng, pl.zoom)}}>
                           <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
                           <div className="flex justify-center align-middle overflow-hidden p-6">
                             {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
@@ -362,7 +358,7 @@ const LocationPageDrawer = ({
                       <div className="w-4/5 m-auto p-3">
                         <InternalLink
                           id="FastTravel"
-                          onClick={(evt:any) => goToLocation(pl)}
+                          onClick={(evt:any) => goToLocation(pl.lat, pl.lng, pl.zoom)}
                         >{pl.title}</InternalLink>                        
                       </div>
                     </div>

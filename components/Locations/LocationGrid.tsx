@@ -15,6 +15,7 @@ type LocationGridProps = {
     showGrid: boolean
     openLocations: string[]
     setOpenLocations: any
+    goToLocation:any
     sortField: Sort
 }
 
@@ -41,7 +42,7 @@ export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
     }
 }
 
-export default function LocationGrid({locations, showGrid, openLocations, setOpenLocations, sortField}:LocationGridProps) {
+export default function LocationGrid({locations, showGrid, openLocations, setOpenLocations, sortField, goToLocation}:LocationGridProps) {
 
     var groupedLocations = _.chain(locations)
             .groupBy((lc) => startOfDayNZ(lc.loi.start))
@@ -64,14 +65,13 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
     function LocationGroupHeader({d, firstStartTime, locationCount}:any){
         return ( 
             <div key={`${d}_S`} className="">
-                <div className="bg-gray-300 grid grid-cols-3 md:grid-cols-6 lg:grid-cols-7 border-b-1 border-blue-800 italic">
+                <div className="bg-gray-300 grid grid-cols-3 md:grid-cols-7 lg:grid-cols-7 border-b-1 border-blue-800 italic">
                     <div className="border col-span-full">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>
                     <div className="border md:col-span-1 lg:col-span-1">Type</div> 
                     <div className="border col-span-1 md:col-span-2 lg:col-span-2">{locationCount} Locations</div>
-                    <div className="border md:col-span-1 lg:col-span-2">Time period</div> 
-                    <div className="border col-span-2 lg:col-span-1 hidden md:block">Added</div> 
-                    <div className="border col-span-2 lg:col-span-1 hidden md:block">Open</div> 
-                    <div className="border col-span-1 hidden lg:block"></div>
+                    <div className="border md:col-span-2 lg:col-span-2">Time period</div> 
+                    <div className="border col-span-1 lg:col-span-1 hidden md:block">Added</div> 
+                    <div className="border col-span-1 text-right pr-2 lg:text-center hidden md:block">Open</div> 
                 </div>
             </div>
         )
@@ -83,7 +83,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                     return ( 
                         <div key={`${d}_LG`}>
                             <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].loi.start} locationCount={groupedLocations[d].length}/>
-                            {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => <LocationGridAdaptorItem key={`LGA_${l.loi.id}`}loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={toggleOpenLocation} showIds={true}/>)}
+                            {groupedLocations[d].sort((a,b) => a.loi.city.indexOf(b.loi.city)).map((l:LocationOfInterestCalculated) => <LocationGridAdaptorItem key={`LGA_${l.loi.id}`}loi={l.loi} isOpen={isOpen(l.loi)} toggleOpenLocation={toggleOpenLocation} showIds={true} goToLocation={goToLocation}/>)}
                         </div>
                     )
             })}

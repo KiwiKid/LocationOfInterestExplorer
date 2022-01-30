@@ -15,11 +15,12 @@ type LargeLocationGridProps = {
     showHeader: boolean
     isOpen: boolean
     toggleOpenLocation: any
+    goToLocation:any
     showId: boolean 
 }
 
 
-export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen, toggleOpenLocation, showId = false}:LargeLocationGridProps) {
+export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen, toggleOpenLocation, goToLocation, showId = false}:LargeLocationGridProps) {
 
     const addedDateIsRecent = getHoursAgo(loi.added) < 48;
 
@@ -34,9 +35,8 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         </div>
                         <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>
                         {isOpen !== undefined ? 
-                        isOpen == true ?  <div className="text-center text-3xl">▲</div> 
-                            : <div className="text-center text-3xl ">▼</div>: null }
-                        <div className="text-center col-span-full"></div>
+                        isOpen == true ?  <div className="text-right pr-2 text-3xl">▲</div> 
+                            : <div className="text-right lg:text-center pr-2 text-3xl ">▼</div>: null }
                     </div>
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>

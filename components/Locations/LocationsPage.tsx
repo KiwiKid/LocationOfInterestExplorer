@@ -12,6 +12,7 @@ import ActiveDateSelection from "./ActiveDateSelection";
 import useWindowSize from "../utils/useWindowSize";
 import { resetScroll } from "../utils/resetScroll";
 import { applyLocationOverride } from "./LocationObjectHandling";
+import { Map } from "leaflet";
 
 
 const CLOSED_DRAW_POS = -60;
@@ -60,7 +61,7 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
     const drawerRef = useRef<Element>(null);
 
     // State
-    const [map, setMap] = useState(undefined);
+    const [map, setMap] = useState<Map>();
     const [showDateInPastPopup, setShowDateInPastPopup] = useState(false);
     const [sortField, setSortField] = useState(Sort.Start);
     const [showSortFieldPopup, setShowSortFieldPopup] = useState(false);
@@ -84,8 +85,22 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
       setDrawPositionY(getOpenDrawPosition(windowHeight));
     }
 
+    const closeDrawer = () => {
+      setDrawPositionY(CLOSED_DRAW_POS);
+    }
+
     function changeDaysInPastShown(daysInPast:number){
         setDaysInPastShown(daysInPast);
+    }
+
+    function goToLocation(lat:number,lng:number, zoom:number){
+      closeDrawer()
+      resetScroll(drawerRef);
+
+      if(map){
+        //
+        map.flyTo([lat,lng], zoom);
+      }
     }
 
     let activeLocationPresets = locationSettings.locationPresets.filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
@@ -158,6 +173,7 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
                   setDrawPositionY={setDrawPositionY}
                   drawerRef={drawerRef}
                   activeLocationPresets={activeLocationPresets}
+                  goToLocation={goToLocation}
                 />
               </div>
             </div>

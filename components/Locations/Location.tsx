@@ -8,6 +8,7 @@ import {LocationSummaryDateDisplay } from "./LocationSummaryDateDisplay"
 import LocationExposureTypeDisplay from "./LocationExposureTypeDisplay"
 import RegisterIncorrectLocation from "./RegisterIncorrectLocation"
 import RegisterVisit from "./RegisterVisit"
+import InternalLink from "../utils/InternalLink"
 
 
 
@@ -16,11 +17,12 @@ import RegisterVisit from "./RegisterVisit"
         isOpen: boolean
         toggleOpenLocation: any
         showId: boolean
+        goToLocation:any
     }
 
 
 
-    export default function Location({loi,isOpen, toggleOpenLocation, showId}:LocationProps){
+    export default function Location({loi,isOpen, toggleOpenLocation, showId, goToLocation}:LocationProps){
 
         const addedDateIsRecent = getHoursAgo(loi.added) < 48;
 
@@ -44,8 +46,14 @@ import RegisterVisit from "./RegisterVisit"
                     {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
                     <div className="col-span-2 p-4">{loi.advice}</div>
                     <div className="col-span-2 w-4/5 m-auto py-2 space-y-2">
+                            <InternalLink
+                                id={`GoTo_${loi.id}`}
+                                onClick={(evt:any) => goToLocation(loi.lat, loi.lng, 13)}
+                            >View on map</InternalLink>
                             <RegisterVisit loi={loi}/>
+                            
                             <RegisterIncorrectLocation loi={loi}/>
+                            
                     {!addedDateIsRecent && <LocationMetaDataSummary loi={loi} showUpdated={true}/>}
                     {/*<a target="_blank" 
                         rel="noreferrer"
