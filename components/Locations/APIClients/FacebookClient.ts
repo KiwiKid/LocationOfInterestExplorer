@@ -15,6 +15,7 @@ class FacebookClient {
     private appSecret:string
     private appAccessToken:string
     private facebookPageID
+    private appPageAccessToken;
 
     constructor (){
 
@@ -24,11 +25,13 @@ class FacebookClient {
         if(!process.env.FB_APP_SECRET){ console.error('FB_APP_SECRET not set'); throw 'Config error 03' }
 
         if(!process.env.FB_PAGE_ID){ console.error('FB_PAGE_ID not set'); throw 'Config error 04' }
+        if(!process.env.FB_PAGE_ACCESS_TOKEN){ console.error('FB_PAGE_ACCESS_TOKEN not set'); throw 'Config error 05' }
 
         
         this.appId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID
 
         this.appAccessToken = process.env.FB_ACCESS_TOKEN;
+        this.appPageAccessToken = process.env.FB_PAGE_ACCESS_TOKEN;
         this.appSecret = process.env.FB_APP_SECRET
 
         this.facebookPageID = process.env.FB_PAGE_ID
@@ -41,7 +44,11 @@ class FacebookClient {
     }
 
     getFacebookEditUrl(postId:string,){
-        return `https://graph.facebook.com/v3.2/${this.facebookPageID}_${postId}?&access_token=${this.appAccessToken}`
+        return `https://graph.facebook.com/v3.2/${this.facebookPageID}_${postId}?access_token=${this.appAccessToken}`
+    }
+
+    getFacebookPostUrl(){
+        return `https://graph.facebook.com/${this.facebookPageID}/feed?access_token=${this.appAccessToken}`
     }
 
     updateFacebook(run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> {
@@ -62,8 +69,13 @@ class FacebookClient {
 
                         //const res = this.app.Nodes.Page('pageid').Edges.Posts (this.appAccessToken, {  app_id: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID, message: text})
                 }else{
-                    //@ts-ignore
-                    const res = await this.app.Nodes.Page(this.facebookPageID).Edges.Posts.create(this.appAccessToken, {  app_id: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID, message: text})
+                    //@ts-ignore\
+                
+                    
+                    const res = await axios.post(this.getFacebookPostUrl(), { message: text})
+                         .then((rr) => processFacebookSubmission(true, true, false, rr.data.id, title, text));
+
+                    //const res = await this.app.Nodes.Page(this.facebookPageID).Edges.Posts.create(this.appPageAccessToken, {  app_id: this.appId, message: text})
 /*
                     FB.api('me/feed', 'post', { message: text, access_token: process.env.FB_ACCESS_TOKEN }, async function (res:any) {
                     if(!res || res.error) {

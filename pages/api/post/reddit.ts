@@ -176,14 +176,17 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     const errorMsg = getLogMsg(run, 'failed to update reddit post', true, err);
                     run.setError(errorMsg);
                     reject(run);
+                } finally {
+                    getLogMsg(run, 'updating reddit post end');
                 }
                 
-                getLogMsg(run, 'updating reddit post end');
+                
                 /*
                 Faking it: 
                 console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
                 const fakeRes:SocialPostRunResult = new SocialPostRunResult(false, false, true, run, "Fake")
                 return new Promise<SocialPostRunResult>((resolve, reject) => resolve(fakeRes));*/
+                
         })
 
         
