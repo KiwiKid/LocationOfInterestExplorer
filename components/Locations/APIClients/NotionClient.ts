@@ -184,7 +184,7 @@ class NotionClient {
     }
 
 
-    getSocialPostRuns = async (editedBeforeUTC:string = ''):Promise<SocialPostRun[]> => {
+    getSocialPostRuns = async (lastPostTimeBefore:string = ''):Promise<SocialPostRun[]> => {
         if(!this.redditDbId){ throw 'No reddit posts db set'}
         // This is mainly to keep the heat of the reddit API during local development.
         /*if(!this.cachedSocialPosts 
@@ -192,7 +192,7 @@ class NotionClient {
             || getSecondsAgo(this.cachedSocialPostsUpdateTime) > 20
         ){*/
             let params = null;
-           if(editedBeforeUTC.length > 0){
+           if(lastPostTimeBefore.length > 0){
                params = {
                 database_id: this.redditDbId,
                 filter: {
@@ -202,9 +202,9 @@ class NotionClient {
                                 equals: true,
                             },
                         },{
-                            property: 'lastCheckTime',
+                            property: 'lastPostTime',
                             date: {
-                                before: editedBeforeUTC
+                                before: lastPostTimeBefore
                             }
                         }
                     ]

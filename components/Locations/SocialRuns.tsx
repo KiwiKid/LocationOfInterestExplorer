@@ -14,10 +14,10 @@ type SocialRunsProps = {
 const SocialRuns = ({socialRuns}:SocialRunsProps) => {
     
     return ( 
-        <>{socialRuns
+        <div className="grid grid-cols-3">{socialRuns
             .sort((a,b) =>  !a.lastCheckTime ? -1 : !b.lastCheckTime ? 1 : a.lastCheckTime > b.lastCheckTime ? 1 : -1 )
             .map((rpr) => <SocialRun key={rpr.notionPageId} run={rpr}/>)
-        }</>
+        }</div>
     )
 
 
@@ -31,7 +31,7 @@ type SocialRunProps = {
 const SocialRun =  ({run}:SocialRunProps) => {
     const updatedMinutesAgo = run.result?.createdDate ? getMinutesAgo(run.result?.createdDate) : run.lastCheckTime ?  getMinutesAgo(new Date(run.lastCheckTime)) : 'Never'
 
-    const mostRecentAction = run.result ? getActionString(run) : run.lastAction ? run.lastAction : 'None'
+    const mostRecentAction = !!run.result ? getActionString(run) : !!run.lastAction ? run.lastAction : 'None'
 
     return (
         <>
@@ -57,8 +57,8 @@ const SocialRun =  ({run}:SocialRunProps) => {
                     
                 </details>: ''}
             </div>
-            [[[{run.result?.error && <div className="col-span-full bg-red-500">{run.result?.error}</div>}]]]
-            [[[{run.errorMsg && <div className="col-span-full bg-red-500">{run.errorMsg}</div>}]]]
+            {run.result?.error && <div className="col-span-full bg-red-500">{run.result?.error}</div>}
+            {run.errorMsg && <div className="col-span-full bg-red-500">{run.errorMsg}</div>}
             <textarea value={JSON.stringify(run)}/>
         </>
         
