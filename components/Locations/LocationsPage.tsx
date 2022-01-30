@@ -96,7 +96,7 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
     function goToLocation(lat:number,lng:number, zoom:number){
       if(map){
         //
-        map.flyTo([lat,lng], zoom);
+        map.flyTo([lat,lng], zoom, {animate: false});
       }
       closeDrawer()
       resetScroll(drawerRef);

@@ -90,7 +90,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                                 loi={l.loi}
                                 isOpen={isOpen(l.loi)} 
                                 toggleOpenLocation={toggleOpenLocation} 
-                                showIds={true} 
+                                showIds={true}
                                 goToLocation={goToLocation}
                             />)}
                                 )

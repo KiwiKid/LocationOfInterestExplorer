@@ -359,7 +359,7 @@ const LocationPageDrawer = ({
                         <InternalLink
                           id="FastTravel"
                           onClick={(evt:any) => goToLocation(pl.lat, pl.lng, pl.zoom)}
-                        >{pl.title}</InternalLink>                        
+                        >{pl.title}</InternalLink>                    
                       </div>
                     </div>
                   )}</div>}
