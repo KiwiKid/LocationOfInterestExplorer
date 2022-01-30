@@ -43,7 +43,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                 <div><details><summary>{title}</summary><div>{run.flairId}</div></details></div> :
                 <div>{title}</div>
             }
-            {run.lastAction ? <div><link rel="_blank" href={run.url}> {run.lastAction} {run.lastCheckTime ? ` ${getMinutesAgo(new Date(run.lastCheckTime))} mins ago - `:null } </link></div>:<div> </div> }
+            {run.lastAction ? <div><a target="_blank" rel="noreferrer" href={run.url}> {run.lastAction} {run.lastCheckTime ? ` ${getMinutesAgo(new Date(run.lastCheckTime))} mins ago - `:null } </a></div>:<div> </div> }
             
             {/*run.existingPostId ? <details>
                 <summary>
@@ -65,6 +65,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
            
             {run.result?.error && <div className="col-span-full bg-red-500">{run.result?.error}</div>}
             {run.errorMsg && <div className="col-span-full bg-red-500">{run.errorMsg}</div>}
+            <div className="col-span-full bg-yellow-700 h-4"></div>
         </>
     )
         
