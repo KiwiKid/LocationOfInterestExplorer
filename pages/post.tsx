@@ -46,6 +46,8 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
     
     const [socialRuns, setSocialRuns] = useState<SocialPostRun[]>(socialPostRuns);
 
+    const [socialRunResults, setSocialRunResults] = useState<SocialPostRun[]>([]);
+
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -56,7 +58,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         return axios.get(`/api/post/reddit?pass=${reddit}`)
             .then((res) => {
                 if(res.status == 200){
-                    setSocialRuns(res.data);
+                    setSocialRunResults(res.data);
                 }else{
                     setError(res.data);
                 }
@@ -75,8 +77,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
-        Time ago string: <div>{dayjs().utc().subtract(10, 'minutes').toISOString()}</div>
-        
+        {error ? <div>{JSON.stringify(error)}</div> : null}
         <div className="grid grid-cols-3 p-5 text-left">
             <th>subreddit</th>
             <th>primary</th>
@@ -87,6 +88,9 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
         </div>
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialPostRuns.length}):</button>
+        <div className="w-full h-2 bg-yellow-700"/>
+        <SocialRuns socialRuns={socialRunResults} />
+
         <div className="grid grid-cols-3 p-5">
             <div>SubReddit</div> 
             <div>primary</div> 

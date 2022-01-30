@@ -51,7 +51,8 @@ const mapNotionItemToSocialPostRun = (notionRow:any):SocialPostRun => {
             , getNotionRichText(props.currentPostId)
             , getNotionDate(props.lastCheckTime)
             , getNotionRichText(props.flareId)
-
+            , getNotionDate(props.lastPostTime)
+            , getNotionRichText(props.lastAction)
     )
        /* showInDrawer: props.showInDrawer.checkbox,
         lat: props.lat.number,
@@ -235,38 +236,58 @@ class NotionClient {
         }*/
     
 
-    setSocialPostProcessed = async (notionPageId:string, checkTime:Date):Promise<void> => { 
-        console.log(`Setting check time for notionPageId: ${notionPageId}`)
-        let newProps:any = {};
+    setSocialPostProcessed = async (notionPageId:string, checkTime:Date, action:string):Promise<void> => { 
+        return new Promise<void>((resolve,reject) => {
+            if(!checkTime){ 
+                checkTime = new Date();
+            }
+        
+            console.log(`Setting check time for notionPageId: ${notionPageId}`)
+        //  let newProps:any = {};
+//
+           // newProps['lastCheckTime'] = getNotionDateObject(checkTime);
+           // newProps['lastAction'] = getNotionRichText(action)
 
-        newProps['lastCheckTime'] = getNotionDateObject(checkTime);
-
-        return this.notionClient.pages.update({
-            page_id: notionPageId,
-            properties: newProps
-        }).then(() => { 
-            console.log(`updated check time for ${notionPageId}`)
-            return; 
+            return this.notionClient.pages.update({
+                page_id: notionPageId,
+                properties: {
+                    "lastCheckTime": getNotionDateObject(checkTime),
+                    "lastAction": getNotionRichTextObject(action)
+                }
+            }).then(() => { 
+                console.log(`updated check time for ${notionPageId}`)
+                resolve()
+            }).catch((err) => {
+                console.error('Failed to update notion after processing non-social post update')
+                console.error(err)
+                reject()
+            });
         });
     }
 
-    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string):Promise<void> => { 
-        console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
-        return this.notionClient.pages.update({
-            page_id: notionPageId,
-            properties: {
-                "currentPostTitle": getNotionRichTextObject(postTitle),
-                "currentPostId": getNotionRichTextObject(postId),
-                "lastCheckTime": getNotionDateObject(checkTime)
-            }
-        }).then(() => { 
-            console.log(`updated notion db entry with post details ${notionPageId}`)
-            return;
-         });
+    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
+        return new Promise<void>(async (resolve,reject) => {
+                
+            console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
+            return this.notionClient.pages.update({
+                page_id: notionPageId,
+                properties: {
+                    "currentPostTitle": getNotionRichTextObject(postTitle),
+                    "currentPostId": getNotionRichTextObject(postId),
+                    "lastCheckTime": getNotionDateObject(checkTime),
+                    "lastPostTime": getNotionDateObject(postTime),
+                    "lastAction": getNotionRichTextObject(action)
+                }
+            }).then(() => { 
+                console.log(`updated notion db entry with post details ${notionPageId}`)
+                resolve();
+            }).catch((err) => {
+                console.error('Failed to update notion after processing update')
+                console.error(err);
+                reject();
+            });
+        });
     }
-
-
-
 }
 
 const getNotionRichTextObject = (value:string):any => {

@@ -32,7 +32,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
     const todaysLocationGroups = createLocationGroups(todayLocations, locationSettings.locationPresets)
         
-    const todaySummary:string = getTodayLocationSummary(todaysLocationGroups, url, now, locationSettings, true);
+    const todaySummary:string = getTodayLocationSummary(todaysLocationGroups, url, now, locationSettings, true, false);
         
 
     const todayTitle = getTotalLocationSummaryTitle(new Date());

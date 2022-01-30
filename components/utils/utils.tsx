@@ -1,4 +1,5 @@
 import dayjs from "dayjs"
+import SocialPostRun from "../Locations/APIClients/SocialPostRun"
 
 export const dateFormatX = {
     weekday:"short"
@@ -131,4 +132,20 @@ export const getHardCodedUrl = () => {
     return process.env.VERCEL_ENV === 'production' ? environment.prodUrl
         : process.env.VERCEL_ENV === 'preview' ? environment.stagingUrl 
         : localEnv.prodUrl
+}
+
+export const getActionString = (rr:SocialPostRun) => {
+    if(rr.errorMsg || rr.result?.error){
+        return `Error: ${rr.errorMsg}${rr.result?.error}`
+    }
+    if(!rr.result){
+        return 'No Result'
+    }
+    if(!rr.result.isSuccess){
+        return 'Failed'
+    }
+    if(rr.result.isUpdate){
+        return "Updated"
+    }
+    return 'None'
 }
