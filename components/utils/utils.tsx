@@ -146,6 +146,7 @@ export const getActionString = (rr:SocialPostRun) => {
     }
     if(rr.result.isUpdate){
         return "Updated"
+    }else{
+        return 'Created'
     }
-    return 'None'
 }

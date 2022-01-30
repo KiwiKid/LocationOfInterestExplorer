@@ -237,12 +237,6 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 run.setError(errorMsg);
                 reject(run);
             }
-
-                /*
-                Faking it: 
-                console.log(`**update reddit comment** ${title} \n\n\n${JSON.stringify(matchingLocationGroups)} \n\n${JSON.stringify(mainMatchingPreset)}`)
-                const fakeRes:SocialPostRunResult = new SocialPostRunResult(false, false, true, run, "Fake")
-                return new Promise<SocialPostRunResult>((resolve, reject) => resolve(fakeRes));*/
         })
 
         
@@ -254,11 +248,6 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         .then((loi) => applyLocationOverrides(loi, settings.locationOverrides))
     
     const todaysLocations = locations.filter((lr) => onlyToday(lr.added));
-
-    /*const todayslocationGroups = _.groupBy(todaysLocations
-        , function(lc){ 
-            return `${startOfDay(lc.added)}|${getLocationPresetPrimaryCity(settings.locationPresets, lc.city)}`
-        })*/
 
         const isInteresting = (run:SocialPostRun) => {
             //if(run.result && run.result.isSuccess && run.result.isSkipped){ return false}
@@ -318,45 +307,5 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 .setHeader("Access-Control-Allow-Origin", "*")
                 .json((results).filter(isInteresting)); 
     }
-
-    //const redditPostResults:RedditPostRunResult[] = 
-    
-    //SOCIAL_POST_RUNS.forEach((sp) => redditPostResults.push(await processRun(redditClient, sp)));
-
-
-   // console.log();
-/*
-    if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL) throw 'No MoH URL set';
-    let locations:LocationOfInterest[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
-            .then((d:any) => d.map(mapLocationRecordToLocation))
-      
-    const todayLocations = locations.filter((l) => onlyToday(l.added))
-
-
-
-    var groupedLocations = _.groupBy(todayLocations
-        , function(lc){ 
-            return `${startOfDayNZ(lc.added)}|${getLocationPresetPrimaryCity(PRESET_LOCATIONS, lc.city)}`
-        });
-
-        
-    const todaySummary:string = getTodayLocationSummary(PRESET_LOCATIONS, groupedLocations, url, now);
-        
-
-    const todayTitle = getTotalLocationSummaryTitle(new Date());
-    /*const locationGroupSummaries:LocationGroupSummary[] = Object.keys(groupedLocations)
-                .map((keyStr:string) => processGroupKey(PRESET_LOCATIONS, keyStr))
-                .sort((a:LocationGroupKey,b:LocationGroupKey) => a.date > b.date ? -1 : 1)
-                .map((groupKey:LocationGroupKey) => {
-                    return {
-                        id: groupKey.city,
-                        text: getPrintableLocationOfInterestGroupString(groupKey, groupedLocations[groupKey.key], url, now, true)
-                    }
-                });*/
-
-    //const summary:Summary = { todayTitle: todayTitle, todaySummary: todaySummary, newLocationCount: todayLocations.length }
-    
-    //all: frontpagePopular.posts,
-
 
 export default handler

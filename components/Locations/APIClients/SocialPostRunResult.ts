@@ -35,8 +35,9 @@ class SocialPostRunResult {
         if(postId){
             if(postId.startsWith('t3_')){
                 this.postId = postId.substring(3,postId.length);
+            }else{
+                this.postId = postId;
             }
-            this.postId = postId;
         }
 
 

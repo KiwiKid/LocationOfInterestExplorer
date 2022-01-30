@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import SocialPostRunResult from './SocialPostRunResult';
 import SocialPostRun from './SocialPostRun';
 
-
+const processRedditId = (redditID:string) => redditID.startsWith('t3_') ? redditID.substring(3,redditID.length) : redditID;
 
 class RedditClient { 
     r:snoowrap;
@@ -75,7 +75,7 @@ class RedditClient {
                     
                 matchingThreads.forEach(async (thread:any) => {
                     await this.r.getSubmission(thread).reply(text).then((res) => {
-                        console.log(`created reddit comment (${res.id})`);
+                        console.log(`created reddit comment (${processRedditId(res.id)})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
                         resolve(run);
                     }).catch((err) => { 
