@@ -83,19 +83,21 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
         <div className="col-span-full py-5">In-Active:</div>
         <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
-        <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialPostRuns.length}):</button>
-        <div className="w-full h-2 bg-yellow-700"/>WOAH1 {socialRunResults.length}
-        {socialRunResults.length > 0 ? socialRunResults.map((res) => {
-            return (<div key={res.notionPageId}>
-                    <div>{res.result?.createdDate}</div>
-                    <div>{res.result?.error}</div>
-                    <div>{res.result?.isSuccess ? res.result.isSkipped ? 'Skipped success' : res.result.isUpdate ? 'Updated Success' : 'Created Success' : 'Failed' }</div>
-                    <div>{res.result?.postTitle}</div>
-                    <div>{res.result?.postText}</div>
-                    <div>{res.result?.postId}</div>
-                </div>)
-        }):<>[[socialRunResults:[{JSON.stringify(socialRunResults)}]]]</> }
-WOAH3
+        <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button>
+        <div className="w-full h-2 bg-yellow-700"/> 
+        <div className="grid grid-cols-3">
+            {socialRunResults.length > 0 ? socialRunResults.map((res) => {
+                return (<div key={res.notionPageId}>
+                        {res.result?.createdDate ? <div>{getMinutesAgo(res.result?.createdDate)}</div> :<div>None</div>}
+                        <div>{res.subreddit}({res.textUrlParams}) {res.result?.error}</div>
+                        <div>{res.result?.isSuccess ? 'Success' : 'Failed'} {res.result?.isSkipped ? 'Skipped' : res.result?.isUpdate ? 'Updated Success' : 'Created Success'}</div>
+                        
+                        <div>{res.result?.postTitle}</div>
+                        <div>{res.result?.postText}</div>
+                        <div>{res.result?.postId}</div>
+                    </div>)
+            }):<div className="col-span-full">No results</div> }
+        </div> 
         <div className="grid grid-cols-3 p-5">
             <div>SubReddit</div> 
             <div>primary</div> 
