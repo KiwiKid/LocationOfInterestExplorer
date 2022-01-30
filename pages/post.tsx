@@ -84,9 +84,18 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         <div className="col-span-full py-5">In-Active:</div>
         <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialPostRuns.length}):</button>
-        <div className="w-full h-2 bg-yellow-700"/>
-        <SocialRuns socialRuns={socialRunResults} />
-
+        <div className="w-full h-2 bg-yellow-700"/>WOAH1 {socialRunResults.length}
+        {socialRunResults.length > 0 ? socialRunResults.map((res) => {
+            return (<div key={res.notionPageId}>
+                    <div>{res.result?.createdDate}</div>
+                    <div>{res.result?.error}</div>
+                    <div>{res.result?.isSuccess ? res.result.isSkipped ? 'Skipped success' : res.result.isUpdate ? 'Updated Success' : 'Created Success' : 'Failed' }</div>
+                    <div>{res.result?.postTitle}</div>
+                    <div>{res.result?.postText}</div>
+                    <div>{res.result?.postId}</div>
+                </div>)
+        }):<>[[socialRunResults:[{JSON.stringify(socialRunResults)}]]]</> }
+WOAH3
         <div className="grid grid-cols-3 p-5">
             <div>SubReddit</div> 
             <div>primary</div> 

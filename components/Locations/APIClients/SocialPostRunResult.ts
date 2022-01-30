@@ -31,7 +31,11 @@ class SocialPostRunResult {
         if(postTitle){
             this.postTitle = postTitle;
         }
+        //https://www.reddit.com/dev/api/#GET_api_info
         if(postId){
+            if(postId.startsWith('t3_')){
+                this.postId = postId.substring(3,postId.length);
+            }
             this.postId = postId;
         }
 
