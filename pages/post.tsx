@@ -5,8 +5,9 @@ import { getMinutesAgo, NiceFullDate, subtractMinutes } from "../components/Loca
 import { getHardCodedUrl } from "../components/utils/utils";
 import axios from 'axios'
 import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
-import SocialRuns from "../components/Locations/SocialRuns";
 import dayjs from "dayjs";
+import { requestLocations } from "../components/Locations/MoHLocationClient/requestLocations";
+import SocialRuns from "../components/Locations/SocialRuns";
 
 
 const { Client } = require("@notionhq/client")
@@ -34,6 +35,7 @@ type SocialPostsProps = {
     socialPostRuns: SocialPostRun[];
     reddit:string;
     hardcodedURL:string
+    locations:LocationOfInterestRecord[]
 }
 
 const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, socialPostRuns, reddit, hardcodedURL}) => {
@@ -43,6 +45,8 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
     const [lastVisitTime, setLastVisitTime] = useState<Date|undefined>(undefined);
     
     const [socialRuns, setSocialRuns] = useState<SocialPostRun[]>(socialPostRuns);
+
+    const [socialRunResults, setSocialRunResults] = useState<SocialPostRun[]>([]);
 
     const [error, setError] = useState<any>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -54,7 +58,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         return axios.get(`/api/post/reddit?pass=${reddit}`)
             .then((res) => {
                 if(res.status == 200){
-                    setSocialRuns(res.data);
+                    setSocialRunResults(res.data);
                 }else{
                     setError(res.data);
                 }
@@ -73,17 +77,16 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
-        
-        <div className="grid grid-cols-3 p-5 text-left">
-            <th>subreddit</th>
-            <th>primary</th>
-            
-            <div className="col-span-full py-5">Active:</div>
-            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
-            <div className="col-span-full py-5">In-Active:</div>
-            <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
-        </div>
+        {error ? <div>{JSON.stringify(error)}</div> : null}
+           
+        <div className="col-span-full py-5">Active:</div>
+        <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
+        <div className="col-span-full py-5">In-Active:</div>
+        <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialPostRuns.length}):</button>
+        <div className="w-full h-2 bg-yellow-700"/>
+        <SocialRuns socialRuns={socialRunResults} />
+
         <div className="grid grid-cols-3 p-5">
             <div>SubReddit</div> 
             <div>primary</div> 
@@ -147,12 +150,15 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
 }
 
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
+    if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.log('No MoH API set'); throw 'Config error 08'; }
+
     const client = new NotionClient();
+    const locations = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL);
     const settings = client.getLocationSettings();
 
 
-    const beforeDateString = dayjs().tz('utc').subtract(10, 'minutes').toISOString()
-    const socialPostRuns = await client.getSocialPostRuns(beforeDateString);
+    const beforeDateString = dayjs().utc().subtract(10, 'minutes').toISOString()
+    const socialPostRuns = await client.getSocialPostRuns();
 
 
 
@@ -161,7 +167,8 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
         locationSettings: await settings,
         socialPostRuns: socialPostRuns,
         reddit: process.env.SOCIAL_POST_PASS,
-        hardcodedURL: getHardCodedUrl()
+        hardcodedURL: getHardCodedUrl(),
+        locations: locations,
     }));
 
     return {

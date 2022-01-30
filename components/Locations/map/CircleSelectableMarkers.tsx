@@ -48,7 +48,8 @@ const CircleSelectableMarkers = ({id, center, setRef, radius, selectingCircleRef
             center={center}
             ref={setRef}
             radius={radius}
-            weight={4}          
+            weight={4}      
+            fillOpacity={0.8}    
             eventHandlers={{
                 add: (e) => onCircleAdded(e)
             }}

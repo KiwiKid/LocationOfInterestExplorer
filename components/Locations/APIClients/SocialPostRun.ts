@@ -21,6 +21,7 @@ class SocialPostRun {
     errorMsg?:string
     lastAction?:string
     lastPostTime?:string
+    url:string
 
     constructor (
         notionPageId:string
@@ -66,9 +67,19 @@ class SocialPostRun {
         this.createdDate = new Date().toISOString();
         this.type = type
         this.lastCheckTime = lastCheckTime;
-        
-    }
 
+        switch(this.type){
+            case 'Reddit_Comment': 
+            // TODO: this wont work..we dont know the thread id...
+                this.url = `https://www.reddit.com/r/${this.subreddit}/comments/${this.existingPostId}/comment/${this.existingPostId}`;
+                break;
+            case 'Reddit_Post': 
+                this.url = `https://www.reddit.com/r/${this.subreddit}/comments/${this.existingPostId}`;
+                break;
+            default:
+                this.url = 'https://google.com'
+        }
+    }
 
     setError(errorMsg:string) {
         this.errorMsg = errorMsg;

@@ -445,10 +445,10 @@ function CovidMapSelector({
                                         // TODO: need to debounce this update
                                         let maxPossibleHours = 14*24;
                                         let hoursAgo = getHoursAgo(al.loi.start)
-                                        let circleOpacity = (1-(hoursAgo/maxPossibleHours));
-                                        e.target.setStyle({opacity: Math.max(circleOpacity, 0.6) });
+                                        let circleOpacity = (1-(hoursAgo/maxPossibleHours))+0.5;
+                                       // e.target.setStyle({opacity: Math.max(circleOpacity, 0.8) });
                                         if(al.loi.isOmicron){ 
-                                            e.target.setStyle({fillColor: 'black' });
+                                            e.target.setStyle({fillColor: 'gray' });
                                         }else if(hoursAgo < 48){
                                             e.target.setStyle({fillColor: tailwindClassToHex(getDaysAgoClassName(hoursAgo/24)) });
                                         }

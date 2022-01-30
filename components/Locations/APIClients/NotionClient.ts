@@ -77,7 +77,6 @@ const mapNotionItemToLocationPreset = (notionRow:any):LocationPreset => {
     }   
 }
 
-// TODO: add cache invalidation
 class NotionClient { 
     notionClient:Client;
     overrideDbId!:string;
@@ -185,7 +184,7 @@ class NotionClient {
     }
 
 
-    getSocialPostRuns = async (editedBeforeUTC:string = ''):Promise<SocialPostRun[]> => {
+    getSocialPostRuns = async (lastPostTimeBefore:string = ''):Promise<SocialPostRun[]> => {
         if(!this.redditDbId){ throw 'No reddit posts db set'}
         // This is mainly to keep the heat of the reddit API during local development.
         /*if(!this.cachedSocialPosts 
@@ -193,7 +192,7 @@ class NotionClient {
             || getSecondsAgo(this.cachedSocialPostsUpdateTime) > 20
         ){*/
             let params = null;
-           if(editedBeforeUTC.length > 0){
+           if(lastPostTimeBefore.length > 0){
                params = {
                 database_id: this.redditDbId,
                 filter: {
@@ -203,9 +202,9 @@ class NotionClient {
                                 equals: true,
                             },
                         },{
-                            property: 'lastCheckTime',
+                            property: 'lastPostTime',
                             date: {
-                                before: editedBeforeUTC
+                                before: lastPostTimeBefore
                             }
                         }
                     ]
@@ -237,41 +236,58 @@ class NotionClient {
         }*/
     
 
-    setSocialPostProcessed = async (notionPageId:string, checkTime:Date):Promise<void> => { 
-        console.log(`Setting check time for notionPageId: ${notionPageId}`)
-        let newProps:any = {};
+    setSocialPostProcessed = async (notionPageId:string, checkTime:Date, action:string):Promise<void> => { 
+        return new Promise<void>((resolve,reject) => {
+            if(!checkTime){ 
+                checkTime = new Date();
+            }
+        
+            console.log(`Setting check time for notionPageId: ${notionPageId}`)
+        //  let newProps:any = {};
+//
+           // newProps['lastCheckTime'] = getNotionDateObject(checkTime);
+           // newProps['lastAction'] = getNotionRichText(action)
 
-        newProps['lastCheckTime'] = getNotionDateObject(checkTime);
-        newProps['lastAction'] = getNotionRichText('Skipped')
-
-        return this.notionClient.pages.update({
-            page_id: notionPageId,
-            properties: newProps
-        }).then(() => { 
-            console.log(`updated check time for ${notionPageId}`)
-            return; 
+            return this.notionClient.pages.update({
+                page_id: notionPageId,
+                properties: {
+                    "lastCheckTime": getNotionDateObject(checkTime),
+                    "lastAction": getNotionRichTextObject(action)
+                }
+            }).then(() => { 
+                console.log(`updated check time for ${notionPageId}`)
+                resolve()
+            }).catch((err) => {
+                console.error('Failed to update notion after processing non-social post update')
+                console.error(err)
+                reject()
+            });
         });
     }
 
     setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
-        console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
-        return this.notionClient.pages.update({
-            page_id: notionPageId,
-            properties: {
-                "currentPostTitle": getNotionRichTextObject(postTitle),
-                "currentPostId": getNotionRichTextObject(postId),
-                "lastCheckTime": getNotionDateObject(checkTime),
-                "lastPostTime": getNotionDateObject(postTime),
-                "lastAction": getNotionRichTextObject(action)
-            }
-        }).then(() => { 
-            console.log(`updated notion db entry with post details ${notionPageId}`)
-            return;
-         });
+        return new Promise<void>(async (resolve,reject) => {
+                
+            console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
+            return this.notionClient.pages.update({
+                page_id: notionPageId,
+                properties: {
+                    "currentPostTitle": getNotionRichTextObject(postTitle),
+                    "currentPostId": getNotionRichTextObject(postId),
+                    "lastCheckTime": getNotionDateObject(checkTime),
+                    "lastPostTime": getNotionDateObject(postTime),
+                    "lastAction": getNotionRichTextObject(action)
+                }
+            }).then(() => { 
+                console.log(`updated notion db entry with post details ${notionPageId}`)
+                resolve();
+            }).catch((err) => {
+                console.error('Failed to update notion after processing update')
+                console.error(err);
+                reject();
+            });
+        });
     }
-
-
-
 }
 
 const getNotionRichTextObject = (value:string):any => {

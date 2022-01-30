@@ -4,6 +4,8 @@ import LocationExposureTypeDisplay from "../LocationExposureTypeDisplay";
 import AutoHidePopup from "./AutoHidePopup";
 import RegisterIncorrectLocation from '../RegisterIncorrectLocation';
 import RegisterVisit from "../RegisterVisit";
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
+import OmicronDisplay from "../OmicronDisplay";
 
 function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLocationCount}:any){
     return (
@@ -22,6 +24,7 @@ function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLo
                 <div className="grid grid-cols-1 min-w-300 text-base pt-2 space-y-2">
                     <RegisterVisit loi={l.loi}/>
                     <RegisterIncorrectLocation loi={l.loi} />
+                    {l.loi.isOmicron && l.loi.exposureType == 'casual' ? <OmicronDisplay/> : null}
                     {/*<div className="col-span-2 pt-1">
                         <a target="_blank" 
                             rel="noreferrer"

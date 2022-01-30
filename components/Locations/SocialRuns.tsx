@@ -1,4 +1,4 @@
-import { getHoursAgo} from "../utils/utils";
+import { getActionString, getHoursAgo} from "../utils/utils";
 import SocialPostRun from "./APIClients/SocialPostRun";
 import { getMinutesAgo, NiceFullAlwaysNZDate } from "./DateHandling";
 import { downTheCountry } from "./LocationObjectHandling";
@@ -13,37 +13,62 @@ type SocialRunsProps = {
 
 const SocialRuns = ({socialRuns}:SocialRunsProps) => {
     
-
     return ( 
-        <>{socialRuns
+        <div className="grid grid-cols-2 ">{socialRuns
             .sort((a,b) =>  !a.lastCheckTime ? -1 : !b.lastCheckTime ? 1 : a.lastCheckTime > b.lastCheckTime ? 1 : -1 )
-            .map((rpr) => {
-                return (<>
-                
-                        <div className={`bg-${getSocialsStatusColor(rpr)}`}>{rpr.type} ({rpr.subreddit}{`${rpr.subredditSubmissionTitleQuery ? `(${rpr.subredditSubmissionTitleQuery})`: ''}`})</div>
-                        {rpr.flairId ? <div><details><summary>{rpr.primaryUrlParam} ({rpr.textUrlParams})</summary><div>{rpr.flairId}</div></details></div> :
-                        <div>{rpr.primaryUrlParam} ({rpr.textUrlParams})</div>}
-                        <div >
-                        {rpr.existingPostId ? <details>
-                            <summary>{rpr.lastCheckTime ? `${getMinutesAgo(new Date(rpr.lastCheckTime))} mins ago - ` : 'None'} {rpr.existingPostId} {rpr.existingPostTitle ? `${rpr.existingPostTitle} ` : ''} {!rpr.result ? '' : 
-                                    !rpr.result.isSuccess ? '(Failed)' 
-                                    : rpr.result.isSkipped ? '(skipped)' 
-                                    : rpr.result.isUpdate ? 'Updated' : 'Created' }</summary>
-                                <div>{rpr.result?.postId}</div>
-                                <div>{rpr.result?.postTitle}</div>
-                                <div>{rpr.result?.positivity}</div>
-                                
-                                <div><NiceFullAlwaysNZDate date={new Date(rpr.createdDate)}/></div>
-                                {rpr.errorMsg && <div className="col-span-full">{rpr.errorMsg}</div>}
-                            </details>: ''}
-                        </div>
-                    </>
-                )
-            })
-        }</>
+            .map((rpr) => <SocialRun key={rpr.notionPageId} run={rpr}/>)
+        }</div>
     )
 
 
+}
+
+
+type SocialRunProps = {
+    run:SocialPostRun;
+}
+
+const SocialRun =  ({run}:SocialRunProps) => {
+    const updatedMinutesAgo = !!run.lastCheckTime ? getMinutesAgo(new Date(run.lastCheckTime)) :  'Never'
+
+    const mostRecentAction = !!run.result ? getActionString(run) : !!run.lastAction ? run.lastAction : 'None'
+
+
+    const title = `${run.primaryUrlParam} (${run.textUrlParams})  ${run.lastAction}`
+
+    return (
+        <>
+            <div className={`bg-${getSocialsStatusColor(run)} divide-blue-500`}>{run.type} ({run.subreddit}{`${run.subredditSubmissionTitleQuery ? `(${run.subredditSubmissionTitleQuery})`: ''}`})</div>
+            {run.flairId ? 
+                <div><details><summary>{title}</summary><div>{run.flairId}</div></details></div> :
+                <div>{title}</div>
+            }
+            {run.lastAction ? <div><a target="_blank" rel="noreferrer" href={run.url}> {run.lastAction} {run.lastCheckTime ? ` ${getMinutesAgo(new Date(run.lastCheckTime))} mins ago - `:null } </a></div>:<div> </div> }
+            
+            {/*run.existingPostId ? <details>
+                <summary>
+                   
+                     - 
+                    {run.existingPostId} - 
+                    {run.existingPostTitle ? ` ${run.existingPostTitle} ` : ' '} 
+                    {!run.result ? '' : 
+                        !run.result.isSuccess ? '(Failed)' 
+                        : run.result.isSkipped ? '(skipped)' 
+                        : run.result.isUpdate ? 'Updated' : 'Created' }</summary>
+                    <div>{run.result?.postId}</div>
+                    <div>{run.result?.postTitle}</div>
+                    <div>{run.result?.positivity}</div>
+                    
+                    <div><NiceFullAlwaysNZDate date={new Date(run.createdDate)}/></div>
+                    
+            </details>: ''*/}
+           
+            {run.result?.error && <div className="col-span-full bg-red-500">{run.result?.error}</div>}
+            {run.errorMsg && <div className="col-span-full bg-red-500">{run.errorMsg}</div>}
+            <div className="col-span-full bg-yellow-700 h-4"></div>
+        </>
+    )
+        
 }
 
 export default SocialRuns;
