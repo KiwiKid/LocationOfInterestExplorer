@@ -67,8 +67,16 @@ const SOCIAL_POST_RUNS:RedditPostRun[] = [
         return msg;
     }
 
-    const resolveNotionUpdate = (run:SocialPostRun,nUpdate:any) => {
-        getLogMsg(run, 'Updated notion success');
+    const createSocialPostRunResults = (run:SocialPostRun, nUpdate:any, isSuccess:boolean, isUpdate:boolean,isSkipped:boolean):SocialPostRun => {
+        getLogMsg(run, 'createSocialPostRunResults()');
+        let res = new SocialPostRunResult(isSuccess, isUpdate, isSkipped, '','','');
+        if(isSuccess){
+            run.setResults(res);
+        }else{
+            run.setError(nUpdate)
+        }
+        
+        return run;
     }
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
@@ -109,12 +117,21 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const processFacebookPostRun = (run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> => {
         return new Promise<SocialPostRun>((resolve, reject) => {
             facebookClient.updateFacebook(run, title, text)
-                .then((res) => {
-                    resolve(res)
-                }).catch((err) => {
+                .then(async (res:any) => {
+                    
+                    await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(res.createdDate), new Date(res.createdDate), '', res.id ? res.id : 'No post id?', getActionString(res))
+                        //.then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
+                        //.catch((err) => createSocialPostRunResults(run, err, false, true, false))
+
+                    resolve(run)
+                }).catch(async (err) => {
                     const errorMsg = getLogMsg(run, 'failed to update facebook post', true, err);
-                    run.setError(errorMsg);
-                    reject(run);
+                    //run.setError(errorMsg);
+                    await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), `${errorMsg}`)
+                           // .then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
+                          //  .catch((err) => createSocialPostRunResults(run, err, false, true, false))
+
+                    resolve(run);
                 })
 
         })
@@ -134,12 +151,19 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 console.error(rr);
                                 throw `Failed to create update/create post `
                             }
+                            
                             await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
+                                        //.then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
+                                        //.catch((err) => createSocialPostRunResults(run, err, false, true, false))
+
                            // resolve(rr);
                             //return run
                         }).catch(async (err) => {
                             console.error(err);
-                            await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), getActionString(run));
+                            await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), 'Failed')
+                                   // .then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
+                                   // .catch((err) => createSocialPostRunResults(run, err, false, true, false))
+
                             run.setError(err.message);
                             //resolve(run);
                             //return run;
@@ -183,8 +207,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         }
                         
                         await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate), new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
-                            .then((nUpdate) => resolveNotionUpdate(run, nUpdate));
-                        
+                                .then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
+                                .catch((err) => createSocialPostRunResults(run, err, true, true, false))
+
                     }).catch(async (err) => {
                         console.error('This one?')
                         console.error(err)
@@ -193,7 +218,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         run.setError('Failed to update reddit comment');
 
                         await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), getActionString(run))
-                                .then((nUpdate) => resolveNotionUpdate(run, nUpdate));
+                                .then((nUpdate) => createSocialPostRunResults(run, nUpdate, false, false, false))
+                                .catch((err) => createSocialPostRunResults(run, err, false, false, false))
+
                         
                         //resolve(rrr);
                         //return run;

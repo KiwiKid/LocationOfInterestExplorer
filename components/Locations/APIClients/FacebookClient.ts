@@ -76,9 +76,9 @@ class FacebookClient {
                     run.setResults(await processFacebookSubmission(true, false, false, res.id, title, text));
                     resolve(run)
                 }
-            }catch(err){
+            }catch(err:any){
                 console.error(err);
-                run.setError('Failed to update facebook');
+                run.setError(`Failed to update facebook ${err ? err.message : ''}`);
                 reject(run);
             }
         })

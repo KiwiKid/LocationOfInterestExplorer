@@ -76,6 +76,12 @@ VERCEL_URL=localhost
 // Google forms feedback link
 NEXT_PUBLIC_FEEDBACK_URL=http://google.com
 NOTION_TOKEN=//secret notion token to get the LocationPreset & LocationOverrides from notion.io
+
+
+https://developers.facebook.com/docs/pages/access-tokens/
+TODO: document facebook access token stuff
+
+(https://www.adamboother.com/blog/automatically-posting-to-a-facebook-page-using-the-facebook-sdk-v5-for-php-facebook-api/)
 ```
 <details>
 <summary>"VERCEL_" environment variables</summary>
