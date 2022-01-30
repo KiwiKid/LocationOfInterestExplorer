@@ -25,7 +25,8 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
 
     return ( <div key={`${loi.id}_L`} id={loi.id}>
                 <div>
-                    <div className={`bg-gray-100 grid grid-cols-6 content-center align-middle `} onClick={(evt) => toggleOpenLocation(loi.id)}>
+                    <div className={`bg-gray-100 grid grid-cols-7 content-center align-middle `} onClick={(evt) => toggleOpenLocation(loi.id)}>
+                        <LocationExposureTypeDisplay detailed={isOpen} loi={loi}/>
                         <div className="text-center">{loi.city}</div>
                         <div className="">{loi.event}</div>       
                         <div className="col-span-2">
@@ -35,14 +36,14 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         {isOpen !== undefined ? 
                         isOpen == true ?  <div className="text-center text-3xl">▲</div> 
                             : <div className="text-center text-3xl ">▼</div>: null }
-                        <div className="text-center col-span-full"><LocationExposureTypeDisplay detailed={isOpen} loi={loi}/></div>
+                        <div className="text-center col-span-full"></div>
                     </div>
                 {isOpen && <>
                     <div className={`grid grid-cols-4`}>
-                        <div className="text-center">{loi.location}</div>
-                        <div className="col-span-3 text-center">{loi.advice}</div>
+                        <div className="text-center p-2">{loi.location}</div>
+                        <div className="col-span-3 text-center p-2">{loi.advice}</div>
                     </div>
-                    <div className={`grid grid-cols-${loi.visibleInWebform ? '2' : '1'} py-4 px-40 space-x-10`}>
+                    <div className={`grid grid-cols-2 ${loi.visibleInWebform ? '2' : '1'} py-4 px-40 space-x-10 `}>
                         <RegisterVisit loi={loi}/>
                         <RegisterIncorrectLocation loi={loi}/>
                         
@@ -55,7 +56,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                                 </div>
                             </a>
                         </div>}
-                        {showId && <div className="col-span-full text-xs"> id: {loi.id}</div>}
+                        {showId && <div className="col-span-full text-xs p-1"> id: {loi.id}</div>}
                     </div>
                     </>}
                 </div>
