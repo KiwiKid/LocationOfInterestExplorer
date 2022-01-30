@@ -26,20 +26,23 @@ import RegisterVisit from "./RegisterVisit"
 
         return (
             <div key={`${loi.id}_S`} id={loi.id} className="p-1" >
-                <div className={`rounded-lg grid grid-cols-2`} 
+                <div className={`rounded-lg grid grid-cols-3 space-y-2`} 
                         onClick={(evt) => toggleOpenLocation(loi.id)}>
-                    {addedDateIsRecent && <div className="col-span-full"><LocationMetaDataSummary loi={loi} showUpdated={isOpen}/></div>}
-                    <div className="text-left">{loi.city} - {loi.event}</div>
+                    <div className="col-span-full text-center">{loi.city} - {loi.event}</div>
+                    <LocationExposureTypeDisplay detailed={isOpen} loi={loi}/>
+                    
+                    
                     <LocationSummaryDateDisplay loi={loi} includeDate={isOpen}/>
-                    <div className="md:text-lg col-span-full text-gray-600 text-center">{isOpen ? "close ▲" : "open ▼"}</div>
-                    <div className="text-left col-span-full"><LocationExposureTypeDisplay detailed={isOpen} loi={loi}/></div>
-
+                    <div className="md:text-lg text-gray-600 text-center">{isOpen ? "CLOSE ▲" : "OPEN ▼"}</div>
+                    {addedDateIsRecent && <div className="col-span-full"><LocationMetaDataSummary loi={loi} showUpdated={isOpen}/></div>}
+                    
+                    
                 </div>
                 {isOpen ? 
                 <div className="grid grid-cols-1 text-center">
-                    <div className="">{loi.location}</div>
+                    <div className="p-2">{loi.location}</div>
                     {/*{showDistance ? <><div>Distance to map center:</div><div>{metersToKmsString(l.distanceToCenter || 0, 1)}</div></> : null}*/}
-                    <div className="col-span-2 pt-4">{loi.advice}</div>
+                    <div className="col-span-2 p-4">{loi.advice}</div>
                     <div className="col-span-2 w-4/5 m-auto py-2 space-y-2">
                             <RegisterVisit loi={loi}/>
                             <RegisterIncorrectLocation loi={loi}/>
