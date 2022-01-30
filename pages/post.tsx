@@ -87,15 +87,16 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         <div className="w-full h-2 bg-yellow-700"/> 
         <div className="grid grid-cols-3">
             {socialRunResults.length > 0 ? socialRunResults.map((res) => {
-                return (<div key={res.notionPageId}>
-                        {res.result?.createdDate ? <div>{getMinutesAgo(res.result?.createdDate)}</div> :<div>None</div>}
-                        <div>{res.subreddit}({res.textUrlParams}) {res.result?.error}</div>
+                return (<>
                         <div>{res.result?.isSuccess ? 'Success' : 'Failed'} {res.result?.isSkipped ? 'Skipped' : res.result?.isUpdate ? 'Updated Success' : 'Created Success'}</div>
+                        {res.result?.createdDate ? <div>{getMinutesAgo(res.result?.createdDate)} mins ago</div> :<div>None</div>}
+                        <div>{res.subreddit}({res.textUrlParams}) {res.result?.error}</div>
+                        
                         
                         <div>{res.result?.postTitle}</div>
                         <div>{res.result?.postText}</div>
                         <div>{res.result?.postId}</div>
-                    </div>)
+                    </>)
             }):<div className="col-span-full">No results</div> }
         </div> 
         <div className="grid grid-cols-3 p-5">

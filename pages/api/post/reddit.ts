@@ -265,6 +265,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     
                 const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
                 if(matchingLocationGroups.length === 0){
+                    await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), 'Success Skipped (no locations)')
                     run.setResults(new SocialPostRunResult(true, false, true));
                     resolve(run)
                     return;
