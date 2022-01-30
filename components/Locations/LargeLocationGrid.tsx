@@ -35,7 +35,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         </div>
                         <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>
                         {isOpen !== undefined ? 
-                        isOpen == true ?  <div className="text-right pr-2 text-3xl">▲</div> 
+                        isOpen == true ?  <div className="text-right lg:text-center pr-2 text-3xl">▲</div> 
                             : <div className="text-right lg:text-center pr-2 text-3xl ">▼</div>: null }
                     </div>
                 {isOpen && <>

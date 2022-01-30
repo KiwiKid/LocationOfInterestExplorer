@@ -94,13 +94,12 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
     }
 
     function goToLocation(lat:number,lng:number, zoom:number){
-      closeDrawer()
-      resetScroll(drawerRef);
-
       if(map){
         //
         map.flyTo([lat,lng], zoom);
       }
+      closeDrawer()
+      resetScroll(drawerRef);
     }
 
     let activeLocationPresets = locationSettings.locationPresets.filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
