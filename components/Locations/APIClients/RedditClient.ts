@@ -10,7 +10,6 @@ import SocialPostRun from './SocialPostRun';
 
 
 
-const cleanRedditT3String = (redditPostString:string) => redditPostString.substring(3,redditPostString.length)
 class RedditClient { 
     r:snoowrap;
 
@@ -76,7 +75,7 @@ class RedditClient {
                     
                 matchingThreads.forEach(async (thread:any) => {
                     await this.r.getSubmission(thread).reply(text).then((res) => {
-                        console.log(`created reddit comment (${cleanRedditT3String(res.id)})`);
+                        console.log(`created reddit comment (${res.id})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
                         resolve(run);
                     }).catch((err) => { 
