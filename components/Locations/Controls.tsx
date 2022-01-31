@@ -21,10 +21,10 @@ export default function Controls({
    // const shortLocations = `${locationCount} locations in the Circle (showing since ${shortDayLongMonth.format(dateAfter)})`
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-1 pb-3 space-y-3" >
+        <div className="grid grid-cols-1 sm:grid-cols-1 space-y-3" >
             <div className="grid grid-cols-1 sm:grid-cols-2">
                 <div className="">
-                    <ul className="list-disc pl-8 p-4">
+                    <ul className="list-disc pl-8">
                         <li>Click/Tap on any Locations of Interest on the map to view a summary</li>
                         <li>Click/Tap/Drag on the gray bar to show and hide this drawer</li>
                         <li>Click/Tap anything with ▼ or ▲ symbol to open or close</li>
@@ -32,8 +32,8 @@ export default function Controls({
                         <li>All locations in the large blue circle will be listed in the drawer</li>
                     </ul>
                 </div>
-                <div className="">
-                    <div className="pl-4 sm:p-8">
+                <div className="p-2">
+                    <div className="">
                         <div className="text-lg">Using the map</div>
                         <div className="pl-3">
                             <div>Mobile:</div>
