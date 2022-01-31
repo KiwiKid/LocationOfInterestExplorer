@@ -24,6 +24,11 @@ module.exports = {
         '12': '12px',
         '14': '14px'
       }
+      ,
+      width: {
+        '74': '19rem'
+      }
+      
     },
     // React Leaflet uses some really high z-indexes
     zIndex:{

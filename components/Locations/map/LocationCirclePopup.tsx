@@ -30,8 +30,8 @@ function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLo
                     </div>
                 </div>
                 <div className="grid grid-cols-1 min-w-300 w-3 text-base pt-2 space-y-2">
-                    <RegisterVisit loi={l.loi} widthClass="w-72"/>
-                    <RegisterIncorrectLocation loi={l.loi} widthClass="w-72" />
+                    <RegisterVisit loi={l.loi} widthClass="w-74"/>
+                    <RegisterIncorrectLocation loi={l.loi} widthClass="w-74" />
                     {false && goToDrawerItem ? <InternalLink
                             id={`GoTo_${l.id}`}
                             onClick={(evt:any) => goToDrawerItem(l.loi)}
