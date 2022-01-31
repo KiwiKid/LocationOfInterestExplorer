@@ -44,13 +44,14 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         <div className="text-center p-2">{loi.location}</div>
                         <div className="col-span-3 text-center p-2">{loi.advice}</div>
                     </div>
-                    <div className={`grid grid-cols-${loi.visibleInWebform ? '3' :'2'} py-4 px-40 space-x-10 `}>
+                    <div className={`grid grid-cols-${loi.visibleInWebform && goToLocation ? '3' :'2'} align-middle  lg:m-auto space-x-20`}>
                         <RegisterVisit loi={loi}/>
-                        <RegisterIncorrectLocation loi={loi}/>
                         {goToLocation ? <InternalLink
                             id={`GoTo_${loi.id}`}
                             onClick={(evt:any) => goToLocation(loi.lat, loi.lng, 13)}
+                            
                         >View on map</InternalLink>: null}
+                        <RegisterIncorrectLocation loi={loi}/>
                         {false && <div className="m-auto">
                             <a target="_blank"
                                 rel="noreferrer"
