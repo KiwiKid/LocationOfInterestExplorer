@@ -11,7 +11,7 @@ function ExternalLink({
     , href
     , iconOverride
     , colorClassnameOverride
-    , widthClass = 'w-full lg:w-64 xl:w-96'
+    , widthClass = 'md:w-64 lg:w-64 xl:w-96'
 }:ExternalLinkProps){
 
     return (

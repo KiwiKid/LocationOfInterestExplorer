@@ -18,7 +18,7 @@ const InternalLink = ({
     , onClick
     , linkClassName = 'text-green-100 border-green-800 bg-green-500 hover:bg-green-700'
     , linkDisabled = false
-    , widthClass = 'w-full lg:w-64 xl:w-96'
+    , widthClass = 'md:w-64 lg:w-64 xl:w-96'
 }:InternalLinkProps) =>{
     const linkStyle = `${widthClass} text-black pt-2 h-10 text-center align-middle border-b-1  border-b-4 min-h-12 transition-colors duration-150 rounded-lg focus:shadow-outline ${linkClassName}`
 
