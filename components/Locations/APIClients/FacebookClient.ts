@@ -5,6 +5,7 @@ import { FacebookApp } from 'fbsdk-ts';
 import { startOfDayNZ, todayNZ } from '../DateHandling';
 import { Touchscreen } from 'puppeteer-core';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 
 
@@ -54,7 +55,7 @@ class FacebookClient {
     updateFacebook(run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> {
         return new Promise(async (resolve, reject) => {
             try{                
-                const isUpdate = run.lastCheckTime && startOfDayNZ(new Date(run.lastCheckTime)) === startOfDayNZ(todayNZ())
+                const isUpdate = run.lastPostTime && startOfDayNZ(dayjs(run.lastPostTime)) === startOfDayNZ(todayNZ())
                 if(isUpdate && run.existingPostId) {
 
 
