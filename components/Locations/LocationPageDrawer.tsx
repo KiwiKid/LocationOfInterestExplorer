@@ -332,7 +332,7 @@ const LocationPageDrawer = ({
                     <p className=""> I&apos;ll do my best, but i&apos;m just a guy with a keyboard in a relatively dark room.</p>
                     <div className="w-3/5 m-auto">
                       <p className="text-center"> Any technical issues, questions, or suggestions/feedback, please:</p>
-                      <div className="w-3/5 m-auto">
+                      <div className="pt-2">
                         <SendFeedback />
                       </div>
                   </div>
@@ -341,7 +341,7 @@ const LocationPageDrawer = ({
             <Toggle id="fastTravel" title="Quickview" extendClassName="border-gray-800 border-b-4">
               <>
               {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') 
-              ? <Summary>Click to re-position the map at a specific location<br/>(Wait about 10 seconds for preview images to show)</Summary>
+              ? <Summary>Click any location below to re-position the map at a specific location<br/>(wait about 10 seconds for preview images to show)</Summary>
               : <Summary>Use these buttons to re-position the map at a specific location</Summary>}
                   {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') ? 
                     <div className="grid sm:grid-cols-2">
