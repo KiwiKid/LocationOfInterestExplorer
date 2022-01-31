@@ -177,7 +177,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     run.setError(errorMsg);
                     reject(run);
                 } finally {
-                    getLogMsg(run, 'updating reddit post end');
+                    getLogMsg(run, 'update/create reddit post end');
                 }
                 
                 
