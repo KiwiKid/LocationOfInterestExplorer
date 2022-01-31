@@ -1,5 +1,5 @@
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
-import { getDateInPastByXDays, getHoursAgo, shortDayLongMonthToNZ, shortTimeWithHourMin24ToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
+import { getDateInPastByXDays, getHardCodedUrl, getHoursAgo, shortDayLongMonthToNZ, shortTimeWithHourMin24ToNZ, shortTimeWithHourMinToNZ } from "../utils/utils";
 import LocationGridContainer from "./LocationGridContainer";
 import Question from "./Questions";
 // @ts-ignore
@@ -27,6 +27,8 @@ import Image from 'next/image';
 import { resetScroll } from "../utils/resetScroll";
 import LocationGrid from "./LocationGrid";
 import LocationGridRaw from "./LocationGridRaw";
+import { FacebookIcon, FacebookShareButton } from "react-share";
+import LocationPreset from "./LocationPreset";
 
 // TODO: consoidate most of this into "PageState"
 type LocationPageDrawerProps = { 
@@ -305,7 +307,7 @@ const LocationPageDrawer = ({
                   openLocations={openLocations}
                   setOpenLocations={setOpenLocations}
                   sortField={sortField}
-                  activeLocationPresets={activeLocationPresets}
+                  locationPresets={activeLocationPresets}
                 />
             </>
           </Toggle>}
@@ -346,15 +348,7 @@ const LocationPageDrawer = ({
               : <Summary>Use these buttons to re-position the map at a specific location</Summary>}
                   {pageState.featureFlags.some((ff) => 'fancyPreviewLinks') ? 
                     <div className="grid sm:grid-cols-2">
-                    {activeLocationPresets.sort((a,b) => a.lat > b.lat ? -1 : 0).filter((pl) => pl.showInDrawer).map((pl) => <div key={`${pl.urlParam}_preview`}>
-                      <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl.lat, pl.lng, pl.zoom)}}>
-                          <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
-                          <div className="flex justify-center align-middle overflow-hidden p-6">
-                            {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
-                              <img className="flex-shrink-0 min-w-full min-h-full" src={metaImageURLDirect(publishState.hardcodedURL, pl.urlParam)}/>{/*<img  src="/img/preview.png"/>*/}
-                          </div>
-                      </div>
-                    </div> )}
+                    {activeLocationPresets.sort((a,b) => a.lat > b.lat ? -1 : 0).filter((pl) => pl.showInDrawer).map((pl) => <LocationPreset key={pl.urlParam} pl={pl} hardcodedURL={publishState.hardcodedURL} goToLocation={goToLocation}/> )}
                   </div>
                   : <div className="grid grid-cols-2">
                   {activeLocationPresets.filter((p) => !!p.zoom).sort(downTheCountryPreset).map((pl) => 
