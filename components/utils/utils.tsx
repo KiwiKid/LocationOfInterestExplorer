@@ -1,5 +1,6 @@
 import dayjs from "dayjs"
 import SocialPostRun from "../Locations/APIClients/SocialPostRun"
+import SocialPostRunResult from "../Locations/APIClients/SocialPostRunResult"
 
 export const dateFormatX = {
     weekday:"short"
@@ -149,6 +150,21 @@ export const getActionString = (rr:SocialPostRun) => {
         return 'Failed'
     }
     if(rr.result.isUpdate){
+        return "Updated"
+    }else{
+        return 'Created'
+    }
+}
+
+
+export const getResultActionString = (res:SocialPostRunResult) => {
+    if(!res){
+        return 'No Result'
+    }
+    if(!res.isSuccess){
+        return 'Failed'
+    }
+    if(res.isUpdate){
         return "Updated"
     }else{
         return 'Created'

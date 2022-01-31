@@ -17,7 +17,7 @@ import { resolve } from 'path/posix';
 import SocialPostRunResult from '../../../components/Locations/APIClients/SocialPostRunResult';
 import SocialPostRun from '../../../components/Locations/APIClients/SocialPostRun';
 import FacebookClient from '../../../components/Locations/APIClients/FacebookClient';
-import { getActionString } from '../../../components/utils/utils';
+import { getActionString, getResultActionString } from '../../../components/utils/utils';
 /*
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
    /* {
@@ -152,7 +152,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 throw `Failed to create update/create post `
                             }
                             
-                            await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getActionString(rr))
+                            await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getResultActionString(rr.result))
                                         //.then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
                                         //.catch((err) => createSocialPostRunResults(run, err, false, true, false))
 
