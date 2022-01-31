@@ -15,8 +15,8 @@ function ExternalLink({
 }:ExternalLinkProps){
 
     return (
-        <div className="m-auto">
-            <div className={`${widthClass}`}><a target="_blank" 
+        <div className="">
+            <div className={`m-auto ${widthClass}`}><a target="_blank" 
             rel="noreferrer"
             href={href}>
                 <div className={`whitespace-nowrap pt-2 text-center ${colorClassnameOverride ? colorClassnameOverride : 'text-blue-100 border-blue-800 bg-blue-600 hover:bg-blue-800'}  align-middle border-b-1  border-b-4  h-10 transition-colors duration-150 rounded-lg focus:shadow-outline`}>

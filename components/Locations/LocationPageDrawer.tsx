@@ -333,12 +333,11 @@ const LocationPageDrawer = ({
                       This service is not affiliated with the New Zealand Government or the Ministry of Health. It provides no guarantees of correctness or timeliness.
                     </p>
                     <p className=""> I&apos;ll do my best, but i&apos;m just a guy with a keyboard in a relatively dark room.</p>
-                    <div className="w-3/5 m-auto">
-                      <p className="text-center"> Any technical issues, questions, or suggestions/feedback, please:</p>
-                      <div className="pt-2">
-                        <SendFeedback />
-                      </div>
+                    <div className="w-3/5 m-auto items-center">
+                      <p className="text-center pb-2"> Any technical issues, questions, or suggestions/feedback, please:</p>
+                      <SendFeedback />
                   </div>
+                  
                 </div>
             </Toggle>
             <Toggle id="fastTravel" title="Quickview" extendClassName="border-gray-800 border-b-4">

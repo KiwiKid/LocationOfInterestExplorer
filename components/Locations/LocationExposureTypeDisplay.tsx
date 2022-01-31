@@ -9,7 +9,7 @@ type LocationExposureTypeDisplay ={
 
 function LocationExposureTypeDisplay({loi,hideIfCasual = false}:LocationExposureTypeDisplay){
     switch(loi.exposureType.toLowerCase()){
-        case 'close': return <div className="bg-red-300 text-red-800 p-1 text-center rounded-xl">Close Contact{loi.isOmicron && <OmicronDisplay/>}</div>
+        case 'close': return <div className=""><span className="bg-red-300 text-red-800 text-center rounded-xl px-2">Close Contact{loi.isOmicron && <OmicronDisplay/>}</span></div>
         case 'casual plus': return <div className="bg-red-100 text-red-600 p-1 text-center rounded-xl ">Casual+ Contact{loi.isOmicron && <OmicronDisplay/>}</div>
         default:
         case 'casual': return !hideIfCasual ? <div className="bg-gray-200 text-gray-600 text-center rounded-xl">Casual Contact{loi.isOmicron && <OmicronDisplay/>}</div>: <div></div>

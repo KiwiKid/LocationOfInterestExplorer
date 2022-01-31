@@ -15,10 +15,10 @@ const LocationPreset = ({pl,hardcodedURL,goToLocation}:LocationPrestProps) => {
 
 return (
     <div key={`${pl.urlParam}_preview`}>
-        <div className="border-2 border-black p-2 w-full" onClick={(evt) => { evt.preventDefault(); goToLocation(pl.lat, pl.lng, pl.zoom)}}>
-            <div className="w-4/5 m-auto text-center align-middle">{pl.title}</div>
+        <div className="border-2 border-black p-2 w-full" >
+            <div className="w-4/5 m-auto text-center align-middle" onClick={(evt) => { evt.preventDefault(); goToLocation(pl.lat, pl.lng, pl.zoom)}}>{pl.title}</div>
             
-            <div className="flex justify-center align-middle overflow-hidden p-6">
+            <div className="flex justify-center align-middle overflow-hidden p-6" onClick={(evt) => { evt.preventDefault(); goToLocation(pl.lat, pl.lng, pl.zoom)}}>
             {/* Dynamic images are only available when built by vercel (not in local development) - these images are served via an API and rely on the site being live*/}
                 <img className="flex-shrink-0 min-w-full min-h-full" src={metaImageURLDirect(hardcodedURL, pl.urlParam)}/>{/*<img  src="/img/preview.png"/>*/}
             </div>
@@ -31,7 +31,7 @@ return (
                         <FacebookIcon size={60} />
                 </FacebookShareButton></div>
                 <div>
-                    <CopyBox promptText={`Copy ${pl.title} URL`} copyText={url}  id={pl.urlParam}/>
+                    <CopyBox promptText={`Copy ${pl.title} Link`} copyText={url}  id={pl.urlParam}/>
                 </div>
             </div>
         </div>
