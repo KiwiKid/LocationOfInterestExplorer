@@ -337,13 +337,15 @@ function CovidMapSelector({
                 <InternalLink
                     id="ViewAllButton"
                      onClick={() => triggerViewAll()}  
-                     linkClassName="w-full border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
+                     linkClassName="border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
+                     widthClass="w-full"
                      >View All</InternalLink>
                 <label className="h-4 hidden" htmlFor="NearMeButton">Request GPS location:</label>
                 <InternalLink
                     id="NearMeButton"
                     onClick={() => setLocationPromptVisible(true)}  
                     linkClassName="w-full border-b-4 border-green-800 bg-green-500 w-3/4 h-12 px-6 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800"
+                    widthClass="w-full"
                 >Near Me</InternalLink>
                 
                 {/*<InternalLink

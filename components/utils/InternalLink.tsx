@@ -8,6 +8,7 @@ type  InternalLinkProps = {
     onClick?: any | null
     linkClassName?: string
     linkDisabled?: boolean
+    widthClass?: string
 }
 
 const InternalLink = ({
@@ -17,9 +18,9 @@ const InternalLink = ({
     , onClick
     , linkClassName = 'text-green-100 border-green-800 bg-green-500 hover:bg-green-700'
     , linkDisabled = false
+    , widthClass = 'w-full xl:w-96'
 }:InternalLinkProps) =>{
-
-    const linkStyle = `w-96 text-black pt-2 h-10 text-center align-middle border-b-1  border-b-4 min-h-12 transition-colors duration-150 rounded-lg focus:shadow-outline ${linkClassName}`
+    const linkStyle = `${widthClass} text-black pt-2 h-10 text-center align-middle border-b-1  border-b-4 min-h-12 transition-colors duration-150 rounded-lg focus:shadow-outline ${linkClassName}`
 
     const disabledCheckOnClick = (evt:any) => { 
         evt.preventDefault();

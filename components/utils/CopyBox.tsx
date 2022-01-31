@@ -46,6 +46,7 @@ export default function CopyBox({id, copyText, successText = "Copied", promptTex
           <InternalLink
             id={id}
             onClick={handleCopyClick}
+            widthClass={"w-full"}
             >{isCopied ? successText : promptText}
             </InternalLink>
             {children}
