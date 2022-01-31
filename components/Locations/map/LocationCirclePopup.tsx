@@ -35,7 +35,7 @@ function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLo
                     {false && goToDrawerItem ? <InternalLink
                             id={`GoTo_${l.id}`}
                             onClick={(evt:any) => goToDrawerItem(l.loi)}
-                            widthClass="w-72"
+                            widthClass="w-64"
                         >View in Drawer</InternalLink>: null}
                     {l.loi.isOmicron && l.loi.exposureType == 'casual' ? <OmicronDisplay/> : null}
                     {/*<div className="col-span-2 pt-1">
