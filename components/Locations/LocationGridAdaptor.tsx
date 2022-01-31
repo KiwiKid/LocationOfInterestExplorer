@@ -11,10 +11,11 @@ type LocationGridAdaptorItemProps = {
     toggleOpenLocation:any
     goToLocation?:any
     showIds:boolean
+    ref?:any
 }
-const LocationGridAdaptorItem = ({isOpen, loi, toggleOpenLocation, goToLocation = null, showIds = false}:LocationGridAdaptorItemProps) => {
+const LocationGridAdaptorItem = ({isOpen, loi, toggleOpenLocation, goToLocation = null, showIds = false, ref = null}:LocationGridAdaptorItemProps) => {
     return (
-        <div key={`${loi.id}_C`} className="border-b border-black">
+        <div key={`${loi.id}_C`} className="border-b border-black" ref={ref}>
             <div key={`${loi.id}_SS`} className="sm:hidden">
                 <Location loi={loi} isOpen={isOpen} toggleOpenLocation={() => toggleOpenLocation(loi.id)} showId={showIds} goToLocation={goToLocation} />
             </div>

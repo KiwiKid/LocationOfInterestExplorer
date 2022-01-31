@@ -20,7 +20,6 @@ import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalc
 import _ from "lodash";
 import InternalLink from "../../utils/InternalLink";
 import { Pane } from "react-leaflet";
-import AutoHidePopup from "./AutoHidePopup";
 import LocationCirclePopup from "./LocationCirclePopup";
 import { CircleSelectableMarkers, updateAndReturnCircleSelectedStatus } from './CircleSelectableMarkers'
 import { getHoursAgo } from "../../utils/utils";
@@ -66,6 +65,7 @@ type CovidMapSelectorProps = {
     resetDrawerScroll: any
     pageState: PageState
     setPageState: any
+    goToDrawerItem: any
 }
 
 function CovidMapSelector({
@@ -80,6 +80,7 @@ function CovidMapSelector({
     , resetDrawerScroll
     , pageState
     , setPageState
+    , goToDrawerItem
 }:CovidMapSelectorProps) {
 
     const [activeLocation, setActiveLocation] = useState(new LatLng(pageState.lat, pageState.lng));
@@ -456,7 +457,7 @@ function CovidMapSelector({
                                     }}
                                 >
                                         <Pane name={`click_${al.loi.id}`} style={{zIndex: 499, border: '' }}>
-                                            <LocationCirclePopup l={al} showDistance={false}  />
+                                            <LocationCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} />
                                         </Pane>
                                 </CircleSelectableMarkers>
                             ))}

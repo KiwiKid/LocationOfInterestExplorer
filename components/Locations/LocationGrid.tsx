@@ -17,6 +17,7 @@ type LocationGridProps = {
     setOpenLocations: any
     goToLocation:any
     sortField: Sort
+    drawerItemRefs:any
 }
 
 export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
@@ -42,7 +43,7 @@ export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
     }
 }
 
-export default function LocationGrid({locations, showGrid, openLocations, setOpenLocations, sortField, goToLocation}:LocationGridProps) {
+export default function LocationGrid({locations, showGrid, openLocations, setOpenLocations, sortField, goToLocation,drawerItemRefs}:LocationGridProps) {
 
     var groupedLocations = _.chain(locations)
             .groupBy((lc) => startOfDayNZ(lc.loi.start))
@@ -79,7 +80,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
 
     return (
         <div className="mt-3 text-center pb-3">
-            {Object.keys(groupedLocations).sort().reverse().map((d) => {
+            {Object.keys(groupedLocations).sort().reverse().map((d, i) => {
                     return ( 
                         <div key={`${d}_LG`}>
                             <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].loi.start} locationCount={groupedLocations[d].length}/>
@@ -92,6 +93,11 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                                 toggleOpenLocation={toggleOpenLocation} 
                                 showIds={true}
                                 goToLocation={goToLocation}
+                                ref={(el:any) => { 
+                                    console.log('setting ref for '+l.loi.id);
+                                    drawerItemRefs.current[l.loi.id] = el 
+                                    console.log(JSON.stringify(Object.keys(drawerItemRefs.current)));
+                                }}
                             />)}
                                 )
                             } 

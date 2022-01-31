@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Script from "next/script";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import { Sort } from "../types/Sort";
@@ -13,6 +13,7 @@ import useWindowSize from "../utils/useWindowSize";
 import { resetScroll } from "../utils/resetScroll";
 import { applyLocationOverride } from "./LocationObjectHandling";
 import { Map } from "leaflet";
+import { Dictionary } from "lodash";
 
 
 const CLOSED_DRAW_POS = -60;
@@ -59,6 +60,11 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
 
     const locationsAfterDate = locations.filter(inActiveDateRange);
     const drawerRef = useRef<Element>(null);
+    const drawerItemRefs = useRef<any>({});
+
+    //useEffect(() => {
+      //drawerItemRefs.current = {};
+   //}, [openLocations]);
 
     // State
     const [map, setMap] = useState<Map>();
@@ -96,10 +102,22 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
     function goToLocation(lat:number,lng:number, zoom:number){
       if(map){
         //
-        map.flyTo([lat,lng], zoom, {animate: false});
+        map.flyTo([lat,lng], zoom, {noMoveStart:true, animate:true, duration:1});
       }
       closeDrawer()
       resetScroll(drawerRef);
+    }
+
+    function goToDrawerItem(loi:LocationOfInterest){
+      console.log(`going to ${loi.event}`);
+      openDrawer();
+      let item = drawerItemRefs.current[loi.id];
+      if(item){
+        item.scrollIntoView();
+      }else{
+        console.error(`no drawer item ref for ${loi.id} ${JSON.stringify(drawerItemRefs.current)}`);
+      }
+      
     }
 
     let activeLocationPresets = locationSettings.locationPresets.filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
@@ -149,6 +167,7 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
                   changeDaysInPastShown={changeDaysInPastShown}
                   resetDrawerScroll={() => resetScroll(drawerRef)}
                   setPageState={handlePageStateUpdate}
+                  goToDrawerItem={goToDrawerItem}
                 />
               </div>
               <div>
@@ -173,6 +192,7 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
                   drawerRef={drawerRef}
                   activeLocationPresets={activeLocationPresets}
                   goToLocation={goToLocation}
+                  drawerItemRefs={drawerItemRefs}
                 />
               </div>
             </div>

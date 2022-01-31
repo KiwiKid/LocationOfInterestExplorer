@@ -134,6 +134,10 @@ export const getHardCodedUrl = () => {
         : localEnv.prodUrl
 }
 
+export interface Dictionary<T> {
+    [index: string]: T;
+  }
+
 export const getActionString = (rr:SocialPostRun) => {
     if(rr.errorMsg || rr.result?.error){
         return `Error: ${rr.errorMsg}${rr.result?.error}`

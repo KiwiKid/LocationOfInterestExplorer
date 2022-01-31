@@ -12,8 +12,18 @@ type LocationGridContainerProps = {
     sortField: Sort
     pageState: PageState
     goToLocation:any
+    drawerItemRefs:any
 }
-export default function LocationGridContainer({showLocationData, locations, openLocations, setOpenLocations, sortField, pageState,goToLocation}:LocationGridContainerProps) {
+export default function LocationGridContainer(
+    {showLocationData
+        , locations
+        , openLocations
+        , setOpenLocations
+        , sortField
+        , pageState
+        , goToLocation
+        , drawerItemRefs
+    }:LocationGridContainerProps) {
 
     return (
         <div >
@@ -28,6 +38,7 @@ export default function LocationGridContainer({showLocationData, locations, open
                             setOpenLocations={setOpenLocations}
                             sortField={sortField}
                             goToLocation={goToLocation}
+                            drawerItemRefs={drawerItemRefs}
                         />
                     </>
                     : !pageState.featureFlags.some((ff) => ff === 'basicDrawerTitle') ? <div className="bg-green-400 text-center mb-2">

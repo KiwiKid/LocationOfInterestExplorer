@@ -50,6 +50,7 @@ type LocationPageDrawerProps = {
     drawerRef: any
     activeLocationPresets:LocationPreset[]
     goToLocation:any
+    drawerItemRefs:any
 }
 
 
@@ -76,7 +77,8 @@ const LocationPageDrawer = ({
     setDrawPositionY, 
     drawerRef,
     activeLocationPresets,
-    goToLocation
+    goToLocation,
+    drawerItemRefs
   }:LocationPageDrawerProps) => {
 
 
@@ -289,6 +291,7 @@ const LocationPageDrawer = ({
                     sortField={sortField}
                     pageState={pageState}
                     goToLocation={goToLocation}
+                    drawerItemRefs={drawerItemRefs}
                 />}
             </>
           </Toggle>

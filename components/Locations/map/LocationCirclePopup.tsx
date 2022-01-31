@@ -6,8 +6,16 @@ import RegisterIncorrectLocation from '../RegisterIncorrectLocation';
 import RegisterVisit from "../RegisterVisit";
 import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import OmicronDisplay from "../OmicronDisplay";
+import InternalLink from "../../utils/InternalLink";
+import { LocationOfInterest } from "../../types/LocationOfInterest";
 
-function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLocationCount}:any){
+type LocationCirclePopupProps ={
+    l: LocationOfInterest
+    goToDrawerItem:any
+    showDistance:boolean
+}
+
+function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLocationCount,goToDrawerItem}:any){
     return (
         <AutoHidePopup >
             <div className="text-lg break-words" style={{width: '300px'}}>
@@ -24,6 +32,10 @@ function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLo
                 <div className="grid grid-cols-1 min-w-300 text-base pt-2 space-y-2">
                     <RegisterVisit loi={l.loi}/>
                     <RegisterIncorrectLocation loi={l.loi} />
+                    {false && goToDrawerItem ? <InternalLink
+                            id={`GoTo_${l.id}`}
+                            onClick={(evt:any) => goToDrawerItem(l.loi)}
+                        >View in Drawer</InternalLink>: null}
                     {l.loi.isOmicron && l.loi.exposureType == 'casual' ? <OmicronDisplay/> : null}
                     {/*<div className="col-span-2 pt-1">
                         <a target="_blank" 
