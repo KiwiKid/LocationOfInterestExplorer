@@ -137,7 +137,7 @@ class RedditClient {
     updateRedditSubmissions = async (run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> => {
         return new Promise<SocialPostRun>(async (resolve,reject) => {
             try{
-                const isUpdate = run.lastCheckTime && startOfDayNZ(new Date(run.lastCheckTime)) === startOfDayNZ(todayNZ())
+                const isUpdate = run.lastCheckTime && startOfDayNZ(dayjs(run.lastCheckTime)) === startOfDayNZ(todayNZ())
                 if(isUpdate && run.existingPostId){
                     console.log(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
                     return await this.r.getSubmission(run.existingPostId)
