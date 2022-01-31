@@ -28,7 +28,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
     return ( <div key={`${loi.id}_L`} id={loi.id}>
                 <div>
                     <div className={`bg-gray-100 grid grid-cols-7 content-center align-middle `} onClick={(evt) => toggleOpenLocation(loi.id)}>
-                        <LocationExposureTypeDisplay detailed={isOpen} loi={loi}/>
+                        <LocationExposureTypeDisplay loi={loi}/>
                         <div className="text-center">{loi.city}</div>
                         <div className="">{loi.event}</div>       
                         <div className="col-span-2">

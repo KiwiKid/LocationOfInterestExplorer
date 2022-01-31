@@ -58,11 +58,7 @@ function toggleReducer(state:any, action:any) {
       >{title} {isOpen ? "▲" : "▼"}</div>
       {isOpen ? <div id={id+'_content'}>{children}</div> : null}
     </div>
-    
-    
-    
-   // <div>Hello! {open ? 'yup' : 'nah'} <button onClick={() => open ? hide() : show()}>Open</button></div>
-    };
+  };
 
 
 export default Toggle;

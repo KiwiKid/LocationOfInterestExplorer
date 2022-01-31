@@ -8,6 +8,8 @@ import { Sort } from '../types/Sort';
 import Location from './Location';
 import { startOfDayNZ } from './DateHandling';
 import LocationGridAdaptorItem from './LocationGridAdaptor';
+import { downTheCountryGrp } from './LocationObjectHandling';
+import { createLocationGroups } from './LocationGroup';
 
 
 type LocationGridRawProps = {
@@ -15,6 +17,7 @@ type LocationGridRawProps = {
     openLocations: string[]
     setOpenLocations: any
     sortField: Sort
+    locationPresets: LocationPreset[]
 }
 
 export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
@@ -40,11 +43,13 @@ export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
     }
 }
 
-function LocationGridRaw({locations, openLocations, setOpenLocations, sortField}:LocationGridRawProps) {
+function LocationGridRaw({locations, openLocations, setOpenLocations, sortField, locationPresets}:LocationGridRawProps) {
 
-    var groupedLocations = _.chain(locations)
+    /*var groupedLocations = _.chain(locations)
             .groupBy((lc) => startOfDayNZ(lc.start))
-            .value();
+            .value();*/
+
+    var groupedLocations = createLocationGroups(locations, locationPresets)
 
     function isOpen(loc:LocationOfInterest){
         return openLocations.some((ol) => ol === loc.id);
@@ -78,11 +83,13 @@ function LocationGridRaw({locations, openLocations, setOpenLocations, sortField}
 
     return (
     <div className="mt-3 text-center pb-3">
-        {Object.keys(groupedLocations).sort().reverse().map((d) => {
+        {groupedLocations.sort(downTheCountryGrp).map((d) => {
+                let firstStartTime = d.locations.sort((a,b) => a.added > b.added ? 1 : -1)[0].start
+
                 return ( 
                     <div key={`${d}_LG`}>
-                        <LocationGroupHeader d={d} firstStartTime={groupedLocations[d][0].start} locationCount={groupedLocations[d].length}/>
-                        {groupedLocations[d].sort((a,b) => a.added > b.added ? 1 : -1).map((l:LocationOfInterest) => <LocationGridAdaptorItem key={`GA_${l.id}`} loi={l} isOpen={isOpen(l)} toggleOpenLocation={toggleOpenLocation} showIds={true}/> )}
+                        <LocationGroupHeader d={d} firstStartTime={firstStartTime} locationCount={d.locations.length}/>
+                        {d.locations.map((l:LocationOfInterest) => <LocationGridAdaptorItem key={`GA_${l.id}`} loi={l} isOpen={isOpen(l)} toggleOpenLocation={toggleOpenLocation} showIds={true}/> )}
                     </div>
                 )
         })}

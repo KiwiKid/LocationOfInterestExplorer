@@ -146,7 +146,7 @@ const metaImageURLDirect = (hardcodedURL:string, key:string) => hardcodedURL ===
 const getLocationInfoGroupTitle = (group:LocationGroup, publishTime:Date, includeCount:boolean) => `${includeCount ? group.totalLocations() : ''} New Locations of Interest in ${group.locationPreset.title ? group.locationPreset.title :  'Others'} - ${dayFormattedNZ(publishTime)} \n`
 
 
-const downTheCountryPreset = (a:LocationPreset,b:LocationPreset) => a.lat > b.lat ? -1 : 1
+const downTheCountryPreset = (a:LocationPreset,b:LocationPreset) => a.urlParam === 'all' ? 1 : a.lat > b.lat ? -1 : 1
 
 const downTheCountry = (a:LocationOfInterest,b:LocationOfInterest) => a.lat > b.lat ? -1 : 1
 

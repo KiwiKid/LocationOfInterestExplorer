@@ -31,7 +31,7 @@ import InternalLink from "../utils/InternalLink"
                 <div className={`rounded-lg grid grid-cols-3 space-y-2`} 
                         onClick={(evt) => toggleOpenLocation(loi.id)}>
                     <div className="col-span-full p-1"><span className="float-left font-bold">{loi.event}</span> <span className="float-right">{loi.city}</span></div>
-                    <LocationExposureTypeDisplay detailed={isOpen} loi={loi}/>
+                    <LocationExposureTypeDisplay loi={loi} hideIfCasual={!isOpen}/>
                     
                     
                     <LocationSummaryDateDisplay loi={loi} includeDate={isOpen}/>
