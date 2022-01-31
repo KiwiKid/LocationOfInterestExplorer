@@ -6,11 +6,13 @@ type ExternalLinkProps = {
     widthClass?:string
 }
 
-function ExternalLink({title, href, iconOverride, colorClassnameOverride, widthClass}:ExternalLinkProps){
-
-    if(!widthClass){
-        widthClass = 'w-full lg:w-96'
-    }
+function ExternalLink({
+    title
+    , href
+    , iconOverride
+    , colorClassnameOverride
+    , widthClass = 'w-full lg:w-64 xl:w-96'
+}:ExternalLinkProps){
 
     return (
         <div className="m-auto">
