@@ -47,6 +47,7 @@ const mapNotionItemToSocialPostRun = (notionRow:any):SocialPostRun => {
             , getNotionRichText(props.primaryUrlParam)
             , getNotionHackyArray(props.textUrlParams)
             , getNotionMultiSelectFirst(props.type)//getSocialPostRunType(props.type)
+            , getNotionMultiSelectFirst(props.postFrequency)
             , getNotionRichText(props.currentPostTitle)
             , getNotionRichText(props.currentPostId)
             , getNotionDate(props.lastCheckTime)

@@ -44,7 +44,7 @@ class LocationGroup {
 
     toString = (showTitleCount:boolean, showDate:boolean, publishTime?:Date) => `${this.toTitleString(showTitleCount,publishTime)}:\n\n${this.locations.reduce((prev,curr) => `${prev} ${getPrintableLocationOfInterestString(curr, showDate ? true : false)}`, '')}\n${this.toUrl()}\n\n`
 
-    toUrl = () => this.locationPreset && this.locationPreset.urlParam ? `https://nzcovidmap.org/loc/${this.locationPreset.urlParam}` : 'https://nzcovidmap.org/'
+    toUrl = () => this.locationPreset && this.locationPreset.urlParam ? `https://nzcovidmap.org/loc/${this.locationPreset.urlParam}` : ''
 }
 
 const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]) => {

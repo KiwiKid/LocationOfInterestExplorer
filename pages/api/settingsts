@@ -8,7 +8,7 @@ import { onlyToday, startOfDay } from '../../components/Locations/DateHandling';
 import { requestLocations } from '../../components/Locations/MoHLocationClient/requestLocations';
 import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestGroupString, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
 import PRESET_LOCATIONS from '../../components/Locations/data/PRESET_LOCATIONSts';
-import { getTodayLocationSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
+import { getLocationGroupsSummaryy, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
 import { LocationOfInterest } from '../../components/types/LocationOfInterest';
 var ReactDOMServer = require('react-dom/server');
 
@@ -33,7 +33,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         });
 
         
-    const todaySummary:string = getTodayLocationSummary(PRESET_LOCATIONS, groupedLocations, url, now);
+    const todaySummary:string = getLocationGroupsSummaryy(PRESET_LOCATIONS, groupedLocations, url, now);
         
     
     const todayTitle = getTotalLocationSummaryTitle(new Date());

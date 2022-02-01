@@ -1,5 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
 import calendar from 'dayjs/plugin/calendar'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import DayJSUtc from 'dayjs/plugin/utc'
@@ -16,6 +17,7 @@ dayjs.extend(calendar);
 dayjs.extend(localizedFormat);
 dayjs.extend(timezone);
 dayjs.extend(DayJSUtc);
+dayjs.extend(weekOfYear)
 
 const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
     return <>{dayjs().to(dayjs(date))}</>
@@ -72,12 +74,20 @@ const dateDebugging = (passedInDate:Date):string => {
 
 
 
-const startOfDayFormattedNZ = (date:Date) => {
+const startOfDayFormattedNZ = (date:Date|Dayjs) => {
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format('D MMM');
 }
 
-const dayFormattedNZ = (date:Date) => {
+const dayFormattedNZ = (date:Date|Dayjs) => {
     return dayjs(date).tz("Pacific/Auckland").format('D MMM');
+}
+
+const getWeekOfYear = (date:Date|Dayjs) =>{
+    return dayjs(date).week();
+}
+
+const getFortnightOfYear = (date:Date|Dayjs) =>{
+    return Math.floor(dayjs(date).week()/2);
 }
 
 const releaseDateAndCity = (date:Date) => {
@@ -113,4 +123,6 @@ export {
     , getSecondsAgo
     , oldestLastCheckTimeFirst
     , subtractMinutes
+    , getFortnightOfYear
+    , getWeekOfYear
 }

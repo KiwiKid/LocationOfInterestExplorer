@@ -1,4 +1,6 @@
 
+import dayjs from 'dayjs';
+import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear } from '../DateHandling';
 import SocialPostRunResult from './SocialPostRunResult';
 
 // This class is pretty gross, but it works...
@@ -10,6 +12,7 @@ class SocialPostRun {
     textUrlParams:string[]
     
     type:string // "Reddit_Comment", "Reddit_Comment"
+    postFrequency:string // "day, "week", "fortnight"
     createdDate:string
     flairId?:string
     
@@ -29,6 +32,7 @@ class SocialPostRun {
         , primaryUrlParam:string
         , textUrlParams:string[]
         , type:string
+        , postFrequency:string
         , existingPostTitle?:string
         , existingPostId?:string
         , lastCheckTime?:string
@@ -66,6 +70,7 @@ class SocialPostRun {
 
         this.createdDate = new Date().toISOString();
         this.type = type
+        this.postFrequency = postFrequency
         this.lastCheckTime = lastCheckTime;
 
         switch(this.type){
@@ -87,6 +92,48 @@ class SocialPostRun {
 
     setResults(result:SocialPostRunResult){
         this.result = result
+    }
+
+    isUpdate():boolean{
+        switch(this.postFrequency){
+            case "day": {
+                const startOfLastPostDayString = startOfDayNZ(dayjs(this.lastPostTime) );
+                const startOfTodayString = startOfDayNZ(todayNZ());
+                const isUpdate = this.lastPostTime && startOfLastPostDayString === startOfTodayString ? true : false
+                return isUpdate;
+            }
+            case "week": {
+                const LastPostWeek = getWeekOfYear(dayjs(this.lastPostTime));
+                const thisWeek = getWeekOfYear(todayNZ());
+                const isUpdate = this.lastPostTime && LastPostWeek === thisWeek ? true : false
+                return isUpdate;
+            }
+            case "fortnight": {
+                const lastPostFortnight = getFortnightOfYear(dayjs(this.lastPostTime));
+                const thisWeek = getFortnightOfYear(todayNZ());
+                const isUpdate = this.lastPostTime && lastPostFortnight === thisWeek ? true : false
+                return isUpdate;
+                
+            }
+            default:
+                throw 'invalid post frequency'
+        }
+
+       /*
+        this.logger.info(`startOfDayString: $ ${startOfTodayString} (${run.lastPostTime}`, {
+            notionId: run.notionPageId,
+            subreddit: run.subreddit,
+            textUrlParams: run.textUrlParams,
+            mockRequest: this.mockRequest,
+            startOfDayString: startOfLastPostDayString,
+            isUpdate: isUpdate,
+            startOftodayNZDate: startOfTodayString,
+            lastPostTime: run.lastPostTime,
+            lastPostTimeDate: dayjs(run.lastPostTime),
+            todayNZDate: todayNZ()
+        });*/
+
+        
     }
 }
 

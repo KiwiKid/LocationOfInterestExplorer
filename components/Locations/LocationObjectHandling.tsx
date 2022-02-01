@@ -1,10 +1,11 @@
 import { LocationOfInterest } from "../types/LocationOfInterest";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
-import { asAtDateAlwaysNZ, dayFormattedNZ } from "./DateHandling";
+import { asAtDateAlwaysNZ, dayFormattedNZ, startOfDayFormattedNZ } from "./DateHandling";
 import { LocationGroup }  from "./LocationGroup";
 import { Dictionary } from "lodash";
 import { platform } from "os";
 import SocialPostRun from "./APIClients/SocialPostRun";
+import dayjs from "dayjs";
 
 
 
@@ -158,6 +159,29 @@ const downTheCountry = (a:LocationOfInterest,b:LocationOfInterest) => a.lat > b.
 const downTheCountryGrp = (a:LocationGroup,b:LocationGroup) => !a.locationPreset ? 1 : a.locationPreset.urlParam && a.locationPreset.urlParam === 'all' ? 1 : a.locationPreset.lat > b.locationPreset.lat ? -1 : 1
 
 
+const getDateRangeDisplay = (frequency:string,publishTime:Date) =>{
+  switch(frequency){
+      case "day": return `${dayFormattedNZ(publishTime)}`
+      case "week": return `${dayFormattedNZ(publishTime)} - ${dayFormattedNZ(dayjs(publishTime).add(7,'day'))}`
+      case "fortnight": return `${dayFormattedNZ(publishTime)} - ${dayFormattedNZ(dayjs(publishTime).add(14,'day'))}`
+      default: {
+          console.error('no date range frequency option found');
+      }
+  }
+}
+
+
+const getTitle = (frequency:string, locationName:string,publishTime?:Date,locationCount?:number):string => {
+      switch(frequency){
+          case "day": return `New Locations in ${locationName} ${publishTime ? ` ${getDateRangeDisplay(frequency, publishTime)}`: ''}`
+          case "week": return `New Locations in ${locationName}${publishTime ? getDateRangeDisplay(frequency, publishTime): ''}`
+          case "fortnight": return `New Locations in ${locationName} ${publishTime ? getDateRangeDisplay(frequency, publishTime): ''}`
+          default: {
+              console.error('no date range frequency option found');
+              return ''
+        }
+    }
+}
 
 export { 
   getQuickLinkURL
@@ -175,4 +199,5 @@ export {
   , downTheCountryGrp
   , downTheCountry
   , downTheCountryPreset
+  , getTitle
 }
