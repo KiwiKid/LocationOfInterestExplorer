@@ -272,7 +272,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         const todaysLocationGroups:LocationGroup[] = createLocationGroups(todaysLocations, settings.locationPresets);
 
         
-        const redditClient = new RedditClient();
+        const mockRequests = process.env.MOCK_REDDIT_REQUESTS && process.env.MOCK_REDDIT_REQUESTS.toLowerCase() === 'true' ? true : false
+        const redditClient = new RedditClient(mockRequests);
 
         const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {

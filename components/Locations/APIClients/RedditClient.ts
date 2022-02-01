@@ -14,8 +14,9 @@ const processRedditId = (redditID:string) => redditID.startsWith('t3_') ? reddit
 class RedditClient { 
     r:snoowrap;
     logger:BackendLogger
+    mockRequest:boolean
 
-    constructor (){
+    constructor (mockRequest:boolean){
         
         const version = '0.2'
        
@@ -39,6 +40,7 @@ class RedditClient {
         if(!r){ console.error('Failed to generate reddit client'); throw 'err'}
 
         this.r = r;
+        this.mockRequest = mockRequest
 
         this.logger = new BackendLogger();
     }
@@ -53,14 +55,21 @@ class RedditClient {
                 return;
             }
 
-            const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime));
+            const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime) );
             const startOfTodayString = startOfDayNZ(todayNZ());
             const isUpdate = run.lastPostTime && startOfDayString === startOfTodayString
             this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
             if(isUpdate && run.existingPostId){
                 this.logger.info(`updating reddit comment (${run.existingPostId})`);
 
-                /*await this.r.getComment(run.existingPostId)
+                if(this.mockRequest){
+                    console.log(`updated reddit comment (${run.existingPostId})`);
+                    run.setResults(new SocialPostRunResult(true, true, false, title, 'Fake comment "Id', text))
+                    resolve(run);
+                    return;
+                }
+                
+                await this.r.getComment(run.existingPostId)
                         .edit(text)
                             .then((res) => {
                                 //@ts-ignore
@@ -73,7 +82,7 @@ class RedditClient {
                                 console.error(err)
                                 run.setError(`Could not edit existing reddit comment for ${run.subreddit}`);
                                 reject(run);
-                            });*/
+                            });
             }else{
 
                 this.logger.info(`creating reddit comment (${run.existingPostId})`);
@@ -153,37 +162,51 @@ class RedditClient {
                 this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
                 
                 if(isUpdate && run.existingPostId){
-                    this.logger.info(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
-                   /* return await this.r.getSubmission(run.existingPostId)
+                    this.logger.info(`Reddit post - edit ${run.subreddit} ${run.existingPostId}`);
+
+
+                    if(this.mockRequest){
+                        console.log(`updated reddit post (${run.existingPostId})`);
+                        run.setResults(await this.processRedditSubmission(true, true, false, run, 'Fake postID', 'Title'));
+                        resolve(run);
+                        return;
+                    }
+
+
+                    return await this.r.getSubmission(run.existingPostId)
                                         .edit(text)
                                         .then(async (sub:any) => {
                                             this.logger.info('Reddit Submission edited');
                                             run.setResults(await this.processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
                                             resolve(run);
-                                        }) */
-this.logger.info('Reddit Submission edited');
-run.setResults(await this.processRedditSubmission(true, true, false, run, 'Fake postID', 'Title'));
-resolve(run);                                        
+                                        });
+                                        
+                                      
                                         
                 } else{
-                    this.logger.info(`updateRedditSubmissions - creating new post in r/${run.subreddit} with title: "${title}"`);
-run.setResults(await this.processRedditSubmission(true, false, false, run, 'Fake postID', 'Title'));
-resolve(run);  
-                    /*    await this.r.submitSelfpost({
-                            subredditName: run.subreddit
-                            , title: title
-                            , text: text
-                            , flairId: run.flairId
-                        }).then(async (sub:Submission) => {
-                            const res = await this.processRedditSubmission(true, false, false, run, sub.name, title);
-                            run.setResults(res);
-                            resolve(run);
-                        }).catch((err) => {
-                            console.error(err)
-                            run.setError(`Could not create creating reddit new post r/${run.subreddit} ${run.textUrlParams}.${err & err.error ? err.error.message : ''} This can be caused by invalid FlairId`)
-                            reject(run);
-                        })*/
-                    
+
+                    if(this.mockRequest){
+                        console.log(`created reddit post (${run.existingPostId})`);
+                        run.setResults(await this.processRedditSubmission(true, true, false, run, 'Fake postID', 'Title'));
+                        resolve(run);
+                        return;
+                    }
+
+                    await this.r.submitSelfpost({
+                        subredditName: run.subreddit
+                        , title: title
+                        , text: text
+                        , flairId: run.flairId
+                    }).then(async (sub:Submission) => {
+                        const res = await this.processRedditSubmission(true, false, false, run, sub.name, title);
+                        run.setResults(res);
+                        resolve(run);
+                    }).catch((err) => {
+                        console.error(err)
+                        run.setError(`Could not create creating reddit new post r/${run.subreddit} ${run.textUrlParams}.${err & err.error ? err.error.message : ''} This can be caused by invalid FlairId`)
+                        reject(run);
+                    })
+                
                     //9bc8c692-2377-11ec-97a0-722625a13049
                     // Use https://www.reddit.com/r/[INSERT_SUBREDDIT_HERE]/api/link_flair_v2.json?raw_json=1
                     // to find the Flair id
