@@ -418,7 +418,9 @@ const LocationPageDrawer = ({
                               />
                           </div>
                         </p>
-                        <p>Some locations are overridden manually where they are obviously incorrect.  <link href={publishState.hardcodedURL} className="underline" >Raw list of overrides</link></p>
+                        <p>Some locations are overridden manually where they are obviously incorrect.  
+                          <link href={publishState.hardcodedURL} className="underline" rel="noreferrer" >Raw list of overrides</link>
+                        </p>
                     </Question>
                     <Question title="Why are you doing this?">
                         <p>I want provide people with the best possible understanding of the locations of interest. Hopefully this tool provides some comfort to people.
