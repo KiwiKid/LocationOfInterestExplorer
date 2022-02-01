@@ -7,12 +7,13 @@ import { startOfDayNZ, todayNZ } from '../DateHandling';
 import dayjs from 'dayjs';
 import SocialPostRunResult from './SocialPostRunResult';
 import SocialPostRun from './SocialPostRun';
+import BackendLogger from '../../utils/logger';
 
 const processRedditId = (redditID:string) => redditID.startsWith('t3_') ? redditID.substring(3,redditID.length) : redditID;
 
 class RedditClient { 
     r:snoowrap;
-
+    logger:BackendLogger
 
     constructor (){
         
@@ -38,6 +39,8 @@ class RedditClient {
         if(!r){ console.error('Failed to generate reddit client'); throw 'err'}
 
         this.r = r;
+
+        this.logger = new BackendLogger();
     }
 
 
@@ -53,9 +56,9 @@ class RedditClient {
             const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime));
             const startOfTodayString = startOfDayNZ(todayNZ());
             const isUpdate = run.lastPostTime && startOfDayString === startOfTodayString
-            console.log(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
+            this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
             if(isUpdate && run.existingPostId){
-                console.log(`updating reddit comment (${run.existingPostId})`);
+                this.logger.info(`updating reddit comment (${run.existingPostId})`);
 
                 await this.r.getComment(run.existingPostId)
                         .edit(text)
@@ -143,20 +146,20 @@ class RedditClient {
                 const startOfTodayString = startOfDayNZ(todayNZ());
                 
                 const isUpdate = run.lastPostTime && startOfTodayString === startOfDayString
-                console.log(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
+                this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
                 
                 if(isUpdate && run.existingPostId){
-                    console.log(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
+                    this.logger.info(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
                     return await this.r.getSubmission(run.existingPostId)
                                         .edit(text)
                                         .then(async (sub:any) => {
-                                            console.log('Reddit Submission edited');
+                                            this.logger.info('Reddit Submission edited');
                                             run.setResults(await this.processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
                                             resolve(run);
                                         }) 
                                         
                 } else{
-                    console.log(`updateRedditSubmissions - creating new post in r/${run.subreddit} with title: "${title}"`);
+                    this.logger.info(`updateRedditSubmissions - creating new post in r/${run.subreddit} with title: "${title}"`);
 
                         await this.r.submitSelfpost({
                             subredditName: run.subreddit
