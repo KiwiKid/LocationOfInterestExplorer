@@ -389,8 +389,8 @@ const LocationPageDrawer = ({
                     <p>(I did notice the map performed better when running the site as an app!)</p>
                   </Question>
                   <Question title="What are you doing with my location!?!">
-                      Your location is only used to position the map.<br/>It is not stored.<br/>
-                      If you would like, you can use the link in the {`"Share"`} section to restore the same view you left off with.
+                      <p>Your location is only used to position the map.<br/>It is not stored.</p>
+                      <p>If you would like, you can use the link in the {`"Share"`} section to restore the same view you left off with.</p>
                     </Question>     
                     {process.env.NEXT_PUBLIC_FEEDBACK_URL && <Question   title="X is does not work, is broken, or unclear?">
                       <div className="md:w-3/5 m-auto">
@@ -408,6 +408,8 @@ const LocationPageDrawer = ({
                         <p>Static locations (i.e. not buses or flights) have a latitude and longitude coordinate pair.</p>
                         <p>These locations are then projected into the map and with a bit of good ol&apos; fashion trigonometry we can determine if the location is in the circle and display the detailed information for it.</p>
                               
+                        <p>Flights are mapped at both the destination and origin airports</p>
+                        
                         <p>The raw data this service is based on:
                           <div className="pt-2 max-w-3xl">
                             <ExternalLink
