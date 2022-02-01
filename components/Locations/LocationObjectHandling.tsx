@@ -11,6 +11,7 @@ import SocialPostRun from "./APIClients/SocialPostRun";
 const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
   return {
     id: rec.id,
+    mohId: rec.mohId,
     location: rec.location,
     city: rec.city,
     event: rec.event,
@@ -82,7 +83,8 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
   let lng = row.location.longitude;//0 (!!approxCityOverride ? approxCityOverride?.lng  : row.location.longitude);
   
   let res:LocationOfInterestRecord = {
-    id: row.eventId,
+    id: row.eventId, // This id can be postfixed for duplicate locations (flights)
+    mohId: row.eventId,
     added: row.publishedAt,
     event: row.eventName,
     location: row.location.address,

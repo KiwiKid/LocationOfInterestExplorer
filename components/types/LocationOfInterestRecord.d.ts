@@ -2,6 +2,7 @@
 // See https://github.com/vercel/next.js/discussions/13696 for more discussion
 type LocationOfInterestRecord = {
     id: string;
+    mohId:string
     location: string;
     event: string;
     start: string;

@@ -38,15 +38,7 @@ function LocationCirclePopup({l, showDistance, locationGridButtonRef, inCircleLo
                             widthClass="w-64"
                         >View in Drawer</InternalLink>: null}
                     {l.loi.isOmicron && l.loi.exposureType == 'casual' ? <OmicronDisplay/> : null}
-                    {/*<div className="col-span-2 pt-1">
-                        <a target="_blank" 
-                            rel="noreferrer"
-                            href={`https://tracing.covid19.govt.nz/loi?eventId=${l.loi.id}`}>
-                            <div className="pt-3 text-center align-middle border-b-1 border-green-900 border-b-4 bg-green-600 w-full h-10 text-green-100 transition-colors duration-150 rounded-lg focus:shadow-outline hover:bg-green-800">
-                                I was here! ↗️ (Official MoH link)
-                            </div>
-                        </a>
-                    </div>*/}
+                   
                 </div>
             </div>
         </AutoHidePopup>

@@ -61,7 +61,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                                 </div>
                             </a>
                         </div>}
-                        {showId && <div className="col-span-full text-xs p-1"> id: {loi.id}</div>}
+                        {showId && <div className="col-span-full text-xs p-1"> id: {loi.mohId}</div>}
                     </div>
                     </>}
                 </div>

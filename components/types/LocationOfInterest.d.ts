@@ -2,6 +2,7 @@ import {LatLng} from 'leaflet'
 
 export type LocationOfInterest = {
     id: string;
+    mohId:string;
     location: string;
     city: string;
     event: string;
