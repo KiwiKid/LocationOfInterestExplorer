@@ -56,19 +56,21 @@ class RedditClient {
                 return;
             }
 
-            const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime) );
+            const startOfLastPostDayString = startOfDayNZ(dayjs(run.lastPostTime) );
             const startOfTodayString = startOfDayNZ(todayNZ());
-            const isUpdate = run.lastPostTime && startOfDayString === startOfTodayString
+            const isUpdate = run.lastPostTime && startOfLastPostDayString === startOfTodayString
 
             this.logger.info(`startOfDayString: $ ${startOfTodayString} (${run.lastPostTime}`, {
                 notionId: run.notionPageId,
                 subreddit: run.subreddit,
                 textUrlParams: run.textUrlParams,
                 mockRequest: this.mockRequest,
-                startOfDayString: startOfDayString,
+                startOfDayString: startOfLastPostDayString,
                 isUpdate: isUpdate,
-                startOfTodayString: startOfTodayString,
-                lastPostTime: run.lastPostTime
+                startOftodayNZDate: startOfTodayString,
+                lastPostTime: run.lastPostTime,
+                lastPostTimeDate: dayjs(run.lastPostTime),
+                todayNZDate: todayNZ()
             })
 
 
