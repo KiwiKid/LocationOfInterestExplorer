@@ -20,14 +20,68 @@ const getBorderColor = (hoursAgo:number) => {
 
 
 
+
+
+
+type LocationOfInterestRowProps = {
+    loi:LocationOfInterest
+}
+
+const LocationOfInterestRow = ({loi}:LocationOfInterestRowProps) => {
+    return (
+            <>
+                <div>{loi.mohId} {loi.mohId != loi.id ? `(${loi.id})`: ''}</div>
+                <div><NiceFullDate date={loi.added}/></div>
+                <div>{loi.updated ? <NiceFullDate date={loi.updated}/> : ''}</div>
+                <div><NiceFullDate date={loi.start}/></div>
+                <div><NiceFullDate date={loi.end}/></div>
+                <div>{loi.event}</div>
+                <div>{loi.location}</div>
+                <div>{loi.city}</div>
+                <div>{loi.exposureType} {loi.visibleInWebform ? '(REPORT)' : ''}</div>
+                <details><summary>Details</summary>
+                    <CopyBox copyText={loi.id} promptText={loi.id} successText="Copied" id="copy"/>
+                    Advice:{loi.advice}<br/>
+                    </details>
+                <div className={`${loi.lng === 0 ? 'bg-red-500':''}`}>{loi.lng}</div>
+                <div className={`${loi.lat === 0 ? 'bg-red-500':''}`}>{loi.lat}</div>
+            </>
+    )
+}
+type LocationOfInterestInfoGridProps ={
+    locations:LocationOfInterest[]
+}
+
+const LocationOfInterestInfoGrid = ({locations}:LocationOfInterestInfoGridProps) => {
+    return (
+        <div className="grid grid-cols-12">
+                <div>id</div>
+                <div>added</div>
+                <div>updated</div>
+                <div>from</div>
+                <div>to</div>
+                <div>event</div>
+                <div>location</div>
+                <div>city</div>
+                <div>exposureType</div>
+                <div>advice</div>
+                <div>lat</div>
+                <div>lng</div>
+                {locations
+                .sort((a, b) => a.added > b.added ? -1 : 1)
+                .map((lr:LocationOfInterest) => <LocationOfInterestRow key={`${lr.id}_row`} loi={lr}/> )
+                }
+               
+            </div>
+    )
+}
+
 type LocationInfoGroupProps = {
     group: LocationGroup
     hardcodedURL: string
     locationSettings: LocationSettings
     publishTime: Date
 }
-
-
 
 const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:LocationInfoGroupProps) => {
 
@@ -56,40 +110,7 @@ const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:
                     textarea={true} 
                 />
             </summary>
-            <div className="grid grid-cols-12">
-                <div>id</div>
-                <div>added</div>
-                <div>updated</div>
-                <div>from</div>
-                <div>to</div>
-                <div>event</div>
-                <div>location</div>
-                <div>city</div>
-                <div>exposureType</div>
-                <div>advice</div>
-                <div>lat</div>
-                <div>lng</div>
-                {group.locations
-                .sort((a, b) => a.added > b.added ? -1 : 1)
-                .map((lr:LocationOfInterest) => <>
-                    <div>{lr.id}</div>
-                    <div><NiceFullDate date={lr.added}/></div>
-                    <div>{lr.updated ? <NiceFullDate date={lr.updated}/> : ''}</div>
-                    <div><NiceFullDate date={lr.start}/></div>
-                    <div><NiceFullDate date={lr.end}/></div>
-                    <div>{lr.event}</div>
-                    <div>{lr.location}</div>
-                    <div>{lr.city}</div>
-                    <div>{lr.exposureType} {lr.visibleInWebform ? '(REPORT)' : ''}</div>
-                    <details><summary>Details</summary>
-                        <CopyBox copyText={lr.id} promptText={lr.id} successText="Copied" id="copy"/>
-                        Advice:{lr.advice}<br/>
-                        </details>
-                    <div className={`${lr.lng === 0 ? 'bg-red-500':''}`}>{lr.lng}</div>
-                    <div className={`${lr.lat === 0 ? 'bg-red-500':''}`}>{lr.lat}</div>
-                </>)}
-               
-            </div>
+            <LocationOfInterestInfoGrid locations={group.locations}/>
             <div>{metaImageURL}</div>
             <img src={metaImageURL(hardcodedURL, group.city)}/>
             <img src={metaImageURLDirect(hardcodedURL, group.city)}/>
@@ -98,4 +119,4 @@ const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:
     )
 }
 
-export default LocationInfoGroup
+export { LocationInfoGroup, LocationOfInterestInfoGrid }

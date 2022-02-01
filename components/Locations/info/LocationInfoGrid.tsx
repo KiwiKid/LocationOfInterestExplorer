@@ -8,7 +8,7 @@ import { startOfDayNZ , NiceFullDate, NiceTimeFromNow, NiceDate, onlyToday} from
 import { LocationGroup, createLocationGroups }  from "../LocationGroup";
 import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "../LocationSummaryDateDisplay";
-import LocationInfoGroup from "./LocationInfoGroup";
+import { LocationInfoGroup, LocationOfInterestInfoGrid }  from "./LocationInfoGroup";
 
 import { TodayLocationSummary } from "./TodayLocationSummary";
 
@@ -72,6 +72,7 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
                         hardcodedURL={hardcodedURL}
                     />
                 })}
+                <LocationOfInterestInfoGrid locations={locations}/>
             </div>: <div>Loading Location Presets</div>)
         : <div>Grouping locations</div>);
 }
