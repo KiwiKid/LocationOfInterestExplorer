@@ -106,13 +106,11 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
   const flightLocations = locations.filter(isFlight);
   flightLocations.forEach((fl) => {
     try{
-
-      
       const airportCities = getAirportCities(fl);
 
       const startLoc:LocationOfInterestRecord = { 
           id: `${fl.id}_source`,
-          mohId: fl.mohId,
+          mohId: fl.id,
           location: fl.location,
           event: fl.event,
           start: fl.start,
@@ -129,7 +127,7 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
 
       const destLoc:LocationOfInterestRecord = { 
         id: `${fl.id}_dest`,
-        mohId: fl.mohId,
+        mohId: fl.id,
         location: fl.location,
         event: fl.event,
         start: fl.start,
