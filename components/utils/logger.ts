@@ -17,14 +17,14 @@ type LogProps = {
 
 class BackendLogger {
 
-    logtail:any
+    logtail:Logtail
 
     constructor(){
         if(!process.env.LOGTAIL_SOURCE_TOKEN){ throw 'no LOGTAIL_SOURCE_TOKEN set'}
         this.logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
     }
 
-    info(message:string){
+    info(message:string, obj?:any){
         this.logtail.info(message);
     }
 

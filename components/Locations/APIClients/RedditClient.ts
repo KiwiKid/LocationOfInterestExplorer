@@ -58,12 +58,30 @@ class RedditClient {
             const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime) );
             const startOfTodayString = startOfDayNZ(todayNZ());
             const isUpdate = run.lastPostTime && startOfDayString === startOfTodayString
-            this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
+
+            this.logger.info(`startOfDayString: $ ${startOfTodayString} (${run.lastPostTime}`, {
+                notionId: run.notionPageId,
+                subreddit: run.subreddit,
+                textUrlParams: run.textUrlParams,
+                mockRequest: this.mockRequest,
+                startOfDayString: startOfDayString,
+                isUpdate: isUpdate,
+                startOfTodayString: startOfTodayString,
+                lastPostTime: run.lastPostTime
+            })
+
+
             if(isUpdate && run.existingPostId){
-                this.logger.info(`updating reddit comment (${run.existingPostId})`);
+                this.logger.info(`Updating reddit comment`, {
+                    mockRequest: this.mockRequest,
+                    existingPostId: run.existingPostId
+                });
 
                 if(this.mockRequest){
-                    console.log(`updated reddit comment (${run.existingPostId})`);
+                    this.logger.info(`updated reddit comment`, {
+                        mockRequest: this.mockRequest,
+                        existingPostId: run.existingPostId
+                    });
                     run.setResults(new SocialPostRunResult(true, true, false, title, 'Fake comment "Id', text))
                     resolve(run);
                     return;
@@ -85,14 +103,30 @@ class RedditClient {
                             });
             }else{
 
-                this.logger.info(`creating reddit comment (${run.existingPostId})`);
+                this.logger.info(`creating reddit comment`,
+                {
+                    mockRequest: this.mockRequest,
+                    existingPostId: run.existingPostId
+                });
+
+                if(this.mockRequest){
+
+                    run.setResults(new SocialPostRunResult(true, true, false, title, 'Fake comment "Id', text))
+                    resolve(run);
+                    return;
+                }
 
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
                     
-                this.logger.info(`found ${matchingThreads.length} matching threads ${run.subredditSubmissionTitleQuery} (${run.existingPostId})`);
+                this.logger.info(`Found matching threads`, {
+                    mock: this.mockRequest,
+                    matchingThreads: matchingThreads.length,
+                    titleQuery: run.subredditSubmissionTitleQuery,
+                    existingPostId: run.existingPostId
+                });
 
-                 /*matchingThreads.forEach(async (thread:any) => {
+                 matchingThreads.forEach(async (thread:any) => {
                    await this.r.getSubmission(thread).reply(text).then((res) => {
                         console.log(`created reddit comment (${processRedditId(res.id)})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
@@ -101,7 +135,7 @@ class RedditClient {
                         run.setError(`Could not create new reddit post for ${run.subreddit}`);
                         reject(run);
                     });                     
-                });  */ 
+                }); 
             }
     });
 }
