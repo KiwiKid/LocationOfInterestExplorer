@@ -67,6 +67,10 @@ const airports:Airport[] = [{
   lat: -41.32800475000787, 
   lng: 174.81088408855183,
   city: 'Wellington'
+},{
+  lat: -38.66188827874503, 
+  lng: 177.98228170398286,
+  city: 'Gisborne'
 }]
 
 const getCityFromEventRegex = new RegExp(/(\w+) (\-|to) (.+)/g)
@@ -95,6 +99,7 @@ const getAirportCities = (loi:LocationOfInterestRecord):FlightCities => {
     if(startAirport && finishAirport){
         return {startAirport,finishAirport}
     }else{
+      console.error(`no two matching airports for ${loi.event} [${startAirport},${finishAirport}]`)
       throw `no two matching airports for ${loi.event}`
     }
 }
