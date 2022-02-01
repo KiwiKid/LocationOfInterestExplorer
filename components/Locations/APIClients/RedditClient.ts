@@ -50,7 +50,10 @@ class RedditClient {
                 return;
             }
 
-            const isUpdate = run.lastPostTime && startOfDayNZ(dayjs(run.lastPostTime)) === startOfDayNZ(todayNZ())
+            const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime));
+            const startOfTodayString = startOfDayNZ(todayNZ());
+            const isUpdate = run.lastPostTime && startOfDayString === startOfTodayString
+            console.log(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
             if(isUpdate && run.existingPostId){
                 console.log(`updating reddit comment (${run.existingPostId})`);
 
@@ -133,11 +136,15 @@ class RedditClient {
         return new SocialPostRunResult(isSuccess, isUpdate, isSkipped, title, subId);
     }
 
-
     updateRedditSubmissions = async (run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> => {
         return new Promise<SocialPostRun>(async (resolve,reject) => {
             try{
-                const isUpdate = run.lastPostTime && startOfDayNZ(dayjs(run.lastPostTime)) === startOfDayNZ(todayNZ())
+                const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime))
+                const startOfTodayString = startOfDayNZ(todayNZ());
+                
+                const isUpdate = run.lastPostTime && startOfTodayString === startOfDayString
+                console.log(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
+                
                 if(isUpdate && run.existingPostId){
                     console.log(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
                     return await this.r.getSubmission(run.existingPostId)
