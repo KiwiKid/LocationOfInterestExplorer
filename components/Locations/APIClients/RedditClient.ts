@@ -40,6 +40,7 @@ class RedditClient {
         if(!r){ console.error('Failed to generate reddit client'); throw 'err'}
 
         this.r = r;
+        // Warning, this setting will still update the notion database specified, 
         this.mockRequest = mockRequest
 
         this.logger = new BackendLogger();
@@ -72,6 +73,7 @@ class RedditClient {
 
 
             if(isUpdate && run.existingPostId){
+
                 this.logger.info(`Updating reddit comment`, {
                     mockRequest: this.mockRequest,
                     existingPostId: run.existingPostId

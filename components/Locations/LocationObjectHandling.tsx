@@ -153,7 +153,7 @@ const downTheCountry = (a:LocationOfInterest,b:LocationOfInterest) => a.lat > b.
 //const downTheCountry = (a:SocialPostRun,b:LocationOfInterest) => a.lat > b.lat ? -1 : 1
 
 
-const downTheCountryGrp = (a:LocationGroup,b:LocationGroup) => a.locationPreset.urlParam === 'all' ? 1 : a.locationPreset.lat > b.locationPreset.lat ? -1 : 1
+const downTheCountryGrp = (a:LocationGroup,b:LocationGroup) => a.locationPreset && a.locationPreset.urlParam && a.locationPreset.urlParam === 'all' ? 1 : a.locationPreset.lat > b.locationPreset.lat ? -1 : 1
 
 
 
