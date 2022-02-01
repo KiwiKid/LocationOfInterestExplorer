@@ -60,7 +60,7 @@ class RedditClient {
             if(isUpdate && run.existingPostId){
                 this.logger.info(`updating reddit comment (${run.existingPostId})`);
 
-                await this.r.getComment(run.existingPostId)
+                /*await this.r.getComment(run.existingPostId)
                         .edit(text)
                             .then((res) => {
                                 //@ts-ignore
@@ -73,22 +73,26 @@ class RedditClient {
                                 console.error(err)
                                 run.setError(`Could not edit existing reddit comment for ${run.subreddit}`);
                                 reject(run);
-                            });
+                            });*/
             }else{
+
+                this.logger.info(`creating reddit comment (${run.existingPostId})`);
 
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
                     
-                matchingThreads.forEach(async (thread:any) => {
-                    await this.r.getSubmission(thread).reply(text).then((res) => {
+                this.logger.info(`found ${matchingThreads.length} matching threads ${run.subredditSubmissionTitleQuery} (${run.existingPostId})`);
+
+                 /*matchingThreads.forEach(async (thread:any) => {
+                   await this.r.getSubmission(thread).reply(text).then((res) => {
                         console.log(`created reddit comment (${processRedditId(res.id)})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
                         resolve(run);
                     }).catch((err) => { 
                         run.setError(`Could not create new reddit post for ${run.subreddit}`);
                         reject(run);
-                    });                        
-                });
+                    });                     
+                });  */ 
             }
     });
 }
@@ -150,18 +154,18 @@ class RedditClient {
                 
                 if(isUpdate && run.existingPostId){
                     this.logger.info(`Reddit Submission - edit ${run.subreddit} ${run.existingPostId}`);
-                    return await this.r.getSubmission(run.existingPostId)
+                   /* return await this.r.getSubmission(run.existingPostId)
                                         .edit(text)
                                         .then(async (sub:any) => {
                                             this.logger.info('Reddit Submission edited');
                                             run.setResults(await this.processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
                                             resolve(run);
-                                        }) 
+                                        }) */
                                         
                 } else{
                     this.logger.info(`updateRedditSubmissions - creating new post in r/${run.subreddit} with title: "${title}"`);
 
-                        await this.r.submitSelfpost({
+                    /*    await this.r.submitSelfpost({
                             subredditName: run.subreddit
                             , title: title
                             , text: text
@@ -174,7 +178,7 @@ class RedditClient {
                             console.error(err)
                             run.setError(`Could not create creating reddit new post r/${run.subreddit} ${run.textUrlParams}.${err & err.error ? err.error.message : ''} This can be caused by invalid FlairId`)
                             reject(run);
-                        })
+                        })*/
                     
                     //9bc8c692-2377-11ec-97a0-722625a13049
                     // Use https://www.reddit.com/r/[INSERT_SUBREDDIT_HERE]/api/link_flair_v2.json?raw_json=1
