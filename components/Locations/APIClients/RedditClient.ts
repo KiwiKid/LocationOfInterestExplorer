@@ -161,10 +161,14 @@ class RedditClient {
                                             run.setResults(await this.processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
                                             resolve(run);
                                         }) */
+this.logger.info('Reddit Submission edited');
+run.setResults(await this.processRedditSubmission(true, true, false, run, 'Fake postID', 'Title'));
+resolve(run);                                        
                                         
                 } else{
                     this.logger.info(`updateRedditSubmissions - creating new post in r/${run.subreddit} with title: "${title}"`);
-
+run.setResults(await this.processRedditSubmission(true, false, false, run, 'Fake postID', 'Title'));
+resolve(run);  
                     /*    await this.r.submitSelfpost({
                             subredditName: run.subreddit
                             , title: title
