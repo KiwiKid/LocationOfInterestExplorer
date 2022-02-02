@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 
 type AutoSizeTextAreaProps = {
   text: string
-  className: string
+  className?: string
 }
 
-const AutoSizeTextArea = ({text,className}:AutoSizeTextAreaProps) => {
+const AutoSizeTextArea = ({text,className = ""}:AutoSizeTextAreaProps) => {
 
   const [heightPx, setHeightPx] = useState(40);
 

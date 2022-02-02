@@ -8,6 +8,7 @@ import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
 import dayjs from "dayjs";
 import { requestLocations } from "../components/Locations/MoHLocationClient/requestLocations";
 import SocialRuns from "../components/Locations/SocialRuns";
+import AutoSizeTextArea from "../components/utils/AutoSizeTextArea";
 
 
 const { Client } = require("@notionhq/client")
@@ -36,9 +37,10 @@ type SocialPostsProps = {
     reddit:string;
     hardcodedURL:string
     locations:LocationOfInterestRecord[]
+    isUpdateRes:any
 }
 
-const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, socialPostRuns, reddit, hardcodedURL}) => {
+const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, socialPostRuns, reddit, hardcodedURL, isUpdateRes}) => {
 
     const publishTime = new Date(publishTimeUTC);
     
@@ -73,6 +75,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
     const anyResults = socialRuns.some((sr) => sr.result);
     return (
         <>
+        <AutoSizeTextArea text={JSON.stringify(isUpdateRes, undefined, '\t')} />
         <NiceFullDate date={publishTime}/><br/>
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
@@ -172,7 +175,10 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
     const beforeDateString = dayjs().utc().subtract(10, 'minutes').toISOString()
     const socialPostRuns = await client.getSocialPostRuns();
 
+    const isUpdateRes = socialPostRuns.map((spr) => {
+        return {spr: spr, isUpdateServer: spr.isUpdate()}
 
+    })
 
     const nextJSHacky:SocialPostsProps = JSON.parse(JSON.stringify({
         publishTimeUTC: new Date().toUTCString(),
@@ -181,6 +187,7 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
         reddit: process.env.SOCIAL_POST_PASS,
         hardcodedURL: getHardCodedUrl(),
         locations: locations,
+        isUpdateRes
     }));
 
     return {

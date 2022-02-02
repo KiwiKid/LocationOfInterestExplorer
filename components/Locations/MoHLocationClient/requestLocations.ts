@@ -73,7 +73,7 @@ const airports:Airport[] = [{
   city: 'Gisborne'
 }]
 
-const getCityFromEventRegex = new RegExp(/(\w+) (\-|to) (.+)/g)
+const getCityFromEventRegex = new RegExp(/(\w+)\s*(\-|to)\s*(.+)/g)
 
 
 const getAirportCities = (loi:LocationOfInterestRecord):FlightCities => {

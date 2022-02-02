@@ -24,6 +24,7 @@ class SocialPostRun {
     errorMsg?:string
     lastAction?:string
     lastPostTime?:string
+    lastCreateTime?:string
     url:string
 
     constructor (
@@ -36,6 +37,7 @@ class SocialPostRun {
         , existingPostTitle?:string
         , existingPostId?:string
         , lastCheckTime?:string
+        , lastCreateTime?:string 
         , flairId?:string
         , lastPostTime?:string
         , lastAction?:string
@@ -72,6 +74,7 @@ class SocialPostRun {
         this.type = type
         this.postFrequency = postFrequency
         this.lastCheckTime = lastCheckTime;
+        this.lastCreateTime = lastCreateTime;
 
         switch(this.type){
             case 'Reddit_Comment': 
@@ -97,22 +100,36 @@ class SocialPostRun {
     isUpdate():boolean{
         switch(this.postFrequency){
             case "day": {
-                const startOfLastPostDayString = startOfDayNZ(dayjs(this.lastPostTime) );
-                const startOfTodayString = startOfDayNZ(todayNZ());
-                const isUpdate = this.lastPostTime && startOfLastPostDayString === startOfTodayString ? true : false
-                return isUpdate;
+                const hoursTillUpdate = 24 - todayNZ().diff(dayjs(this.lastCreateTime).tz('Pacific/Auckland'),'hours');
+                
+                console.log(`${this.subreddit}/${this.primaryUrlParam} hoursTillUpdate: ${hoursTillUpdate} [${dayjs(this.lastCreateTime).tz('Pacific/Auckland')}| ${todayNZ()}]`);
+                return hoursTillUpdate > 0;
+              //  const startOfLastPostDayString = startOfDayNZ(dayjs(this.lastPostTime) );
+              //  const startOfTodayString = startOfDayNZ(todayNZ());
+             //   const isUpdate = this.lastPostTime && startOfLastPostDayString === startOfTodayString ? true : false
+              //  return isUpdate;
             }
             case "week": {
-                const LastPostWeek = getWeekOfYear(dayjs(this.lastPostTime));
-                const thisWeek = getWeekOfYear(todayNZ());
-                const isUpdate = this.lastPostTime && LastPostWeek === thisWeek ? true : false
-                return isUpdate;
+                const createdWeekOfYear = getWeekOfYear(dayjs(this.lastCreateTime).tz('Pacific/Auckland'));
+                const thisWeekOfYear = getWeekOfYear(todayNZ());
+                
+                console.log(`${this.subreddit}/${this.primaryUrlParam} created week: ${createdWeekOfYear}  this week: ${thisWeekOfYear}`);
+                return thisWeekOfYear !== createdWeekOfYear;
+
+              //  return dayjs(this.lastCreateTime).tz('Pacific/Auckland').diff(todayNZ(),'hours') > 24
+               
+            //    const LastPostWeek = getWeekOfYear(dayjs(this.lastPostTime));
+             //   const thisWeek = getWeekOfYear(todayNZ());
+             //   const isUpdate = this.lastPostTime && LastPostWeek === thisWeek ? true : false
+             //   return isUpdate;
             }
             case "fortnight": {
-                const lastPostFortnight = getFortnightOfYear(dayjs(this.lastPostTime));
-                const thisWeek = getFortnightOfYear(todayNZ());
-                const isUpdate = this.lastPostTime && lastPostFortnight === thisWeek ? true : false
-                return isUpdate;
+                const createdFortnightOfTheYear = getFortnightOfYear(dayjs(this.lastCreateTime).tz('Pacific/Auckland'));
+                const theFortnightOfTheYear = getFortnightOfYear(todayNZ());
+                
+                console.log(`${this.subreddit}/${this.primaryUrlParam} created fortnight: ${createdFortnightOfTheYear}  this fortnight: ${theFortnightOfTheYear}`);
+                return createdFortnightOfTheYear !== theFortnightOfTheYear;
+
                 
             }
             default:
@@ -124,7 +141,6 @@ class SocialPostRun {
             notionId: run.notionPageId,
             subreddit: run.subreddit,
             textUrlParams: run.textUrlParams,
-            mockRequest: this.mockRequest,
             startOfDayString: startOfLastPostDayString,
             isUpdate: isUpdate,
             startOftodayNZDate: startOfTodayString,

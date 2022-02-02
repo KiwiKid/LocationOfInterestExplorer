@@ -55,7 +55,7 @@ class FacebookClient {
     updateFacebook(run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> {
         return new Promise(async (resolve, reject) => {
             try{                
-                const isUpdate = run.lastPostTime && startOfDayNZ(dayjs(run.lastPostTime)) === startOfDayNZ(todayNZ())
+                const isUpdate = run.isUpdate()
                 if(isUpdate && run.existingPostId) {
 
 

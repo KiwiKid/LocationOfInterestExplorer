@@ -14,9 +14,8 @@ const processRedditId = (redditID:string) => redditID.startsWith('t3_') ? reddit
 class RedditClient { 
     r:snoowrap;
     logger:BackendLogger
-    mockRequest:boolean
 
-    constructor (mockRequest:boolean){
+    constructor (){
         
         const version = '0.2'
        
@@ -40,8 +39,6 @@ class RedditClient {
         if(!r){ console.error('Failed to generate reddit client'); throw 'err'}
 
         this.r = r;
-        // Warning, this setting will still update the notion database specified, 
-        this.mockRequest = mockRequest
 
         this.logger = new BackendLogger();
     }
@@ -58,13 +55,12 @@ class RedditClient {
 
             const startOfLastPostDayString = startOfDayNZ(dayjs(run.lastPostTime) );
             const startOfTodayString = startOfDayNZ(todayNZ());
-            const isUpdate = run.lastPostTime && startOfLastPostDayString === startOfTodayString
+            const isUpdate = run.isUpdate();
 
             this.logger.info(`startOfDayString: $ ${startOfTodayString} (${run.lastPostTime}`, {
                 notionId: run.notionPageId,
                 subreddit: run.subreddit,
                 textUrlParams: run.textUrlParams,
-                mockRequest: this.mockRequest,
                 startOfDayString: startOfLastPostDayString,
                 isUpdate: isUpdate,
                 startOftodayNZDate: startOfTodayString,
@@ -77,20 +73,9 @@ class RedditClient {
             if(isUpdate && run.existingPostId){
 
                 this.logger.info(`Updating reddit comment`, {
-                    mockRequest: this.mockRequest,
                     existingPostId: run.existingPostId
                 });
 
-                if(this.mockRequest){
-                    this.logger.info(`updated reddit comment`, {
-                        mockRequest: this.mockRequest,
-                        existingPostId: run.existingPostId
-                    });
-                    run.setResults(new SocialPostRunResult(true, true, false, title, 'Fake comment "Id', text))
-                    resolve(run);
-                    return;
-                }
-                
                 await this.r.getComment(run.existingPostId)
                         .edit(text)
                             .then((res) => {
@@ -109,22 +94,13 @@ class RedditClient {
 
                 this.logger.info(`creating reddit comment`,
                 {
-                    mockRequest: this.mockRequest,
                     existingPostId: run.existingPostId
                 });
-
-                if(this.mockRequest){
-
-                    run.setResults(new SocialPostRunResult(true, true, false, title, 'Fake comment "Id', text))
-                    resolve(run);
-                    return;
-                }
 
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
                     
                 this.logger.info(`Found matching threads`, {
-                    mock: this.mockRequest,
                     matchingThreads: matchingThreads.length,
                     titleQuery: run.subredditSubmissionTitleQuery,
                     existingPostId: run.existingPostId
@@ -196,22 +172,13 @@ class RedditClient {
                 const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime))
                 const startOfTodayString = startOfDayNZ(todayNZ());
                 
-                const isUpdate = run.lastPostTime && startOfTodayString === startOfDayString
+                const isUpdate = run.isUpdate();
                 this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
                 
                 if(isUpdate && run.existingPostId){
                     this.logger.info(`Reddit post - edit ${run.subreddit} ${run.existingPostId}`);
 
-
-                    if(this.mockRequest){
-                        console.log(`updated reddit post (${run.existingPostId})`);
-                        run.setResults(await this.processRedditSubmission(true, true, false, run, 'Fake postID', 'Title'));
-                        resolve(run);
-                        return;
-                    }
-
-
-                    return await this.r.getSubmission(run.existingPostId)
+                   return await this.r.getSubmission(run.existingPostId)
                                         .edit(text)
                                         .then(async (sub:any) => {
                                             this.logger.info('Reddit Submission edited');
@@ -222,13 +189,6 @@ class RedditClient {
                                       
                                         
                 } else{
-
-                    if(this.mockRequest){
-                        console.log(`created reddit post (${run.existingPostId})`);
-                        run.setResults(await this.processRedditSubmission(true, true, false, run, 'Fake postID', 'Title'));
-                        resolve(run);
-                        return;
-                    }
 
                     await this.r.submitSelfpost({
                         subredditName: run.subreddit
