@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import CopyBox from "../../utils/CopyBox";
 import { asAtDateAlwaysNZ, onlyToday, startOfDayNZ, startOfDayFormattedNZ, subtractHours, dayFormattedNZ } from "../DateHandling";
 import { LocationGroup }  from "../LocationGroup";
-import { downTheCountryGrp, getTitle } from "../LocationObjectHandling";
+import { downTheCountryGrp, downTheCountryGrpWithOverride, getTitle } from "../LocationObjectHandling";
 import { processGroupKey } from "./LocationInfoGrid";
 
 type TodayLocationSummaryProps = {
@@ -10,6 +10,7 @@ type TodayLocationSummaryProps = {
     hardcodedURL:string
     publishTime:Date
     locationSettings:LocationSettings
+    mainMatchingPreset?: LocationPreset
 }
 
 
@@ -21,11 +22,12 @@ const getLocationGroupsSummary = (
     , displayTotal: boolean
     , includeDayInTitle: boolean
     , frequency:string = 'day'
+    , mainMatchingPreset?: LocationPreset
 ) => {
 
     return (
         `${getTitle(frequency, '', publishTime, displayTotal ? locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}\n\n\n ${locationGroups
-            .sort(downTheCountryGrp)
+            .sort((a,b) => mainMatchingPreset ? downTheCountryGrpWithOverride(mainMatchingPreset.urlParam, a,b) : downTheCountryGrp(a,b))
             .map((lg) => lg.toString(true, false, undefined))
             .join(`\n`)}`
     )
@@ -34,16 +36,16 @@ const getLocationGroupsSummary = (
 const getTotalLocationSummaryTitle = (publishTime:Date) => `New Locations of Interest - ${dayFormattedNZ(publishTime)}`
 
 
-const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, locationSettings}:TodayLocationSummaryProps) => {
+const TodayLocationSummary = ({locationGroups, hardcodedURL, publishTime, locationSettings, mainMatchingPreset}:TodayLocationSummaryProps) => {
 
     let copyText = 'invalid';
     let facebookCopyText = 'invalid';
     if(locationGroups){
-        copyText = getLocationGroupsSummary(locationGroups, hardcodedURL, publishTime, locationSettings, true, true)
+        copyText = getLocationGroupsSummary(locationGroups, hardcodedURL, publishTime, locationSettings, true, true, 'day', mainMatchingPreset)
     }
 
     if(locationGroups){
-        facebookCopyText = getLocationGroupsSummary(locationGroups, hardcodedURL, publishTime, locationSettings, true, false)
+        facebookCopyText = getLocationGroupsSummary(locationGroups, hardcodedURL, publishTime, locationSettings, true, false,'day', mainMatchingPreset)
     }
 
     let titleText = getTotalLocationSummaryTitle(publishTime);

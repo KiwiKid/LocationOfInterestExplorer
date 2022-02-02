@@ -289,9 +289,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     
     
                 const title = getTitle(run.postFrequency, mainMatchingPreset.title, now)// `New Locations of Interest in ${} - ${dayFormattedNZ(now)}`
-                const text = getLocationGroupsSummary(matchingLocationGroups, url, now, settings, true, false);
+                const text = getLocationGroupsSummary(mainMatchingPreset, matchingLocationGroups, url, now, settings, true, false);
 
-                const facebookText = getLocationGroupsSummary(matchingLocationGroups, url, now, settings, true, true);
+                const facebookText = getLocationGroupsSummary(mainMatchingPreset, matchingLocationGroups, url, now, settings, true, true);
     
                 const textWithTitle = `${dayFormattedNZ(now)} - ${text}`
 

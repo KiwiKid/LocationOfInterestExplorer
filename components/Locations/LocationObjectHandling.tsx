@@ -158,6 +158,15 @@ const downTheCountry = (a:LocationOfInterest,b:LocationOfInterest) => a.lat > b.
 
 const downTheCountryGrp = (a:LocationGroup,b:LocationGroup) => !a.locationPreset ? 1 : a.locationPreset.urlParam && a.locationPreset.urlParam === 'all' ? 1 : a.locationPreset.lat > b.locationPreset.lat ? -1 : 1
 
+const downTheCountryGrpWithOverride = (primaryUrlParam:string, a:LocationGroup,b:LocationGroup) => {
+  if(primaryUrlParam == a.locationPreset.urlParam || primaryUrlParam == a.locationPreset.urlParam){
+    return -1
+  }
+  
+  return downTheCountryGrp(a,b)
+}
+
+
 
 const getDateRangeDisplay = (frequency:string,publishTime:Date) =>{
   switch(frequency){
@@ -200,4 +209,5 @@ export {
   , downTheCountry
   , downTheCountryPreset
   , getTitle
+  , downTheCountryGrpWithOverride
 }
