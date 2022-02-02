@@ -110,8 +110,16 @@ class SocialPostRun {
     
     setLocationGroups(locations:LocationOfInterest[], relevantLocationPresets:LocationPreset[]){
 
-        const dateAfter = this.isUpdate() && this.lastCreateTime ? this.lastCreateTime : todayNZ();
-        const relevantLocations = locations.filter((l) => dayjs(l.added) > dateAfter);
+        
+        const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
+
+        const dateAfter:Dayjs = this.isUpdate() && this.lastCreateTimeNZ ? this.lastCreateTimeNZ : todayNZ().add(-frequencyInDays, 'days').startOf('day');
+        const relevantLocations = locations.filter((l) => {
+            console.log(dayjs(l.added))
+            console.log(dateAfter)
+            console.log(dayjs(l.added).isAfter(dateAfter))
+            return dayjs(l.added).isAfter(dateAfter)
+        });
 
         const res:Dictionary<LocationGroup> = {};
         const others = new LocationGroup("Others", relevantLocationPresets.filter((lp) => lp.urlParam === 'all')[0]);
@@ -137,7 +145,7 @@ class SocialPostRun {
         
         const groupArray = Object.keys(res).map((r) => res[r]);
 
-        const matchingPrimaryLocationGroup = groupArray.filter((lg) => lg.locationPreset.urlParam == this.primaryUrlParam);
+        const matchingPrimaryLocationGroup = groupArray.filter((lg) => lg.locationPreset && lg.locationPreset.urlParam == this.primaryUrlParam);
         if(!matchingPrimaryLocationGroup || matchingPrimaryLocationGroup.length !== 1){
             throw `No matching primary location group for ${this.primaryUrlParam} ${this.notionPageId}`;
         }
@@ -150,9 +158,9 @@ class SocialPostRun {
     isUpdate():boolean{
         switch(this.postFrequency){
             case "day": {
-                const hoursTillNewPost = 24 - todayNZ().diff(dayjs(this.lastCreateTime).tz('Pacific/Auckland'),'hours');
+                const hoursTillNewPost = 24 - todayNZ().diff(this.lastCreateTimeNZ,'hours');
                 
-                console.log(`${this.subreddit}/${this.primaryUrlParam} hoursTillNewPost: ${hoursTillNewPost} [${dayjs(this.lastCreateTime).tz('Pacific/Auckland')}| ${todayNZ()}]`);
+                console.log(`${this.subreddit}/${this.primaryUrlParam} hoursTillNewPost: ${hoursTillNewPost} [${this.lastCreateTimeNZ}| ${todayNZ()}]`);
                 return hoursTillNewPost > 0;
               //  const startOfLastPostDayString = startOfDayNZ(dayjs(this.lastPostTime) );
               //  const startOfTodayString = startOfDayNZ(todayNZ());
@@ -160,7 +168,7 @@ class SocialPostRun {
               //  return isUpdate;
             }
             case "week": {
-                const createdWeekOfYear = getWeekOfYear(dayjs(this.lastCreateTime).tz('Pacific/Auckland'));
+                const createdWeekOfYear = getWeekOfYear(this.lastCreateTimeNZ);
                 const thisWeekOfYear = getWeekOfYear(todayNZ());
                 
                 console.log(`${this.subreddit}/${this.primaryUrlParam} created week: ${createdWeekOfYear}  this week: ${thisWeekOfYear}`);
@@ -174,7 +182,7 @@ class SocialPostRun {
              //   return isUpdate;
             }
             case "fortnight": {
-                const createdFortnightOfTheYear = getFortnightOfYear(dayjs(this.lastCreateTime).tz('Pacific/Auckland'));
+                const createdFortnightOfTheYear = getFortnightOfYear(this.lastCreateTimeNZ);
                 const theFortnightOfTheYear = getFortnightOfYear(todayNZ());
                 
                 console.log(`${this.subreddit}/${this.primaryUrlParam} created fortnight: ${createdFortnightOfTheYear}  this fortnight: ${theFortnightOfTheYear}`);
@@ -236,7 +244,7 @@ class SocialPostRun {
         }
         
         return `${this.getTitle(this.primaryLocationGroup.locationPreset.title, publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}\n\n\n ${this.locationGroups
-            .sort((a,b) => this.primaryLocationGroup ? downTheCountryGrpWithOverride(this.primaryLocationGroup.locationPreset.title, a,b) : downTheCountryGrp(a,b))
+            .sort((a,b) => this.primaryLocationGroup ? downTheCountryGrpWithOverride(this.primaryLocationGroup.locationPreset.urlParam, a,b) : downTheCountryGrp(a,b))
             .map((lg) => lg.toString(true, false, undefined))
             .join(`\n`)}`
     }

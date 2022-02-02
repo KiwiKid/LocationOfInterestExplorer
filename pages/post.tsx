@@ -1,5 +1,5 @@
 import { GetStaticProps, NextPage } from "next";
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
 import { getMinutesAgo, NiceFullDate, subtractMinutes } from "../components/Locations/DateHandling";
 import { getHardCodedUrl } from "../components/utils/utils";
@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { requestLocations } from "../components/Locations/MoHLocationClient/requestLocations";
 import SocialRuns from "../components/Locations/SocialRuns";
 import AutoSizeTextArea from "../components/utils/AutoSizeTextArea";
+import { mapLocationRecordToLocation } from "../components/Locations/LocationObjectHandling";
 
 
 const { Client } = require("@notionhq/client")
@@ -36,17 +37,20 @@ type SocialPostsProps = {
     socialPostRuns: SocialPostRun[];
     reddit:string;
     hardcodedURL:string
-    locations:LocationOfInterestRecord[]
+    locationsRecords:LocationOfInterestRecord[]
     isUpdateRes:any
 }
 
-const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettings, socialPostRuns, reddit, hardcodedURL, isUpdateRes}) => {
+const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeUTC, locationSettings, socialPostRuns, reddit, hardcodedURL, isUpdateRes}) => {
 
     const publishTime = new Date(publishTimeUTC);
+
+    const locations = locationsRecords.map(mapLocationRecordToLocation);
     
     const [lastVisitTime, setLastVisitTime] = useState<Date|undefined>(undefined);
     
-    const [socialRuns, setSocialRuns] = useState<SocialPostRun[]>(socialPostRuns);
+    // Next.js is stripping methods from classes when serilising..this gross hack gets them back 
+    const [socialRuns, setSocialRuns] = useState<SocialPostRun[]>(socialPostRuns.map((spr) => new SocialPostRun(spr.notionPageId, spr.subreddit, spr.primaryUrlParam, spr.textUrlParams, spr.type,spr.postFrequency,spr.existingPostTitle,spr.existingPostId,spr.lastCheckTime, spr.lastCreateTime, spr.flairId, spr.lastPostTime, spr.lastAction)))
 
     const [socialRunResults, setSocialRunResults] = useState<SocialPostRun[]>([]);
 
@@ -71,6 +75,13 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
             })
     }
 
+    useEffect(() => {
+        socialRuns.forEach((run) => {
+            if(run.setLocationGroups){
+                run.setLocationGroups(locations, locationSettings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam)))
+            }
+        });
+    }, []);
 
     const anyResults = socialRuns.some((sr) => sr.result);
     return (
@@ -88,20 +99,20 @@ const SocialPosts: NextPage<SocialPostsProps> = ({publishTimeUTC, locationSettin
         <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button>
         <div className="w-full h-2 bg-yellow-700"/> 
-        <div className="grid grid-cols-3">
-            {socialRunResults.length > 0 ? socialRunResults.map((res) => {
-                return (<>
-                        <div>{res.result?.isSuccess ? 'Success' : 'Failed'} {res.result?.isSkipped ? 'Skipped' : res.result?.isUpdate ? 'Updated Success' : 'Created Success'}</div>
-                        {res.result?.createdDate ? <div>{getMinutesAgo(res.result?.createdDate)} mins ago</div> :<div>None</div>}
-                        <div>{res.subreddit}({res.textUrlParams}) {res.result?.error}</div>
-                        
-                        
-                        <div>{res.result?.postTitle}</div>
-                        <div>{res.result?.postText}</div>
-                        <div>{res.result?.postId}</div>
-                    </>)
-            }):<div className="col-span-full">No results</div> }
-        </div> 
+            <div className="grid grid-cols-3">
+                {socialRunResults.length > 0 ? socialRunResults.map((res) => {
+                    return (<>
+                            <div>{res.result?.isSuccess ? 'Success' : 'Failed'} {res.result?.isSkipped ? 'Skipped' : res.result?.isUpdate ? 'Updated Success' : 'Created Success'}</div>
+                            {res.result?.createdDate ? <div>{getMinutesAgo(res.result?.createdDate)} mins ago</div> :<div>None</div>}
+                            <div>{res.subreddit}({res.textUrlParams}) {res.result?.error}</div>
+                            
+                            
+                            <div>{res.result?.postTitle}</div>
+                            <div>{res.result?.postText}</div>
+                            <div>{res.result?.postId}</div>
+                        </>)
+                }):<div className="col-span-full">No results</div> }
+            </div> 
         <div className="grid grid-cols-3 p-5">
             <div>SubReddit</div> 
             <div>primary</div> 
@@ -169,16 +180,11 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
 
     const client = new NotionClient();
     const locations = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL);
-    const settings = client.getLocationSettings();
+    const settings = await client.getLocationSettings();
 
 
     const beforeDateString = dayjs().utc().subtract(10, 'minutes').toISOString()
     const socialPostRuns = await client.getSocialPostRuns();
-
-    const isUpdateRes = socialPostRuns.map((spr) => {
-        return {spr: spr, isUpdateServer: spr.isUpdate()}
-
-    })
 
     const nextJSHacky:SocialPostsProps = JSON.parse(JSON.stringify({
         publishTimeUTC: new Date().toUTCString(),
@@ -186,8 +192,7 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
         socialPostRuns: socialPostRuns,
         reddit: process.env.SOCIAL_POST_PASS,
         hardcodedURL: getHardCodedUrl(),
-        locations: locations,
-        isUpdateRes
+        locationsRecords: locations
     }));
 
     return {

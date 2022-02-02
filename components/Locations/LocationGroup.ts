@@ -3,6 +3,7 @@ import { Dictionary } from 'lodash';
 import LocationOfInterest from '../types/LocationOfInterest'
 import { asAtDateAlwaysNZ, startOfDayFormattedNZ } from './DateHandling';
 import { getPrintableLocationOfInterestString, mostRecentlyAdded } from './LocationObjectHandling';
+import LocationPreset from './LocationPreset';
 
 class LocationGroup {
     locations:LocationOfInterest[];
@@ -47,15 +48,15 @@ class LocationGroup {
     toUrl = () => this.locationPreset && this.locationPreset.urlParam ? `https://nzcovidmap.org/loc/${this.locationPreset.urlParam}` : ''
 }
 
-const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]) => {
-    return locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0]
+const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]):LocationPreset|undefined => {
+    return locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0]    
 }
 
 // Its generally preferred to used the locations groups associated with SocialPostRuns if possible
 // This is for the "Raw" locations that aren't mappable (and often horribly disfigured)
 const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
     const res:Dictionary<LocationGroup> = {};
-    const others = new LocationGroup("Others", locationPresets.filter((lp) => lp.urlParam === 'all')[0]);
+    const others = new LocationGroup("Others", { title: 'Other', lat: -40.8248, lng: 173.7304, zoom: 5, matchingMohCityString: [], showInDrawer:false, urlParam: 'other' });
     
     locations.forEach((l) => {
       const preset = getMatchingLocationPreset(l, locationPresets);
