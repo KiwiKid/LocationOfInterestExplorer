@@ -56,13 +56,7 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
                     hardcodedURL={hardcodedURL}
                     publishTime={publishTime}
                     locationSettings={locationSettings}
-                    />        
-                <TodayLocationSummary 
-                    locationGroups={groupedLocations} 
-                    hardcodedURL={hardcodedURL}
-                    publishTime={publishTime}
-                    locationSettings={locationSettings}
-                    />            
+                    />               
                 {groupedLocations.map((group) => {
                     return <LocationInfoGroup 
                         publishTime={publishTime}

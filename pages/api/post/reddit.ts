@@ -277,7 +277,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
                 if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
     
-                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => tlg.locationPreset.urlParam == mainMatchingPreset.urlParam || mainMatchingPreset.urlParam == 'all')
+                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => run.textUrlParams.some((tup) => tup === tlg.locationPreset.urlParam  || mainMatchingPreset.urlParam == 'all'))
                 if(matchingLocationGroups.length === 0){
                     await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), 'Success Skipped (no locations)')
                     run.setResults(new SocialPostRunResult(true, false, true));
@@ -285,7 +285,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     return;
                 }
     
-    
+                
     
     
                 const title = getTitle(run.postFrequency, mainMatchingPreset.title, now)// `New Locations of Interest in ${} - ${dayFormattedNZ(now)}`
@@ -294,6 +294,12 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 const facebookText = getLocationGroupsSummary(matchingLocationGroups, url, now, settings, true, true);
     
                 const textWithTitle = `${dayFormattedNZ(now)} - ${text}`
+
+
+
+
+
+
                 try{
                     switch(run.type){
                         case "Reddit_Post": resolve(await processRedditPostRun(run, title, text));

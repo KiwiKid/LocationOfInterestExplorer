@@ -100,10 +100,10 @@ class SocialPostRun {
     isUpdate():boolean{
         switch(this.postFrequency){
             case "day": {
-                const hoursTillUpdate = 24 - todayNZ().diff(dayjs(this.lastCreateTime).tz('Pacific/Auckland'),'hours');
+                const hoursTillNewPost = 24 - todayNZ().diff(dayjs(this.lastCreateTime).tz('Pacific/Auckland'),'hours');
                 
-                console.log(`${this.subreddit}/${this.primaryUrlParam} hoursTillUpdate: ${hoursTillUpdate} [${dayjs(this.lastCreateTime).tz('Pacific/Auckland')}| ${todayNZ()}]`);
-                return hoursTillUpdate > 0;
+                console.log(`${this.subreddit}/${this.primaryUrlParam} hoursTillNewPost: ${hoursTillNewPost} [${dayjs(this.lastCreateTime).tz('Pacific/Auckland')}| ${todayNZ()}]`);
+                return hoursTillNewPost > 0;
               //  const startOfLastPostDayString = startOfDayNZ(dayjs(this.lastPostTime) );
               //  const startOfTodayString = startOfDayNZ(todayNZ());
              //   const isUpdate = this.lastPostTime && startOfLastPostDayString === startOfTodayString ? true : false
