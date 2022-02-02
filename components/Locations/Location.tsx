@@ -1,6 +1,6 @@
 import { debounce } from "lodash"
 import { useEffect, useMemo } from "react"
-import { LocationOfInterest } from "../types/LocationOfInterest"
+import  LocationOfInterest from "../types/LocationOfInterest"
 import ExternalLink from "../utils/ExternalLink"
 import { detailedLongTimeToNZ, getHoursAgo } from "../utils/utils"
 import LocationMetaDataSummary  from "./LocationMetaDataSummary"

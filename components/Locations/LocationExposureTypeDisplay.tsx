@@ -1,5 +1,5 @@
 
-import { LocationOfInterest}  from '../types/LocationOfInterest'
+import LocationOfInterest  from '../types/LocationOfInterest'
 import OmicronDisplay from './OmicronDisplay'
 
 type LocationExposureTypeDisplay ={

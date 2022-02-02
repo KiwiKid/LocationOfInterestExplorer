@@ -6,10 +6,9 @@ import _, { rangeRight, reject } from 'lodash';
 import RedditClient from '../../../components/Locations/APIClients/RedditClient';
 import NotionClient from '../../../components/Locations/APIClients/NotionClient';
 import { requestLocations } from '../../../components/Locations/MoHLocationClient/requestLocations';
-import { LocationOfInterest } from '../../../components/types/LocationOfInterest';
-import {  applyLocationOverrides,  getTitle,  mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
+import LocationOfInterest from '../../../components/types/LocationOfInterest';
+import {  applyLocationOverrides,   mapLocationRecordToLocation } from '../../../components/Locations/LocationObjectHandling';
 import { dayFormattedNZ, oldestLastCheckTimeFirst, onlyToday} from '../../../components/Locations/DateHandling';
-import { getLocationGroupsSummary } from '../../../components/Locations/info/TodayLocationSummary';
 import dayjs from 'dayjs';
 import { createLocationGroups, LocationGroup }  from '../../../components/Locations/LocationGroup';
 import { resolve } from 'path/posix';
@@ -268,17 +267,21 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             //if(run.result && run.result.isSuccess && run.result.isSkipped){ return false}
             return true;
         }
-        const todaysLocationGroups:LocationGroup[] = createLocationGroups(todaysLocations, settings.locationPresets);
+       // const todaysLocationGroups:LocationGroup[] = createLocationGroups(todaysLocations, settings.locationPresets);
 
         const redditClient = new RedditClient();
 
         const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
+             
+                run.setLocationGroups(locations, settings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam  || lp.urlParam == 'all')));
+            
+            
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
                 if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
     
-                const matchingLocationGroups = todaysLocationGroups.filter((tlg) => run.textUrlParams.some((tup) => tup === tlg.locationPreset.urlParam  || mainMatchingPreset.urlParam == 'all'))
-                if(matchingLocationGroups.length === 0){
+                //const matchingLocationGroups = todaysLocationGroups.filter((tlg) => run.textUrlParams.some((tup) => tup === tlg.locationPreset.urlParam  || mainMatchingPreset.urlParam == 'all'))
+                if(!run.locationGroups || run.locationGroups.length === 0){
                     await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), 'Success Skipped (no locations)')
                     run.setResults(new SocialPostRunResult(true, false, true));
                     resolve(run)
@@ -286,12 +289,17 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }
     
                 
+                if(!run.primaryLocationGroup){
+                    throw `no primaryLocationGroup on run ${run.notionPageId}`
+                }
     
-    
-                const title = getTitle(run.postFrequency, mainMatchingPreset.title, now)// `New Locations of Interest in ${} - ${dayFormattedNZ(now)}`
-                const text = getLocationGroupsSummary(mainMatchingPreset, matchingLocationGroups, url, now, settings, true, false);
+                const title = run.getTitle(run.primaryLocationGroup.locationPreset.title, now)// `New Locations of Interest in ${} - ${dayFormattedNZ(now)}`
 
-                const facebookText = getLocationGroupsSummary(mainMatchingPreset, matchingLocationGroups, url, now, settings, true, true);
+                
+
+                const text = run.getLocationGroupsSummary(now, true);
+
+                const facebookText = run.getLocationGroupsSummary(now, true);
     
                 const textWithTitle = `${dayFormattedNZ(now)} - ${text}`
 

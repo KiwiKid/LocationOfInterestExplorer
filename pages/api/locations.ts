@@ -1,7 +1,7 @@
 /*import type { NextApiRequest, NextApiResponse } from 'next'
 import  {parse} from 'csv-parse'
 import get, { AxiosResponse } from 'axios'
-import { LocationOfInterest } from '../../components/types/LocationOfInterest';
+import LocationOfInterest from '../../components/types/LocationOfInterest';
 import { PRESET_LOCATIONS } from '../../components/Locations/LocationPresets';
 
 //import mockData from '../../components/Locations/mockdata';

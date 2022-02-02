@@ -7,7 +7,7 @@ import RegisterVisit from "../RegisterVisit";
 import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import OmicronDisplay from "../OmicronDisplay";
 import InternalLink from "../../utils/InternalLink";
-import { LocationOfInterest } from "../../types/LocationOfInterest";
+import LocationOfInterest from "../../types/LocationOfInterest";
 
 type LocationCirclePopupProps ={
     l: LocationOfInterest

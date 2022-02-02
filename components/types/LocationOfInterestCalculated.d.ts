@@ -1,5 +1,5 @@
 import {LatLng} from 'leaflet'
-import { LocationOfInterest } from './LocationOfInterest';
+import LocationOfInterest from './LocationOfInterest';
 
 export interface LocationOfInterestCalculated {
     loi: LocationOfInterest;

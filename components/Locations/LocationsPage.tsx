@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Script from "next/script";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { LocationOfInterest } from "../types/LocationOfInterest";
+import LocationOfInterest from "../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import { Sort } from "../types/Sort";
 import { getDateInPastByXDays } from "../utils/utils";

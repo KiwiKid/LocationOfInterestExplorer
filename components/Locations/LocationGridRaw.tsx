@@ -2,7 +2,7 @@ import {LocationOfInterestCalculated} from '../types/LocationOfInterestCalculate
 import { longDayToNZ, metersToKmsString, shortDayMonthToNZ, shortTimeWithHourMinToNZ, sortFormatToNZ } from '../utils/utils'
 import _ from 'lodash'
 
-import { LocationOfInterest } from '../types/LocationOfInterest';
+import LocationOfInterest from '../types/LocationOfInterest';
 import LargeLocationGrid from './LargeLocationGrid';
 import { Sort } from '../types/Sort';
 import Location from './Location';

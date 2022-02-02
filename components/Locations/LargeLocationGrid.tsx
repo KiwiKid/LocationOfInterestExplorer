@@ -1,4 +1,4 @@
-import { LocationOfInterest } from "../types/LocationOfInterest";
+import  LocationOfInterest from "../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import ExternalLink from "../utils/ExternalLink";
 import {metersToKmsString, detailedLongTimeToNZ, getHoursAgo } from "../utils/utils";

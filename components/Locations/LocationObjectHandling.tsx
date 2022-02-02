@@ -1,39 +1,39 @@
-import { LocationOfInterest } from "../types/LocationOfInterest";
-import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
+import LocationOfInterest from "../types/LocationOfInterest";
 import { asAtDateAlwaysNZ, dayFormattedNZ, startOfDayFormattedNZ } from "./DateHandling";
 import { LocationGroup }  from "./LocationGroup";
 import { Dictionary } from "lodash";
 import { platform } from "os";
 import SocialPostRun from "./APIClients/SocialPostRun";
 import dayjs from "dayjs";
+import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 
 
 
 const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
-  return {
-    id: rec.id,
-    mohId: rec.mohId,
-    location: rec.location,
-    city: rec.city,
-    event: rec.event,
-    start: new Date(rec.start),
-    end: new Date(rec.end),
-    updated: rec.updated ? new Date(rec.updated) : undefined,
-    added: new Date(rec.added),
-    exposureType: rec.exposureType,
-    visibleInWebform: rec.visibleInWebform,
-    advice: rec.advice,
-    lat: +rec.lat,
-    lng: +rec.lng,
-    isOmicron: rec.advice.indexOf('Omicron') > 0
-  }
+  return new LocationOfInterest(
+    rec.id,
+    rec.mohId,
+    rec.location,
+    rec.city,
+    rec.event,
+    new Date(rec.start),
+    new Date(rec.end),
+    new Date(rec.added),
+    rec.advice,
+    +rec.lat,
+    +rec.lng,
+    rec.exposureType,
+    rec.visibleInWebform,
+    rec.advice.indexOf('Omicron') > 0,
+    rec.updated ? new Date(rec.updated) : undefined,
+  )
 }
 
 
 /*
 TODO: Create a reducer for all location management
 const visibleLocations = (state:any, action:any) => {
-  switch (action.type) {
+switch (action.type) {
       case "changeColor":
           return {...state, color: action.color};
       case "changeTextVisibility":
@@ -168,29 +168,10 @@ const downTheCountryGrpWithOverride = (primaryUrlParam:string, a:LocationGroup,b
 
 
 
-const getDateRangeDisplay = (frequency:string,publishTime:Date) =>{
-  switch(frequency){
-      case "day": return `${dayFormattedNZ(publishTime)}`
-      case "week": return `${dayFormattedNZ(publishTime)} - ${dayFormattedNZ(dayjs(publishTime).add(7,'day'))}`
-      case "fortnight": return `${dayFormattedNZ(publishTime)} - ${dayFormattedNZ(dayjs(publishTime).add(14,'day'))}`
-      default: {
-          console.error('no date range frequency option found');
-      }
-  }
-}
 
 
-const getTitle = (frequency:string, locationName:string,publishTime?:Date,locationCount?:number):string => {
-      switch(frequency){
-          case "day": return `New Locations in ${locationName} ${publishTime ? ` ${getDateRangeDisplay(frequency, publishTime)}`: ''}`
-          case "week": return `New Locations in ${locationName}${publishTime ? getDateRangeDisplay(frequency, publishTime): ''}`
-          case "fortnight": return `New Locations in ${locationName} ${publishTime ? getDateRangeDisplay(frequency, publishTime): ''}`
-          default: {
-              console.error('no date range frequency option found');
-              return ''
-        }
-    }
-}
+
+
 
 export { 
   getQuickLinkURL
@@ -208,6 +189,5 @@ export {
   , downTheCountryGrp
   , downTheCountry
   , downTheCountryPreset
-  , getTitle
   , downTheCountryGrpWithOverride
 }

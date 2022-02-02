@@ -21,7 +21,7 @@ import { NiceDateWithTime, NiceFullAlwaysNZDate, NiceShortTime } from "./DateHan
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 import { downTheCountry, downTheCountryPreset, metaImageURLDirect } from "./LocationObjectHandling";
-import { LocationOfInterest } from "../types/LocationOfInterest";
+import LocationOfInterest from "../types/LocationOfInterest";
 import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
 import Image from 'next/image';
 import { resetScroll } from "../utils/resetScroll";

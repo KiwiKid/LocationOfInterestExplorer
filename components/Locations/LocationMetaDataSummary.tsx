@@ -1,4 +1,4 @@
-import { LocationOfInterest } from "../types/LocationOfInterest"
+import LocationOfInterest from "../types/LocationOfInterest"
 import { getDaysAgoClassName } from "../utils/Styling";
 import { detailedLongTimeToNZ, getHoursAgo } from "../utils/utils"
 import { NiceTimeFromNow } from "./DateHandling";

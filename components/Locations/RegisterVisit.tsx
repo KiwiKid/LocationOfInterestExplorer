@@ -1,4 +1,4 @@
-import { LocationOfInterest } from "../types/LocationOfInterest";
+import LocationOfInterest from "../types/LocationOfInterest";
 import ExternalLink from "../utils/ExternalLink";
 
 type RegisterVisitProps = {

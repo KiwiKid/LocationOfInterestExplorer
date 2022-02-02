@@ -4,8 +4,7 @@ import _ from 'lodash';
 import { onlyToday, startOfDayNZ } from '../../components/Locations/DateHandling';
 import { requestLocations } from '../../components/Locations/MoHLocationClient/requestLocations';
 import { applyLocationOverrides, mapLocationRecordToLocation } from '../../components/Locations/LocationObjectHandling';
-import { getLocationGroupsSummary, getTotalLocationSummaryTitle } from '../../components/Locations/info/TodayLocationSummary';
-import { LocationOfInterest } from '../../components/types/LocationOfInterest';
+import LocationOfInterest from '../../components/types/LocationOfInterest';
 import NotionClient from '../../components/Locations/APIClients/NotionClient';
 import { createLocationGroups } from '../../components/Locations/LocationGroup';
 
@@ -17,6 +16,7 @@ type Summary = {
 
 
 const handler = async (req:NextApiRequest, res:NextApiResponse) => {
+    /*
     const url = 'https://nzcovidmap.org'
     const now = new Date();
     
@@ -46,9 +46,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     }
                 });*/
 
-    const summary:Summary = { todayTitle: todayTitle, todaySummary: todaySummary, newLocationCount: todayLocations.length }
+  //  const summary:Summary = { todayTitle: todayTitle, todaySummary: todaySummary, newLocationCount: todayLocations.length }
 
-    res.status(200).json(summary);
+    res.status(500).json({error: 'This api has been depreciated. Reach out if this is a problem'});
 }
 
 export default handler

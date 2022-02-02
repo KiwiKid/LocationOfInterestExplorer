@@ -1,6 +1,6 @@
 
 import { Dictionary } from 'lodash';
-import { LocationOfInterest } from '../types/LocationOfInterest'
+import LocationOfInterest from '../types/LocationOfInterest'
 import { asAtDateAlwaysNZ, startOfDayFormattedNZ } from './DateHandling';
 import { getPrintableLocationOfInterestString, mostRecentlyAdded } from './LocationObjectHandling';
 
@@ -51,6 +51,8 @@ const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:L
     return locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0]
 }
 
+// Its generally preferred to used the locations groups associated with SocialPostRuns if possible
+// This is for the "Raw" locations that aren't mappable (and often horribly disfigured)
 const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
     const res:Dictionary<LocationGroup> = {};
     const others = new LocationGroup("Others", locationPresets.filter((lp) => lp.urlParam === 'all')[0]);

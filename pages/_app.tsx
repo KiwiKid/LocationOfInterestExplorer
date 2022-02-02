@@ -4,7 +4,7 @@ import { requestLocations } from '../components/Locations/MoHLocationClient/requ
 import LocationContext from '../components/Locations/MoHLocationClient/LocationContext'
 import { useEffect, useState } from 'react';
 import { applyLocationOverrides, mapLocationRecordToLocation } from '../components/Locations/LocationObjectHandling';
-import { LocationOfInterest } from '../components/types/LocationOfInterest';
+import LocationOfInterest from '../components/types/LocationOfInterest';
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import { requestLocationPresets } from '../components/Locations/LocationSettingsContext/requestLocationPreset';
 import { requestLocationOverrides } from '../components/Locations/LocationSettingsContext/requestLocationOverride';
@@ -30,8 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           .then((loi) => applyLocationOverrides(loi, overrides))
         
 
-        const presets = await requestLocationPresets();
-
+          const presets = await requestLocationPresets();
         console.log('Wait for responses')
 
            

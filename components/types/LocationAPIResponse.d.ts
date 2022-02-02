@@ -1,4 +1,4 @@
-import { LocationOfInterest } from "./LocationOfInterest";
+import LocationOfInterest from "./LocationOfInterest";
 
 type LocationAPIResponse = {
     success: boolean

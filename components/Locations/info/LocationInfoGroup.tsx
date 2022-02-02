@@ -1,4 +1,4 @@
-import { LocationOfInterest } from "../../types/LocationOfInterest";
+import LocationOfInterest from "../../types/LocationOfInterest";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
 import { NiceDate, NiceFullDate } from "../DateHandling";

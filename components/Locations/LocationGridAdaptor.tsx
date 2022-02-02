@@ -1,5 +1,5 @@
 
-import { LocationOfInterest } from "../types/LocationOfInterest"
+import LocationOfInterest from "../types/LocationOfInterest"
 import LargeLocationGrid from "./LargeLocationGrid"
 import Location from "./Location"
 

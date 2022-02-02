@@ -15,7 +15,7 @@ import axios from 'axios'
 import {LatLng, Map } from "leaflet";
 
 import { CenteredCircle, setCircleRadiusBasedOnMapSize } from './CenteredCircle'
-import { LocationOfInterest } from "../../types/LocationOfInterest";
+import LocationOfInterest from "../../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated";
 import _ from "lodash";
 import InternalLink from "../../utils/InternalLink";
