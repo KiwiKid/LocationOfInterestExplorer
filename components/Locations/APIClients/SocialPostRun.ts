@@ -108,15 +108,19 @@ class SocialPostRun {
     }
 
     getPostFreqNum(){
-        return this.postFrequency == 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 0
+        return this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 0
     }
 
     getCurrentStartTime():Dayjs{
         const nowNZ = todayNZ();
-        if(this.lastCreateTimeNZ.add(this.getPostFreqNum(), 'day').isAfter(nowNZ)){
-            return nowNZ;
+        const postRange = this.getPostFreqNum()
+
+        if(this.lastCreateTimeNZ.add(postRange, 'day').isBefore(nowNZ)){
+            console.log(`${this.subreddit}/${this.textUrlParams} start time is new: ${nowNZ}`)
+            return nowNZ.startOf('day');
         } else{
-            return this.lastCreateTimeNZ;
+            console.log(`${this.subreddit}/${this.textUrlParams} start time is existing: ${this.lastCreateTimeNZ}`)
+            return this.lastCreateTimeNZ.startOf('day');
         }
     }
 
@@ -143,7 +147,7 @@ class SocialPostRun {
     }
     
     
-    setLocationGroups(locations:LocationOfInterest[], relevantLocationPresets:LocationPreset[]){
+    setLocationGroups(locations:LocationOfInterest[], relevantLocationPresets:LocationPreset[], includeOthers:boolean){
 
         
         const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
@@ -152,9 +156,9 @@ class SocialPostRun {
         const relevantLocations = locations.filter((l) => {
             const start = this.getCurrentStartTime();
             const end = this.getCurrentEndTime();
-
             
             const res = dayjs(l.added).tz('Pacific/Auckland').isAfter(start) && dayjs(l.added).tz('Pacific/Auckland').isBefore(end);
+            console.log(`${res ? '========Match:' : 'Not match:'} ${this.postFrequency} \n${start} \n${dayjs(l.added).tz('Pacific/Auckland')}\n ${end}`)
             return res;
         });
 
@@ -181,9 +185,11 @@ class SocialPostRun {
             return;
         }
         
-        if(others.locations.length > 0){
+        if(includeOthers && others.locations.length > 0){
             res["Others"] = others;
         }
+        
+        // hack to remove "Others" group when displaying "All" locations 
         
         const groupArray = Object.keys(res).map((r) => res[r]);
 
@@ -287,9 +293,9 @@ class SocialPostRun {
 
     getTitle = (locationName:string,publishTime?:Date,locationCount?:number):string => {
         switch(this.postFrequency){
-            case "day": return `New Locations in ${locationName} ${publishTime ? ` ${this.getDateRangeDisplay(publishTime)}`: ''}`
-            case "week": return `New Locations in ${locationName} ${publishTime ? this.getDateRangeDisplay(publishTime): ''}`
-            case "fortnight": return `New Locations in ${locationName} ${publishTime ? this.getDateRangeDisplay(publishTime): ''}`
+            case "day": return `New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
+            case "week": return `New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
+            case "fortnight": return `New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
             default: {
                 console.error('no date range frequency option found');
                 return ''

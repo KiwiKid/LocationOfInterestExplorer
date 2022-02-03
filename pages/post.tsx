@@ -78,7 +78,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
     useEffect(() => {
         socialRuns.forEach((run) => {
             if(run.setLocationGroups){
-                run.setLocationGroups(locations, locationSettings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam)))
+                run.setLocationGroups(locations, locationSettings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam)), false)
             }
         });
     }, []);

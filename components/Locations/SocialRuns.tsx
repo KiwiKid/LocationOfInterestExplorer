@@ -36,7 +36,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
     const mostRecentAction = !!run.result ? getActionString(run) : !!run.lastAction ? run.lastAction : 'None'
 
 
-    const title = `${run.primaryUrlParam} (${run.textUrlParams.length !== 1 || run.textUrlParams[0] !== run.primaryUrlParam ? `(${run.textUrlParams})` :''}) - ${run.lastAction} ${updatedMinutesAgo} mins ago [${run.postFrequency} Next action: ${run.isUpdate() ? 'Update' : 'Create'}]`
+    const title = `${run.primaryUrlParam} (${run.textUrlParams.length !== 1 || run.textUrlParams[0] !== run.primaryUrlParam ? `(${run.textUrlParams})` :''})  - ${run.lastAction} ${updatedMinutesAgo} mins ago [${run.postFrequency} [${run.getCurrentStartTime()} -> ${run.getCurrentEndTime()}] Next action: ${run.isUpdate() ? 'Update' : 'Create'}]`
 
     return (
         <>

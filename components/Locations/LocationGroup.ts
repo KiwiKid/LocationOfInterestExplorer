@@ -56,7 +56,7 @@ const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:L
 // This is for the "Raw" locations that aren't mappable (and often horribly disfigured)
 const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
     const res:Dictionary<LocationGroup> = {};
-    const others = new LocationGroup("Others", { title: 'Other', lat: -40.8248, lng: 173.7304, zoom: 5, matchingMohCityString: [], showInDrawer:false, urlParam: 'other' });
+    const others = new LocationGroup("Others", { title: 'Others', lat: -40.8248, lng: 173.7304, zoom: 5, matchingMohCityString: [], showInDrawer:false, urlParam: 'other' });
     
     locations.forEach((l) => {
       const preset = getMatchingLocationPreset(l, locationPresets);

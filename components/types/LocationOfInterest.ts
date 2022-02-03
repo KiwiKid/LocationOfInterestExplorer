@@ -53,7 +53,7 @@ class LocationOfInterest {
         }
 
     getMatchingLocationPreset(locationPresets:LocationPreset[]){
-      return locationPresets.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === this.city || mohCity === 'all'))[0]
+      return locationPresets.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === this.city))[0]
     }
 }
 
