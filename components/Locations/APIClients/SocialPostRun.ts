@@ -147,7 +147,7 @@ class SocialPostRun {
     }
     
     
-    setLocationGroups(locations:LocationOfInterest[], relevantLocationPresets:LocationPreset[], includeOthers:boolean){
+    setLocationGroups(locations:LocationOfInterest[], locationPresets:LocationPreset[], includeOthers:boolean){
 
         
         const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
@@ -161,6 +161,13 @@ class SocialPostRun {
 //            console.log(`${res ? '========Match:' : 'Not match:'} ${this.postFrequency} \n${start} \n${dayjs(l.added).tz('Pacific/Auckland')}\n ${end}`)
             return res;
         });
+
+        const relevantLocationPresets = locationPresets.filter((lp) => {
+            if(this.textUrlParams.some((tp) => tp === 'all')){
+                return lp.urlParam !== 'all'
+            }
+            return this.textUrlParams.some((tp) => tp === lp.urlParam)
+        })
 
         const res:Dictionary<LocationGroup> = {};
         const others = new LocationGroup("Others", otherLocationPreset);
