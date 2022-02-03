@@ -265,7 +265,7 @@ const LocationPageDrawer = ({
           <div className="m-auto italic text-gray-700  text-center">
             <>
               <div className="text-sm font-light">
-                {!pageState.featureFlags.some((ff) => ff === 'basicDrawerTitle') && <div><span className="bold font-base">Drag</span> or <span className="bold font-base">Click</span> this bar</div>}
+                {!pageState.featureFlags.some((ff) => ff === 'basicDrawerTitle') && <div><span className="bold font-bold">Drag</span> or <span className="bold font-bold">Click</span> this bar</div>}
                 <div> Not an Official Ministry of Health Service.</div>
               </div>
             </>

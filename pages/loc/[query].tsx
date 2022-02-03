@@ -11,8 +11,11 @@ import { metaImageURLDirect } from "../../components/Locations/LocationObjectHan
 import parseQuery from "../../components/utils/parseQuery"
 import { DEFAULT_FEATURE_FLAGS, PREVIEW_FEATURE_FLAGS } from "../../components/Locations/FeatureFlags"
 import NotionClient from "../../components/Locations/APIClients/NotionClient"
+import Loading from "../../components/Locations/Loading"
 
-
+/*
+  The route primarily exists to provide the ability to generate LocationPreset specific urls for social media sharing.
+*/
 
 type LocationPageProps = {
   quickLink: LocationPreset
@@ -113,9 +116,9 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
       <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
     </Head>
       <>
-        <LocationContext.Consumer>
+        {/*<LocationContext.Consumer>
             {locationsRecords => 
-              locationsRecords ? <LocationsPage
+              locationsRecords || false ? <LocationsPage
                       rawLocations={locationsRecords}
                       startingPageState={{
                         daysInPastShown: 14,
@@ -127,10 +130,11 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
                       }}
                       locationSettings={locationSettings}
                       publishState={{hardcodedURL: hardcodedURL, publishTime: new Date(publishTimeUTC)}}
-                  />: <>Loading Covid-19 Locations of Interest from the Ministry of Health...</>
+                  />: <div style={{ width: '100%' }}><div>Loading Covid-19 Locations of Interest from the Ministry of Health...</div>
             }
-          </LocationContext.Consumer>
-      </>
+          </LocationContext.Consumer>*/}
+          <Loading locationTitle={quickLink.title}/>
+    </>
     </>
   )
 }

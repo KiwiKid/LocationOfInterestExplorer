@@ -7,6 +7,7 @@ import styles from '../styles/Home.module.css'
 import LocationContext from '../components/Locations/MoHLocationClient/LocationContext'
 import { metaImageURLDirect } from '../components/Locations/LocationObjectHandling'
 import NotionClient from '../components/Locations/APIClients/NotionClient'
+import Loading from '../components/Locations/Loading'
 
 type HomePageProps = {
   publishTimeUTC: string // Allow for native next.js props usage
@@ -102,7 +103,7 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL, locationSe
                       startingPageState={settings}
                       publishState={{hardcodedURL: hardcodedURL, publishTime:new Date(publishTimeUTC)}}
                       locationSettings={locationSettings}
-                  />: <>Loading a Map of Covid-19 Locations of Interest published by the Ministry of Health</>
+                  />: <Loading />
             }
           </LocationContext.Consumer>
         }
