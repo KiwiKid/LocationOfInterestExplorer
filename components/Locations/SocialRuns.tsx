@@ -69,7 +69,6 @@ const SocialRun =  ({run}:SocialRunProps) => {
             {run.errorMsg && <div className="col-span-full bg-red-500">{run.errorMsg}</div>}
             {!run.locationGroups ? <div>No Location Groups </div> 
             : <><div className="col-span-full bg-green-500"><CopyBox copyText={run.getLocationGroupsSummary(dayjs().tz('Pacific/Auckland').toDate(), true, false)} id={run.notionPageId} textarea={true}/></div>
-            <div className="col-span-full bg-green-500">{JSON.stringify(run.locationGroups)}</div>
             </>}
             <div className="col-span-full bg-yellow-700 h-4"></div>
         </>

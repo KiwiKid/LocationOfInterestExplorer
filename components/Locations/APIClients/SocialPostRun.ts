@@ -8,7 +8,15 @@ import { downTheCountryGrp, downTheCountryGrpWithOverride } from '../LocationObj
 import SocialPostRunResult from './SocialPostRunResult';
 
 
-
+const otherLocationPreset:LocationPreset = {
+    lat: -40.8248,
+    lng: 173.7304,
+    zoom: 5,
+    matchingMohCityString: [''],
+    showInDrawer: false,
+    title: 'Others',
+    urlParam: 'others'
+}
 // This class is pretty gross, but it works...
 class SocialPostRun { 
     notionPageId:string
@@ -99,6 +107,33 @@ class SocialPostRun {
         }
     }
 
+    getPostFreqNum(){
+        return this.postFrequency == 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 0
+    }
+
+    getCurrentStartTime():Dayjs{
+        const nowNZ = todayNZ();
+        if(this.lastCreateTimeNZ.add(this.getPostFreqNum(), 'day').isAfter(nowNZ)){
+            return nowNZ;
+        } else{
+            return this.lastCreateTimeNZ;
+        }
+    }
+
+    getCurrentEndTime():Dayjs{
+        const currentStart = this.getCurrentStartTime();
+        switch(this.postFrequency){
+            case "day": 
+                return currentStart.add(1, 'day').startOf('day');
+            case "week":
+                return currentStart.add(7, 'day').startOf('day');
+            case "fortnight":
+                return this.lastCreateTimeNZ.add(14, 'day').startOf('day');
+            default:
+                throw ''
+        }
+    }
+
     setError(errorMsg:string) {
         this.errorMsg = errorMsg;
     }
@@ -113,16 +148,18 @@ class SocialPostRun {
         
         const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
 
-        const dateAfter:Dayjs = this.isUpdate() && this.lastCreateTimeNZ ? this.lastCreateTimeNZ : todayNZ().add(-frequencyInDays, 'days').startOf('day');
+       // const dateAfter:Dayjs = this.isUpdate() && this.lastCreateTimeNZ ? this.lastCreateTimeNZ : todayNZ().add(-frequencyInDays, 'days').startOf('day');
         const relevantLocations = locations.filter((l) => {
-            console.log(dayjs(l.added))
-            console.log(dateAfter)
-            console.log(dayjs(l.added).isAfter(dateAfter))
-            return dayjs(l.added).isAfter(dateAfter)
+            const start = this.getCurrentStartTime();
+            const end = this.getCurrentEndTime();
+
+            
+            const res = dayjs(l.added).tz('Pacific/Auckland').isAfter(start) && dayjs(l.added).tz('Pacific/Auckland').isBefore(end);
+            return res;
         });
 
         const res:Dictionary<LocationGroup> = {};
-        const others = new LocationGroup("Others", relevantLocationPresets.filter((lp) => lp.urlParam === 'all')[0]);
+        const others = new LocationGroup("Others", otherLocationPreset);
         
         relevantLocations.forEach((l) => {
           const preset = l.getMatchingLocationPreset(relevantLocationPresets)// getMatchingLocationPreset(l, locationPresets);
@@ -138,6 +175,11 @@ class SocialPostRun {
       
           res[preset.urlParam].pushLocation(l);
         })
+
+        if(relevantLocations.length == 0){
+            console.log(`Not locations for ${this.subreddit} between ${this.getCurrentStartTime()} and ${this.getCurrentEndTime()}`)
+            return;
+        }
         
         if(others.locations.length > 0){
             res["Others"] = others;
@@ -156,9 +198,24 @@ class SocialPostRun {
     }
 
     isUpdate():boolean{
+        const nowNZ = todayNZ();
+        if(nowNZ.isAfter(this.getCurrentStartTime()) && nowNZ.isBefore(this.getCurrentEndTime())){
+            return true;
+        }else{
+            return false
+        }
+
+        /*
         switch(this.postFrequency){
             case "day": {
                 const hoursTillNewPost = 24 - todayNZ().diff(this.lastCreateTimeNZ,'hours');
+
+
+                if(nowNZ.isAfter(this.getCurrentStartTime()) && nowNZ.isBefore(this.getCurrentEndTime())){
+                    return true;
+                }else{
+                    return false
+                }
                 
                 console.log(`${this.subreddit}/${this.primaryUrlParam} hoursTillNewPost: ${hoursTillNewPost} [${this.lastCreateTimeNZ}| ${todayNZ()}]`);
                 return hoursTillNewPost > 0;
@@ -168,11 +225,11 @@ class SocialPostRun {
               //  return isUpdate;
             }
             case "week": {
-                const createdWeekOfYear = getWeekOfYear(this.lastCreateTimeNZ);
-                const thisWeekOfYear = getWeekOfYear(todayNZ());
+                const daysTillNewPost = 7 - todayNZ().diff(this.getCurrentEndTime(), 'day');
                 
-                console.log(`${this.subreddit}/${this.primaryUrlParam} created week: ${createdWeekOfYear}  this week: ${thisWeekOfYear}`);
-                return thisWeekOfYear !== createdWeekOfYear;
+                
+                console.log(`${this.subreddit}/${this.primaryUrlParam} daysTillNewPost: ${daysTillNewPost}`);
+                return daysTillNewPost > 0;
 
               //  return dayjs(this.lastCreateTime).tz('Pacific/Auckland').diff(todayNZ(),'hours') > 24
                
@@ -182,17 +239,16 @@ class SocialPostRun {
              //   return isUpdate;
             }
             case "fortnight": {
-                const createdFortnightOfTheYear = getFortnightOfYear(this.lastCreateTimeNZ);
-                const theFortnightOfTheYear = getFortnightOfYear(todayNZ());
-                
-                console.log(`${this.subreddit}/${this.primaryUrlParam} created fortnight: ${createdFortnightOfTheYear}  this fortnight: ${theFortnightOfTheYear}`);
-                return createdFortnightOfTheYear !== theFortnightOfTheYear;
 
+                const daysTillNewPost = 14 - todayNZ().diff(this.getCurrentEndTime(), 'day');
                 
+                
+                console.log(`${this.subreddit}/${this.primaryUrlParam} daysTillNewPost: ${daysTillNewPost}`);
+                return daysTillNewPost > 0;                
             }
             default:
                 throw 'invalid post frequency'
-        }
+        }*/
 
 
        /*
@@ -212,10 +268,17 @@ class SocialPostRun {
     }
     
     getDateRangeDisplay = (publishTime:Date) =>{
+        const isUpdate = this.isUpdate();
+
+        const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
+
+        const startDate = !isUpdate ? todayNZ() : this.lastCreateTimeNZ
+        const endDate = !isUpdate ? todayNZ().add(frequencyInDays, 'day') : this.lastCreateTimeNZ.add(frequencyInDays, 'day')
+
         switch(this.postFrequency){
-            case "day": return `${dayFormattedNZ(publishTime)}`
-            case "week": return `${dayFormattedNZ(publishTime)} - ${dayFormattedNZ(dayjs(publishTime).add(7,'day'))}`
-            case "fortnight": return `${dayFormattedNZ(publishTime)} - ${dayFormattedNZ(dayjs(publishTime).add(14,'day'))}`
+            case "day": return `${dayFormattedNZ(startDate)}`;
+            case "week": return `${dayFormattedNZ(startDate)} - ${dayFormattedNZ(endDate)}`;
+            case "fortnight": return `${dayFormattedNZ(startDate)} - ${dayFormattedNZ(endDate)}`
             default: {
                 console.error('no date range frequency option found');
             }
@@ -225,7 +288,7 @@ class SocialPostRun {
     getTitle = (locationName:string,publishTime?:Date,locationCount?:number):string => {
         switch(this.postFrequency){
             case "day": return `New Locations in ${locationName} ${publishTime ? ` ${this.getDateRangeDisplay(publishTime)}`: ''}`
-            case "week": return `New Locations in ${locationName}${publishTime ? this.getDateRangeDisplay(publishTime): ''}`
+            case "week": return `New Locations in ${locationName} ${publishTime ? this.getDateRangeDisplay(publishTime): ''}`
             case "fortnight": return `New Locations in ${locationName} ${publishTime ? this.getDateRangeDisplay(publishTime): ''}`
             default: {
                 console.error('no date range frequency option found');
