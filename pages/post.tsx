@@ -78,7 +78,13 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
     useEffect(() => {
         socialRuns.forEach((run) => {
             if(run.setLocationGroups){
-                run.setLocationGroups(locations, locationSettings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')), false)
+                run.setLocationGroups(locations, locationSettings.locationPresets
+                        .filter((lp) => {
+                            // Never pass "all" LocationPreset into the grouping method (its covered by "others")
+                            if(lp.urlParam === 'all'){ return false }
+                            // Pass in all the LocationPreset we want to display locations for
+                            return run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')
+                        }), false)
             }
         });
     }, []);
