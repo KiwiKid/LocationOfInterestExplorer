@@ -274,7 +274,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
              
-                run.setLocationGroups(locations, settings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam  || run.textUrlParams.some((tup) => tup == 'all')), false);
+                run.setLocationGroups(locations, settings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam  || run.textUrlParams.some((tup) => tup == 'all'))), false);
             
             
                 const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];

@@ -158,7 +158,7 @@ class SocialPostRun {
             const end = this.getCurrentEndTime();
             
             const res = dayjs(l.added).tz('Pacific/Auckland').isAfter(start) && dayjs(l.added).tz('Pacific/Auckland').isBefore(end);
-            console.log(`${res ? '========Match:' : 'Not match:'} ${this.postFrequency} \n${start} \n${dayjs(l.added).tz('Pacific/Auckland')}\n ${end}`)
+//            console.log(`${res ? '========Match:' : 'Not match:'} ${this.postFrequency} \n${start} \n${dayjs(l.added).tz('Pacific/Auckland')}\n ${end}`)
             return res;
         });
 
