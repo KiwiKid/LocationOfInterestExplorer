@@ -297,9 +297,9 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
                 
 
-                const text = run.getLocationGroupsSummary(now, true);
+                const text = run.getLocationGroupsSummary(now, true, false);
 
-                const facebookText = run.getLocationGroupsSummary(now, true);
+                const facebookText = run.getLocationGroupsSummary(now, true, false);
     
                 const textWithTitle = `${dayFormattedNZ(now)} - ${text}`
 
