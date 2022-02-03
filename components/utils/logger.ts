@@ -17,27 +17,44 @@ type LogProps = {
 
 class BackendLogger {
 
-    logtail:Logtail
+    logtail?:Logtail
 
     constructor(){
-        if(!process.env.LOGTAIL_SOURCE_TOKEN){ throw 'no LOGTAIL_SOURCE_TOKEN set'}
-        this.logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
+        if(!process.env.LOGTAIL_SOURCE_TOKEN){
+
+        }else{
+            this.logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
+        }
+        
     }
 
     info(message:string, obj?:any){
-        this.logtail.info(message);
+        if(this.logtail){
+            this.logtail.info(message);
+        }else{
+            console.info(message);
+        }
+        
     }
 
     warn({message, obj}:LogProps){
-
-        this.logtail.warn(message, {
-            item: obj
-        });
+        if(this.logtail){
+            this.logtail.warn(message, {
+                item: obj
+            });
+        }else{
+            console.warn(message);
+        }
     }
     error({message, obj}:LogProps){
-        this.logtail.error(message, {
-            item: obj
-        });
+        if(this.logtail){
+            this.logtail.error(message, {
+                item: obj
+            });
+        }else{
+            console.error(message);
+        }
+        
     }
 }
 

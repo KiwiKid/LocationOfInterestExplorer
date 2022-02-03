@@ -2,7 +2,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { Dictionary } from 'lodash';
 import LocationOfInterest from '../../types/LocationOfInterest';
-import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ } from '../DateHandling';
+import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ, NiceFullAlwaysNZDate } from '../DateHandling';
 import { LocationGroup } from '../LocationGroup';
 import { downTheCountryGrp, downTheCountryGrpWithOverride } from '../LocationObjectHandling';
 import SocialPostRunResult from './SocialPostRunResult';
@@ -144,7 +144,7 @@ class SocialPostRun {
         if(typeof(errorMsg) === 'string'){
             this.errorMsg = errorMsg;
         }else{
-            console.error('FAILED TO SET THE ERROR FAILED TO SET THE ERROR FAILED TO SET THE ERROR FAILED TO SET THE ERROR')
+            this.errorMsg = 'An error has occurred:';
             console.error(errorMsg);
         }
         
@@ -198,7 +198,7 @@ class SocialPostRun {
         })
 
         if(relevantLocations.length == 0){
-            console.log(`Not locations for ${this.subreddit} between ${this.getCurrentStartTime()} and ${this.getCurrentEndTime()}`)
+            console.log(`No locations for ${this.subreddit} (${this.textUrlParams.join(',')}) between ${this.getCurrentStartTime().calendar(null,{})}) and ${this.getCurrentEndTime().calendar(null,{})}`)
             return;
         }
         // Only include "Others" group when listing all

@@ -36,15 +36,38 @@ const SocialRun =  ({run}:SocialRunProps) => {
     const mostRecentAction = !!run.result ? getActionString(run) : !!run.lastAction ? run.lastAction : 'None'
 
 
-    const title = `${run.primaryUrlParam} (${run.textUrlParams.length !== 1 || run.textUrlParams[0] !== run.primaryUrlParam ? `(${run.textUrlParams})` :''})  - ${run.lastAction} ${updatedMinutesAgo} mins ago [${run.postFrequency} [${run.getCurrentStartTime()} -> ${run.getCurrentEndTime()}] Next action: ${run.isUpdate() ? 'Update' : 'Create'}]`
+    const title = ``
+
+    const NextAction = <>
+        {run.locationGroups && run.locationGroups.length > 0 
+        ? <>{run.isUpdate() ? 
+                <>
+                    Update <link href={run.url} rel="noreferrer" className="underline"> {run.existingPostId} {run.existingPostTitle}</link>
+                </> : 
+                    <>
+                        Create
+                    </>
+            }</>
+            : <>Skipped</>
+        }</>
 
     return (
         <>
             <div className={`bg-${getSocialsStatusColor(run)} divide-blue-500`}>{run.type} ({run.subreddit}{`${run.subredditSubmissionTitleQuery ? `(${run.subredditSubmissionTitleQuery})`: ''}`})</div>
-            {run.flairId ? 
-                <div><details><summary>{title}</summary><div>{run.flairId}</div></details></div> :
-                <div>{title}</div>
-            }
+            
+                <div>
+                    <details>
+                        <summary>{run.primaryUrlParam}</summary>
+                        <div>{run.flairId ? `FlairID: ${run.flairId}` : ''}</div>
+                        <div>{run.textUrlParams.length !== 1 || run.textUrlParams[0] !== run.primaryUrlParam ? `(${run.textUrlParams})` :''}</div>
+                        <div>{run.postFrequency} - {run.getCurrentStartTime().toString()} - {run.getCurrentEndTime().toString()}</div>
+                    </details>
+                    <div>{run.lastAction} (last success was {updatedMinutesAgo} mins ago) </div>
+                    <div>Next action: {NextAction}</div>
+                </div>
+                
+                
+            
             {run.lastAction ? <div><a target="_blank" rel="noreferrer" href={run.url}> {run.lastAction} {run.lastCheckTime ? ` ${getMinutesAgo(new Date(run.lastCheckTime))} mins ago - `:null } </a></div>:<div> </div> }
             
             {/*run.existingPostId ? <details>

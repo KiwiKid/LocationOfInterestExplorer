@@ -147,7 +147,7 @@ export const getActionString = (rr:SocialPostRun) => {
         return 'No Result'
     }
     if(!rr.result.isSuccess){
-        return 'Failed'
+        return `Failed`
     }
     if(rr.result.isUpdate){
         return "Updated"
