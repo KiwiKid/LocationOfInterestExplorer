@@ -277,8 +277,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 run.setLocationGroups(locations, settings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')))
             
             
-                const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
-                if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
+               // const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
+               // if(!mainMatchingPreset){ console.log('no matching preset'); throw 'err'}
     
                 //const matchingLocationGroups = todaysLocationGroups.filter((tlg) => run.textUrlParams.some((tup) => tup === tlg.locationPreset.urlParam  || mainMatchingPreset.urlParam == 'all'))
                 if(!run.locationGroups || run.locationGroups.length === 0){
@@ -289,11 +289,11 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }
     
                 
-                if(!run.primaryLocationGroup){
-                    throw `no primaryLocationGroup on run ${run.notionPageId}`
-                }
+               // if(!run.primaryLocationGroup){
+               //     throw `no primaryLocationGroup on run ${run.notionPageId}`
+               // }
     
-                const title = run.getTitle(run.primaryLocationGroup.locationPreset.title, now)// `New Locations of Interest in ${} - ${dayFormattedNZ(now)}`
+                const title = run.getTitle(run.primaryLocationGroup ? run.primaryLocationGroup.locationPreset.title : 'all New Zealand', now)// `New Locations of Interest in ${} - ${dayFormattedNZ(now)}`
 
                 
 

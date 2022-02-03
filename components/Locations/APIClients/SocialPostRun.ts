@@ -141,7 +141,12 @@ class SocialPostRun {
     }
 
     setError(errorMsg:string) {
-        this.errorMsg = errorMsg;
+        if(typeof(errorMsg) === 'string'){
+            this.errorMsg = errorMsg;
+        }else{
+            console.error('FAILED TO SET THE ERROR FAILED TO SET THE ERROR FAILED TO SET THE ERROR FAILED TO SET THE ERROR')
+        }
+        
     }
 
     setResults(result:SocialPostRunResult){
@@ -306,9 +311,9 @@ class SocialPostRun {
 
     getTitle = (locationName:string,publishTime?:Date,locationCount?:number):string => {
         switch(this.postFrequency){
-            case "day": return `New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
-            case "week": return `New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
-            case "fortnight": return `New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
+            case "day": return `${locationCount ? `${locationCount} `: ''}New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
+            case "week": return `${locationCount ? `${locationCount} `: ''}New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
+            case "fortnight": return `${locationCount ? `${locationCount} `: ''}New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
             default: {
                 console.error('no date range frequency option found');
                 return ''
