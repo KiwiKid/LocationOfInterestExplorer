@@ -36,7 +36,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
     const mostRecentAction = !!run.result ? getActionString(run) : !!run.lastAction ? run.lastAction : 'None'
 
 
-    const title = `${run.primaryUrlParam} (${run.textUrlParams})  ${run.lastAction}`
+    const title = `${run.primaryUrlParam} (${run.textUrlParams.length !== 1 || run.textUrlParams[0] !== run.primaryUrlParam ? `(${run.textUrlParams})` :''}) - ${run.lastAction} ${updatedMinutesAgo} mins ago [${run.postFrequency} Next action: ${run.isUpdate() ? 'Update' : 'Create'}]`
 
     return (
         <>
@@ -68,7 +68,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
             {run.result?.error && <div className="col-span-full bg-red-500">{run.result?.error}</div>}
             {run.errorMsg && <div className="col-span-full bg-red-500">{run.errorMsg}</div>}
             {!run.locationGroups ? <div>No Location Groups </div> 
-            : <><div className="col-span-full bg-green-500"><CopyBox copyText={run.getLocationGroupsSummary(dayjs().tz('Pacific/Auckland').toDate(), true)} id={run.notionPageId} textarea={true}/></div>
+            : <><div className="col-span-full bg-green-500"><CopyBox copyText={run.getLocationGroupsSummary(dayjs().tz('Pacific/Auckland').toDate(), true, false)} id={run.notionPageId} textarea={true}/></div>
             <div className="col-span-full bg-green-500">{JSON.stringify(run.locationGroups)}</div>
             </>}
             <div className="col-span-full bg-yellow-700 h-4"></div>

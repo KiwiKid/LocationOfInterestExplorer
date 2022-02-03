@@ -238,12 +238,14 @@ class SocialPostRun {
     getLocationGroupsSummary = (
         publishTime: Date
         , displayTotal: boolean
+        , includeOther: boolean
     ) => {
         if(!this.primaryLocationGroup || !this.locationGroups){ 
             throw `Failed to generated location summary. no primaryLocationGroup: ${JSON.stringify(this.primaryLocationGroup)} or locationGroups: ${JSON.stringify(this.locationGroups)}`
         }
         
         return `${this.getTitle(this.primaryLocationGroup.locationPreset.title, publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}\n\n\n ${this.locationGroups
+            .filter((lg) => lg.locationPreset.urlParam !== 'other' || includeOther)
             .sort((a,b) => this.primaryLocationGroup ? downTheCountryGrpWithOverride(this.primaryLocationGroup.locationPreset.urlParam, a,b) : downTheCountryGrp(a,b))
             .map((lg) => lg.toString(true, false, undefined))
             .join(`\n`)}`
