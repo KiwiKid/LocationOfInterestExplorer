@@ -145,6 +145,7 @@ class SocialPostRun {
             this.errorMsg = errorMsg;
         }else{
             console.error('FAILED TO SET THE ERROR FAILED TO SET THE ERROR FAILED TO SET THE ERROR FAILED TO SET THE ERROR')
+            console.error(errorMsg);
         }
         
     }

@@ -55,7 +55,7 @@ class LocationOfInterest {
     getMatchingLocationPreset = (locationPreset:LocationPreset[]):LocationPreset|undefined => {
       const match = locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === this.city))[0];
   
-      console.log(`getMatchingLocationPreset() ${this.city} ${match ? `${match.title}` : 'No Match'} ${locationPreset.map((lp) => `${lp.urlParam}`).join(',')} presets`)
+     // console.log(`getMatchingLocationPreset() ${this.city} ${match ? `${match.title}` : 'No Match'} ${locationPreset.map((lp) => `${lp.urlParam}`).join(',')} presets`)
       return match;
   }
 }
