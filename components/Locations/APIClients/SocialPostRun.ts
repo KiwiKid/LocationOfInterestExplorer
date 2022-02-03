@@ -147,7 +147,7 @@ class SocialPostRun {
     }
     
     
-    setLocationGroups(locations:LocationOfInterest[], locationPresets:LocationPreset[], includeOthers:boolean){
+    setLocationGroups(locations:LocationOfInterest[], locationPresets:LocationPreset[]){
 
         
         const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
@@ -163,10 +163,12 @@ class SocialPostRun {
         });
 
         const relevantLocationPresets = locationPresets.filter((lp) => {
+            // Include all location presets but 'all' itself
             if(this.textUrlParams.some((tp) => tp === 'all')){
                 return lp.urlParam !== 'all'
             }
-            return this.textUrlParams.some((tp) => tp === lp.urlParam)
+            // Just include the specified location presets
+            return this.textUrlParams.some((tp) => tp === lp.urlParam);
         })
 
         const res:Dictionary<LocationGroup> = {};
@@ -191,8 +193,8 @@ class SocialPostRun {
             console.log(`Not locations for ${this.subreddit} between ${this.getCurrentStartTime()} and ${this.getCurrentEndTime()}`)
             return;
         }
-        
-        if(includeOthers && others.locations.length > 0){
+        // Only include "Others" group when listing all
+        if(this.textUrlParams.some((tp) => tp === 'all') && others.locations.length > 0){
             res["Others"] = others;
         }
         
@@ -200,14 +202,15 @@ class SocialPostRun {
         
         const groupArray = Object.keys(res).map((r) => res[r]);
 
-        const matchingPrimaryLocationGroup = groupArray.filter((lg) => lg.locationPreset && lg.locationPreset.urlParam == this.primaryUrlParam);
-        if(!matchingPrimaryLocationGroup || matchingPrimaryLocationGroup.length !== 1){
-            throw `No matching primary location group for ${this.primaryUrlParam} ${this.notionPageId}`;
+        // The "all" will NOT have a primary location group
+        const matchingPrimaryLocationGroup = groupArray.filter((lg) => lg.locationPreset && lg.locationPreset.urlParam == this.primaryUrlParam)
+           
+
+        if(matchingPrimaryLocationGroup && matchingPrimaryLocationGroup.length === 1){
+            this.primaryLocationGroup = matchingPrimaryLocationGroup[0];
         }
 
-        this.primaryLocationGroup = matchingPrimaryLocationGroup[0];
-        this.locationGroups = groupArray;
-        
+        this.locationGroups = groupArray;   
     }
 
     isUpdate():boolean{
@@ -316,11 +319,11 @@ class SocialPostRun {
         , displayTotal: boolean
         , includeOther: boolean
     ) => {
-        if(!this.primaryLocationGroup || !this.locationGroups){ 
-            throw `Failed to generated location summary. no primaryLocationGroup: ${JSON.stringify(this.primaryLocationGroup)} or locationGroups: ${JSON.stringify(this.locationGroups)}`
+        if(!this.locationGroups){ 
+            throw `Failed to generated location summary.no locationGroups: ${JSON.stringify(this.locationGroups)}`
         }
         
-        return `${this.getTitle(this.primaryLocationGroup.locationPreset.title, publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}\n\n\n ${this.locationGroups
+        return `${this.getTitle(this.primaryLocationGroup ? this.primaryLocationGroup.locationPreset.title : 'New Zealand 2222', publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}\n\n\n ${this.locationGroups
             .filter((lg) => lg && lg.locationPreset && lg.locationPreset.urlParam !== 'other' || includeOther)
             .sort((a,b) => this.primaryLocationGroup ? downTheCountryGrpWithOverride(this.primaryLocationGroup.locationPreset.urlParam, a,b) : downTheCountryGrp(a,b))
             .map((lg) => lg.toString(true, false, undefined))
