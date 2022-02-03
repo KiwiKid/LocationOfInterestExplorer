@@ -49,7 +49,10 @@ class LocationGroup {
 }
 
 const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]):LocationPreset|undefined => {
-    return locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0]    
+    const match = locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city || mohCity === 'all'))[0];
+
+    console.log(`getMatchingLocationPreset() ${location.city} ${match ? `${match.title}` : 'No Match'} ${locationPreset.length} presets`)
+    return match;
 }
 
 // Its generally preferred to used the locations groups associated with SocialPostRuns if possible

@@ -116,10 +116,10 @@ class SocialPostRun {
         const postRange = this.getPostFreqNum()
 
         if(this.lastCreateTimeNZ.add(postRange, 'day').isBefore(nowNZ)){
-            console.log(`${this.subreddit}/${this.textUrlParams} start time is new: ${nowNZ}`)
+           // console.log(`${this.subreddit}/${this.textUrlParams} start time is new: ${nowNZ}`)
             return nowNZ.startOf('day');
         } else{
-            console.log(`${this.subreddit}/${this.textUrlParams} start time is existing: ${this.lastCreateTimeNZ}`)
+           // console.log(`${this.subreddit}/${this.textUrlParams} start time is existing: ${this.lastCreateTimeNZ}`)
             return this.lastCreateTimeNZ.startOf('day');
         }
     }

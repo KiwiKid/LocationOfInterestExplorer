@@ -52,9 +52,12 @@ class LocationOfInterest {
           this.isOmicron = isOmicron;
         }
 
-    getMatchingLocationPreset(locationPresets:LocationPreset[]){
-      return locationPresets.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === this.city))[0]
-    }
+    getMatchingLocationPreset = (locationPreset:LocationPreset[]):LocationPreset|undefined => {
+      const match = locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === this.city))[0];
+  
+      console.log(`getMatchingLocationPreset() ${this.city} ${match ? `${match.title}` : 'No Match'} ${locationPreset.reduce((prev,curr) => `${prev} ${curr.urlParam}`)} presets`)
+      return match;
+  }
 }
 
 
