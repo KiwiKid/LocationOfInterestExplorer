@@ -38,7 +38,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
 
     const title = ``
 
-    const NextAction = <>
+    const nextAction = <>
         {run.locationGroups && run.locationGroups.length > 0 
         ? <>{run.isUpdate() ? 
                 <>
@@ -63,7 +63,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                         <div>{run.postFrequency} - {run.getCurrentStartTime().toString()} - {run.getCurrentEndTime().toString()}</div>
                     </details>
                     <div>{run.lastAction} (last success was {updatedMinutesAgo} mins ago) </div>
-                    <div>Next action: {NextAction}</div>
+                    <div>Next action: {nextAction}</div>
                 </div>
                 
                 
