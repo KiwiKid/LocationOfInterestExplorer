@@ -27,6 +27,7 @@ class SocialPostRun {
     
     type:string // "Reddit_Comment", "Reddit_Comment"
     postFrequency:string // "day, "week", "fortnight"
+    postFrequencyDays:number
     createdDate:string
     flairId?:string
     
@@ -90,6 +91,7 @@ class SocialPostRun {
         this.createdDate = new Date().toISOString();
         this.type = type
         this.postFrequency = postFrequency
+        this.postFrequencyDays = postFrequency === 'day' ? 1 : postFrequency === 'week' ? 7 : postFrequency == 'fortnight' ? 14 : 0
         this.lastCheckTime = lastCheckTime;
         this.lastCreateTime = lastCreateTime;
         this.lastCreateTimeNZ = dayjs(lastCreateTime).tz('Pacific/Auckland');
@@ -150,7 +152,7 @@ class SocialPostRun {
     setLocationGroups(locations:LocationOfInterest[], locationPresets:LocationPreset[]){
 
         
-        const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
+        //const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
 
        // const dateAfter:Dayjs = this.isUpdate() && this.lastCreateTimeNZ ? this.lastCreateTimeNZ : todayNZ().add(-frequencyInDays, 'days').startOf('day');
         const relevantLocations = locations.filter((l) => {
@@ -215,7 +217,8 @@ class SocialPostRun {
 
     isUpdate():boolean{
         const nowNZ = todayNZ();
-        if(nowNZ.isAfter(this.getCurrentStartTime()) && nowNZ.isBefore(this.getCurrentEndTime())){
+
+        if(nowNZ.isBefore(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))){
             return true;
         }else{
             return false
@@ -323,7 +326,7 @@ class SocialPostRun {
             throw `Failed to generated location summary.no locationGroups: ${JSON.stringify(this.locationGroups)}`
         }
         
-        return `${this.getTitle(this.primaryLocationGroup ? this.primaryLocationGroup.locationPreset.title : 'New Zealand 2222', publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}\n\n\n ${this.locationGroups
+        return `${this.getTitle(this.primaryLocationGroup ? this.primaryLocationGroup.locationPreset.title : 'all New Zealand', publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}\n\n\n ${this.locationGroups
             .filter((lg) => lg && lg.locationPreset && lg.locationPreset.urlParam !== 'other' || includeOther)
             .sort((a,b) => this.primaryLocationGroup ? downTheCountryGrpWithOverride(this.primaryLocationGroup.locationPreset.urlParam, a,b) : downTheCountryGrp(a,b))
             .map((lg) => lg.toString(true, false, undefined))
