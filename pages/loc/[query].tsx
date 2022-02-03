@@ -133,7 +133,7 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
                   />: <div style={{ width: '100%' }}><div>Loading Covid-19 Locations of Interest from the Ministry of Health...</div>
             }
           </LocationContext.Consumer>*/}
-          <Loading locationTitle={quickLink.title}/>
+          <Loading locationTitle={quickLink ? quickLink.title : undefined}/>
     </>
     </>
   )
