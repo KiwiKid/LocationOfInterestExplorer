@@ -100,7 +100,7 @@ const getAirportCities = (loi:LocationOfInterestRecord):FlightCities => {
         return {startAirport,finishAirport}
     }else{
       console.error(`no two matching airports for ${loi.event} [${startAirport},${finishAirport}]`)
-      throw `no two matching airports for ${loi.event}`
+     // throw `no two matching airports for ${loi.event}`
     }
 }
 

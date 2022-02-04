@@ -244,7 +244,7 @@ class NotionClient {
             }
             const props:any = {}
         
-            console.log(`Setting check time for notionPageId: ${notionPageId}`)
+            console.log(`SKIPPED/FAILED Setting check time for notionPageId: ${notionPageId}`)
 
             return this.notionClient.pages.update({
                 page_id: notionPageId,
@@ -266,7 +266,7 @@ class NotionClient {
     setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
         return new Promise<void>(async (resolve,reject) => {
                 
-            console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
+            console.log(`UPDATED notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
 
             if(!checkTime){ 
                 checkTime = new Date();
@@ -293,7 +293,7 @@ class NotionClient {
 
     setSocialPostProcessedCreated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
         return new Promise<void>(async (resolve,reject) => {
-            console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
+            console.log(`CREATED Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
 
             if(!checkTime){ 
                 checkTime = new Date();
