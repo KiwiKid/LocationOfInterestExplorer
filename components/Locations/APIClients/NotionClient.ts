@@ -243,22 +243,16 @@ class NotionClient {
                 checkTime = new Date();
             }
             const props:any = {}
-
-            // Allow failed requests to be retried
-           // if(!action.startsWith('Failed')){
-            props["lastCheckTime"] = getNotionDateObject(checkTime);
-            //}
-            if(action.startsWith('Created')){
-                props["lastCreateTime"] = getNotionDateObject(checkTime)
-            }
-
-            props["lastAction"] = getNotionRichTextObject(action);
         
             console.log(`Setting check time for notionPageId: ${notionPageId}`)
 
             return this.notionClient.pages.update({
                 page_id: notionPageId,
-                properties: props
+                properties: {
+                    "lastCheckTime": getNotionDateObject(checkTime),
+                    "lastCreateTime": action.startsWith('Created') ?  getNotionRichTextObject(action): undefined,
+                    "lastAction": action
+                }
             }).then(() => { 
                 console.log(`updated check time for ${notionPageId}`)
                 resolve()
