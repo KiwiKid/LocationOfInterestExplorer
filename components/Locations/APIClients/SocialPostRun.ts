@@ -2,7 +2,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { Dictionary } from 'lodash';
 import LocationOfInterest from '../../types/LocationOfInterest';
-import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ, NiceFullAlwaysNZDate } from '../DateHandling';
+import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ, NiceFullAlwaysNZDate, asAtDateAlwaysNZ } from '../DateHandling';
 import { LocationGroup } from '../LocationGroup';
 import { downTheCountryGrp, downTheCountryGrpWithOverride } from '../LocationObjectHandling';
 import SocialPostRunResult from './SocialPostRunResult';
@@ -281,7 +281,7 @@ class SocialPostRun {
             throw `Failed to generated location summary.no locationGroups: ${JSON.stringify(this.locationGroups)}`
         }
         
-        return `${this.getTitle(this.primaryLocationGroup ? this.primaryLocationGroup.locationPreset.title : 'all New Zealand', publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}\n\n\n ${this.locationGroups
+        return `${this.getTitle(this.primaryLocationGroup ? this.primaryLocationGroup.locationPreset.title : 'all New Zealand', publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)}${asAtDateAlwaysNZ(publishTime)}\n\n\n ${this.locationGroups
             .filter((lg) => lg && lg.locationPreset && lg.locationPreset.urlParam !== 'other' || includeOther)
             .sort((a,b) => this.primaryLocationGroup ? downTheCountryGrpWithOverride(this.primaryLocationGroup.locationPreset.urlParam, a,b) : downTheCountryGrp(a,b))
             .map((lg) => lg.toString(true, false, undefined))

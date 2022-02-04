@@ -275,13 +275,16 @@ class NotionClient {
                 
             console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
 
-            const props:any = {
-                "currentPostTitle": getNotionRichTextObject(postTitle),
-                "currentPostId": getNotionRichTextObject(postId),
+            const props:any = {}
+          //      "currentPostTitle": ,
+                
                 //"lastCreateTime": getNotionDateObject(createTime),
-                "lastAction": getNotionRichTextObject(action)
-            }
-            
+                
+          //  }
+            props["currentPostTitle"] = getNotionRichTextObject(postTitle)
+            props["currentPostId"] = getNotionRichTextObject(postId)
+            props["lastAction"] = getNotionRichTextObject(action)
+
             if(action.startsWith('Created')){
                 props["lastCreateTime"] = getNotionDateObject(checkTime)
             }
