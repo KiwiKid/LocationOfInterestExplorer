@@ -39,24 +39,26 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
     
 
     const [groupedLocations, setGroupedLocations] = useState<LocationGroup[]>([]);
+    const [allLocations, setAllLocations] = useState<LocationGroup>();
 
     useEffect(()=> {
         if(locations){
             const locationGroup = createLocationGroups(locations.filter((l) => { console.log(JSON.stringify(l)); return onlyToday(l.added) } ), locationSettings.locationPresets);
             setGroupedLocations(locationGroup);
+            setAllLocations(new LocationGroup("New Zealand", locationSettings.locationPresets.filter((lp) => lp.urlParam === 'all')[0]))
         }
     }, [locations, locationSettings.locationPresets]);
     
 
     return (groupedLocations ? (locationSettings.locationPresets ? <div className="">
                 
-                {/*<TodayLocationSummary 
-                    mainMatchingPreset={undefined}
-                    locationGroups={groupedLocations} 
-                    hardcodedURL={hardcodedURL}
-                    publishTime={publishTime}
-                    locationSettings={locationSettings}
-                />               */}
+                {allLocations ? <LocationInfoGroup 
+                   locationSettings={locationSettings}
+                   key={allLocations.locationPreset.urlParam}
+                   group={allLocations}
+                   publishTime={publishTime}
+                   hardcodedURL={hardcodedURL}
+                /> : 'No All locations group'}
                 {groupedLocations.map((group) => {
                     return <LocationInfoGroup 
                         publishTime={publishTime}
