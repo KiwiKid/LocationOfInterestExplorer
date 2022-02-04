@@ -161,7 +161,7 @@ class SocialPostRun {
         }else if(this.result?.isSuccess){
             await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
         }
-        await client.setSocialPostProcessed(this.notionPageId, new Date(), 'Failed 02')
+        await client.setSocialPostProcessed(this.notionPageId, new Date(), `Failed 02 - ${this.errorMsg ? this.errorMsg : 'No ErrorMsg'}`)
     }
     
     
