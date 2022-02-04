@@ -3,7 +3,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Dictionary } from 'lodash';
 import LocationOfInterest from '../../types/LocationOfInterest';
 import { getActionString } from '../../utils/utils';
-import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ, NiceFullAlwaysNZDate, asAtDateAlwaysNZ } from '../DateHandling';
+import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ, NiceFullAlwaysNZDate, asAtDateAlwaysNZ, isBetween } from '../DateHandling';
 import { LocationGroup } from '../LocationGroup';
 import { downTheCountryGrp, downTheCountryGrpWithOverride } from '../LocationObjectHandling';
 import NotionClient from './NotionClient';
@@ -12,7 +12,7 @@ import SocialPostRunResult from './SocialPostRunResult';
 
 const isUpdate = (lastCreateTime:Dayjs, frequencyDays:number):boolean => {
     const nowNZ = todayNZ();
-    return nowNZ.isAfter(lastCreateTime) && nowNZ.isBefore(lastCreateTime.add(frequencyDays, 'day'))
+    return isBetween(nowNZ, lastCreateTime, lastCreateTime.add(frequencyDays, 'day'));
 }
 
 const otherLocationPreset:LocationPreset = {

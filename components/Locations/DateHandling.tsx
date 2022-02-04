@@ -2,6 +2,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import calendar from 'dayjs/plugin/calendar'
+import isBetweenPlugin from 'dayjs/plugin/isBetween'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import DayJSUtc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -17,10 +18,15 @@ dayjs.extend(calendar);
 dayjs.extend(localizedFormat);
 dayjs.extend(timezone);
 dayjs.extend(DayJSUtc);
-dayjs.extend(weekOfYear)
+dayjs.extend(weekOfYear);
+dayjs.extend(isBetweenPlugin);
 
 const NiceTimeFromNow = ({date}:DateProps):JSX.Element => {
     return <>{dayjs().to(dayjs(date))}</>
+}
+
+const isBetween = (date:Dayjs, start:Dayjs, to:Dayjs) => { 
+    return date.isBetween(start, to);
 }
 
 const NiceDateWithTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
@@ -111,4 +117,5 @@ export {
     , subtractMinutes
     , getFortnightOfYear
     , getWeekOfYear
+    , isBetween
 }
