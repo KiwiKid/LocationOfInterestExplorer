@@ -18,7 +18,7 @@ const AutoSizeTextArea = ({text,className = ""}:AutoSizeTextAreaProps) => {
   }, [textareaRef, text]);
 
   return (
-    <textarea ref={textareaRef} style={{height: `${heightPx}px`}} className={className} value={text} />
+    <textarea ref={textareaRef} style={{height: `${heightPx}px`}} className={className} defaultValue={text} />
   )
 }
 export default AutoSizeTextArea
