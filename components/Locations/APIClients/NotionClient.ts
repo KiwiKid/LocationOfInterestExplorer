@@ -249,6 +249,9 @@ class NotionClient {
             if(!action.startsWith('Failed')){
                 props["lastCheckTime"] = getNotionDateObject(checkTime);
             }
+            if(action.startsWith('Created')){
+                props["lastCreateTime"] = getNotionDateObject(checkTime)
+            }
             props["lastAction"] = getNotionRichTextObject(action);
         
             console.log(`Setting check time for notionPageId: ${notionPageId}`)
