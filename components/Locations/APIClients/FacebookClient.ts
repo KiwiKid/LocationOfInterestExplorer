@@ -55,8 +55,7 @@ class FacebookClient {
     updateFacebook(run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> {
         return new Promise(async (resolve, reject) => {
             try{                
-                const isUpdate = run.isUpdate()
-                if(isUpdate && run.existingPostId) {
+                if(run.isUpdate && run.existingPostId) {
 
 
                    
