@@ -10,9 +10,9 @@ import NotionClient from './NotionClient';
 import SocialPostRunResult from './SocialPostRunResult';
 
 
-const isUpdate = (createTime:Dayjs, frequencyDays:number):boolean => {
+const isUpdate = (lastCreateTime:Dayjs, frequencyDays:number):boolean => {
     const nowNZ = todayNZ();
-    return nowNZ.isAfter(createTime.add(frequencyDays, 'day'))
+    return nowNZ.isAfter(lastCreateTime) && nowNZ.isBefore(lastCreateTime.add(frequencyDays, 'day'))
 }
 
 const otherLocationPreset:LocationPreset = {
