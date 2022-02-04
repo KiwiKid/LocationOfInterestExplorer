@@ -251,6 +251,7 @@ class NotionClient {
             if(action.startsWith('Created')){
                 props["lastCreateTime"] = getNotionDateObject(checkTime)
             }
+
             props["lastAction"] = getNotionRichTextObject(action);
         
             console.log(`Setting check time for notionPageId: ${notionPageId}`)
@@ -277,8 +278,7 @@ class NotionClient {
             const props:any = {
                 "currentPostTitle": getNotionRichTextObject(postTitle),
                 "currentPostId": getNotionRichTextObject(postId),
-                
-                "lastCreateTime": getNotionDateObject(createTime),
+                //"lastCreateTime": getNotionDateObject(createTime),
                 "lastAction": getNotionRichTextObject(action)
             }
             

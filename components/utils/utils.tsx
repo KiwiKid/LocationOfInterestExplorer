@@ -141,7 +141,7 @@ export interface Dictionary<T> {
 
 export const getActionString = (rr:SocialPostRun) => {
     if(rr.errorMsg || rr.result?.error){
-        return `Error: ${rr.errorMsg}${rr.result?.error}`
+        return `Failed - Error: ${rr.errorMsg}${rr.result?.error}`
     }
     if(!rr.result){
         return 'No Result'

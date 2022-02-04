@@ -79,9 +79,7 @@ class SocialPostRun {
         if(flairId){
             this.flairId = flairId
         }
-        if(lastCreateTime){
-            this.lastCreateTime = lastCreateTime
-        }
+
         if(lastAction){
             this.lastAction = lastAction
         }
