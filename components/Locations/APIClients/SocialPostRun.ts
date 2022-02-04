@@ -241,7 +241,7 @@ class SocialPostRun {
 
     isUpdate():boolean{
         const nowNZ = todayNZ();
-        return nowNZ.isBefore(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'));
+        return nowNZ.isAfter(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))
     }
     
     getDateRangeDisplay = (publishTime:Date) =>{
