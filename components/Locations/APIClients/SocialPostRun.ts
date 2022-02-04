@@ -156,12 +156,25 @@ class SocialPostRun {
     async saveResult(client:NotionClient,postId?:string){
         if(this.result?.isSuccess && this.result?.isSkipped){
             await client.setSocialPostProcessed(this.notionPageId, new Date(this.result.createdDate), 'Skipped')
+                .catch((err) => {
+                    console.error(`${this.notionPageId} Failed to save results ${err}`);
+                })
         }else if(this.result?.isUpdate && this.result?.isSuccess){
             await client.setSocialPostProcessedUpdated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
+                .catch((err) => {
+                    console.error(`${this.notionPageId} Failed to save results ${err}`);
+                })
         }else if(this.result?.isSuccess){
             await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
+                .catch((err) => {
+                    console.error(`${this.notionPageId} Failed to save results ${err}`);
+                })
+        }else{
+            await client.setSocialPostProcessed(this.notionPageId, new Date(), `Failed 02 - ${this.errorMsg ? this.errorMsg : 'No ErrorMsg'}`)
+            .catch((err) => {
+                console.error(`${this.notionPageId} Failed to save results ${err}`);
+            })
         }
-        await client.setSocialPostProcessed(this.notionPageId, new Date(), `Failed 02 - ${this.errorMsg ? this.errorMsg : 'No ErrorMsg'}`)
     }
     
     

@@ -154,7 +154,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 //throw `Failed to create update/create post `
                             }
 
-                            run.saveResult(notionClient, rr.result ? rr.result.postId : undefined);
+                            await run.saveResult(notionClient, rr.result ? rr.result.postId : undefined);
 
 
 
@@ -174,7 +174,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                             console.error(err);
                             //await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), 'Failed 01')
 
-                            run.saveResult(notionClient)
+           // run.saveResult(notionClient)
                                    // .then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
                                    // .catch((err) => createSocialPostRunResults(run, err, false, true, false))
 
