@@ -38,11 +38,11 @@ const SocialRun =  ({run}:SocialRunProps) => {
 
     const title = ``
 
-    const nextAction = <>
+    const nextAction = (run:SocialPostRun) => <>
         {run.locationGroups && run.locationGroups.length > 0 
         ? <>{run.isUpdate() ? 
                 <>
-                    Update <link href={run.url} rel="noreferrer" className="underline"> {run.existingPostId} {run.existingPostTitle}</link>
+                    Update {run.url ? <link href={run.url} rel="noreferrer" className="underline"> {run.existingPostId ? run.existingPostId : 'no existingPostId'} {run.existingPostTitle ? run.existingPostTitle : 'No existingPostTitle'}</link>: 'No URL'}
                 </> : 
                     <>
                         Create
@@ -63,7 +63,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                         <div>{run.postFrequency} - {run.getCurrentStartTime().toString()} - {run.getCurrentEndTime().toString()}</div>
                     </details>
                     <div>{run.lastAction} (last success was {updatedMinutesAgo} mins ago) </div>
-                    <div>Next action: {nextAction}</div>
+                    <div>Next action: {nextAction(run)}</div>
                 </div>
                 
                 
