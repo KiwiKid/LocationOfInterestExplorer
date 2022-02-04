@@ -250,7 +250,7 @@ class NotionClient {
                 page_id: notionPageId,
                 properties: {
                     "lastCheckTime": getNotionDateObject(checkTime),
-                    "lastAction": action
+                    "lastAction": getNotionRichTextObject(action)
                 }
             }).then(() => { 
                 console.log(`updated check time for ${notionPageId}`)
