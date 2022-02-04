@@ -281,18 +281,15 @@ class NotionClient {
                 //"lastCreateTime": getNotionDateObject(createTime),
                 
           //  }
-            props["currentPostTitle"] = getNotionRichTextObject(postTitle)
-            props["currentPostId"] = getNotionRichTextObject(postId)
-            props["lastAction"] = getNotionRichTextObject(action)
-
-            if(action.startsWith('Created')){
-                props["lastCreateTime"] = getNotionDateObject(checkTime)
-            }
-            
 
             return this.notionClient.pages.update({
                 page_id: notionPageId,
-                properties: props
+                properties: {
+                    "currentPostTitle": getNotionRichTextObject(postTitle),
+                    "currentPostId": getNotionRichTextObject(postId),
+                    "lastAction": getNotionRichTextObject(action),
+                    "lastCreateTime": action.startsWith('Created') ? getNotionDateObject(checkTime): undefined
+                }
             }).then(() => { 
                 console.log(`updated notion db entry with post details ${notionPageId}`)
                 resolve();
