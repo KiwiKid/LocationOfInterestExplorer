@@ -51,7 +51,7 @@ class LocationGroup {
 const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]):LocationPreset|undefined => {
     const match = locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city))[0];// || mohCity === 'all'
 
-    console.log(`getMatchingLocationPreset() ${location.city} ${match ? `${match.title}` : 'No Match'} ${locationPreset.length} presets`)
+    //console.log(`getMatchingLocationPreset() ${location.city} ${match ? `${match.title}` : 'No Match'} ${locationPreset.length} presets`)
     return match;
 }
 

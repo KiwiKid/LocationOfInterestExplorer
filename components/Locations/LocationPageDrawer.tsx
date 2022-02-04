@@ -147,7 +147,7 @@ const LocationPageDrawer = ({
       return (
         <div className="w-full">
           <div className="w-4/5 m-auto p-2">
-            {description}
+            {description}:
             <div className="p-2">
                 <ExternalLink
                   title={title}
@@ -200,11 +200,11 @@ const LocationPageDrawer = ({
       {
         title: "ESR - Covid Dashboard",
         href: "https://nzcoviddashboard.esr.cri.nz/#!/",
-        description: <><p>Environmental Science and Research Institute (ESR) - Covid Dashboard:</p><p>(created in partnership with the MoH)</p></>
+        description: 'Environmental Science and Research Institute (ESR) - Covid Dashboard'
       },
       {
-        title: "Covid-19",
-        description: "Reddit - Covid-19 science focused subreddit",
+        title: "r/Covid-19",
+        description: "(Reddit) Covid-19 science focused subreddit",
         href: "https://reddit.com/r/covid19"
       }
     ];
@@ -283,7 +283,7 @@ const LocationPageDrawer = ({
             <>
               <Summary>
                     <div  className={`${dataStale ? 'bg-red-200 pb-3' : ''}`}>{dataStale && "⚠️"} last updated <NiceShortTime date={publishState.publishTime}/>{dataStale && "⚠️"}</div>
-                    {dataStale && <InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink>}
+                    {dataStale && <div><InternalLink linkClassName="h-10 text-red-100 border-red-800 bg-red-400 hover:bg-red-700" id="refresh" onClick={triggerRefresh} >Reload (Show new locations)</InternalLink></div>}
               </Summary>
               {!pageState.featureFlags.some((ff) => ff === 'noDrawer') && <LocationGridContainer 
                     showLocationData={false}
