@@ -224,7 +224,7 @@ class NotionClient {
         }
 
             return this.notionClient.databases.query(params)
-            .then((r) => r.results.map(mapNotionItemToSocialPostRun))
+                .then((r) => r.results.map(mapNotionItemToSocialPostRun))
     }
             
             //.then((rs) => {
@@ -306,7 +306,8 @@ class NotionClient {
                     "currentPostId": getNotionRichTextObject(postId),
                     "lastAction": getNotionRichTextObject(action),
                     "lastCreateTime": getNotionDateObject(checkTime),
-                    "lastCheckTime": getNotionDateObject(checkTime)
+                    "lastCheckTime": getNotionDateObject(checkTime),
+                    "lastUpdateTime": getNotionDateObject(checkTime)
                 }
             }).then(() => { 
                 console.log(`updated notion db entry with post details ${notionPageId}`)
