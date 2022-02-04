@@ -42,7 +42,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
         {run.locationGroups && run.locationGroups.length > 0 
         ? <>{run.isUpdate() ? 
                 <>
-                    Update {run.url ? <link href={run.url} rel="noreferrer" className="underline"> {run.existingPostId ? run.existingPostId : 'no existingPostId'} {run.existingPostTitle ? run.existingPostTitle : 'No existingPostTitle'}</link>: 'No URL'}
+                    Update {run.url ? <a href={run.url} rel="noreferrer" className="underline"> {run.existingPostId ? run.existingPostId : 'no existingPostId'} {run.existingPostTitle ? run.existingPostTitle : 'No existingPostTitle'}</a>: 'No URL'}
                 </> : 
                     <>
                         Create
