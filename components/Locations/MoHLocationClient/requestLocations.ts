@@ -76,7 +76,7 @@ const airports:Airport[] = [{
 const getCityFromEventRegex = new RegExp(/(\w+)\s*(\-|to)\s*(.+)/g)
 
 
-const getAirportCities = (loi:LocationOfInterestRecord):FlightCities => {
+const getAirportCities = (loi:LocationOfInterestRecord):FlightCities|undefined => {
     let startCity:string, finishCity:string
 
     let result;
@@ -125,9 +125,9 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
           advice: fl.advice,
           exposureType: fl.exposureType,
           visibleInWebform: fl.visibleInWebform,
-          city: airportCities.startAirport.city,
-          lat: airportCities.startAirport.lat+"", // gross..
-          lng: airportCities.startAirport.lng+""
+          city: airportCities ? airportCities.startAirport.city : fl.city,
+          lat: airportCities ? airportCities.startAirport.lat+"" : fl.lat, // gross..
+          lng: airportCities ? airportCities.startAirport.lng+"": fl.lng
       }
 
       const destLoc:LocationOfInterestRecord = { 
@@ -142,9 +142,9 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
         advice: fl.advice,
         exposureType: fl.exposureType,
         visibleInWebform: fl.visibleInWebform,
-        city: airportCities.finishAirport.city,
-        lat: airportCities.finishAirport.lat+"", // gross..
-        lng: airportCities.finishAirport.lng+""
+        city: airportCities ?airportCities.finishAirport.city : fl.city,
+        lat: airportCities ?airportCities.finishAirport.lat+"": fl.lat, // gross..
+        lng: airportCities ?airportCities.finishAirport.lng+"": fl.lng
     }
 
     
