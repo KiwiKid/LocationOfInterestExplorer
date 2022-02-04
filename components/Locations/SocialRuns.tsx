@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import CopyBox from "../utils/CopyBox";
 import { getActionString, getHoursAgo} from "../utils/utils";
 import SocialPostRun from "./APIClients/SocialPostRun";
-import { getMinutesAgo, NiceFullAlwaysNZDate } from "./DateHandling";
+import { getMinutesAgo, NiceFullAlwaysNZDate, todayNZ } from "./DateHandling";
 import { downTheCountry } from "./LocationObjectHandling";
 
 const getSocialsStatusColor = (socialPostRun: SocialPostRun) => {
@@ -45,7 +45,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                     Update {run.url ? <a href={run.url} rel="noreferrer" target="_blank" className="underline"> {run.existingPostId ? run.existingPostId : 'no existingPostId'} {run.existingPostTitle ? run.existingPostTitle : 'No existingPostTitle'}</a>: 'No URL'}
                 </> : 
                     <>
-                        Create
+                        Create [{todayNZ()} is after {run.getCurrentStartTime()} plus {run.postFrequencyDays} days ({run.getCurrentEndTime()})]
                     </>
             }</>
             : <>Skipped</>
