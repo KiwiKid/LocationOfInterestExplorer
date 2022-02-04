@@ -276,7 +276,8 @@ class NotionClient {
                 page_id: notionPageId,
                 properties: {
                     "lastAction": getNotionRichTextObject(action),
-                    "lastCheckTime": getNotionDateObject(checkTime)
+                    "lastCheckTime": getNotionDateObject(checkTime),
+                    "lastUpdateTime": getNotionDateObject(checkTime)
                 }
             }).then(() => { 
                 console.log(`updated notion db entry with post details ${notionPageId}`)
