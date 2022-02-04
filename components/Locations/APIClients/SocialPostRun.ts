@@ -228,12 +228,9 @@ class SocialPostRun {
         if(this.textUrlParams.some((tp) => tp === 'all') && others.locations.length > 0){
             res["Others"] = others;
         }
-        
-        // hack to remove "Others" group when displaying "All" locations 
-        
         const groupArray = Object.keys(res).map((r) => res[r]);
 
-        // The "all" will NOT have a primary location group
+        // Note: The "all" will NOT have a primary location group
         const matchingPrimaryLocationGroup = groupArray.filter((lg) => lg.locationPreset && lg.locationPreset.urlParam == this.primaryUrlParam)
            
 
@@ -246,26 +243,7 @@ class SocialPostRun {
 
     isUpdate():boolean{
         const nowNZ = todayNZ();
-
-        if(nowNZ.isBefore(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))){
-            console.log(`${this.subreddit} IS UPDATE: this.postFrequencyDays: ${this.postFrequencyDays}`)
-            console.log('this.lastCreateTimeNZ:')
-            console.log(this.lastCreateTimeNZ)
-            console.log('this.lastCreateTimeNZ with add:')
-            console.log(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))
-            console.log('nowNZ')
-            console.log(nowNZ)
-            return true;
-        }else{
-            console.log(`${this.subreddit} IS CREATE: this.postFrequencyDays: ${this.postFrequencyDays}`)
-            console.log('this.lastCreateTimeNZ:')
-            console.log(this.lastCreateTimeNZ)
-            console.log('this.lastCreateTimeNZ with add:')
-            console.log(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))   
-            console.log('nowNZ')
-            console.log(nowNZ)
-            return false
-        }
+        return nowNZ.isBefore(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'));
     }
     
     getDateRangeDisplay = (publishTime:Date) =>{

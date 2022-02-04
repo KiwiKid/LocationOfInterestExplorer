@@ -57,22 +57,11 @@ const subtractHours = (a:Dayjs, hours:number) => {
 const subtractMinutes = (a:Dayjs|Date, minutes:number) => {
     return dayjs(a).subtract(minutes, 'minutes');
 }
+
 // (Debugging: allow more locations to be considered today -  "dayjs().subtract(24,'hours')")
 const onlyToday = (a:Dayjs|Date):boolean => {
     return startOfDayNZ(a) === startOfDayNZ(dayjs().tz("Pacific/Auckland"));  //subtractHours(dayjs(),24) < dayjs(a)
 };
-
-const dateDebugging = (passedInDate:Date):string => {
-    return `${passedInDate}
-                \n\n isOnlyToday: ${onlyToday(passedInDate)}
-                \n\n startOfDayNZ: ${startOfDayNZ(passedInDate)}
-                \n\n todayNZ: ${asAtDateAlwaysNZ(new Date())}
-                \n\n startOfDayFormatted (direct): ${dayjs().tz("Pacific/Auckland").startOf('day').format('D MMM')}
-                \n\n startOfDayFormatted (via new Date()): ${startOfDayFormattedNZ(new Date())}
-            `;
-}
-
-
 
 const startOfDayFormattedNZ = (date:Date|Dayjs) => {
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format('D MMM');
@@ -90,9 +79,6 @@ const getFortnightOfYear = (date:Date|Dayjs) =>{
     return Math.floor(dayjs(date).week()/2);
 }
 
-const releaseDateAndCity = (date:Date) => {
-    return dayjs(date).startOf('day').format();
-}
 const asAtDateAlwaysNZ = (date:Date) => `(as at ${dayjs(date).tz("Pacific/Auckland").format('h:mm a D/MM/YYYY')})`
 
 
