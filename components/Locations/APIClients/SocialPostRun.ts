@@ -10,9 +10,10 @@ import NotionClient from './NotionClient';
 import SocialPostRunResult from './SocialPostRunResult';
 
 
-const isUpdate = (lastCreateTime:Dayjs, frequencyDays:number):boolean => {
+const isUpdate = (lastCreateTimeNZ:Dayjs, frequencyDays:number):boolean => {
     const nowNZ = todayNZ();
-    return isBetween(nowNZ, lastCreateTime, lastCreateTime.add(frequencyDays, 'day'));
+    
+    return isBetween(nowNZ, lastCreateTimeNZ.startOf('day'), lastCreateTimeNZ.add(frequencyDays, 'day').startOf('day'));
 }
 
 const otherLocationPreset:LocationPreset = {
@@ -54,6 +55,9 @@ class SocialPostRun {
     isUpdate:boolean
     activeStartDate: dayjs.Dayjs;
     activeEndDate: dayjs.Dayjs;
+
+
+    debug:any;
 
     constructor (
         notionPageId:string
@@ -104,11 +108,19 @@ class SocialPostRun {
         this.lastCreateTimeNZ = dayjs(lastCreateTime).tz('Pacific/Auckland');
 
         this.isUpdate = isUpdate(this.lastCreateTimeNZ, this.postFrequencyDays);
-
+        
         
         this.activeStartDate = !this.isUpdate ? todayNZ().startOf('day') : this.lastCreateTimeNZ.startOf('day')
         this.activeEndDate = !this.isUpdate ? todayNZ().add(this.postFrequencyDays, 'day').startOf('day') : this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day').startOf('day')
 
+
+        this.debug = {
+            isUpdate: this.isUpdate,
+            lastCreateTimeNZ: this.lastCreateTimeNZ,
+            lastCreateTimeAddFreq: this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'),
+            activeStartDate:this.activeStartDate,
+            activeEndDate:this.activeEndDate
+        }
 
         switch(this.type){
             case 'Reddit_Comment': 

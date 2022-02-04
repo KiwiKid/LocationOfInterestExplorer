@@ -70,7 +70,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                 
             
             {run.lastAction ? <div><a target="_blank" rel="noreferrer" href={run.url}> {run.lastAction} {run.lastCheckTime ? ` ${getMinutesAgo(new Date(run.lastCheckTime))} mins ago - `:null } </a></div>:<div> </div> }
-            
+            {run.debug ? <pre>{JSON.stringify(run.debug, undefined, 4)}</pre>: ''}
             {/*run.existingPostId ? <details>
                 <summary>
                    
