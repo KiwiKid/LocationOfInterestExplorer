@@ -116,9 +116,9 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
       <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
     </Head>
       <>
-        {/*<LocationContext.Consumer>
+        <LocationContext.Consumer>
             {locationsRecords => 
-              locationsRecords || false ? <LocationsPage
+              locationsRecords ? <LocationsPage
                       rawLocations={locationsRecords}
                       startingPageState={{
                         daysInPastShown: 14,
@@ -130,10 +130,9 @@ const LocationPage: NextPage<LocationPageProps> = ({quickLink, publishTimeUTC, h
                       }}
                       locationSettings={locationSettings}
                       publishState={{hardcodedURL: hardcodedURL, publishTime: new Date(publishTimeUTC)}}
-                  />: <div style={{ width: '100%' }}><div>Loading Covid-19 Locations of Interest from the Ministry of Health...</div>
-            }
-          </LocationContext.Consumer>*/}
-          <Loading locationTitle={quickLink ? quickLink.title : undefined}/>
+                  />: <Loading locationTitle={quickLink ? quickLink.title : undefined}/>}
+          </LocationContext.Consumer>
+          
     </>
     </>
   )
