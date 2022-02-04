@@ -2,9 +2,11 @@
 import dayjs, { Dayjs } from 'dayjs';
 import { Dictionary } from 'lodash';
 import LocationOfInterest from '../../types/LocationOfInterest';
+import { getActionString } from '../../utils/utils';
 import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ, NiceFullAlwaysNZDate, asAtDateAlwaysNZ } from '../DateHandling';
 import { LocationGroup } from '../LocationGroup';
 import { downTheCountryGrp, downTheCountryGrpWithOverride } from '../LocationObjectHandling';
+import NotionClient from './NotionClient';
 import SocialPostRunResult from './SocialPostRunResult';
 
 
@@ -148,6 +150,18 @@ class SocialPostRun {
 
     setResults(result:SocialPostRunResult){
         this.result = result
+    }
+
+
+    async saveResult(client:NotionClient,postId?:string){
+        if(this.result?.isSuccess && this.result?.isSkipped){
+            await client.setSocialPostProcessed(this.notionPageId, new Date(this.result.createdDate), 'Skipped')
+        }else if(this.result?.isUpdate && this.result?.isSuccess){
+            await client.setSocialPostProcessedUpdated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
+        }else if(this.result?.isSuccess){
+            await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
+        }
+        await client.setSocialPostProcessed(this.notionPageId, new Date(), 'Failed 02')
     }
     
     
