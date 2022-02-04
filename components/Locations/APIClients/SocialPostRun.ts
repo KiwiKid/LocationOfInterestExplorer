@@ -10,6 +10,11 @@ import NotionClient from './NotionClient';
 import SocialPostRunResult from './SocialPostRunResult';
 
 
+const isUpdate = (createTime:Dayjs, frequencyDays:number):boolean => {
+    const nowNZ = todayNZ();
+    return nowNZ.isAfter(createTime.add(frequencyDays, 'day'))
+}
+
 const otherLocationPreset:LocationPreset = {
     lat: -40.8248,
     lng: 173.7304,
@@ -45,6 +50,10 @@ class SocialPostRun {
     locationGroups?:LocationGroup[]
     primaryLocationGroup?:LocationGroup
     lastCreateTimeNZ:Dayjs
+
+    isUpdate:boolean
+    activeStartDate: dayjs.Dayjs;
+    activeEndDate: dayjs.Dayjs;
 
     constructor (
         notionPageId:string
@@ -94,6 +103,13 @@ class SocialPostRun {
         this.lastCreateTime = lastCreateTime;
         this.lastCreateTimeNZ = dayjs(lastCreateTime).tz('Pacific/Auckland');
 
+        this.isUpdate = isUpdate(this.lastCreateTimeNZ, this.postFrequencyDays);
+
+        
+        this.activeStartDate = !this.isUpdate ? todayNZ().startOf('day') : this.lastCreateTimeNZ.startOf('day')
+        this.activeEndDate = !this.isUpdate ? todayNZ().add(this.postFrequencyDays, 'day').startOf('day') : this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day').startOf('day')
+
+
         switch(this.type){
             case 'Reddit_Comment': 
             // TODO: this wont work..we dont know the thread id...
@@ -110,7 +126,7 @@ class SocialPostRun {
     getPostFreqNum(){
         return this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 0
     }
-
+/*
     getCurrentStartTime():Dayjs{
         const nowNZ = todayNZ();
         const postRange = this.getPostFreqNum()
@@ -120,8 +136,8 @@ class SocialPostRun {
         } else{
             return this.lastCreateTimeNZ.startOf('day');
         }
-    }
-
+    }*/
+/*
     getCurrentEndTime():Dayjs{
         const currentStart = this.getCurrentStartTime();
         switch(this.postFrequency){
@@ -134,7 +150,7 @@ class SocialPostRun {
             default:
                 throw ''
         }
-    }
+    }*/
 
     setError(errorMsg:string) {
         if(typeof(errorMsg) === 'string'){
@@ -183,10 +199,10 @@ class SocialPostRun {
 
        // const dateAfter:Dayjs = this.isUpdate() && this.lastCreateTimeNZ ? this.lastCreateTimeNZ : todayNZ().add(-frequencyInDays, 'days').startOf('day');
         const relevantLocations = locations.filter((l) => {
-            const start = this.getCurrentStartTime();
-            const end = this.getCurrentEndTime();
+  //          const start = this.getCurrentStartTime();
+//            const end = this.getCurrentEndTime();
             
-            const res = dayjs(l.added).tz('Pacific/Auckland').isAfter(start) && dayjs(l.added).tz('Pacific/Auckland').isBefore(end);
+            const res = dayjs(l.added).tz('Pacific/Auckland').isAfter(this.activeStartDate) && dayjs(l.added).tz('Pacific/Auckland').isBefore(this.activeEndDate);
 //            console.log(`${res ? '========Match:' : 'Not match:'} ${this.postFrequency} \n${start} \n${dayjs(l.added).tz('Pacific/Auckland')}\n ${end}`)
             return res;
         });
@@ -219,7 +235,7 @@ class SocialPostRun {
         })
 
         if(relevantLocations.length == 0){
-            console.log(`No locations for ${this.subreddit} (${this.textUrlParams.join(',')}) between ${this.getCurrentStartTime().calendar(null,{})}) and ${this.getCurrentEndTime().calendar(null,{})}`)
+            console.log(`No locations for ${this.subreddit} (${this.textUrlParams.join(',')}) between ${this.activeStartDate.calendar(null,{})}) and ${this.activeEndDate.calendar(null,{})}`)
             return;
         }
         // Only include "Others" group when listing all
@@ -239,23 +255,14 @@ class SocialPostRun {
         this.locationGroups = groupArray;   
     }
 
-    isUpdate():boolean{
-        const nowNZ = todayNZ();
-        return nowNZ.isAfter(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))
-    }
+
     
     getDateRangeDisplay = (publishTime:Date) =>{
-        const isUpdate = this.isUpdate();
-
-        const frequencyInDays = this.postFrequency === 'day' ? 1 : this.postFrequency === 'week' ? 7 : this.postFrequency === 'fortnight' ? 14 : 1;
-
-        const startDate = !isUpdate ? todayNZ() : this.lastCreateTimeNZ
-        const endDate = !isUpdate ? todayNZ().add(frequencyInDays, 'day') : this.lastCreateTimeNZ.add(frequencyInDays, 'day')
 
         switch(this.postFrequency){
-            case "day": return `${dayFormattedNZ(startDate)}`;
-            case "week": return `${dayFormattedNZ(startDate)} - ${dayFormattedNZ(endDate)}`;
-            case "fortnight": return `${dayFormattedNZ(startDate)} - ${dayFormattedNZ(endDate)}`
+            case "day": return `${dayFormattedNZ(this.activeStartDate)}`;
+            case "week": return `${dayFormattedNZ(this.activeStartDate)} - ${dayFormattedNZ(this.activeEndDate)}`;
+            case "fortnight": return `${dayFormattedNZ(this.activeStartDate)} - ${dayFormattedNZ(this.activeEndDate)}`
             default: {
                 console.error('no date range frequency option found');
             }

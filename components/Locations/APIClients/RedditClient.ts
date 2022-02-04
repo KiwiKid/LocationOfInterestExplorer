@@ -54,7 +54,6 @@ class RedditClient {
             }
 
           //  const startOfTodayString = startOfDayNZ(todayNZ());
-            const isUpdate = run.isUpdate();
 
            /* this.logger.info(`startOfDayString: $ ${startOfTodayString} (`, {
                 notionId: run.notionPageId,
@@ -66,7 +65,7 @@ class RedditClient {
             })*/
 
 
-            if(isUpdate && run.existingPostId){
+            if(run.isUpdate && run.existingPostId){
 
                 this.logger.info(`Updating reddit comment`, {
                     existingPostId: run.existingPostId
@@ -168,10 +167,9 @@ class RedditClient {
                // const startOfDayString = startOfDayNZ(dayjs(run.lastCreateTime))
                // const startOfTodayString = startOfDayNZ(todayNZ());
                 
-                const isUpdate = run.isUpdate();
                 //this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} `)
                 
-                if(isUpdate && run.existingPostId){
+                if(run.isUpdate && run.existingPostId){
                     this.logger.info(`Reddit post - edit ${run.subreddit} ${run.existingPostId}`);
 
                    return await this.r.getSubmission(run.existingPostId)

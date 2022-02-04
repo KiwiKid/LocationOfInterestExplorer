@@ -40,12 +40,12 @@ const SocialRun =  ({run}:SocialRunProps) => {
 
     const nextAction = (run:SocialPostRun) => <>
         {run.locationGroups && run.locationGroups.length > 0 
-        ? <>{run.isUpdate() ? 
+        ? <>{run.isUpdate ? 
                 <>
                     Update {run.url ? <a href={run.url} rel="noreferrer" target="_blank" className="underline"> {run.existingPostId ? run.existingPostId : 'no existingPostId'} {run.existingPostTitle ? run.existingPostTitle : 'No existingPostTitle'}</a>: 'No URL'}
                 </> : 
                     <>
-                        Create [{todayNZ().toString()} is after {run.getCurrentStartTime().toString()} plus {run.postFrequencyDays} days ({run.getCurrentEndTime().toString()})]
+                        Create [{todayNZ().toString()} is after {run.activeStartDate.toString()} plus {run.postFrequencyDays} days ({run.activeEndDate.toString()})]
                     </>
             }</>
             : <>Skipped</>
@@ -60,7 +60,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                         <summary>{run.primaryUrlParam}</summary>
                         <div>{run.flairId ? `FlairID: ${run.flairId}` : ''}</div>
                         <div>{run.textUrlParams.length !== 1 || run.textUrlParams[0] !== run.primaryUrlParam ? `(${run.textUrlParams})` :''}</div>
-                        <div>{run.postFrequency} - {run.getCurrentStartTime().toString()} - {run.getCurrentEndTime().toString()} </div>
+                        <div>{run.postFrequency} - {run.activeStartDate.toString()} - {run.activeEndDate.toString()} </div>
                         <div>{todayNZ().toISOString()}</div>
                     </details>
                     <div>{run.lastAction} (last success was {updatedMinutesAgo} mins ago) </div>
