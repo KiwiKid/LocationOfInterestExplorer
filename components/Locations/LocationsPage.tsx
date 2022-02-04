@@ -109,7 +109,6 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
     }
 
     function goToDrawerItem(loi:LocationOfInterest){
-      console.log(`going to ${loi.event}`);
       openDrawer();
       let item = drawerItemRefs.current[loi.id];
       if(item){

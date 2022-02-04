@@ -94,9 +94,7 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
                                 showIds={true}
                                 goToLocation={goToLocation}
                                 ref={(el:any) => { 
-                                    console.log('setting ref for '+l.loi.id);
                                     drawerItemRefs.current[l.loi.id] = el 
-                                    console.log(JSON.stringify(Object.keys(drawerItemRefs.current)));
                                 }}
                             />)}
                                 )
