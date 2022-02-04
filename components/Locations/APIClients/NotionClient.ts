@@ -250,7 +250,6 @@ class NotionClient {
                 page_id: notionPageId,
                 properties: {
                     "lastCheckTime": getNotionDateObject(checkTime),
-                    "lastCreateTime": action.startsWith('Created') ?  getNotionRichTextObject(action): undefined,
                     "lastAction": action
                 }
             }).then(() => { 
@@ -264,17 +263,40 @@ class NotionClient {
         });
     }
 
-    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, createTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
+    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
         return new Promise<void>(async (resolve,reject) => {
                 
             console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
 
-            const props:any = {}
-          //      "currentPostTitle": ,
-                
-                //"lastCreateTime": getNotionDateObject(createTime),
-                
-          //  }
+            if(!checkTime){ 
+                checkTime = new Date();
+            }
+
+            return this.notionClient.pages.update({
+                page_id: notionPageId,
+                properties: {
+                    "lastAction": getNotionRichTextObject(action),
+                    "lastCheckTime": getNotionDateObject(checkTime)
+                }
+            }).then(() => { 
+                console.log(`updated notion db entry with post details ${notionPageId}`)
+                resolve();
+            }).catch((err) => {
+                console.error('Failed to update notion after processing update')
+                console.error(err);
+                reject();
+            });
+        });
+    }
+
+
+    setSocialPostProcessedCreated = async (notionPageId:string, checkTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
+        return new Promise<void>(async (resolve,reject) => {
+            console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
+
+            if(!checkTime){ 
+                checkTime = new Date();
+            }
 
             return this.notionClient.pages.update({
                 page_id: notionPageId,
@@ -282,7 +304,8 @@ class NotionClient {
                     "currentPostTitle": getNotionRichTextObject(postTitle),
                     "currentPostId": getNotionRichTextObject(postId),
                     "lastAction": getNotionRichTextObject(action),
-                    "lastCreateTime": action.startsWith('Created') ? getNotionDateObject(checkTime): undefined
+                    "lastCreateTime": getNotionDateObject(checkTime),
+                    "lastCheckTime": getNotionDateObject(checkTime)
                 }
             }).then(() => { 
                 console.log(`updated notion db entry with post details ${notionPageId}`)

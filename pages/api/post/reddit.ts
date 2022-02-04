@@ -150,8 +150,12 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 console.error(rr);
                                 throw `Failed to create update/create post `
                             }
+                            if(rr.result.isUpdate && rr.result.isSuccess){
+                                await notionClient.setSocialPostProcessedUpdated(run.notionPageId,new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getResultActionString(rr.result))
+                            }else if(rr.result.isSuccess){
+                                await notionClient.setSocialPostProcessedCreated(run.notionPageId,new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getResultActionString(rr.result))
+                            }
                             
-                            await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getResultActionString(rr.result))
                                         //.then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
                                         //.catch((err) => createSocialPostRunResults(run, err, false, true, false))
 
@@ -206,6 +210,18 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     .then(async (rr) => {
                         if(rr.result){
                             if(rr.result.postTitle && rr.result.postId && rr.notionPageId){
+
+
+
+                                if(rr.result.isUpdate && rr.result.isSuccess){
+                                    await notionClient.setSocialPostProcessedUpdated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getResultActionString(rr.result))
+                                }else if(rr.result.isSuccess){
+                                    await notionClient.setSocialPostProcessedCreated(run.notionPageId, new Date(rr.createdDate),new Date(rr.createdDate), rr.result.postTitle ? rr.result.postTitle : 'No post Title', rr.result.postId ? rr.result.postId : 'No post id?', getResultActionString(rr.result))
+                                }
+                                
+
+
+/*
                                 await notionClient.setSocialPostProcessedUpdated(
                                         run.notionPageId
                                         , new Date(rr.createdDate)
@@ -215,7 +231,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                         , 'Updated'
                                         )
                                     .then((nUpdate) => createSocialPostRunResults(run, nUpdate, false, false, false))
-                                    .then((err) => createSocialPostRunResults(run, err, false, false, false))
+                                    .then((err) => createSocialPostRunResults(run, err, false, false, false))*/
                             } else {
                                 await notionClient.setSocialPostProcessed(rr.notionPageId, new Date(rr.createdDate), getResultActionString(rr.result))
                                     .then((nUpdate) => createSocialPostRunResults(run, nUpdate, false, false, false))
