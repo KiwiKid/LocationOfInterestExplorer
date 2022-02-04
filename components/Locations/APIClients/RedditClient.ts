@@ -169,7 +169,7 @@ class RedditClient {
                // const startOfTodayString = startOfDayNZ(todayNZ());
                 
                 const isUpdate = run.isUpdate();
-                //this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
+                //this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} `)
                 
                 if(isUpdate && run.existingPostId){
                     this.logger.info(`Reddit post - edit ${run.subreddit} ${run.existingPostId}`);
