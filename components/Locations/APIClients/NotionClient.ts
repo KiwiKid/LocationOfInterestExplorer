@@ -245,9 +245,9 @@ class NotionClient {
             const props:any = {}
 
             // Allow failed requests to be retried
-            if(!action.startsWith('Failed')){
-                props["lastCheckTime"] = getNotionDateObject(checkTime);
-            }
+           // if(!action.startsWith('Failed')){
+            props["lastCheckTime"] = getNotionDateObject(checkTime);
+            //}
             if(action.startsWith('Created')){
                 props["lastCreateTime"] = getNotionDateObject(checkTime)
             }
