@@ -38,7 +38,6 @@ class SocialPostRun {
     result?:SocialPostRunResult
     errorMsg?:string
     lastAction?:string
-    lastPostTime?:string
     lastCreateTime?:string
     url:string
     locationGroups?:LocationGroup[]
@@ -57,7 +56,6 @@ class SocialPostRun {
         , lastCheckTime?:string
         , lastCreateTime?:string 
         , flairId?:string
-        , lastPostTime?:string
         , lastAction?:string
     ){
         
@@ -81,8 +79,8 @@ class SocialPostRun {
         if(flairId){
             this.flairId = flairId
         }
-        if(lastPostTime){
-            this.lastPostTime = lastPostTime
+        if(lastCreateTime){
+            this.lastCreateTime = lastCreateTime
         }
         if(lastAction){
             this.lastAction = lastAction
@@ -225,71 +223,24 @@ class SocialPostRun {
         const nowNZ = todayNZ();
 
         if(nowNZ.isBefore(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))){
+            console.log(`${this.subreddit} IS UPDATE: this.postFrequencyDays: ${this.postFrequencyDays}`)
+            console.log('this.lastCreateTimeNZ:')
+            console.log(this.lastCreateTimeNZ)
+            console.log('this.lastCreateTimeNZ with add:')
+            console.log(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))
+            console.log('nowNZ')
+            console.log(nowNZ)
             return true;
         }else{
+            console.log(`${this.subreddit} IS CREATE: this.postFrequencyDays: ${this.postFrequencyDays}`)
+            console.log('this.lastCreateTimeNZ:')
+            console.log(this.lastCreateTimeNZ)
+            console.log('this.lastCreateTimeNZ with add:')
+            console.log(this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'))   
+            console.log('nowNZ')
+            console.log(nowNZ)
             return false
         }
-
-        /*
-        switch(this.postFrequency){
-            case "day": {
-                const hoursTillNewPost = 24 - todayNZ().diff(this.lastCreateTimeNZ,'hours');
-
-
-                if(nowNZ.isAfter(this.getCurrentStartTime()) && nowNZ.isBefore(this.getCurrentEndTime())){
-                    return true;
-                }else{
-                    return false
-                }
-                
-                console.log(`${this.subreddit}/${this.primaryUrlParam} hoursTillNewPost: ${hoursTillNewPost} [${this.lastCreateTimeNZ}| ${todayNZ()}]`);
-                return hoursTillNewPost > 0;
-              //  const startOfLastPostDayString = startOfDayNZ(dayjs(this.lastPostTime) );
-              //  const startOfTodayString = startOfDayNZ(todayNZ());
-             //   const isUpdate = this.lastPostTime && startOfLastPostDayString === startOfTodayString ? true : false
-              //  return isUpdate;
-            }
-            case "week": {
-                const daysTillNewPost = 7 - todayNZ().diff(this.getCurrentEndTime(), 'day');
-                
-                
-                console.log(`${this.subreddit}/${this.primaryUrlParam} daysTillNewPost: ${daysTillNewPost}`);
-                return daysTillNewPost > 0;
-
-              //  return dayjs(this.lastCreateTime).tz('Pacific/Auckland').diff(todayNZ(),'hours') > 24
-               
-            //    const LastPostWeek = getWeekOfYear(dayjs(this.lastPostTime));
-             //   const thisWeek = getWeekOfYear(todayNZ());
-             //   const isUpdate = this.lastPostTime && LastPostWeek === thisWeek ? true : false
-             //   return isUpdate;
-            }
-            case "fortnight": {
-
-                const daysTillNewPost = 14 - todayNZ().diff(this.getCurrentEndTime(), 'day');
-                
-                
-                console.log(`${this.subreddit}/${this.primaryUrlParam} daysTillNewPost: ${daysTillNewPost}`);
-                return daysTillNewPost > 0;                
-            }
-            default:
-                throw 'invalid post frequency'
-        }*/
-
-
-       /*
-        this.logger.info(`startOfDayString: $ ${startOfTodayString} (${run.lastPostTime}`, {
-            notionId: run.notionPageId,
-            subreddit: run.subreddit,
-            textUrlParams: run.textUrlParams,
-            startOfDayString: startOfLastPostDayString,
-            isUpdate: isUpdate,
-            startOftodayNZDate: startOfTodayString,
-            lastPostTime: run.lastPostTime,
-            lastPostTimeDate: dayjs(run.lastPostTime),
-            todayNZDate: todayNZ()
-        });*/
-
-        
     }
     
     getDateRangeDisplay = (publishTime:Date) =>{

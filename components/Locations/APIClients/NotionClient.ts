@@ -53,7 +53,6 @@ const mapNotionItemToSocialPostRun = (notionRow:any):SocialPostRun => {
             , getNotionDate(props.lastCheckTime)
             , getNotionDate(props.lastCreateTime)
             , getNotionRichText(props.flareId)
-            , getNotionDate(props.lastPostTime)
             , getNotionRichText(props.lastAction)
     )
        /* showInDrawer: props.showInDrawer.checkbox,
@@ -270,19 +269,27 @@ class NotionClient {
         });
     }
 
-    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, postTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
+    setSocialPostProcessedUpdated = async (notionPageId:string, checkTime:Date, createTime:Date, postTitle:string, postId:string, action:string):Promise<void> => { 
         return new Promise<void>(async (resolve,reject) => {
                 
             console.log(`Updating notion db entry with post details ${postTitle} ${postId} : ${notionPageId}`)
+
+            const props:any = {
+                "currentPostTitle": getNotionRichTextObject(postTitle),
+                "currentPostId": getNotionRichTextObject(postId),
+                
+                "lastCreateTime": getNotionDateObject(createTime),
+                "lastAction": getNotionRichTextObject(action)
+            }
+            
+            if(action.startsWith('Created')){
+                props["lastCreateTime"] = getNotionDateObject(checkTime)
+            }
+            
+
             return this.notionClient.pages.update({
                 page_id: notionPageId,
-                properties: {
-                    "currentPostTitle": getNotionRichTextObject(postTitle),
-                    "currentPostId": getNotionRichTextObject(postId),
-                    "lastCheckTime": getNotionDateObject(checkTime),
-                    "lastPostTime": getNotionDateObject(postTime),
-                    "lastAction": getNotionRichTextObject(action)
-                }
+                properties: props
             }).then(() => { 
                 console.log(`updated notion db entry with post details ${notionPageId}`)
                 resolve();

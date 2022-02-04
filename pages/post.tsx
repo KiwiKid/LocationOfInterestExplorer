@@ -50,7 +50,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
     const [lastVisitTime, setLastVisitTime] = useState<Date|undefined>(undefined);
     
     // Next.js is stripping methods from classes when serilising..this gross hack gets them back 
-    const [socialRuns, setSocialRuns] = useState<SocialPostRun[]>(socialPostRuns.map((spr) => new SocialPostRun(spr.notionPageId, spr.subreddit, spr.primaryUrlParam, spr.textUrlParams, spr.type,spr.postFrequency,spr.existingPostTitle,spr.existingPostId,spr.lastCheckTime, spr.lastCreateTime, spr.flairId, spr.lastPostTime, spr.lastAction)))
+    const [socialRuns, setSocialRuns] = useState<SocialPostRun[]>(socialPostRuns.map((spr) => new SocialPostRun(spr.notionPageId, spr.subreddit, spr.primaryUrlParam, spr.textUrlParams, spr.type,spr.postFrequency,spr.existingPostTitle,spr.existingPostId,spr.lastCheckTime, spr.lastCreateTime, spr.flairId, spr.lastAction)))
 
     const [socialRunResults, setSocialRunResults] = useState<SocialPostRun[]>([]);
 

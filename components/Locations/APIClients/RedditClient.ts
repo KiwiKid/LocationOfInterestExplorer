@@ -53,21 +53,17 @@ class RedditClient {
                 return;
             }
 
-            const startOfLastPostDayString = startOfDayNZ(dayjs(run.lastPostTime) );
-            const startOfTodayString = startOfDayNZ(todayNZ());
+          //  const startOfTodayString = startOfDayNZ(todayNZ());
             const isUpdate = run.isUpdate();
 
-            this.logger.info(`startOfDayString: $ ${startOfTodayString} (${run.lastPostTime}`, {
+           /* this.logger.info(`startOfDayString: $ ${startOfTodayString} (`, {
                 notionId: run.notionPageId,
                 subreddit: run.subreddit,
                 textUrlParams: run.textUrlParams,
-                startOfDayString: startOfLastPostDayString,
                 isUpdate: isUpdate,
                 startOftodayNZDate: startOfTodayString,
-                lastPostTime: run.lastPostTime,
-                lastPostTimeDate: dayjs(run.lastPostTime),
                 todayNZDate: todayNZ()
-            })
+            })*/
 
 
             if(isUpdate && run.existingPostId){
@@ -169,11 +165,11 @@ class RedditClient {
     updateRedditSubmissions = async (run:SocialPostRun, title:string, text:string):Promise<SocialPostRun> => {
         return new Promise<SocialPostRun>(async (resolve,reject) => {
             try{
-                const startOfDayString = startOfDayNZ(dayjs(run.lastPostTime))
-                const startOfTodayString = startOfDayNZ(todayNZ());
+               // const startOfDayString = startOfDayNZ(dayjs(run.lastCreateTime))
+               // const startOfTodayString = startOfDayNZ(todayNZ());
                 
                 const isUpdate = run.isUpdate();
-                this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
+                //this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} (${run.lastPostTime}`)
                 
                 if(isUpdate && run.existingPostId){
                     this.logger.info(`Reddit post - edit ${run.subreddit} ${run.existingPostId}`);
