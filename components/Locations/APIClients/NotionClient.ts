@@ -52,6 +52,7 @@ const mapNotionItemToSocialPostRun = (notionRow:any):SocialPostRun => {
             , getNotionRichText(props.currentPostId)
             , getNotionDate(props.lastCheckTime)
             , getNotionDate(props.lastCreateTime)
+            , getNotionDate(props.lastUpdateTime)
             , getNotionRichText(props.flareId)
             , getNotionRichText(props.lastAction)
     )

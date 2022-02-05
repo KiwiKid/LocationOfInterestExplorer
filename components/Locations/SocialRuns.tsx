@@ -31,7 +31,8 @@ type SocialRunProps = {
 }
 
 const SocialRun =  ({run}:SocialRunProps) => {
-    const updatedMinutesAgo = !!run.lastCheckTime ? getMinutesAgo(new Date(run.lastCheckTime)) :  'Never'
+    const updatedMinutesAgo = !!run.lastUpdateTime ? getMinutesAgo(new Date(run.lastUpdateTime)) :  'Never'
+    const checkedMinutesAgo = !!run.lastCheckTime ? getMinutesAgo(new Date(run.lastCheckTime)) :  'Never'
 
     const mostRecentAction = !!run.result ? getActionString(run) : !!run.lastAction ? run.lastAction : 'None'
 
@@ -63,7 +64,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                         <div>{run.postFrequency} - {run.activeStartDate.toString()} - {run.activeEndDate.toString()} </div>
                         <div>{todayNZ().toISOString()}</div>
                     </details>
-                    <div>{run.lastAction} (last success was {updatedMinutesAgo} mins ago) </div>
+                    <div>{run.lastAction} [checked {checkedMinutesAgo} mins ago - last success was {updatedMinutesAgo} mins ago] </div>
                     <div>Next action: {nextAction(run)}</div>
                 </div>
                 

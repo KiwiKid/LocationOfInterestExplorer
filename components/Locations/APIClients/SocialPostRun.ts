@@ -1,6 +1,7 @@
 
 import dayjs, { Dayjs } from 'dayjs';
 import { Dictionary } from 'lodash';
+import { Touchscreen } from 'puppeteer-core';
 import LocationOfInterest from '../../types/LocationOfInterest';
 import { getActionString } from '../../utils/utils';
 import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ, NiceFullAlwaysNZDate, asAtDateAlwaysNZ, isBetween } from '../DateHandling';
@@ -42,6 +43,7 @@ class SocialPostRun {
     existingPostTitle?:string
     existingPostId?:string
     lastCheckTime?:string
+    lastUpdateTime?:string
 
     result?:SocialPostRunResult
     errorMsg?:string
@@ -70,6 +72,7 @@ class SocialPostRun {
         , existingPostId?:string
         , lastCheckTime?:string
         , lastCreateTime?:string 
+        , lastUpdateTime?:string
         , flairId?:string
         , lastAction?:string
     ){
@@ -93,6 +96,10 @@ class SocialPostRun {
         }
         if(flairId){
             this.flairId = flairId
+        }
+
+        if(lastUpdateTime){
+            this.lastUpdateTime = lastUpdateTime;
         }
 
         if(lastAction){
