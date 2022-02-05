@@ -243,7 +243,6 @@ class NotionClient {
             if(!checkTime){ 
                 checkTime = new Date();
             }
-            const props:any = {}
         
             console.log(`SKIPPED/FAILED Setting check time for notionPageId: ${notionPageId}`)
 
@@ -254,10 +253,10 @@ class NotionClient {
                     "lastAction": getNotionRichTextObject(action)
                 }
             }).then(() => { 
-                console.log(`updated check time for ${notionPageId}`)
+                console.log(`updated check time for: ${notionPageId} ${action} ${checkTime}`)
                 resolve()
             }).catch((err) => {
-                console.error('Failed to update notion after processing non-social post update')
+                console.error(`Failed to update notion after processing non-social post update ${notionPageId}`)
                 console.error(err)
                 reject()
             });

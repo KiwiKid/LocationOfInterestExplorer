@@ -172,6 +172,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                             //return run
                         }).catch(async (err) => {
                             console.error(err);
+                            
                             //await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), 'Failed 01')
 
            // run.saveResult(notionClient)
@@ -299,7 +300,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const redditClient = new RedditClient();
 
-        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).slice(0,3).map(async (run) =>{
+        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).slice(0,10).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
              
                 run.setLocationGroups(locations, settings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')))
