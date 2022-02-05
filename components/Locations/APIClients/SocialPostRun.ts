@@ -119,7 +119,9 @@ class SocialPostRun {
             lastCreateTimeNZ: this.lastCreateTimeNZ,
             lastCreateTimeAddFreq: this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'),
             activeStartDate:this.activeStartDate,
-            activeEndDate:this.activeEndDate
+            activeEndDate:this.activeEndDate,
+            todayNZ:todayNZ(),
+            startOfTodayNZ:todayNZ().startOf('day')
         }
 
         switch(this.type){
