@@ -143,7 +143,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         return new Promise<SocialPostRun>(async (resolve, reject) => {
                 const botFeedbackMsg = `\n\n\nThis post will be automatically updated. Please contact this account with any feedback`
     
-                getLogMsg(run, 'updating reddit post start');
+                getLogMsg(run, 'updating/creating reddit post start');
                     
                 try{
                     
@@ -153,7 +153,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 console.error(rr);
                                 //throw `Failed to create update/create post `
                             }
-
+                            getLogMsg(run, 'Success in updating/creating reddit post');
                             await run.saveResult(notionClient, rr.result ? rr.result.postId : undefined);
 
 
@@ -300,7 +300,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const redditClient = new RedditClient();
 
-        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).slice(0,10).map(async (run) =>{
+        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).slice(0,2).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
              
                 run.setLocationGroups(locations, settings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')))
