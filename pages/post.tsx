@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import {  useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
 import { getMinutesAgo, NiceFullDate, oldestLastCheckTimeFirst, subtractMinutes } from "../components/Locations/DateHandling";
@@ -175,7 +175,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
     )
 }
 
-export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
+export const getServerSideProps:GetServerSideProps = async ({params, preview = false}) => {
     if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.log('No MoH API set'); throw 'Config error 08'; }
 
     const client = new NotionClient();
