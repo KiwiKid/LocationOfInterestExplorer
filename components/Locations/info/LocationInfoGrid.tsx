@@ -45,7 +45,8 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
         if(locations){
             const locationGroup = createLocationGroups(locations.filter((l) => { console.log(JSON.stringify(l)); return onlyToday(l.added) } ), locationSettings.locationPresets);
             setGroupedLocations(locationGroup);
-            setAllLocations(new LocationGroup("New Zealand", locationSettings.locationPresets.filter((lp) => lp.urlParam === 'all')[0]))
+            const allLocs = new LocationGroup("New Zealand", locationSettings.locationPresets.filter((lp) => lp.urlParam === 'all')[0])
+            allLocs.locations = locations.filter((l) => onlyToday(l.added));
         }
     }, [locations, locationSettings.locationPresets]);
     
