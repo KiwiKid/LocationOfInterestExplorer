@@ -1,7 +1,7 @@
 import { GetStaticProps, NextPage } from "next";
 import {  useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
-import { getMinutesAgo, NiceFullDate, subtractMinutes } from "../components/Locations/DateHandling";
+import { getMinutesAgo, NiceFullDate, oldestLastCheckTimeFirst, subtractMinutes } from "../components/Locations/DateHandling";
 import { getHardCodedUrl } from "../components/utils/utils";
 import axios from 'axios'
 import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
@@ -100,7 +100,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button>
         <div className="w-full h-2 bg-yellow-700"/> 
             <div className="grid grid-cols-3">
-                {socialRunResults.length > 0 ? socialRunResults.map((res) => {
+                {socialRunResults.length > 0 ? socialRunResults.sort(oldestLastCheckTimeFirst).map((res) => {
                     return (<>
                             <div>{res.result?.isSuccess ? 'Success' : 'Failed'} {res.result?.isSkipped ? 'Skipped' : res.result?.isUpdate ? 'Updated Success' : 'Created Success'}</div>
                             {res.result?.createdDate ? <div>{getMinutesAgo(res.result?.createdDate)} mins ago</div> :<div>None</div>}

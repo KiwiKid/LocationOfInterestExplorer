@@ -97,7 +97,7 @@ const oldestLastCheckTimeFirst = (a:SocialPostRun,b:SocialPostRun):number => {
     if(!b || !b.lastCheckTime){
         return 1;
     }
-    return new Date(a.lastCheckTime) > new Date(b.lastCheckTime) ? 1 : -1;
+    return new Date(a.lastCheckTime) > new Date(b.lastCheckTime) ? -1 : 1;
 }
 
 export {
