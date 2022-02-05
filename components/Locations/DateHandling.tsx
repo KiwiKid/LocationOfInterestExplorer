@@ -10,7 +10,7 @@ import SocialPostRun from './APIClients/SocialPostRun'
 
 
 type DateProps = {
-    date: Date
+    date: Date|Dayjs
 }
 
 dayjs.extend(relativeTime);
@@ -43,6 +43,8 @@ const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{date ? dayjs(d
 const startOfDayNZ = (date:Date|Dayjs) => {
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format();
 }
+
+const fromNow = (date:Dayjs):string => date.fromNow(true);
 
 const todayNZ = () => {
     return dayjs().tz("Pacific/Auckland");
@@ -118,4 +120,5 @@ export {
     , getFortnightOfYear
     , getWeekOfYear
     , isBetween
+    , fromNow
 }

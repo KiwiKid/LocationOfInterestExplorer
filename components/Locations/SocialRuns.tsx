@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import CopyBox from "../utils/CopyBox";
 import { getActionString, getHoursAgo} from "../utils/utils";
 import SocialPostRun from "./APIClients/SocialPostRun";
-import { getMinutesAgo, NiceFullAlwaysNZDate, todayNZ } from "./DateHandling";
+import { fromNow, getMinutesAgo, NiceFullAlwaysNZDate, todayNZ } from "./DateHandling";
 import { downTheCountry } from "./LocationObjectHandling";
 
 const getSocialsStatusColor = (socialPostRun: SocialPostRun) => {
@@ -31,8 +31,8 @@ type SocialRunProps = {
 }
 
 const SocialRun =  ({run}:SocialRunProps) => {
-    const updatedMinutesAgo = !!run.lastUpdateTime ? getMinutesAgo(new Date(run.lastUpdateTime)) :  'Never'
-    const checkedMinutesAgo = !!run.lastCheckTime ? getMinutesAgo(new Date(run.lastCheckTime)) :  'Never'
+    const updatedAgo:string = !!run.lastUpdateTime ? fromNow(dayjs(run.lastUpdateTime)) :  'Never'
+    const checkedAgo:string = !!run.lastCheckTime ? fromNow(dayjs(run.lastCheckTime)) :  'Never'
 
     const mostRecentAction = !!run.result ? getActionString(run) : !!run.lastAction ? run.lastAction : 'None'
 
@@ -63,8 +63,10 @@ const SocialRun =  ({run}:SocialRunProps) => {
                         <div>{run.textUrlParams.length !== 1 || run.textUrlParams[0] !== run.primaryUrlParam ? `(${run.textUrlParams})` :''}</div>
                         <div>{run.postFrequency} - {run.activeStartDate.toString()} - {run.activeEndDate.toString()} </div>
                         <div>{todayNZ().toISOString()}</div>
+                        <div>lastCheckTime: <NiceFullAlwaysNZDate date={dayjs(run.lastCheckTime)}/></div>
+                        <div>lastUpdateTime: <NiceFullAlwaysNZDate date={dayjs(run.lastUpdateTime)}/></div>
                     </details>
-                    <div>{run.lastAction} [checked {checkedMinutesAgo} mins ago - last success was {updatedMinutesAgo} mins ago] </div>
+                    <div>{run.lastAction} [checked {checkedAgo} ago - last success was {updatedAgo} ago] </div>
                     <div>Next action: {nextAction(run)}</div>
                 </div>
                 
