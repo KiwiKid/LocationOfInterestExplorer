@@ -195,7 +195,7 @@ class RedditClient {
                         resolve(run);
                     }).catch((err) => {
                         console.error(err)
-                        run.setError(`Could not create creating reddit new post r/${run.subreddit} ${run.textUrlParams}.${err & err.error ? err.error.message : ''} This can be caused by invalid FlairId`)
+                        run.setError(`Could not create reddit new post r/${run.subreddit} [${run.textUrlParams}].${err & err.error ? err.error.message : ''} ${JSON.stringify(err)} This can be caused by invalid FlairId`)
                         reject(run);
                     })
                 
