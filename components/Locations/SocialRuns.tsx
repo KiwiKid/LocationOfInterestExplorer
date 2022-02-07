@@ -55,7 +55,6 @@ const SocialRun =  ({run}:SocialRunProps) => {
     return (
         <>
             <div className={`bg-${getSocialsStatusColor(run)} divide-blue-500`}>{run.type} ({run.subreddit}{`${run.subredditSubmissionTitleQuery ? `(${run.subredditSubmissionTitleQuery})`: ''}`})</div>
-            
                 <div>
                     <details>
                         <summary>{run.primaryUrlParam}</summary>
@@ -65,6 +64,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                         <div>{todayNZ().toISOString()}</div>
                         <div>lastCheckTime: <NiceFullAlwaysNZDate date={dayjs(run.lastCheckTime)}/></div>
                         <div>lastUpdateTime: <NiceFullAlwaysNZDate date={dayjs(run.lastUpdateTime)}/></div>
+                        {run.debug ? <pre>{JSON.stringify(run.debug, undefined, 4)}</pre>: ''}
                     </details>
                     <div>{run.lastAction} [checked {checkedAgo} ago - last success was {updatedAgo} ago] </div>
                     <div>Next action: {nextAction(run)}</div>
@@ -73,7 +73,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                 
             
             {run.lastAction ? <div><a target="_blank" rel="noreferrer" href={run.url}> {run.lastAction} {run.lastCheckTime ? ` ${getMinutesAgo(new Date(run.lastCheckTime))} mins ago - `:null } </a></div>:<div> </div> }
-            {run.debug ? <pre>{JSON.stringify(run.debug, undefined, 4)}</pre>: ''}
+            
             {/*run.existingPostId ? <details>
                 <summary>
                    
