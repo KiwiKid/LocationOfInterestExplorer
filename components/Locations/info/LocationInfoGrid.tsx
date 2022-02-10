@@ -34,31 +34,34 @@ const processGroupKey = (locationPresets:LocationPreset[],keyString:string):Loca
     }
 }
 
+const allLocationGroupText = (locs:LocationGroup[], publishSettings:PublishState) => {
+    return locs.map((lg) => lg.toString(true, true, publishSettings.publishTime)).join('\n');
+}
 
 const LocationInfoGrid = ({locations, publishSettings, locationSettings}:LocationInfoGridProps) => {
     const [groupedLocations, setGroupedLocations] = useState<LocationGroup[]>([]);
-    const [allLocations, setAllLocations] = useState<LocationGroup>();
+    //const [allLocationGroups, setAllLocationGroups] = useState<LocationGroup[]>();
 
     useEffect(()=> {
         if(locations){
             const locationGroup = createLocationGroups(locations.filter((l) => { console.log(JSON.stringify(l)); return onlyToday(l.added) } ), locationSettings.locationPresets);
             setGroupedLocations(locationGroup);
-            const allLocs = new LocationGroup("New Zealand", locationSettings.locationPresets.filter((lp) => lp.urlParam === 'all')[0])
-            allLocs.locations = locations.filter((l) => onlyToday(l.added));
+            //const allLocs = new LocationGroup("New Zealand", locationSettings.locationPresets.filter((lp) => lp.urlParam === 'all')[0])
+         //   allLocs.locations = locations.filter((l) => onlyToday(l.added));
 
-            setAllLocations(allLocs);
+            //setAllLocationGroups(allLocs);
         }
     }, [locations, locationSettings.locationPresets]);
     
 
     return (groupedLocations ? (locationSettings.locationPresets ? <div className="">
                 
-                {allLocations ? <LocationInfoGroup 
-                   locationSettings={locationSettings}
-                   key={allLocations.locationPreset.urlParam}
-                   group={allLocations}
-                   publishSettings={publishSettings}
-                /> : 'No All locations group'}
+                <CopyBox 
+                    id="copybox"
+                    //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
+                    copyText={allLocationGroupText(groupedLocations, publishSettings)}
+                    textarea={true} 
+                />
                 {groupedLocations.map((group) => {
                     return <LocationInfoGroup 
                         publishSettings={publishSettings}

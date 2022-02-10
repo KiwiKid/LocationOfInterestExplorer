@@ -14,6 +14,7 @@ import { resetScroll } from "../utils/resetScroll";
 import { applyLocationOverride } from "./LocationObjectHandling";
 import { Map } from "leaflet";
 import { Dictionary } from "lodash";
+import PublishState from "../types/PublishState";
 
 
 const CLOSED_DRAW_POS = -60;
