@@ -29,6 +29,7 @@ import LocationGrid from "./LocationGrid";
 import LocationGridRaw from "./LocationGridRaw";
 import { FacebookIcon, FacebookShareButton } from "react-share";
 import LocationPreset from "./LocationPreset";
+import PublishState from "../types/PublishState";
 
 // TODO: consoidate most of this into "PageState"
 type LocationPageDrawerProps = { 
