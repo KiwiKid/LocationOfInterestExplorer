@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import _ from "lodash";
 import { useEffect, useState } from "react";
 import LocationOfInterest from "../../types/LocationOfInterest";
+import PublishState from "../../types/PublishState";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
 import { startOfDayNZ , NiceFullDate, NiceTimeFromNow, NiceDate, onlyToday} from "../DateHandling";
@@ -14,8 +15,7 @@ import { LocationInfoGroup, LocationOfInterestInfoGrid }  from "./LocationInfoGr
 
 type LocationInfoGridProps = {
     locations:LocationOfInterest[]
-    hardcodedURL:string
-    publishTime:Date
+    publishSettings:PublishState
     locationSettings:LocationSettings
 }
 
@@ -35,9 +35,7 @@ const processGroupKey = (locationPresets:LocationPreset[],keyString:string):Loca
 }
 
 
-const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSettings}:LocationInfoGridProps) => {
-    
-
+const LocationInfoGrid = ({locations, publishSettings, locationSettings}:LocationInfoGridProps) => {
     const [groupedLocations, setGroupedLocations] = useState<LocationGroup[]>([]);
     const [allLocations, setAllLocations] = useState<LocationGroup>();
 
@@ -59,16 +57,14 @@ const LocationInfoGrid = ({locations, hardcodedURL, publishTime, locationSetting
                    locationSettings={locationSettings}
                    key={allLocations.locationPreset.urlParam}
                    group={allLocations}
-                   publishTime={publishTime}
-                   hardcodedURL={hardcodedURL}
+                   publishSettings={publishSettings}
                 /> : 'No All locations group'}
                 {groupedLocations.map((group) => {
                     return <LocationInfoGroup 
-                        publishTime={publishTime}
+                        publishSettings={publishSettings}
                         locationSettings={locationSettings}
                         key={group.locationPreset.urlParam}
                         group={group}
-                        hardcodedURL={hardcodedURL}
                     />
                 })}
                 <LocationOfInterestInfoGrid locations={locations}/>

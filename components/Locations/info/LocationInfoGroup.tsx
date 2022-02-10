@@ -1,4 +1,5 @@
 import LocationOfInterest from "../../types/LocationOfInterest";
+import PublishState from "../../types/PublishState";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
 import { NiceDate, NiceFullDate } from "../DateHandling";
@@ -78,12 +79,11 @@ const LocationOfInterestInfoGrid = ({locations}:LocationOfInterestInfoGridProps)
 
 type LocationInfoGroupProps = {
     group: LocationGroup
-    hardcodedURL: string
     locationSettings: LocationSettings
-    publishTime: Date
+    publishSettings: PublishState
 }
 
-const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:LocationInfoGroupProps) => {
+const LocationInfoGroup = ({group, locationSettings, publishSettings}:LocationInfoGroupProps) => {
 
     //const groupKey = processGroupKey(LocationPresets, groupKeyString);
     const mostRecent = group.mostRecentLocationAdded();
@@ -91,29 +91,29 @@ const LocationInfoGroup = ({group, hardcodedURL, locationSettings, publishTime}:
         <>
             <details className={`m-4 p-4 border-4  border-${group.mostRecent ? getBorderColor(getHoursAgo(group.mostRecent)) :'' }`}>
             <summary className="">
-            (after) <NiceDate date={publishTime}/> - {group.totalLocations()} Locations - {group.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishTime)}) {group.locations.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
+            (after) <NiceDate date={publishSettings.publishTime}/> - {group.totalLocations()} Locations - {group.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishSettings.publishTime)}) {group.locations.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
             {mostRecent ? `(most recent was ${getHoursAgo(mostRecent?.added)} hours ago)`: ''}
                 <CopyBox 
                         id="copybox"
                         copyText=
-                        {getLocationInfoGroupTitle(group, publishTime, false)}
+                        {getLocationInfoGroupTitle(group, publishSettings.publishTime, false)}
                 />
                 <CopyBox 
                         id="copybox"
-                        copyText={getLocationInfoGroupTitle(group, publishTime, true)}
+                        copyText={getLocationInfoGroupTitle(group, publishSettings.publishTime, true)}
                         //{`New Locations of Interest ${groupKey.quicklink?.title ? `in ${groupKey.quicklink?.title}` :  groupKey.city ? `in ${groupKey.city}` : ''} - ${new Intl.DateTimeFormat('en-NZ', {month: 'short', day: 'numeric'}).format(publishTime)}\n\n`}
                 />
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={group.toString(true, true, publishTime)}
+                    copyText={group.toString(true, true, publishSettings.publishTime)}
                     textarea={true} 
                 />
             </summary>
             <LocationOfInterestInfoGrid locations={group.locations}/>
             <div>{metaImageURL}</div>
-            <img src={metaImageURL(hardcodedURL, group.city)}/>
-            <img src={metaImageURLDirect(hardcodedURL, group.city)}/>
+            <img src={metaImageURL(publishSettings.hardcodedURL, group.city)}/>
+            <img src={metaImageURLDirect(publishSettings.hardcodedURL, group.city)}/>
         </details>
         </>
     )

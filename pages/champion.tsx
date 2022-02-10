@@ -7,12 +7,15 @@ import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid"
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
 import { getMatchingQuickLink } from "../components/Locations/useSettings";
+import PublishState from "../components/types/PublishState";
 import parseQuery from "../components/utils/parseQuery";
+import { getHardCodedUrl } from "../components/utils/utils";
 
 
 
 type ChampionPageProps = {
-    publishTimeUTC: string
+    publishTimeUTC: string,
+    hardCodedURL: string,
     locationSettings: LocationSettings
 }
 
@@ -28,7 +31,7 @@ const getOpenLocations = (asPath:string):string[] => {
     return [];
   }
 
-const Champion: NextPage<ChampionPageProps> = ({publishTimeUTC, locationSettings}) => {
+const Champion: NextPage<ChampionPageProps> = ({locationSettings, hardCodedURL, publishTimeUTC}) => {
 
     const router = useRouter();
 
@@ -36,10 +39,10 @@ const Champion: NextPage<ChampionPageProps> = ({publishTimeUTC, locationSettings
 
     const [activeQuickLinks, setActiveQuickLinks] = useState(encodedLocations);
 
-    const publishTime = new Date(publishTimeUTC);
+    const publishSettings = new PublishState(publishTimeUTC, hardCodedURL);
     return (
         <>
-            Published: <NiceFullDate date={publishTime}/>
+            Published: <NiceFullDate date={publishSettings.publishTime}/>
                 <LocationContext.Consumer>
                 {locations => 
                     locations 
@@ -53,8 +56,7 @@ const Champion: NextPage<ChampionPageProps> = ({publishTimeUTC, locationSettings
                              return ql.matchingMohCityString.some((mohMatch) =>  mohMatch == l.city)
                             }) 
                         })}
-                        hardcodedURL={'https://nzcovidmap.org'} 
-                        publishTime={publishTime}
+                        publishSettings={publishSettings} 
                         locationSettings={locationSettings}
                         />
                     </>
@@ -73,7 +75,8 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
      return {
        props:{
          publishTimeUTC: new Date().toUTCString(),
-         locationSettings: await client.getLocationSettings()
+         locationSettings: await client.getLocationSettings(),
+         hardCodedURL: getHardCodedUrl()
         }
      }
     }

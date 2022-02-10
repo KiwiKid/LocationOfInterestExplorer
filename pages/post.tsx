@@ -10,6 +10,9 @@ import { requestLocations } from "../components/Locations/MoHLocationClient/requ
 import SocialRuns from "../components/Locations/SocialRuns";
 import AutoSizeTextArea from "../components/utils/AutoSizeTextArea";
 import { mapLocationRecordToLocation } from "../components/Locations/LocationObjectHandling";
+import LocationGrid from "../components/Locations/LocationGrid";
+import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
+import PublishState from "../components/types/PublishState";
 
 
 const { Client } = require("@notionhq/client")
@@ -36,14 +39,14 @@ type SocialPostsProps = {
     locationSettings: LocationSettings;
     socialPostRuns: SocialPostRun[];
     reddit:string;
-    hardcodedURL:string
+    hardCodedURL:string
     locationsRecords:LocationOfInterestRecord[]
     isUpdateRes:any
 }
 
-const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeUTC, locationSettings, socialPostRuns, reddit, hardcodedURL, isUpdateRes}) => {
+const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeUTC, hardCodedURL, locationSettings, socialPostRuns, reddit, isUpdateRes}) => {
 
-    const publishTime = new Date(publishTimeUTC);
+    const publishSettings = new PublishState(publishTimeUTC, hardCodedURL);
 
     const locations = locationsRecords.map(mapLocationRecordToLocation);
     
@@ -87,10 +90,14 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
     return (
         <>
         <AutoSizeTextArea text={JSON.stringify(isUpdateRes, undefined, '\t')} />
-        <NiceFullDate date={publishTime}/><br/>
+        <NiceFullDate date={publishSettings.publishTime}/><br/>
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
+        <div>INVALID LOCATIONS:</div>
+        <div>
+            <LocationInfoGrid publishSettings={publishSettings} locations={locations.filter((al) => !al.isValid)} locationSettings={locationSettings}/>
+        </div>
         {error ? <div>{JSON.stringify(error)}</div> : null}
            
         <div className="col-span-full py-5">Active:</div>
@@ -105,8 +112,6 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
                             <div>{res.result?.isSuccess ? 'Success' : 'Failed'} {res.result?.isSkipped ? 'Skipped' : res.result?.isUpdate ? 'Updated Success' : 'Created Success'}</div>
                             {res.result?.createdDate ? <div>{getMinutesAgo(res.result?.createdDate)} mins ago</div> :<div>None</div>}
                             <div>{res.subreddit}({res.textUrlParams}) {res.result?.error}</div>
-                            
-                            
                             <div>{res.result?.postTitle}</div>
                             <div>{res.result?.postText}</div>
                             <div>{res.result?.postId}</div>
@@ -192,6 +197,7 @@ export const getServerSideProps:GetServerSideProps = async ({params, preview = f
         socialPostRuns: socialPostRuns,
         reddit: process.env.SOCIAL_POST_PASS,
         hardcodedURL: getHardCodedUrl(),
+         //publishTime:dayjs().utc() },
         locationsRecords: locations
     }));
 

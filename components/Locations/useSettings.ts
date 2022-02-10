@@ -25,9 +25,10 @@ const processQueryString = (query:any, locationPreset:LocationPreset[]):PageStat
       console.error(`No quick link '${query.loc}' exists`);
       return DEFAULT_SETTINGS;
     }
+    console.log(quickLink.lat);
     return {
-      lat: quickLink.lat
-      , lng:  quickLink.lng
+      lat: +quickLink.lat
+      , lng:  +quickLink.lng
       , zoom: +quickLink.zoom
       , daysInPastShown: 14
       , quickLink: quickLink
@@ -37,8 +38,8 @@ const processQueryString = (query:any, locationPreset:LocationPreset[]):PageStat
   }
     
     return {
-        lat: query.lat ? query.lat : DEFAULT_SETTINGS.lat,
-        lng: query.lng ? query.lng : DEFAULT_SETTINGS.lng,
+        lat: query.lat ? +query.lat : DEFAULT_SETTINGS.lat,
+        lng: query.lng ? +query.lng : DEFAULT_SETTINGS.lng,
         zoom: query.zoom ? +query.zoom : DEFAULT_SETTINGS.zoom,
         daysInPastShown: query.daysInPastShown ? +query.daysInPastShown : DEFAULT_SETTINGS.daysInPastShown,
         featureFlags: query.sm && query.sm == 'preview' ? PREVIEW_FEATURE_FLAGS : DEFAULT_FEATURE_FLAGS

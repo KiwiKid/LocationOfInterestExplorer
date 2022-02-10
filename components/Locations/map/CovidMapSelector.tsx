@@ -125,18 +125,6 @@ function CovidMapSelector({
 
 
 
-    function isValidLocation(location:LocationOfInterest){
-        let valid = location.lat
-            && location.lng
-            && !isNaN(+location.lat) 
-            && !isNaN(+location.lng);
-
-            if(!valid){
-                //console.error(`location is not valid! ${location.id} ${location.event} ${location.location}`);
-                //console.log(location);
-            }
-        return valid;
-    }
 
 
        function reloadInCircleLocations(map:Map) {
@@ -151,7 +139,7 @@ function CovidMapSelector({
             var activeMarkerPoints:LocationOfInterestCalculated[] = [];
             if(locations.length > 0){
                 activeMarkerPoints = locations
-                    .filter((al) => isValidLocation(al))
+                    .filter((al) => al.isValid)
                         .map((al:LocationOfInterest) => {
                     
                         let markerLatLng = new LatLng(al.lat, al.lng);

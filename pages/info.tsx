@@ -5,7 +5,8 @@ import { getMinutesAgo, NiceFullDate } from "../components/Locations/DateHandlin
 import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
-import { getHoursAgo } from "../components/utils/utils";
+import PublishState from "../components/types/PublishState";
+import { getHardCodedUrl, getHoursAgo } from "../components/utils/utils";
 
 const { Client } = require("@notionhq/client")
 
@@ -25,14 +26,14 @@ const trySetLastVisitTime = () => {
 }
 
 type InfoPageProps = {
-    publishTimeUTC: string
+    hardCodedURL: string
+    publishTimeUTCString: string
     locationSettings: LocationSettings;
 }
 
-const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings}) => {
+const Info: NextPage<InfoPageProps> = ({publishTimeUTCString,locationSettings, hardCodedURL}) => {
 
-    const publishTime = new Date(publishTimeUTC);
-    
+   const publishSettings = new PublishState(publishTimeUTCString, hardCodedURL)
     const [lastVisitTime, setLastVisitTime] = useState<Date|undefined>(undefined);
 
   //  useEffect(() => {
@@ -41,7 +42,7 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings}) => {
 
     return (
         <>
-        <NiceFullDate date={publishTime}/><br/>
+        <NiceFullDate date={publishSettings.publishTime}/><br/>
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
@@ -56,8 +57,7 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTC, locationSettings}) => {
                     <>
                     <LocationInfoGrid 
                         locations={locations}
-                        hardcodedURL={'https://nzcovidmap.org'} 
-                        publishTime={publishTime}
+                        publishSettings={publishSettings}
                         locationSettings={locationSettings}
                     />
                     
@@ -82,12 +82,15 @@ export const getStaticProps:GetStaticProps = async ({params, preview = false}) =
     const client = new NotionClient();
     const settings = client.getLocationSettings();
 
+
     return {
-       props:{
-         publishTimeUTC: new Date().toUTCString(),
-         locationSettings: await settings
-        }
+       props: {
+            publishTimeUTCString: new Date().toUTCString(),
+            hardCodedURL: getHardCodedUrl(),
+            locationSettings: await settings
+       }
     }
+    
 }
     
 
