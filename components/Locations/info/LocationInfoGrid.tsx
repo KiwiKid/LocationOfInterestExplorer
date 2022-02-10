@@ -53,13 +53,14 @@ const LocationInfoGrid = ({locations, publishSettings, locationSettings}:Locatio
         }
     }, [locations, locationSettings.locationPresets]);
     
+    const allLocationText = allLocationGroupText(groupedLocations, publishSettings)
 
     return (groupedLocations ? (locationSettings.locationPresets ? <div className="">
                 
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={allLocationGroupText(groupedLocations, publishSettings)}
+                    copyText={allLocationText}
                     textarea={true} 
                 />
                 {groupedLocations.map((group) => {
