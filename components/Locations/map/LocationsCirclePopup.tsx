@@ -37,7 +37,7 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
                             </div>
                             <div className={`${!allSameEventName && 'col-span-full'} mt-1`}>
                                 <div className="m-auto float-right">
-                                    <RegisterVisit loi={rl}  widthClass={`${allSameEventName && 'w-36'} md:w-32 lg:w-32 xl:w-40`} height={6}/>
+                                    <RegisterVisit loi={rl}  widthClass={`${allSameEventName && 'w-32'} md:w-32 lg:w-32 xl:w-40`} height={6}/>
                                 </div>
                             </div>
                             </>
