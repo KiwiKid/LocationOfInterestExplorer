@@ -86,7 +86,6 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         throw 'Provide the "Magic" make it work parameter';
     }
 
-    // Filter the location presets by the primary url with the "filter" query param
     let notionPageId:string|undefined
     if(req.query.pageId && typeof(req.query.pageId) === 'string'){
         notionPageId = req.query.pageId;

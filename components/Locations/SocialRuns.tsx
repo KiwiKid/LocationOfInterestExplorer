@@ -49,7 +49,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
                     <>
                         Create [{todayNZ().toString()} is after {run.activeStartDate.toString()} plus {run.postFrequencyDays} days ({run.activeEndDate.toString()})]
                     </>
-            }<a className={`text-lg bg-${run.isUpdate ? 'blue-500' : 'yellow-600'}`} href={`/api/post/reddit?pageId=${run.notionPageId}`} target="_blank" rel="noreferrer">Run Now {run.isUpdate ? '(Update)' : '(Create)'}</a></>
+            }<a className={`text-lg ${run.isUpdate ? 'bg-blue-500' : 'bg-yellow-600'}`} href={`/api/post/reddit?pass=APassword&pageId=${run.notionPageId}`} target="_blank" rel="noreferrer">Run Now {run.isUpdate ? '(Update)' : '(Create)'}</a></>
             : <>Skipped</>
         }</>
 
@@ -60,7 +60,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
             <div className={`bg-${getSocialsStatusColor(run)} divide-blue-500`}>{run.type} ({run.subreddit}{`${run.subredditSubmissionTitleQuery ? `(${run.subredditSubmissionTitleQuery})`: ''}`})</div>
                 <div>
                     <details>
-                        <summary>{run.primaryUrlParam}</summary>
+                        <summary className="text-2xl">{run.primaryUrlParam}</summary>
                         <div>{run.flairId ? `FlairID: ${run.flairId}` : ''}</div>
                         <div>{run.textUrlParams.length !== 1 || run.textUrlParams[0] !== run.primaryUrlParam ? `(${run.textUrlParams})` :''}</div>
                         <div>{run.postFrequency} - {run.activeStartDate.toString()} - {run.activeEndDate.toString()} </div>
