@@ -1,8 +1,11 @@
 import { useRef } from "react";
 import { Popup, useMapEvents } from "react-leaflet";
 
+type AutoHidePopupProps = {
+    children:any
+}
 
-const AutoHidePopup = ({children}:any) => {
+const AutoHidePopup = ({children}:AutoHidePopupProps) => {
 
     const popupElRef = useRef(null);
 

@@ -106,7 +106,7 @@ const LocationInfoGroup = ({group, locationSettings, publishSettings}:LocationIn
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={group.toString(true, true, publishSettings.publishTime)}
+                    copyText={group.toString(true, true, false, publishSettings.publishTime)}
                     textarea={true} 
                 />
             </summary>

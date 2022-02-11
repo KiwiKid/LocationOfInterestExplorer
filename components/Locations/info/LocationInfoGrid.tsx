@@ -35,7 +35,7 @@ const processGroupKey = (locationPresets:LocationPreset[],keyString:string):Loca
 }
 
 const makeLocationGroupText = (primaryUrlParm:string,locs:LocationGroup[], publishSettings:PublishState):string => {
-    return `${locs.reduce((prev,curr) => prev += curr.locations.length, 0)} New Locations of Interest in New Zealand Today ${asAtDateAlwaysNZ(publishSettings.publishTime)} \n\n${locs.sort((a,b) => downTheCountryGrpWithOverride(primaryUrlParm, a,b)).map((lg) => lg.toString(true, false, publishSettings.publishTime)).join('\n\n')}`
+    return `${locs.reduce((prev,curr) => prev += curr.locations.length, 0)} New Locations of Interest in New Zealand Today ${asAtDateAlwaysNZ(publishSettings.publishTime)} \n\n${locs.sort((a,b) => downTheCountryGrpWithOverride(primaryUrlParm, a,b)).map((lg) => lg.toString(true, false, false, publishSettings.publishTime)).join('\n\n')}`
 }
 
 const LocationInfoGrid = ({locations, publishSettings, locationSettings}:LocationInfoGridProps) => {

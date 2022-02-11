@@ -26,6 +26,7 @@ import { getHoursAgo } from "../../utils/utils";
 import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
 import { useRouter } from "next/router";
 import { HomepageLink, HomepagePrompt} from "../HomepageLink";
+import { isRelated } from "../LocationObjectHandling";
 
 
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
@@ -447,7 +448,7 @@ function CovidMapSelector({
                                     }}
                                 >
                                         <Pane name={`click_${al.loi.id}`} style={{zIndex: 499, border: '' }}>
-                                            <LocationCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} />
+                                            <LocationCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} relatedLocations={allVisibleLocations.filter((loc) => isRelated(al, loc))} />
                                         </Pane>
                                 </CircleSelectableMarkers>
                             ))}

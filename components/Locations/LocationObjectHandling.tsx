@@ -6,6 +6,7 @@ import { platform } from "os";
 import SocialPostRun from "./APIClients/SocialPostRun";
 import dayjs from "dayjs";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
+import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 
 
 
@@ -104,7 +105,7 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 }
 
 
-const getPrintableLocationOfInterestString = (l:LocationOfInterest,includeCity:boolean):string => `- ${l.event}${includeCity ? ` - ${l.city}`: ''} - ${locationSummaryDateDisplayString(l, true)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
+const getPrintableLocationOfInterestString = (l:LocationOfInterest,includeCity:boolean, includeDate:boolean):string => `- ${l.event}${includeCity ? ` - ${l.city}`: ''} - ${locationSummaryDateDisplayString(l, includeDate)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
 
 // This isn't dependable CSV conversion and it doesn't need to be (its just for debugging)
 const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {
@@ -126,6 +127,29 @@ const getQuickLinkURL = (quickLinks:LocationPreset[], cityString:string, hardcod
   }
 }
 
+const isRelated = (a:LocationOfInterestCalculated, b:LocationOfInterestCalculated) => {
+  return a.latLng.lat.toFixed(3) === b.latLng.lat.toFixed(3) && a.latLng.lng.toFixed(3) === b.latLng.lng.toFixed(3) 
+}
+
+// Will only return the text from "B" that isn't is not the same as the start if b
+// eg: 
+// "Wilsons Carpark"
+// "Wilsons Carpark - Near the Exit"
+
+// will result in:
+// "Near the Exit"
+const onlyUniqueEventText = (a:string,b:string):string => {
+  if(b.startsWith('Flight') || a.startsWith('Flight')){
+    return b;
+  }
+
+  for(let i = 0; i<Math.min(a.length, b.length); i++){
+    if(a[i] !== b[i]){
+      return b.substring(i, b.length);
+    }
+  }
+  return b;
+}
 
 const mostRecentlyAdded = (a:LocationOfInterest,b:LocationOfInterest) => {
   if(!a || !b){
@@ -206,4 +230,6 @@ export {
   , downTheCountry
   , downTheCountryPreset
   , downTheCountryGrpWithOverride
+  , isRelated
+  , onlyUniqueEventText
 }
