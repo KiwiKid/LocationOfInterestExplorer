@@ -105,7 +105,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
         <div className="text-2xl text-center p-3">INACTIVE SOCIAL POST RUNS:</div>
 
         <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
-        <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button>
+        <button className="pt-10 text-2xl text-center p-3" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button>
         <div className="w-full h-2 bg-yellow-700"/> 
             <div className="grid grid-cols-3">
                 {socialRunResults.length > 0 ? socialRunResults.sort(oldestLastCheckTimeFirst).map((res) => {
