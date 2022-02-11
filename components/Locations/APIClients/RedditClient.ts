@@ -7,7 +7,7 @@ import { startOfDayNZ, todayNZ } from '../DateHandling';
 import dayjs from 'dayjs';
 import SocialPostRunResult from './SocialPostRunResult';
 import SocialPostRun from './SocialPostRun';
-import BackendLogger from '../../utils/logger';
+import BackendLogger from '../../utils/BackendLogger';
 
 const processRedditId = (redditID:string) => redditID.startsWith('t3_') ? redditID.substring(3,redditID.length) : redditID;
 

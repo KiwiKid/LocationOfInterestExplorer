@@ -16,6 +16,7 @@ import SocialPostRunResult from '../../../components/Locations/APIClients/Social
 import SocialPostRun from '../../../components/Locations/APIClients/SocialPostRun';
 import FacebookClient from '../../../components/Locations/APIClients/FacebookClient';
 import { getActionString, getResultActionString } from '../../../components/utils/utils';
+import BackendLogger from '../../../components/utils/BackendLogger';
 /*
 const SOCIAL_POST_RUNS:RedditPostRun[] = [
    /* {
@@ -98,6 +99,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     
     const facebookClient = new FacebookClient();
 
+    const logger = new BackendLogger();
+
    /* const processSocialRunGroupKey = (locationPresets:LocationPreset[],keyString:string):LocationGroupKey => {
         let cityParam = keyString.substring(keyString.indexOf('|')+1, keyString.length);
     
@@ -117,7 +120,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         return new Promise<SocialPostRun>((resolve, reject) => {
             facebookClient.updateFacebook(run, title, text)
                 .then(async (res:any) => {
-                    run.saveResult(notionClient, res.id);
+                    await run.saveResult(notionClient, res.id)
+                        .then(() => logger.info(getActionString(run)))
                     
                         //.then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
                         //.catch((err) => createSocialPostRunResults(run, err, false, true, false))
@@ -127,7 +131,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     const errorMsg = getLogMsg(run, 'failed to update facebook post', true, err);
                     run.setError(errorMsg);
                     run.saveResult(notionClient);
-
+                    logger.warn({message: errorMsg, obj: err});
 
                     await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), `${errorMsg}`)
                            // .then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))

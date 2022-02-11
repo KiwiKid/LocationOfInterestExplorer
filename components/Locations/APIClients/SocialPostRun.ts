@@ -3,6 +3,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Dictionary } from 'lodash';
 import { Touchscreen } from 'puppeteer-core';
 import LocationOfInterest from '../../types/LocationOfInterest';
+import BackendLogger from '../../utils/BackendLogger';
 import { getActionString } from '../../utils/utils';
 import { startOfDayNZ, todayNZ, getFortnightOfYear, getWeekOfYear, dayFormattedNZ, NiceFullAlwaysNZDate, asAtDateAlwaysNZ, isBetween } from '../DateHandling';
 import { LocationGroup } from '../LocationGroup';
@@ -60,6 +61,7 @@ class SocialPostRun {
 
 
     debug:any;
+    logger:any;
 
     constructor (
         notionPageId:string
@@ -68,6 +70,7 @@ class SocialPostRun {
         , textUrlParams:string[]
         , type:string
         , postFrequency:string
+        
         , existingPostTitle?:string
         , existingPostId?:string
         , lastCheckTime?:string
@@ -130,6 +133,7 @@ class SocialPostRun {
             todayNZ:todayNZ(),
             startOfTodayNZ:todayNZ().startOf('day')
         }
+        
 
         switch(this.type){
             case 'Reddit_Comment': 
@@ -189,6 +193,8 @@ class SocialPostRun {
 
 
     async saveResult(client:NotionClient,postId?:string){
+
+
         if(this.result?.isSuccess && this.result?.isSkipped){
             await client.setSocialPostProcessed(this.notionPageId, new Date(this.result.createdDate), 'Skipped')
                 .catch((err) => {
@@ -200,13 +206,14 @@ class SocialPostRun {
                     console.error(`${this.notionPageId} Failed to save results ${err}`);
                 })
         }else if(this.result?.isSuccess){
+            
             await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
                 .catch((err) => {
                     console.error(`${this.notionPageId} Failed to save results ${err}`);
                 })
         }else{
             await client.setSocialPostProcessed(this.notionPageId, new Date(), `Failed 02 - ${this.errorMsg ? this.errorMsg : 'No ErrorMsg'}`)
-            .catch((err) => {
+                .catch((err) => {
                 console.error(`${this.notionPageId} Failed to save results ${err}`);
             })
         }
