@@ -86,13 +86,10 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         throw 'Provide the "Magic" make it work parameter';
     }
 
-    let locationUrlParamFilter:string[] = [];
-    if(req.query.filter){
-        if(typeof(req.query.filter) === 'object'){
-            locationUrlParamFilter = req.query.filter;
-        }else if(typeof(req.query.filter) ==='string'){
-            locationUrlParamFilter = req.query.filter.split(',')
-        }
+    // Filter the location presets by the primary url with the "filter" query param
+    let notionPageId:string|undefined
+    if(req.query.pageId && typeof(req.query.pageId) === 'string'){
+        notionPageId = req.query.pageId;
     }
 
     const url = 'https://nzcovidmap.org'
@@ -316,7 +313,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const results = await Promise.all(redditPosts
             .filter((rp:SocialPostRun) => {
-                return locationUrlParamFilter.length == 0 || locationUrlParamFilter.some((filterUrl) => filterUrl.toLowerCase() === rp.primaryUrlParam);
+                return notionPageId === undefined || notionPageId === rp.notionPageId;
             })
             .sort(oldestLastCheckTimeFirst).slice(0,2).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {

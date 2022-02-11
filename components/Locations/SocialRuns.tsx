@@ -39,6 +39,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
 
     const title = ``
 
+
     const nextAction = (run:SocialPostRun) => <>
         {run.locationGroups && run.locationGroups.length > 0 
         ? <>{run.isUpdate ? 
@@ -48,9 +49,11 @@ const SocialRun =  ({run}:SocialRunProps) => {
                     <>
                         Create [{todayNZ().toString()} is after {run.activeStartDate.toString()} plus {run.postFrequencyDays} days ({run.activeEndDate.toString()})]
                     </>
-            }</>
+            }<a className={`text-lg bg-${run.isUpdate ? 'blue-500' : 'yellow-600'}`} href={`/api/post/reddit?pageId=${run.notionPageId}`} target="_blank" rel="noreferrer">Run Now {run.isUpdate ? '(Update)' : '(Create)'}</a></>
             : <>Skipped</>
         }</>
+
+    
 
     return (
         <>
