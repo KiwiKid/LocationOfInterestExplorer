@@ -82,9 +82,10 @@ const applyLocationOverride = (rec:LocationOfInterest, locationOverrides:Locatio
 
 const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord => {
 
-  let lat = row.location.latitude;//(!!approxCityOverride ? approxCityOverride?.lat : );
-  let lng = row.location.longitude;//0 (!!approxCityOverride ? approxCityOverride?.lng  : row.location.longitude);
-  
+  let lat = typeof(row.location.latitude) === 'string' ? parseFloat(row.location.latitude) : row.location.latitude;//(!!approxCityOverride ? approxCityOverride?.lat : );
+  let lng = typeof(row.location.longitude) === 'string' ? parseFloat(row.location.longitude) : row.location.longitude
+  //let lng = row.location.longitude;//0 (!!approxCityOverride ? approxCityOverride?.lng  : row.location.longitude);
+
   let res:LocationOfInterestRecord = {
     id: row.eventId, // This id can be postfixed for duplicate locations (flights)
     mohId: row.eventId,
