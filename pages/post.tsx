@@ -109,7 +109,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
 
         <SocialRuns socialRuns={inactiveSPs} /> 
         <div className="text-center"> <button className="pt-10 text-2xl p-3" onClick={() => refreshSocials(reddit)}>BULK REDDIT RUNS: {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button></div>
-        <div className="w-full h-2 bg-yellow-700"/> 
+        <div className="w-full h-2 bg-yellow-700"/>
             <div className="grid grid-cols-3">
                 {socialRunResults.length > 0 ? socialRunResults.sort(oldestLastCheckTimeFirst).map((res) => {
                     return (<>

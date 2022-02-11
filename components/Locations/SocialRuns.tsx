@@ -43,13 +43,13 @@ const SocialRun =  ({run}:SocialRunProps) => {
     const nextAction = (run:SocialPostRun) => <>
         {run.locationGroups && run.locationGroups.length > 0 
         ? <>{run.isUpdate ? 
-                <>
+                <div className="bg-blue-500">
                     Update {run.url ? <a href={run.url} rel="noreferrer" target="_blank" className="underline"> {run.existingPostId ? run.existingPostId : 'no existingPostId'} {run.existingPostTitle ? run.existingPostTitle : 'No existingPostTitle'}</a>: 'No URL'}
-                </> : 
-                    <>
+                </div> : 
+                    <div className="bg-red-500">
                         Create [{todayNZ().toString()} is after {run.activeStartDate.toString()} plus {run.postFrequencyDays} days ({run.activeEndDate.toString()})]
-                    </>
-            }<a className={`text-lg ${run.isUpdate ? 'bg-blue-500' : 'bg-yellow-600'}`} href={`/api/post/reddit?pass=APassword&pageId=${run.notionPageId}`} target="_blank" rel="noreferrer">Run Now {run.isUpdate ? '(Update)' : '(Create)'}</a></>
+                    </div>
+            }<a className={`text-lg`} href={`/api/post/reddit?pass=APassword&pageId=${run.notionPageId}`} target="_blank" rel="noreferrer">Run Now {run.isUpdate ? '(Update)' : '(Create)'}</a></>
             : <>Skipped</>
         }</>
 
@@ -100,7 +100,7 @@ const SocialRun =  ({run}:SocialRunProps) => {
             {!run.locationGroups || run.locationGroups.length === 0 ? <div>No Location Groups </div> 
             : <><div className="col-span-full bg-green-100"><CopyBox copyText={run.getLocationGroupsSummary(dayjs().tz('Pacific/Auckland').toDate(), true, false)} id={run.notionPageId} textarea={true}/></div>
             </>}
-            <div className="col-span-full bg-yellow-700 h-4"></div>
+            <div className="col-span-full bg-yellow-300 h-5"></div>
         </>
     )
         
