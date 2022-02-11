@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import _ from "lodash";
+import _, { curry } from "lodash";
 import { useEffect, useState } from "react";
 import LocationOfInterest from "../../types/LocationOfInterest";
 import PublishState from "../../types/PublishState";
@@ -34,33 +34,30 @@ const processGroupKey = (locationPresets:LocationPreset[],keyString:string):Loca
     }
 }
 
-const allLocationGroupText = (locs:LocationGroup[], publishSettings:PublishState) => {
-    return `All New Locations of Interest in New Zealand Today: ${asAtDateAlwaysNZ(publishSettings.publishTime)} \n\n${locs.sort(downTheCountryGrp).map((lg) => lg.toString(true, true, publishSettings.publishTime)).join('\n\n')}`
+const makeLocationGroupText = (locs:LocationGroup[], publishSettings:PublishState):string => {
+    return `${locs.reduce((prev,curr) => prev += curr.locations.length, 0)} New Locations of Interest in New Zealand Today ${asAtDateAlwaysNZ(publishSettings.publishTime)} \n\n${locs.sort(downTheCountryGrp).map((lg) => lg.toString(true, true, publishSettings.publishTime)).join('\n\n')}`
 }
 
 const LocationInfoGrid = ({locations, publishSettings, locationSettings}:LocationInfoGridProps) => {
     const [groupedLocations, setGroupedLocations] = useState<LocationGroup[]>([]);
-    //const [allLocationGroups, setAllLocationGroups] = useState<LocationGroup[]>();
 
     useEffect(()=> {
-        if(locations){
-            const locationGroup = createLocationGroups(locations.filter((l) => { console.log(JSON.stringify(l)); return onlyToday(l.added) } ), locationSettings.locationPresets);
-            setGroupedLocations(locationGroup);
+        //if(locations){
+            const locationGroups = createLocationGroups(locations.filter((l) => { console.log(JSON.stringify(l)); return onlyToday(l.added) } ), locationSettings.locationPresets);
+            setGroupedLocations(locationGroups);
             //const allLocs = new LocationGroup("New Zealand", locationSettings.locationPresets.filter((lp) => lp.urlParam === 'all')[0])
          //   allLocs.locations = locations.filter((l) => onlyToday(l.added));
 
-            //setAllLocationGroups(allLocs);
-        }
-    }, [locations, locationSettings.locationPresets]);
-    
-    const allLocationText = allLocationGroupText(groupedLocations, publishSettings)
+        //}
+    }, [locations]);
+   
 
-    return (groupedLocations ? (locationSettings.locationPresets ? <div className="">
+    return (groupedLocations && groupedLocations.length ? (locationSettings.locationPresets ? <div className="">
                 
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={allLocationText}
+                    copyText={makeLocationGroupText(groupedLocations, publishSettings)}
                     textarea={true} 
                 />
                 {groupedLocations.map((group) => {
