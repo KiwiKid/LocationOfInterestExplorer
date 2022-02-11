@@ -20,7 +20,7 @@ type LocationCirclePopupProps ={
 function LocationCirclePopup({l, showDistance, goToDrawerItem}:LocationCirclePopupProps){
     return (
         <AutoHidePopup >
-            <div className="text-lg break-words" style={{width: '300px'}} >
+            <div className="w-100 text-lg break-words" style={{ maxWidth:"auto" , minWidth: '300px'}}  >
                 <div key={`${l.loi.id}_L`}>
                     <div>
                         <div className={`grid grid-cols-1 text-center`} >

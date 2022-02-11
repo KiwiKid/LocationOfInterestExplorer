@@ -19,7 +19,7 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
 
     return (
         <AutoHidePopup> 
-            <div className="text-lg break-words" style={{width: '600px'}}>
+            <div className="w-200 text-lg break-words" style={{ maxWidth:"auto", minWidth: '600px'}} >
                 <div className="grid grid-cols-5">
                     {relatedLocations.map((rl) => {
                         return (

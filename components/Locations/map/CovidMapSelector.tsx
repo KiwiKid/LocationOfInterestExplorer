@@ -449,7 +449,7 @@ function CovidMapSelector({
                                     }}
                                 >
                                         <Pane name={`click_${al.loi.id}`} style={{zIndex: 499, border: '' }}>
-                                            {al.loi.relatedIds && al.loi.relatedIds.length > 1 ? 
+                                            {!al.loi.relatedIds || al.loi.relatedIds.length == 1 ? 
                                                 <LocationCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} /> 
                                                 : <LocationsCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} relatedLocations={locations.filter((l) => l.relatedIds.some((relId:string) => relId == l.id))}  />
                                             }

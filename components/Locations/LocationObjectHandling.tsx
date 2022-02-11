@@ -1,10 +1,6 @@
 import LocationOfInterest from "../types/LocationOfInterest";
 import { asAtDateAlwaysNZ, dayFormattedNZ, startOfDayFormattedNZ } from "./DateHandling";
 import { LocationGroup }  from "./LocationGroup";
-import { Dictionary } from "lodash";
-import { platform } from "os";
-import SocialPostRun from "./APIClients/SocialPostRun";
-import dayjs from "dayjs";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 
@@ -130,10 +126,7 @@ const getQuickLinkURL = (quickLinks:LocationPreset[], cityString:string, hardcod
 }
 
 const isRelated = (a:LocationOfInterestRecord, b:LocationOfInterestRecord) => {
-  console.log(typeof(a.lat))
-  console.log(typeof(a.lng))
-  console.log(typeof(b.lat));
-  console.log(b.lng)
+
   if(typeof(a.lat) === 'string' && typeof(a.lng) == 'string' && typeof(b.lat) === 'string' && typeof(b.lng) == 'string'){
     console.warn(a.lat +' on the Location Interest Record is still a sting... (should be a number) ')
     return parseFloat(a.lat).toFixed(3) == parseFloat(b.lat).toFixed(3) && parseFloat(a.lng).toFixed(3) ===  parseFloat(b.lng).toFixed(3)   
