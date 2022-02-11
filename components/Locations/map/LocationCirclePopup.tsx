@@ -9,7 +9,6 @@ import OmicronDisplay from "../OmicronDisplay";
 import InternalLink from "../../utils/InternalLink";
 import LocationOfInterest from "../../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated";
-import { onlyUniqueEventText } from "../LocationObjectHandling";
 
 type LocationCirclePopupProps ={
     l: LocationOfInterestCalculated

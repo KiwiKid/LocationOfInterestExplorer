@@ -52,7 +52,8 @@ const LocationInfoGrid = ({locations, publishSettings, locationSettings}:Locatio
     }, [locations]);
    
 
-    return (groupedLocations && groupedLocations.length ? (locationSettings.locationPresets ? <div className="">
+    return (
+        <>{groupedLocations && groupedLocations.length ? (locationSettings.locationPresets ? <div className="">
                 
                 <CopyBox 
                     id="copybox"
@@ -68,9 +69,12 @@ const LocationInfoGrid = ({locations, publishSettings, locationSettings}:Locatio
                         group={group}
                     />
                 })}
-                <LocationOfInterestInfoGrid locations={locations}/>
+                
             </div>: <div>Loading Location Presets</div>)
-        : <div>Grouping locations</div>);
+        : <div>Grouping locations</div>}
+        <LocationOfInterestInfoGrid locations={locations}/>
+    </>
+    )
 }
 
 
