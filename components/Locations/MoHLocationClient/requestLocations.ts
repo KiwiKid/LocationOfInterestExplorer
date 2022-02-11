@@ -17,6 +17,10 @@ const reallyBadDataFixes = (loi:LocationOfInterestRecord) => {
     loi.city = 'Hamilton'
   }
 
+  if(loi.id == 'a0l4a00000076rFAAQ'){
+    loi.event = 'Islamic Centre Masjid Frankton'
+  }
+
   return loi
 }
 type Airport = {

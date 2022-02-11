@@ -29,7 +29,7 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
                         return (
                             <>
                             {!allSameEventName && <div className="font-bold text-center mt-1">
-                                {onlyUniqueEventText(l.loi.event, rl.event)}
+                                {rl.event}
                             </div>}
                             <div className={`text-center col-span-${allSameEventName ? '1': '2'} mt-1`} >
                                 <LocationSummaryDateDisplay loi={rl} includeDate={true} />
