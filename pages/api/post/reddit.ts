@@ -86,6 +86,15 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         throw 'Provide the "Magic" make it work parameter';
     }
 
+    let locationUrlParamFilter:string[] = [];
+    if(req.query.filter){
+        if(typeof(req.query.filter) === 'object'){
+            locationUrlParamFilter = req.query.filter;
+        }else if(typeof(req.query.filter) ==='string'){
+            locationUrlParamFilter = req.query.filter.split(',')
+        }
+    }
+
     const url = 'https://nzcovidmap.org'
     const now = dayjs().tz("Pacific/Auckland").toDate();
 
@@ -95,7 +104,8 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
 
     const beforeDateString = dayjs().utc().subtract(10, 'minutes').toISOString()
-    const redditPosts = await notionClient.getSocialPostRuns(beforeDateString);
+    const redditPosts:SocialPostRun[] = await notionClient.getSocialPostRuns(beforeDateString)
+
     
     const facebookClient = new FacebookClient();
 
@@ -294,7 +304,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         .then((d) => d.map(mapLocationRecordToLocation))
         .then((loi) => applyLocationOverrides(loi, settings.locationOverrides))
     
-    const todaysLocations = locations.filter((lr) => onlyToday(lr.added));
+        const todaysLocations = locations.filter((lr) => onlyToday(lr.added));
 
         const isInteresting = (run:SocialPostRun) => {
             //if(run.result && run.result.isSuccess && run.result.isSkipped){ return false}
@@ -304,7 +314,11 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const redditClient = new RedditClient();
 
-        const results = await Promise.all(redditPosts.sort(oldestLastCheckTimeFirst).slice(0,2).map(async (run) =>{
+        const results = await Promise.all(redditPosts
+            .filter((rp:SocialPostRun) => {
+                return locationUrlParamFilter.length == 0 || locationUrlParamFilter.some((filterUrl) => filterUrl.toLowerCase() === rp.primaryUrlParam);
+            })
+            .sort(oldestLastCheckTimeFirst).slice(0,2).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
              
                 run.setLocationGroups(locations, settings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')))

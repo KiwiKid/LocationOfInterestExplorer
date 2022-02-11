@@ -96,10 +96,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
-        <div className="text-2xl text-center p-3">INVALID LOCATIONS:</div>
-        <div>
-            <LocationInfoGrid publishSettings={publishSettings} locations={locations.filter((al) => !al.isValid)} locationSettings={locationSettings}/>
-        </div>
+        
         {error ? <div>{JSON.stringify(error)}</div> : null}
            <div className="text-2xl text-center p-3">ACTIVE SOCIAL POST RUNS:</div>
 
