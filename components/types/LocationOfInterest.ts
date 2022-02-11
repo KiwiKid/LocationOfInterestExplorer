@@ -18,6 +18,7 @@ class LocationOfInterest {
     isOmicron: boolean
     
     isValid:boolean
+    relatedIds:string[]
 
     constructor(
         id:string
@@ -34,6 +35,7 @@ class LocationOfInterest {
         , exposureType: string
         , visibleInWebform: boolean
         , isOmicron: boolean
+        , relatedIds: string[]
         , updated?: Date
         ){
           this.id = id;
@@ -52,8 +54,10 @@ class LocationOfInterest {
           this.exposureType = exposureType;
           this.visibleInWebform = visibleInWebform;
           this.isOmicron = isOmicron;
+          this.relatedIds = relatedIds
 
           this.isValid = !!lat && !!lng;
+          
         }
 
     getMatchingLocationPreset = (locationPreset:LocationPreset[]):LocationPreset|undefined => {

@@ -26,7 +26,7 @@ import { getHoursAgo } from "../../utils/utils";
 import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
 import { useRouter } from "next/router";
 import { HomepageLink, HomepagePrompt} from "../HomepageLink";
-import { isRelated } from "../LocationObjectHandling";
+import LocationsCirclePopup from "./LocationsCirclePopup";
 
 
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
@@ -422,7 +422,8 @@ function CovidMapSelector({
 
                         {/*TODO: onClick to take to locations postion in list */}
                         <Pane name="click" style={{zIndex: 499 }}>
-                            {allVisibleLocations !== undefined && allVisibleLocations.map((al, i) => (
+                            {allVisibleLocations !== undefined && allVisibleLocations.map((al, i) => {
+                                return (
                                 <CircleSelectableMarkers 
                                     key={al.loi.id}
                                     id={al.loi.id}
@@ -448,10 +449,14 @@ function CovidMapSelector({
                                     }}
                                 >
                                         <Pane name={`click_${al.loi.id}`} style={{zIndex: 499, border: '' }}>
-                                            <LocationCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} relatedLocations={allVisibleLocations.filter((loc) => isRelated(al, loc))} />
+                                            {al.loi.relatedIds && al.loi.relatedIds.length > 1 ? 
+                                                <LocationCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} /> 
+                                                : <LocationsCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} relatedLocations={locations.filter((l) => l.relatedIds.some((relId:string) => relId == l.id))}  />
+                                            }
                                         </Pane>
                                 </CircleSelectableMarkers>
-                            ))}
+                            )
+                            })}
                         </Pane>
                         <Pane name="noclick" style={{zIndex: 450 }}>
                             <CenteredCircle 

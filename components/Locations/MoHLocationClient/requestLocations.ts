@@ -1,5 +1,6 @@
-import { applyLocationOverrides, mapLoITOLoIRecord } from "../LocationObjectHandling";
+import { applyLocationOverrides, isRelated, mapLoITOLoIRecord } from "../LocationObjectHandling";
 import get, { AxiosResponse, AxiosPromise } from 'axios'
+import LocationOfInterest from "../../types/LocationOfInterest";
 
 const reallyBadDataFixes = (loi:LocationOfInterestRecord) => {
   if(loi.id == 'a0l4a0000006v95AAA' && !loi.city.length){
@@ -8,8 +9,8 @@ const reallyBadDataFixes = (loi:LocationOfInterestRecord) => {
 
   if(['a0l4a0000006wceAAA','a0l4a0000006wcjAAA'].some((r) => r === loi.id) && loi.city.length == 0){
     loi.city = 'Auckland'
-    loi.lat = '-37.0036884804696'
-    loi.lng = '174.78644185846255'
+    loi.lat = -37.0036884804696
+    loi.lng = 174.78644185846255
   }
 
   if(loi.id == 'a0l4a0000006yzUAAQ'){
@@ -112,7 +113,7 @@ const getAirportCities = (loi:LocationOfInterestRecord):FlightCities|undefined =
     }
 }
 
-const isFlight = (loi:LocationOfInterestRecord) => loi.event.startsWith('Flight') && loi.lat === '0' && loi.lng === '0'
+const isFlight = (loi:LocationOfInterestRecord) => loi.event.startsWith('Flight') && loi.lat === 0 && loi.lng === 0
 
 const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfInterestRecord[] => {
   const resultantLocations = locations.filter((l) => !isFlight(l));
@@ -134,8 +135,8 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
           exposureType: fl.exposureType,
           visibleInWebform: fl.visibleInWebform,
           city: airportCities ? airportCities.startAirport.city : fl.city,
-          lat: airportCities ? airportCities.startAirport.lat+"" : fl.lat, // gross..
-          lng: airportCities ? airportCities.startAirport.lng+"": fl.lng
+          lat: airportCities ? airportCities.startAirport.lat : fl.lat,
+          lng: airportCities ? airportCities.startAirport.lng: fl.lng
       }
 
       const destLoc:LocationOfInterestRecord = { 
@@ -151,8 +152,8 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
         exposureType: fl.exposureType,
         visibleInWebform: fl.visibleInWebform,
         city: airportCities ?airportCities.finishAirport.city : fl.city,
-        lat: airportCities ?airportCities.finishAirport.lat+"": fl.lat, // gross..
-        lng: airportCities ?airportCities.finishAirport.lng+"": fl.lng
+        lat: airportCities ?airportCities.finishAirport.lat: fl.lat,
+        lng: airportCities ?airportCities.finishAirport.lng: fl.lng
     }
 
     
@@ -170,6 +171,14 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
   return resultantLocations;
 }
 
+const setRelatedLocations = (locations:LocationOfInterestRecord[]) => {
+  // I'm a professional developer.
+  locations.forEach((l) => {
+    l.relatedIds = locations.filter((other) => isRelated(other, l)).map((l) => l.id)
+  })
+  return locations;
+}
+
 const requestLocations = (url:string):Promise<LocationOfInterestRecord[]> => {
 
     return new Promise<LocationOfInterestRecord[]>((resolve, reject) => {
@@ -181,9 +190,11 @@ const requestLocations = (url:string):Promise<LocationOfInterestRecord[]> => {
                 .map(reallyBadDataFixes)
 
                 const allRes = createFlightLocations(res);
+
+                const actuallyAllRes = setRelatedLocations(allRes);
             
             resolve(
-              allRes
+              actuallyAllRes
             );
           })
             

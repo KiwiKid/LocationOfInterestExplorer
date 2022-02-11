@@ -1,3 +1,4 @@
+import LocationOfInterest from "../../types/LocationOfInterest"
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated"
 import LocationExposureTypeDisplay from "../LocationExposureTypeDisplay"
 import { onlyUniqueEventText } from "../LocationObjectHandling"
@@ -8,10 +9,13 @@ import AutoHidePopup from "./AutoHidePopup"
 
 type LocationsCirclePopupProps = {
     l:LocationOfInterestCalculated, 
-    relatedLocations:LocationOfInterestCalculated[]
+    relatedLocations:LocationOfInterest[]
+    showDistance:boolean
+    goToDrawerItem:any
 }
 
-const LocationsCirclePopup = ({l,relatedLocations}:LocationsCirclePopupProps) => {
+
+const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCirclePopupProps) => {
 
     return (
         <AutoHidePopup> 
@@ -20,11 +24,11 @@ const LocationsCirclePopup = ({l,relatedLocations}:LocationsCirclePopupProps) =>
                     {relatedLocations.map((rl) => {
                         return (
                             <>
-                            <div>{rl.loi.event}</div>
-                                <div className="font-bold">{onlyUniqueEventText(l.loi.event, rl.loi.event)}</div>
-                                <LocationSummaryDateDisplay loi={rl.loi} includeDate={true} />
-                                <div><LocationExposureTypeDisplay loi={rl.loi} /></div>
-                                <div className="col-span-full"><RegisterVisit loi={rl.loi} widthClass="w-74"/></div>
+                            <div>{rl.event}</div>
+                                <div className="font-bold">{onlyUniqueEventText(l.loi.event, rl.event)}</div>
+                                <LocationSummaryDateDisplay loi={rl} includeDate={true} />
+                                <div><LocationExposureTypeDisplay loi={rl} /></div>
+                                <div className="col-span-full"><RegisterVisit loi={rl} widthClass="w-74"/></div>
                             </>
                         )
                     })}

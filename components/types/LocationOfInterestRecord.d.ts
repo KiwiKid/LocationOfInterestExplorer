@@ -13,6 +13,7 @@ type LocationOfInterestRecord = {
     exposureType: string;
     visibleInWebform: boolean;
     city: string;
-    lat: string;
-    lng: string;
+    lat: number;
+    lng: number;
+    relatedIds?: string[];
   }

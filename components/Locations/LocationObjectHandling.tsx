@@ -21,12 +21,13 @@ const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInt
     new Date(rec.end),
     new Date(rec.added),
     rec.advice,
-    +rec.lat,
-    +rec.lng,
+    rec.lat,
+    rec.lng,
     rec.exposureType,
     rec.visibleInWebform,
     rec.advice.indexOf('Omicron') > 0,
-    rec.updated ? new Date(rec.updated) : undefined,
+    rec.relatedIds ? rec.relatedIds : [],
+    rec.updated ? new Date(rec.updated) : undefined
   )
 }
 
@@ -96,8 +97,8 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
     advice: row.publicAdvice,
     visibleInWebform: row.visibleInWebform,
     exposureType: row.exposureType,
-    lat: !!lat ? lat.toString() : "0",
-    lng: !!lng ? lng.toString() : "0",
+    lat: !!lat ? lat : 0,
+    lng: !!lng ? lng : 0,
     updated: !!row.updatedAt ? row.updatedAt : null,
   }
 
@@ -127,8 +128,16 @@ const getQuickLinkURL = (quickLinks:LocationPreset[], cityString:string, hardcod
   }
 }
 
-const isRelated = (a:LocationOfInterestCalculated, b:LocationOfInterestCalculated) => {
-  return a.latLng.lat.toFixed(3) === b.latLng.lat.toFixed(3) && a.latLng.lng.toFixed(3) === b.latLng.lng.toFixed(3) 
+const isRelated = (a:LocationOfInterestRecord, b:LocationOfInterestRecord) => {
+  console.log(typeof(a.lat))
+  console.log(typeof(a.lng))
+  console.log(typeof(b.lat));
+  console.log(b.lng)
+  if(typeof(a.lat) === 'string' && typeof(a.lng) == 'string' && typeof(b.lat) === 'string' && typeof(b.lng) == 'string'){
+    console.warn(a.lat +' on the Location Interest Record is still a sting... (should be a number) ')
+    return parseFloat(a.lat).toFixed(3) == parseFloat(b.lat).toFixed(3) && parseFloat(a.lng).toFixed(3) ===  parseFloat(b.lng).toFixed(3)   
+  }
+  return a.lat.toFixed(3) === b.lat.toFixed(3) && a.lng.toFixed(3) === b.lng.toFixed(3) 
 }
 
 // Will only return the text from "B" that isn't is not the same as the start if b
