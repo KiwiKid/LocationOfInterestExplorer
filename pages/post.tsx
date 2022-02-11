@@ -94,15 +94,16 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
         lastVisitTime: [{JSON.stringify(lastVisitTime)}]<br/>
         locationPresets: {locationSettings.locationPresets.length}<br/>
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
-        <div>INVALID LOCATIONS:</div>
+        <div className="text-2xl text-center p-3">INVALID LOCATIONS:</div>
         <div>
             <LocationInfoGrid publishSettings={publishSettings} locations={locations.filter((al) => !al.isValid)} locationSettings={locationSettings}/>
         </div>
         {error ? <div>{JSON.stringify(error)}</div> : null}
-           
-        <div className="col-span-full py-5">Active:</div>
+           <div className="text-2xl text-center p-3">ACTIVE SOCIAL POST RUNS:</div>
+
         <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
-        <div className="col-span-full py-5">In-Active:</div>
+        <div className="text-2xl text-center p-3">INACTIVE SOCIAL POST RUNS:</div>
+
         <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
         <button className="pt-10" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button>
         <div className="w-full h-2 bg-yellow-700"/> 
