@@ -5,9 +5,9 @@ import LocationOfInterest from "../../types/LocationOfInterest";
 import PublishState from "../../types/PublishState";
 import CopyBox from "../../utils/CopyBox";
 import { getHoursAgo } from "../../utils/utils";
-import { startOfDayNZ , NiceFullDate, NiceTimeFromNow, NiceDate, onlyToday} from "../DateHandling";
+import { startOfDayNZ , NiceFullDate, NiceTimeFromNow, NiceDate, onlyToday, asAtDateAlwaysNZ} from "../DateHandling";
 import { createLocationGroups, LocationGroup }  from "../LocationGroup";
-import { getLocationPresetPrimaryCity, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
+import { downTheCountryGrp, getLocationPresetPrimaryCity, getPrintableLocationOfInterestString, metaImageURL, metaImageURLDirect } from "../LocationObjectHandling";
 import { locationSummaryDateDisplayString } from "../LocationSummaryDateDisplay";
 import { LocationInfoGroup, LocationOfInterestInfoGrid }  from "./LocationInfoGroup";
 
@@ -35,7 +35,7 @@ const processGroupKey = (locationPresets:LocationPreset[],keyString:string):Loca
 }
 
 const allLocationGroupText = (locs:LocationGroup[], publishSettings:PublishState) => {
-    return locs.map((lg) => lg.toString(true, true, publishSettings.publishTime)).join('\n');
+    return `All New Locations of Interest in New Zealand Today: ${asAtDateAlwaysNZ(publishSettings.publishTime)} \n\n${locs.sort(downTheCountryGrp).map((lg) => lg.toString(true, true, publishSettings.publishTime)).join('\n\n')}`
 }
 
 const LocationInfoGrid = ({locations, publishSettings, locationSettings}:LocationInfoGridProps) => {
