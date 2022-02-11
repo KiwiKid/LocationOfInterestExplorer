@@ -89,6 +89,10 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
     }, []);
 
     const anyResults = socialRuns.some((sr) => sr.result);
+
+
+    const activeSPs = socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)
+    const inactiveSPs = socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)
     return (
         <>
         <AutoSizeTextArea text={JSON.stringify(isUpdateRes, undefined, '\t')} />
@@ -98,13 +102,13 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
         locationOverrides: {locationSettings.locationOverrides.length}<br/>
         
         {error ? <div>{JSON.stringify(error)}</div> : null}
-           <div className="text-2xl text-center p-3">ACTIVE SOCIAL POST RUNS:</div>
+           {activeSPs && activeSPs.length && <div className="text-2xl text-center p-3">ACTIVE SOCIAL POST RUNS:</div>}
 
-        <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
-        <div className="text-2xl text-center p-3">INACTIVE SOCIAL POST RUNS:</div>
+        <SocialRuns socialRuns={activeSPs} />
+        {inactiveSPs && inactiveSPs.length && <div className="text-2xl text-center p-3">INACTIVE SOCIAL POST RUNS:</div>}
 
-        <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
-        <button className="pt-10 text-2xl text-center p-3" onClick={() => refreshSocials(reddit)}>Reddit Runs {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button>
+        <SocialRuns socialRuns={inactiveSPs} /> 
+        <div className="text-center"> <button className="pt-10 text-2xl p-3" onClick={() => refreshSocials(reddit)}>BULK REDDIT RUNS: {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button></div>
         <div className="w-full h-2 bg-yellow-700"/> 
             <div className="grid grid-cols-3">
                 {socialRunResults.length > 0 ? socialRunResults.sort(oldestLastCheckTimeFirst).map((res) => {
