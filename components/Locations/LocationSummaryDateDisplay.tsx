@@ -31,7 +31,7 @@ const LocationSummaryDateDisplay = ({loi,includeDate}:LocationSummaryDateDisplay
     return (
         <>{startEndSameDate ? 
             <div className="whitespace-nowrap text-center">
-                {startTime} to {endTime} {includeDate && <><br className="lg:hidden"/><span className="whitespace-nowrap"> {`${startDay}`}</span></>}
+                {startTime} to {endTime}{includeDate && <> - <br className="lg:hidden"/><span className="whitespace-nowrap"> {`${startDay}`}</span></>}
             </div> 
         : <div className="whitespace-nowrap text-center">
             {startTime} ({startDay}) to <br/>{endTime} ({endDay})

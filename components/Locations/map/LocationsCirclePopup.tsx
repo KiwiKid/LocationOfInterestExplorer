@@ -18,24 +18,28 @@ type LocationsCirclePopupProps = {
 const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCirclePopupProps) => {
 
     return (
-        <AutoHidePopup> 
-            <div className="w-200 text-lg break-words" style={{ maxWidth:"auto", minWidth: '600px'}} >
-                <div className="grid grid-cols-5">
+        <AutoHidePopup maxWidth={600}> 
+            <div className="text-lg break-words w-140">
+                <div className="w-140 grid grid-cols-3 text-sm">
                     {relatedLocations.map((rl) => {
                         return (
                             <>
-                            <div>{rl.event}</div>
-                                <div className="font-bold">{onlyUniqueEventText(l.loi.event, rl.event)}</div>
-                                <LocationSummaryDateDisplay loi={rl} includeDate={true} />
-                                <div><LocationExposureTypeDisplay loi={rl} /></div>
-                                <div className="col-span-full"><RegisterVisit loi={rl} widthClass="w-74"/></div>
+                            <div>{rl.event}
+                            <LocationExposureTypeDisplay loi={rl} />
+                            </div>
+                                <div className="font-bold text-center">{onlyUniqueEventText(l.loi.event, rl.event)}</div>
+                                <div className="float-right"><LocationSummaryDateDisplay loi={rl} includeDate={true} /></div>
+                                <div className="col-span-full"><div className="m-auto w-74"><RegisterVisit loi={rl} widthClass="w-74 h-10"/></div></div>
                             </>
                         )
                     })}
                     
                 </div> 
-                <RegisterIncorrectLocation loi={l.loi} widthClass="w-74" />
             </div>
+            {relatedLocations.length > 3 && <div className="text-center pt-3">
+                Too many locations? Open the drawer at the bottom
+            </div>}
+            <div className="text-xs">{JSON.stringify(relatedLocations)}</div>
         </AutoHidePopup> 
     )
 

@@ -3,9 +3,10 @@ import { Popup, useMapEvents } from "react-leaflet";
 
 type AutoHidePopupProps = {
     children:any
+    maxWidth:number
 }
 
-const AutoHidePopup = ({children}:AutoHidePopupProps) => {
+const AutoHidePopup = ({children,maxWidth}:AutoHidePopupProps) => {
 
     const popupElRef = useRef(null);
 
@@ -20,7 +21,7 @@ const AutoHidePopup = ({children}:AutoHidePopupProps) => {
         zoomstart: hideElement
     })
 
-    return <Popup className="z-5000" ref={popupElRef} keepInView={false} autoPan={false} closeOnClick={true} closeButton={false}>{children}</Popup>
+    return <Popup className="z-5000" ref={popupElRef} keepInView={false} autoPan={false} maxWidth={maxWidth} closeOnClick={true} closeButton={false}>{children}</Popup>
 
 }
 

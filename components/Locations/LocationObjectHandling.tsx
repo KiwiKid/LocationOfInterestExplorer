@@ -125,13 +125,23 @@ const getQuickLinkURL = (quickLinks:LocationPreset[], cityString:string, hardcod
   }
 }
 
+const SENSITIVITY = 5
 const isRelated = (a:LocationOfInterestRecord, b:LocationOfInterestRecord) => {
 
+  
   if(typeof(a.lat) === 'string' && typeof(a.lng) == 'string' && typeof(b.lat) === 'string' && typeof(b.lng) == 'string'){
     console.warn(a.lat +' on the Location Interest Record is still a sting... (should be a number) ')
-    return parseFloat(a.lat).toFixed(3) == parseFloat(b.lat).toFixed(3) && parseFloat(a.lng).toFixed(3) ===  parseFloat(b.lng).toFixed(3)   
+    return parseFloat(a.lat).toFixed(SENSITIVITY) == parseFloat(b.lat).toFixed(SENSITIVITY) && parseFloat(a.lng).toFixed(SENSITIVITY) === parseFloat(b.lng).toFixed(SENSITIVITY)   
   }
-  return a.lat.toFixed(3) === b.lat.toFixed(3) && a.lng.toFixed(3) === b.lng.toFixed(3) 
+  
+  let res =  a.lat.toFixed(SENSITIVITY) === b.lat.toFixed(SENSITIVITY) && a.lng.toFixed(SENSITIVITY) === b.lng.toFixed(SENSITIVITY) 
+  if(a.id == 'a0l4a000000786SAAQ' || a.id == 'a0l4a000000787QAAQ'){
+    if(b.event.startsWith('Flight') && res){
+      debugger;
+    }
+    
+  }
+  return res;
 }
 
 // Will only return the text from "B" that isn't is not the same as the start if b

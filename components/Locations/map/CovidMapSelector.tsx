@@ -313,6 +313,19 @@ function CovidMapSelector({
             margin: 10px;
         }
 
+        .multi-location-popup {
+            width:auto !important;
+            maxWidth:600px !important;
+        }
+
+        .single-location-popup {
+            width:auto !important;
+            maxWidth:300px !important;
+            
+        }
+
+        
+
         `}
     </style>
         <div className="col-span-10" ref={(ref) => containerRef.current = ref}>
@@ -451,7 +464,7 @@ function CovidMapSelector({
                                         <Pane name={`click_${al.loi.id}`} style={{zIndex: 499, border: '' }}>
                                             {!al.loi.relatedIds || al.loi.relatedIds.length == 1 ? 
                                                 <LocationCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} /> 
-                                                : <LocationsCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} relatedLocations={locations.filter((l) => l.relatedIds.some((relId:string) => relId == l.id))}  />
+                                                : <LocationsCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} relatedLocations={locations.filter((l) => al.loi.relatedIds.some((rl) => rl == l.id))}  />
                                             }
                                         </Pane>
                                 </CircleSelectableMarkers>

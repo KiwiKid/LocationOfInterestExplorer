@@ -174,7 +174,7 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
 const setRelatedLocations = (locations:LocationOfInterestRecord[]) => {
   // I'm a professional developer.
   locations.forEach((l) => {
-    l.relatedIds = locations.filter((other) => isRelated(other, l)).map((l) => l.id)
+    l.relatedIds = locations.filter((other) => isRelated(l, other)).map((l) => l.id)
   })
   return locations;
 }
