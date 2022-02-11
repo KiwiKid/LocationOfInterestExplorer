@@ -184,6 +184,13 @@ const downTheCountryPreset = (a:LocationPreset,b:LocationPreset) => a.urlParam =
 
 const downTheCountry = (a:LocationOfInterest,b:LocationOfInterest) => a.lat > b.lat ? -1 : 1
 
+const byDate = (a:LocationOfInterest,b:LocationOfInterest) => {
+  if(a.start > b.start){
+    return -1
+  }
+  return 1;
+}
+
 //const downTheCountry = (a:SocialPostRun,b:LocationOfInterest) => a.lat > b.lat ? -1 : 1
 
 
@@ -238,5 +245,5 @@ export {
   , downTheCountryPreset
   , downTheCountryGrpWithOverride
   , isRelated
-  , onlyUniqueEventText
+  ,byDate
 }

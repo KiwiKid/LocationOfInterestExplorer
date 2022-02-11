@@ -1,7 +1,7 @@
 import LocationOfInterest from "../../types/LocationOfInterest"
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated"
 import LocationExposureTypeDisplay from "../LocationExposureTypeDisplay"
-import { onlyUniqueEventText } from "../LocationObjectHandling"
+import { byDate } from "../LocationObjectHandling"
 import { LocationSummaryDateDisplay } from "../LocationSummaryDateDisplay"
 import RegisterIncorrectLocation from "../RegisterIncorrectLocation"
 import RegisterVisit from "../RegisterVisit"
@@ -25,7 +25,7 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
             <div className="text-lg break-words w-140">
             {allSameEventName && <div className="font-bold mt-3 text-center break-words w-140">{l.loi.event}</div>}
                 <div className={`grid grid-cols-${allSameEventName ? '2' : '3'} text-sm `}>
-                    {relatedLocations.map((rl) => {
+                    {relatedLocations.sort(byDate).map((rl) => {
                         return (
                             <>
                             {!allSameEventName && <div className="font-bold text-center mt-1">
@@ -36,8 +36,8 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
                                 <LocationExposureTypeDisplay loi={rl} />
                             </div>
                             <div className={`${!allSameEventName && 'col-span-full'} mt-1`}>
-                                <div className="m-auto w-74">
-                                    <RegisterVisit loi={rl}  widthClass={`${allSameEventName && 'w-36'} md:w-32 lg:w-32 xl:w-64`} height={6}/>
+                                <div className="m-auto float-right">
+                                    <RegisterVisit loi={rl}  widthClass={`${allSameEventName && 'w-36'} md:w-32 lg:w-32 xl:w-40`} height={6}/>
                                 </div>
                             </div>
                             </>
