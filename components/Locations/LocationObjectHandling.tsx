@@ -176,7 +176,7 @@ const downTheCountryGrpWithOverride = (primaryUrlParam:string, a:LocationGroup,b
     return -1;
   }
   if((primaryUrlParam == a.locationPreset.urlParam) || (primaryUrlParam == b.locationPreset.urlParam)){
-    return 1
+    return -1
   }
   
   return downTheCountryGrp(a,b)

@@ -57,7 +57,7 @@ const LocationInfoGrid = ({locations, publishSettings, locationSettings}:Locatio
                 <CopyBox 
                     id="copybox"
                     //copyText={`${loc} - ${group.length} Locations:\n${group.map(getPrintableLocationOfInterestString).join('')} \nhttps://nzcovidmap.org/?loc=${loc}`}
-                    copyText={makeLocationGroupText(groupedLocations, publishSettings)}
+                    copyText={makeLocationGroupText("", groupedLocations, publishSettings)}
                     textarea={true} 
                 />
                 {groupedLocations.map((group) => {
