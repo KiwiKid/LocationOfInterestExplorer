@@ -135,12 +135,6 @@ const isRelated = (a:LocationOfInterestRecord, b:LocationOfInterestRecord) => {
   }
   
   let res =  a.lat.toFixed(SENSITIVITY) === b.lat.toFixed(SENSITIVITY) && a.lng.toFixed(SENSITIVITY) === b.lng.toFixed(SENSITIVITY) 
-  if(a.id == 'a0l4a000000786SAAQ' || a.id == 'a0l4a000000787QAAQ'){
-    if(b.event.startsWith('Flight') && res){
-      debugger;
-    }
-    
-  }
   return res;
 }
 
