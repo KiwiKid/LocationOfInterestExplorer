@@ -25,7 +25,7 @@ function LocationCirclePopup({l, showDistance, goToDrawerItem}:LocationCirclePop
                         <div>
                             <div className={`grid grid-cols-1 text-center`} >
                                 <div className="font-bold">{l.loi.event}</div>
-                                <LocationSummaryDateDisplay loi={l.loi} includeDate={true} />
+                                <LocationSummaryDateDisplay loi={l.loi} includeDate={'short'} />
                                 <div><LocationExposureTypeDisplay loi={l.loi} /></div>
                             </div>
                         </div>

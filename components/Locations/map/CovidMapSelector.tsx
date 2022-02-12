@@ -27,6 +27,8 @@ import { getDaysAgoClassName, tailwindClassToHex } from "../../utils/Styling";
 import { useRouter } from "next/router";
 import { HomepageLink, HomepagePrompt} from "../HomepageLink";
 import LocationsCirclePopup from "./LocationsCirclePopup";
+import LocationCirclePopupAdaptor from "./LocationCirclePopupAdaptor";
+import { isRelated } from "../LocationObjectHandling";
 
 
 const NZ_CENTER = new LatLng(-40.8248, 173.7304);
@@ -462,10 +464,7 @@ function CovidMapSelector({
                                     }}
                                 >
                                         <Pane name={`click_${al.loi.id}`} style={{zIndex: 499, border: '' }}>
-                                            {!al.loi.relatedIds || al.loi.relatedIds.length == 1 ? 
-                                                <LocationCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} /> 
-                                                : <LocationsCirclePopup l={al} showDistance={false} goToDrawerItem={goToDrawerItem} relatedLocations={locations.filter((l) => al.loi.relatedIds.some((rl) => rl == l.id))}  />
-                                            }
+                                            <LocationCirclePopupAdaptor  al={al} goToDrawerItem={goToDrawerItem} key={al.loi.id} relatedLocations={locations.filter((loc:LocationOfInterest) => al.loi.relatedIds.some((rID) => rID === loc.id))}/>
                                         </Pane>
                                 </CircleSelectableMarkers>
                             )

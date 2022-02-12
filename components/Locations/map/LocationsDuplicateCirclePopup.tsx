@@ -15,34 +15,33 @@ type LocationsCirclePopupProps = {
 }
 
 
-const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCirclePopupProps) => {
+const LocationsDuplicateCirclePopup = ({l,relatedLocations,showDistance}:LocationsCirclePopupProps) => {
 
-    const eventNameSet = new Set(relatedLocations.map((rl) => rl.event))
+    const eventNameSet = new Set(relatedLocations.map((rl) => rl.event));
 
     return (
         <AutoHidePopup maxWidth={400}> 
-            <div className="text-lg break-words w-140">
-                <div className={`grid grid-cols-3 text-sm `}>
+            <div className="text-lg break-words">
+            <div className="font-bold mt-3 text-center break-words">{l.loi.event}</div>
+                <div className={`grid grid-cols-5 text-sm `}>
                     {relatedLocations.sort(byDate).map((rl) => {
                         return (
                             <>
-                            <div className="col-span-full font-bold text-center mt-2">
-                                {rl.event}
-                            </div>
-                            <div className={`text-center col-span-2 mt-1`} >
-                                <LocationSummaryDateDisplay loi={rl} includeDate={'short'} />
-                                <LocationExposureTypeDisplay loi={rl} />
-                            </div>
-                            <div className=" mt-1">
-                                <div className="m-auto float-right">
-                                    <RegisterVisit loi={rl}  widthClass={`md:w-32 lg:w-32 xl:w-40`} height={6}/>
+                                <div className={`col-span-3 text-center mt-1`} >
+                                    <LocationSummaryDateDisplay loi={rl} includeDate={'short'} breakAfterDate={false} />
+                                    <LocationExposureTypeDisplay loi={rl} />
                                 </div>
-                            </div>
+                                <div className={`col-span-2 mt-1`}>
+                                    <div className="m-auto float-right">
+                                        <RegisterVisit loi={rl}  widthClass={`w-32 md:w-32 lg:w-32 xl:w-40`} height={6}/>
+                                    </div>
+                                </div>
                             </>
                         )
                     })}
                 </div> 
             </div>
+            <RegisterIncorrectLocation loi={l.loi} widthClass={`w-32 md:w-32 lg:w-32 xl:w-40`}/>
             {relatedLocations.length > 3 && <div className="text-center pt-3">
                 Too many locations at {l.loi.event}? Open the drawer at the bottom to view them all
             </div>}
@@ -51,4 +50,4 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
 
 }
 
-export default LocationsCirclePopup;
+export default LocationsDuplicateCirclePopup;

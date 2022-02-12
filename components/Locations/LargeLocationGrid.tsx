@@ -30,7 +30,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         <div className="text-center">{loi.city}</div>
                         <div className="">{loi.event}</div>       
                         <div className="col-span-2">
-                            <LocationSummaryDateDisplay loi={loi} includeDate={isOpen} />
+                            <LocationSummaryDateDisplay loi={loi} includeDate={isOpen ? 'long' : undefined} />
                         </div>
                         <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>
                         {isOpen !== undefined ? 
