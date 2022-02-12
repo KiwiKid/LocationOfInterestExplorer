@@ -161,7 +161,8 @@ export async function getStaticPaths() {
   let settings = await client.getLocationSettings();
 
     return {
-        paths: settings.locationPresets.map((pl) => { return { params:{ query: pl.urlParam}}})
+        paths: settings.locationPresets.map((pl) => { return { params:{ query: pl.urlParam}}}),
+        fallback: false
     }
   }
 
