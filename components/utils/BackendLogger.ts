@@ -12,7 +12,7 @@ import { Browser as Logtail } from "@logtail/js";
 
 type LogProps = {
     message:string
-    obj:any
+    obj?:any
 }
 
 class BackendLogger {
@@ -28,9 +28,11 @@ class BackendLogger {
         
     }
 
-    info(message:string, obj?:any){
+    info({message, obj}:LogProps){
         if(this.logtail){
-            this.logtail.info(message);
+            this.logtail.info(message, {
+                item: obj
+            });
         }else{
             console.info(message);
         }

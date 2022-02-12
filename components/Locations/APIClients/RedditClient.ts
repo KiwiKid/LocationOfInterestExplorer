@@ -67,9 +67,10 @@ class RedditClient {
 
             if(run.isUpdate && run.existingPostId){
 
-                this.logger.info(`Updating reddit comment`, {
+                this.logger.info({message: `Updating reddit comment`, obj: {
+                    pageID: run.notionPageId,
                     existingPostId: run.existingPostId
-                });
+                }});
 
                 await this.r.getComment(run.existingPostId)
                         .edit(text)
@@ -87,19 +88,19 @@ class RedditClient {
                             });
             }else{
 
-                this.logger.info(`creating reddit comment`,
-                {
+                this.logger.info({message: `creating reddit comment`,
+                obj: {
                     existingPostId: run.existingPostId
-                });
+                }});
 
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
                     
-                this.logger.info(`Found matching threads`, {
+                this.logger.info({message: `Found matching threads`, obj: {
                     matchingThreads: matchingThreads.length,
                     titleQuery: run.subredditSubmissionTitleQuery,
                     existingPostId: run.existingPostId
-                });
+                }});
 
                  matchingThreads.forEach(async (thread:any) => {
                    await this.r.getSubmission(thread).reply(text).then((res) => {
@@ -170,12 +171,12 @@ class RedditClient {
                 //this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} `)
                 
                 if(run.isUpdate && run.existingPostId){
-                    this.logger.info(`Reddit post - edit ${run.subreddit} ${run.existingPostId}`);
+                    this.logger.info({message: `Reddit post - edit ${run.subreddit} ${run.existingPostId}`, obj: {}});
 
                    return await this.r.getSubmission(run.existingPostId)
                                         .edit(text)
                                         .then(async (sub:any) => {
-                                            this.logger.info('Reddit Submission edited');
+                                            this.logger.info({message: 'Reddit Submission edited'});
                                             run.setResults(await this.processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
                                             resolve(run);
                                         });

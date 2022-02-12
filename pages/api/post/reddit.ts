@@ -127,7 +127,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             facebookClient.updateFacebook(run, title, text)
                 .then(async (res:any) => {
                     await run.saveResult(notionClient, res.id)
-                        .then(() => logger.info(getActionString(run)))
+                        .then(() => logger.info({message: getActionString(run)}))
                     
                         //.then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
                         //.catch((err) => createSocialPostRunResults(run, err, false, true, false))
@@ -136,7 +136,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                 }).catch(async (err) => {
                     const errorMsg = getLogMsg(run, 'failed to update facebook post', true, err);
                     run.setError(errorMsg);
-                    run.saveResult(notionClient);
+                    run.saveResult(notionClient, logger);
                     logger.warn({message: errorMsg, obj: err});
 
                     await notionClient.setSocialPostProcessed(run.notionPageId, new Date(), `${errorMsg}`)
@@ -164,7 +164,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 //throw `Failed to create update/create post `
                             }
                             getLogMsg(run, 'Success in updating/creating reddit post');
-                            await run.saveResult(notionClient, rr.result ? rr.result.postId : undefined);
+                            await run.saveResult(notionClient, logger, 'Creating/Updating post', rr.result ? rr.result.postId : undefined);
 
 
 
@@ -230,7 +230,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     
                 await redditClient.upsertRedditComment(run, title, text+botFeedbackMsg)
                     .then(async (rr) => {
-                        run.saveResult(notionClient, rr.result ? rr.result.postId : undefined);
+                        await run.saveResult(notionClient,logger, rr.result ? rr.result.postId : undefined);
                     
 
 
@@ -273,7 +273,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                         console.error('This one?')
                         console.error(err)
 
-                        run.saveResult(notionClient);
+                        run.saveResult(notionClient, logger);
                         run.setError('Failed to update reddit comment');
 
 

@@ -192,30 +192,44 @@ class SocialPostRun {
     }
 
 
-    async saveResult(client:NotionClient,postId?:string){
+    async saveResult(client:NotionClient, logger:BackendLogger, postType?:string, postId?:string){
 
 
         if(this.result?.isSuccess && this.result?.isSkipped){
             await client.setSocialPostProcessed(this.notionPageId, new Date(this.result.createdDate), 'Skipped')
+                .then((res) => {
+                    logger.info({message:`Skipped ${postType}`, obj: { notionPageId: this.notionPageId, result: this.result }})
+                })
                 .catch((err) => {
                     console.error(`${this.notionPageId} Failed to save results ${err}`);
+                    logger.info({message: 'Skipped Reddit Post', obj: { notionPageId: this.notionPageId, result: this.result }})
                 })
         }else if(this.result?.isUpdate && this.result?.isSuccess){
             await client.setSocialPostProcessedUpdated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
+                .then((res) => {
+                    logger.info({message:`Updated ${postType}`, obj: { notionPageId: this.notionPageId, result: this.result }})
+                })
                 .catch((err) => {
                     console.error(`${this.notionPageId} Failed to save results ${err}`);
                 })
         }else if(this.result?.isSuccess){
             
             await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
+                .then((res) => {
+                    logger.info({message:`Created ${postType}`, obj: { notionPageId: this.notionPageId, result: this.result }})
+                })
                 .catch((err) => {
-                    console.error(`${this.notionPageId} Failed to save results ${err}`);
+                    logger.error({message: `CRITICAL - FAILED TO SAVE RESULT OF CREATE`, obj: { level: 'high', err: err }});
                 })
         }else{
             await client.setSocialPostProcessed(this.notionPageId, new Date(), `Failed 02 - ${this.errorMsg ? this.errorMsg : 'No ErrorMsg'}`)
+                .then((res) => {
+                    logger.info({message:`Failed ${postType}`, obj: { notionPageId: this.notionPageId, result: this.result }})
+                })
                 .catch((err) => {
-                console.error(`${this.notionPageId} Failed to save results ${err}`);
-            })
+                    logger.error({message: `Failed to save result of Failure...not good..`, obj: { err: err }});
+                    //console.error(`${this.notionPageId} Failed to save results ${err}`);
+                })
         }
     }
     
