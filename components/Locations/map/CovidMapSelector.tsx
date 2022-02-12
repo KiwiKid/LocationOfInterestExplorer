@@ -463,7 +463,7 @@ function CovidMapSelector({
                                         e.target.setStyle({color: '#0163FF' })
                                     }}
                                 >
-                                        <Pane name={`click_${al.loi.id}`} style={{zIndex: 499, border: '' }}>
+                                        <Pane name={`click_${al.loi.id}`} style={{zIndex: 999, border: '' }}>
                                             <LocationCirclePopupAdaptor  al={al} goToDrawerItem={goToDrawerItem} key={al.loi.id} relatedLocations={locations.filter((loc:LocationOfInterest) => al.loi.relatedIds.some((rID) => rID === loc.id))}/>
                                         </Pane>
                                 </CircleSelectableMarkers>
