@@ -20,10 +20,11 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
 
     const eventNameSet = new Set(relatedLocations.map((rl) => rl.event))
 
+    const hasClose = relatedLocations.some((rl) => rl.visibleInWebform);
     return (
         <AutoHidePopup maxWidth={400}> 
             <div className="text-lg break-words w-140">
-                <div className={`grid grid-cols-5 text-sm `}>
+                <div className={`grid grid-cols-${hasClose ? '5' : '3'}`}>
                     {relatedLocations.sort(byDate).map((rl) => {
                         return (
                             <>
@@ -34,11 +35,11 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
                                 <LocationSummaryDateDisplay loi={rl} includeDate={'short'} />
                                 <LocationExposureTypeDisplay loi={rl} />
                             </div>
-                            <div className="col-span-2">
+                            {hasClose && <div className="col-span-2">
                                 <div className="m-auto float-right">
-                                    <RegisterVisit loi={rl} />
+                                    <RegisterVisit loi={rl} widthClass={`w-32 md:w-32 lg:w-32 xl:w-40`}  />
                                 </div>
-                            </div>
+                            </div>}
                             </>
                         )
                     })}
