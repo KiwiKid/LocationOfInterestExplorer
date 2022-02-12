@@ -43,7 +43,7 @@ class LocationGroup {
 
     toTitleString = (showTitleCount:boolean,publishTime?:Date) => `${showTitleCount ? `${this.totalLocations()} ` : ''}New Locations in ${this.city}${publishTime ? ` ${startOfDayFormattedNZ(publishTime)}`: ''}`
 
-    toString = (showTitleCount:boolean, includeDate:boolean, includeCity:boolean, publishTime?:Date) => `${this.toTitleString(showTitleCount,publishTime)}:\n\n${this.locations.reduce((prev,curr) => `${prev} ${getPrintableLocationOfInterestString(curr, includeCity, includeDate)}`, '')}\n${this.toUrl()}\n\n`
+    toString = (showTitleCount:boolean, includeDate:boolean, includeCity:boolean, publishTime?:Date) => `${this.toTitleString(showTitleCount,publishTime)}:\n\n${this.locations.reduce((prev,curr) => `${prev} ${getPrintableLocationOfInterestString(curr, includeCity, includeDate)}`, '')}\n${this.city !== 'Others' ?  this.toUrl() : ''}\n\n`
 
     toUrl = () => this.locationPreset && this.locationPreset.urlParam ? `https://nzcovidmap.org/loc/${this.locationPreset.urlParam}` : ''
 }
