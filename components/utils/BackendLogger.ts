@@ -23,7 +23,7 @@ class BackendLogger {
         if(!process.env.LOGTAIL_SOURCE_TOKEN){
 
         }else{
-            this.logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
+           // this.logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
         }
         
     }
