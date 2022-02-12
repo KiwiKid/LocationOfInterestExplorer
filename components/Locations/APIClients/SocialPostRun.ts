@@ -313,9 +313,9 @@ class SocialPostRun {
 
     getTitle = (locationName:string,publishTime?:Date,locationCount?:number):string => {
         switch(this.postFrequency){
-            case "day": return `${locationCount ? `${locationCount} `: ''}New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
-            case "week": return `${locationCount ? `${locationCount} `: ''}New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
-            case "fortnight": return `${locationCount ? `${locationCount} `: ''}New Locations in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
+            case "day": return `${locationCount ? `${locationCount} `: ''}New Locations of Interest in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
+            case "week": return `${locationCount ? `${locationCount} `: ''}New Locations of Interest in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
+            case "fortnight": return `${locationCount ? `${locationCount} `: ''}New Locations of Interest in ${locationName} ${publishTime ? ` - ${this.getDateRangeDisplay(publishTime)}`: ''}`
             default: {
                 console.error('no date range frequency option found');
                 return ''
