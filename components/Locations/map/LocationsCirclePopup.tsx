@@ -43,15 +43,18 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
                             </>
                         )
                     })}
-                </div> : <div className={`grid grid-cols-3`}>
+                </div> : <div className={`grid grid-cols-2`}>
                     {relatedLocations.sort(byDate).map((rl) => {
                         return (
                             <>
                                 <div className="col-span-full font-bold text-center mt-2">
                                     {rl.event}
                                 </div>
-                                <div className={`text-center col-span-3 mt-1`} >
+                                <div className={`text-center col-span-1 mt-1`} >
                                     <LocationSummaryDateDisplay loi={rl} includeDate={'short'} />
+                                    
+                                </div>
+                                <div className="text-center">
                                     <LocationExposureTypeDisplay loi={rl} />
                                 </div>
                             </>

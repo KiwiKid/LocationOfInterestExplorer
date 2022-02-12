@@ -42,12 +42,14 @@ const LocationsDuplicateCirclePopup = ({l,relatedLocations,showDistance}:Locatio
                             </>
                         )
                     })}
-                </div>: <div className={`grid grid-cols-3`}>
+                </div>: <div className={`grid grid-cols-2`}>
                     {relatedLocations.sort(byDate).map((rl) => {
                         return (
                             <>
-                                <div className={`col-span-3 text-center mt-1 p-1`} >
+                                <div className={`col-span-1 text-center mt-1 p-1`} >
                                     <LocationSummaryDateDisplay loi={rl} includeDate={'short'} breakAfterDate={true} />
+                                </div>
+                                <div className={`text-center`}>
                                     <LocationExposureTypeDisplay loi={rl} />
                                 </div>
                             </>
