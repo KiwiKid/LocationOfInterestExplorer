@@ -21,7 +21,7 @@ const AutoHidePopup = ({children,maxWidth}:AutoHidePopupProps) => {
         zoomstart: hideElement
     })
 
-    return <Popup className="z-5000" ref={popupElRef} keepInView={true} autoPan={true} maxWidth={maxWidth} maxHeight={600} closeOnClick={true} closeButton={false}>{children}</Popup>
+    return <Popup className="z-5000" ref={popupElRef} keepInView={true} autoPan={true} maxWidth={maxWidth} maxHeight={400} closeOnClick={true} closeButton={false}>{children}</Popup>
 
 }
 

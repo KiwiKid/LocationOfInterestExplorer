@@ -6,6 +6,7 @@ import { LocationSummaryDateDisplay } from "../LocationSummaryDateDisplay"
 import RegisterIncorrectLocation from "../RegisterIncorrectLocation"
 import RegisterVisit from "../RegisterVisit"
 import AutoHidePopup from "./AutoHidePopup"
+import LocationCirclePopupFooter from "./LocationCirclePopupFooter"
 
 type LocationsCirclePopupProps = {
     l:LocationOfInterestCalculated, 
@@ -33,7 +34,7 @@ const LocationsDuplicateCirclePopup = ({l,relatedLocations,showDistance}:Locatio
                                 </div>
                                 <div className={`col-span-2 mt-1`}>
                                     <div className="m-auto float-right">
-                                        <RegisterVisit loi={rl}  widthClass={`w-32 md:w-32 lg:w-32 xl:w-40`} height={6}/>
+                                        <RegisterVisit loi={rl}  widthClass={`w-32 md:w-32 lg:w-32 xl:w-40`} />
                                     </div>
                                 </div>
                             </>
@@ -41,10 +42,7 @@ const LocationsDuplicateCirclePopup = ({l,relatedLocations,showDistance}:Locatio
                     })}
                 </div> 
             </div>
-            <RegisterIncorrectLocation loi={l.loi} widthClass={`w-32 md:w-32 lg:w-32 xl:w-40`}/>
-            {relatedLocations.length > 3 && <div className="text-center pt-3">
-                Too many locations at {l.loi.event}? Open the drawer at the bottom to view them all
-            </div>}
+            <LocationCirclePopupFooter loi={l.loi}/>
         </AutoHidePopup> 
     )
 

@@ -34,7 +34,7 @@ import InternalLink from "../utils/InternalLink"
                     <LocationExposureTypeDisplay loi={loi} hideIfCasual={!isOpen}/>
                     
                     
-                    <LocationSummaryDateDisplay loi={loi} includeDate={isOpen}/>
+                    <LocationSummaryDateDisplay loi={loi} includeDate={isOpen ? 'long' : undefined}/>
                     <div className="md:text-lg text-gray-600 text-center">{isOpen ? "CLOSE ▲" : "OPEN ▼"}</div>
                     {addedDateIsRecent && <div className="col-span-full"><LocationMetaDataSummary loi={loi} showUpdated={isOpen}/></div>}
                     
