@@ -24,7 +24,7 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
     return (
         <AutoHidePopup maxWidth={400}> 
             <div className="text-lg break-words w-140">
-                <div className={`grid grid-cols-${hasClose ? '5' : '3'}`}>
+                {hasClose ? <div className={`grid grid-cols-5`}>
                     {relatedLocations.sort(byDate).map((rl) => {
                         return (
                             <>
@@ -35,15 +35,29 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
                                 <LocationSummaryDateDisplay loi={rl} includeDate={'short'} />
                                 <LocationExposureTypeDisplay loi={rl} />
                             </div>
-                            {hasClose && <div className="col-span-2">
+                            <div className="col-span-2">
                                 <div className="m-auto float-right">
                                     <RegisterVisit loi={rl} widthClass={`w-32 md:w-32 lg:w-32 xl:w-40`}  />
                                 </div>
-                            </div>}
+                            </div>
                             </>
                         )
                     })}
-                </div> 
+                </div> : <div className={`grid grid-cols-3`}>
+                    {relatedLocations.sort(byDate).map((rl) => {
+                        return (
+                            <>
+                                <div className="col-span-full font-bold text-center mt-2">
+                                    {rl.event}
+                                </div>
+                                <div className={`text-center col-span-3 mt-1`} >
+                                    <LocationSummaryDateDisplay loi={rl} includeDate={'short'} />
+                                    <LocationExposureTypeDisplay loi={rl} />
+                                </div>
+                            </>
+                        )
+                    })}
+                </div>}
             </div>
             <LocationCirclePopupFooter loi={l.loi}/>
         </AutoHidePopup> 
