@@ -24,6 +24,7 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
     return (
         <AutoHidePopup maxWidth={400}> 
             <div className="text-lg break-words w-140">
+                <div className="sm:hidden h-20"></div>
                 {hasClose ? <div className={`grid grid-cols-5`}>
                     {relatedLocations.sort(byDate).map((rl) => {
                         return (
