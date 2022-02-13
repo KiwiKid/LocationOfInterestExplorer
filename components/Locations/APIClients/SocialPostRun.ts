@@ -339,7 +339,7 @@ class SocialPostRun {
         return `${this.getTitle(this.primaryLocationGroup ? this.primaryLocationGroup.locationPreset.title : 'all New Zealand', publishTime, displayTotal ? this.locationGroups.reduce((prev, curr) => prev += curr.totalLocations(), 0) : undefined)} ${asAtDateAlwaysNZ(publishTime)}\n\n\n ${this.locationGroups
             .filter((lg) => lg && lg.locationPreset && lg.locationPreset.urlParam !== 'other' || includeOther)
             .sort((a,b) => this.primaryLocationGroup ? downTheCountryGrpWithOverride(this.primaryLocationGroup.locationPreset.urlParam, a,b) : downTheCountryGrp(a,b))
-            .map((lg) => lg.toString(true, false, false, undefined))
+            .map((lg) => lg.toString(true, true, false, undefined))
             .join(`\n`)}`
     }
 }
