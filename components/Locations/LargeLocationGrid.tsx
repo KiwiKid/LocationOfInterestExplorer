@@ -6,6 +6,7 @@ import LocationExposureTypeDisplay from "./LocationExposureTypeDisplay";
 import RegisterIncorrectLocation from "./RegisterIncorrectLocation";
 import RegisterVisit from "./RegisterVisit";
 import InternalLink from "../utils/InternalLink";
+import GoToLocation from "./GoToLocation";
 
 
 type LargeLocationGridProps = {
@@ -44,11 +45,7 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                     </div>
                     <div className={`grid grid-cols-${loi.visibleInWebform && goToLocation ? '3' :'2'} align-middle  lg:m-auto`}>
                         <RegisterVisit loi={loi}/>
-                        {goToLocation ? <InternalLink
-                            id={`GoTo_${loi.id}`}
-                            onClick={(evt:any) => goToLocation(loi.lat, loi.lng, 13)}
-                            
-                        >View on map</InternalLink>: null}
+                        {goToLocation ? <GoToLocation loi={loi} goToLocation={goToLocation} />: null}
                         <RegisterIncorrectLocation loi={loi}/>
                         {false && <div className="m-auto">
                             <a target="_blank"

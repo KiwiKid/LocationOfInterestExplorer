@@ -20,7 +20,7 @@ const InternalLink = ({
     , linkDisabled = false
     , widthClass = 'md:w-64 lg:w-64 xl:w-96 m-auto'
 }:InternalLinkProps) =>{
-    const linkStyle = `${widthClass} text-black pt-2 h-10 text-center align-middle border-b-1  border-b-4 min-h-12 transition-colors duration-150 rounded-lg focus:shadow-outline ${linkClassName}`
+    const linkStyle = `${widthClass} text-black pt-2 text-lg h-10 text-center align-middle border-b-4 min-h-12 transition-colors duration-150 rounded-lg focus:shadow-outline ${linkClassName}`
 
     const disabledCheckOnClick = (evt:any) => { 
         evt.preventDefault();

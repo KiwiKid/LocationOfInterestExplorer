@@ -13,7 +13,7 @@ return (loi.visibleInWebform ? <ExternalLink
                                     href={`https://tracing.covid19.govt.nz/loi?eventId=${loi.mohId}`}
                                     title="I was here!"
                                     widthClass={widthClass}
-                                    colorClassnameOverride="text-black-200 border-red-700 bg-red-400 hover:bg-red-800"
+                                    colorClassnameOverride="text-white border-red-700 bg-red-400 hover:bg-red-800"
                                     height={height}
                             /> : null)
 }
