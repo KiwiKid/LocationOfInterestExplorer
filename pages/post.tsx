@@ -91,7 +91,7 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
     const anyResults = socialRuns.some((sr) => sr.result);
 
 
-    const activeSPs = socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)
+    const activeSPs = socialRuns
     const inactiveSPs = socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)
     return (
         <>
@@ -104,10 +104,10 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
         {error ? <div>{JSON.stringify(error)}</div> : null}
            {activeSPs && activeSPs.length && <div className="text-2xl text-center p-3">ACTIVE SOCIAL POST RUNS:</div>}
 
-        <SocialRuns socialRuns={activeSPs} />
+        <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !!sr.existingPostId)} />
         {inactiveSPs && inactiveSPs.length && <div className="text-2xl text-center p-3">INACTIVE SOCIAL POST RUNS:</div>}
 
-        <SocialRuns socialRuns={inactiveSPs} /> 
+        <SocialRuns socialRuns={socialRuns.filter((sr:SocialPostRun) => !sr.existingPostId)} /> 
         <div className="text-center"> <button className="pt-10 text-2xl p-3" onClick={() => refreshSocials(reddit)}>BULK REDDIT RUNS: {loading ? `LOADING`: ''} ({socialRunResults.length}/{socialPostRuns.length}):</button></div>
         <div className="w-full h-2 bg-yellow-700"/>
             <div className="grid grid-cols-3">

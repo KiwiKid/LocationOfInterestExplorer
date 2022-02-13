@@ -195,26 +195,21 @@ const byDate = (a:LocationOfInterest,b:LocationOfInterest) => {
 
 
 const downTheCountryGrp = (a:LocationGroup,b:LocationGroup) => {
-  if(!a || !a.locationPreset){
-    return 1;
-  }
+ // if(!a || !a.locationPreset){
+ //   return 1;
+  //}
 
   if(a.city === "Others" || b.city === "Others"){
     return 1;
   }
   
-  return a.locationPreset.lat > b.locationPreset.lat ? -1 : 1
+  return a?.locationPreset?.lat > b?.locationPreset?.lat ? -1 : 1
 }
 
 const downTheCountryGrpWithOverride = (primaryUrlParam:string, a:LocationGroup,b:LocationGroup) => {
-  if(!a || !a.locationPreset){
+
+  if((primaryUrlParam == a?.locationPreset?.urlParam) || (primaryUrlParam == b?.locationPreset?.urlParam)){
     return 1
-  }
-  if(!b || !b.locationPreset){
-    return -1;
-  }
-  if((primaryUrlParam == a.locationPreset.urlParam) || (primaryUrlParam == b.locationPreset.urlParam)){
-    return -1
   }
   
   return downTheCountryGrp(a,b)

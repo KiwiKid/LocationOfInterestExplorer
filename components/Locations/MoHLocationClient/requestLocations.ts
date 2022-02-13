@@ -84,6 +84,10 @@ const airports:Airport[] = [{
   lat: -45.01979136980796, 
   lng: 168.74518418004115,
   city: 'Queenstown'
+},{
+  lat: -21.202443951624982, 
+  lng: -159.8063960284597,
+  city: 'Rarotonga'
 }]
 
 const getCityFromEventRegex = new RegExp(/(\w+)\s*(\-|to)\s*(.+)/g)

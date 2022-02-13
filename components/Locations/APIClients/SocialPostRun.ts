@@ -131,7 +131,9 @@ class SocialPostRun {
             activeStartDate:this.activeStartDate,
             activeEndDate:this.activeEndDate,
             todayNZ:todayNZ(),
-            startOfTodayNZ:todayNZ().startOf('day')
+            startOfTodayNZ:todayNZ().startOf('day'),
+            notionPageId: this.notionPageId,
+            textUrlParams: this.textUrlParams
         }
         
 
