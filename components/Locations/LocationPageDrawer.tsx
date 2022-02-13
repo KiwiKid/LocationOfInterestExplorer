@@ -378,9 +378,10 @@ const LocationPageDrawer = ({
               </Toggle>
               <Toggle id="overrides" title="Overrides" extendClassName="border-gray-800 border-b-4">
                 <>
-                  <Summary>These are fixes to locations on the map, driven by community contributions (and personal perfectionism)</Summary>
-                  <div className="grid grid-cols-4">
+                  <Summary>These are fixes to locations on the map, driven by community contributions (and personal perfectionism).<br/>Underlined fields are overriden</Summary>
+                  <div className="grid grid-cols-5">
                       <>
+                        <div>Event ID</div>
                         <div>City</div>
                         <div>Event Name</div>
                         <div>Lat</div>
@@ -389,10 +390,11 @@ const LocationPageDrawer = ({
                     {locationOverrides.filter((lo) => !!lo.location).map((lo) => {
                       return (
                         <>
-                          <div>{lo.override.city}</div>
-                          <div>{lo.override.event}</div>
-                          <div>{lo.override.lat}</div>
-                          <div>{lo.override.lng}</div>
+                          <div>{lo.location.eventId}</div>
+                          <div className={`${lo.location.city == lo.override.city ? 'underline':''}`}>{lo.location.city}</div>
+                          <div className={`${lo.location.event == lo.override.event ? 'underline':''}`}>{lo.override.event}</div>
+                          <div className={`${lo.location.lat == lo.override.lat ? 'underline':''}`}>{lo.override.lat}</div>
+                          <div className={`${lo.location.lng == lo.override.lng ? 'underline':''}`}>{lo.override.lng}</div>
                         </>
                       )
                     })}
