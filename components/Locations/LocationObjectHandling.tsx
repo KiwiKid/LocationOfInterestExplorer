@@ -52,11 +52,23 @@ const applyLocationOverride = (rec:LocationOfInterest, locationOverrides:Locatio
 
   var overriddenLocation = locationOverrides.filter((ov:LocationOverride) => ov.eventId == rec.id)[0];
   if(overriddenLocation !== undefined){
-    rec.lat = +overriddenLocation.lat;
-    rec.lng = +overriddenLocation.lng;
+    if(overriddenLocation.lat){
+      rec.lat = +overriddenLocation.lat;
+    }
+    if(overriddenLocation.lng){
+      rec.lng = +overriddenLocation.lng;
+    }
+    if(overriddenLocation.city){
+      rec.city = overriddenLocation.city
+    }
+
+    if(overriddenLocation.event){
+      rec.event = overriddenLocation.event
+    }
+    
     return rec;
   }
-
+/*
   var locationFromEvent = locationOverrides.filter((ov) => ov.eventName == rec.event)[0];
   if(locationFromEvent !== undefined){
     rec.lat = +locationFromEvent.lat;
@@ -69,7 +81,7 @@ const applyLocationOverride = (rec:LocationOfInterest, locationOverrides:Locatio
     rec.lat = +locationFromCity.lat;
     rec.lng = +locationFromCity.lng;
     return rec;
-  }
+  }*/
 
   return rec;
 }

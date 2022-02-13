@@ -12,7 +12,9 @@ const mapNotionItemToOverride = (notionRow:any):LocationOverride => {
     return {
         lat: props.lat.number,
         lng: props.lng.number,
-        eventId: props.eventId.rich_text[0].text.content
+        eventId: props.eventId.rich_text[0].text.content,
+        city: getNotionRichText(props.city),
+        event: getNotionRichText(props.event)
     }   
 }
 
