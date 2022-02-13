@@ -177,6 +177,13 @@ const mostRecentlyAdded = (a:LocationOfInterest,b:LocationOfInterest) => {
   return a.added > b.added ? 1 : -1
 }
 
+const inStartOrder = (a:LocationOfInterest,b:LocationOfInterest) => {
+  if(!a || !b){
+    return -1
+  }
+  return a.start > b.start ? 1 : -1
+}
+
 const getLocationPresetPrimaryCity = (locationPresets:LocationPreset[],mohCity:string) => {
   let override = locationPresets.filter((pl) => pl.matchingMohCityString.some((mohStr) => mohStr === mohCity))[0]
   if(override){
@@ -253,4 +260,5 @@ export {
   , downTheCountryGrpWithOverride
   , isRelated
   ,byDate
+  , inStartOrder
 }
