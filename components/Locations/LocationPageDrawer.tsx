@@ -390,7 +390,7 @@ const LocationPageDrawer = ({
                     {locationOverrides.filter((lo) => !!lo.location).map((lo) => {
                       return (
                         <>
-                          <div>{lo.location.eventId}</div>
+                          <div>{lo.location.id}</div>
                           <div className={`${lo.location.city == lo.override.city ? 'underline':''}`}>{lo.location.city}</div>
                           <div className={`${lo.location.event == lo.override.event ? 'underline':''}`}>{lo.location.event}</div>
                           <div className={`${lo.location.lat == lo.override.lat ? 'underline':''}`}>{lo.location.lat}</div>
