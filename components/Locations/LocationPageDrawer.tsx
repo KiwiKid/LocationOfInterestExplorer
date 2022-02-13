@@ -54,6 +54,7 @@ type LocationPageDrawerProps = {
     activeLocationPresets:LocationPreset[]
     goToLocation:any
     drawerItemRefs:any
+    locationOverrides:LocationOverride[]
 }
 
 
@@ -81,7 +82,8 @@ const LocationPageDrawer = ({
     drawerRef,
     activeLocationPresets,
     goToLocation,
-    drawerItemRefs
+    drawerItemRefs,
+    locationOverrides
   }:LocationPageDrawerProps) => {
 
 
@@ -372,6 +374,32 @@ const LocationPageDrawer = ({
                       locationCount={visibleLocations.length}
                       key={'controls'}
                   />
+              </>
+              </Toggle>
+              <Toggle id="overrides" title="Overrides" extendClassName="border-gray-800 border-b-4">
+                <>
+                  <Summary>These are all the manual tweaks being applied currently. These are driven by community contributions (and personal perfectionism).</Summary>
+                  <div className="grid gird-cols-5">
+                      <>
+                        <div>EventId</div>
+                        <div>City</div>
+                        <div>Event Name</div>
+                        <div>Lat</div>
+                        <div>Lng</div>
+                      </>
+                    {locationOverrides.map((lo) => {
+                      return (
+                        <>
+                        <div>{lo.eventId}</div>
+                        <div>{lo.city}</div>
+                        <div>{lo.eventName}</div>
+                        <div>{lo.lat}</div>
+                        <div>{lo.lng}</div>
+                        </>
+                      )
+                    })}
+
+                  </div>
               </>
               </Toggle>
               <Toggle title="Frequently Asked Questions (FAQs)" id="details" extendClassName="border-gray-800 border-b-4">
