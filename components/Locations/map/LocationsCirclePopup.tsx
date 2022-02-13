@@ -23,8 +23,8 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
     const hasClose = relatedLocations.some((rl) => rl.visibleInWebform);
     return (
         <AutoHidePopup maxWidth={400}> 
-            <div className="text-lg break-words w-140">
-                <div className="sm:hidden h-20 text-gray-500 italic text-sm text-center align-middle pt-3">(This space has been left intentionally)</div>
+            <div className="text-lg break-words w-140  overflow-x-hidden">
+                <div className="sm:hidden h-20 text-gray-500 italic text-sm text-center  align-middle pt-3">(This space has been left intentionally)</div>
                 {hasClose ? <div className={`grid grid-cols-5`}>
                     {relatedLocations.sort(byDate).map((rl) => {
                         return (
