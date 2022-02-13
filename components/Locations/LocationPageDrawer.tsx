@@ -392,9 +392,9 @@ const LocationPageDrawer = ({
                         <>
                           <div>{lo.location.eventId}</div>
                           <div className={`${lo.location.city == lo.override.city ? 'underline':''}`}>{lo.location.city}</div>
-                          <div className={`${lo.location.event == lo.override.event ? 'underline':''}`}>{lo.override.event}</div>
-                          <div className={`${lo.location.lat == lo.override.lat ? 'underline':''}`}>{lo.override.lat}</div>
-                          <div className={`${lo.location.lng == lo.override.lng ? 'underline':''}`}>{lo.override.lng}</div>
+                          <div className={`${lo.location.event == lo.override.event ? 'underline':''}`}>{lo.location.event}</div>
+                          <div className={`${lo.location.lat == lo.override.lat ? 'underline':''}`}>{lo.location.lat}</div>
+                          <div className={`${lo.location.lng == lo.override.lng ? 'underline':''}`}>{lo.location.lng}</div>
                         </>
                       )
                     })}
