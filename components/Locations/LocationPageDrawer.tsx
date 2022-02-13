@@ -54,7 +54,7 @@ type LocationPageDrawerProps = {
     activeLocationPresets:LocationPreset[]
     goToLocation:any
     drawerItemRefs:any
-    locationOverrides:LocationOverride[]
+    locationOverrides:LocationOverrideWithLocation[]
 }
 
 
@@ -378,27 +378,24 @@ const LocationPageDrawer = ({
               </Toggle>
               <Toggle id="overrides" title="Overrides" extendClassName="border-gray-800 border-b-4">
                 <>
-                  <Summary>These are all the manual tweaks being applied currently. These are driven by community contributions (and personal perfectionism).</Summary>
-                  <div className="grid gird-cols-5">
+                  <Summary>These are fixes to locations on the map, driven by community contributions (and personal perfectionism)</Summary>
+                  <div className="grid grid-cols-4">
                       <>
-                        <div>EventId</div>
                         <div>City</div>
                         <div>Event Name</div>
                         <div>Lat</div>
                         <div>Lng</div>
                       </>
-                    {locationOverrides.map((lo) => {
+                    {locationOverrides.filter((lo) => !!lo.location).map((lo) => {
                       return (
                         <>
-                        <div>{lo.eventId}</div>
-                        <div>{lo.city}</div>
-                        <div>{lo.eventName}</div>
-                        <div>{lo.lat}</div>
-                        <div>{lo.lng}</div>
+                          <div>{lo.override.city}</div>
+                          <div>{lo.override.event}</div>
+                          <div>{lo.override.lat}</div>
+                          <div>{lo.override.lng}</div>
                         </>
                       )
                     })}
-
                   </div>
               </>
               </Toggle>

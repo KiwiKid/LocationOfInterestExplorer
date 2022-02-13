@@ -122,7 +122,13 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
 
     let activeLocationPresets = locationSettings.locationPresets.filter((pl) => locations.some((l) => pl.matchingMohCityString.some((mat) => l.city === mat)));
 
-    
+    const locationOverridesWithLocations:LocationOverrideWithLocation[] = locationSettings.locationOverrides.map((lo) => {
+      const match = locations.filter((l) => l.id === lo.eventId)[0]
+      return {
+        location: match,
+        override:lo
+      }
+    });
 
     return (
         <>
@@ -193,6 +199,7 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
                   activeLocationPresets={activeLocationPresets}
                   goToLocation={goToLocation}
                   drawerItemRefs={drawerItemRefs}
+                  locationOverrides={locationOverridesWithLocations}
                 />
               </div>
             </div>
