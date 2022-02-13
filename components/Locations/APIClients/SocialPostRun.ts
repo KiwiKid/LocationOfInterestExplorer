@@ -292,6 +292,8 @@ class SocialPostRun {
 
         if(matchingPrimaryLocationGroup && matchingPrimaryLocationGroup.length === 1){
             this.primaryLocationGroup = matchingPrimaryLocationGroup[0];
+        }else{
+            console.error(`no matching city for Social Post run with primary url param: ${this.primaryUrlParam}`)
         }
 
         this.locationGroups = groupArray;   

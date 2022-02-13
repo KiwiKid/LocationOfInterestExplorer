@@ -317,7 +317,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
             .sort(oldestLastCheckTimeFirst).slice(0,2).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
              
-                run.setLocationGroups(locations, settings.locationPresets.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')))
+                run.setLocationGroups(locations, settings.locationPresets)//.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')
             
             
                // const mainMatchingPreset = settings.locationPresets.filter((lp) => lp.urlParam === run.primaryUrlParam)[0];
