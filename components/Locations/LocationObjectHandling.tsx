@@ -219,7 +219,7 @@ const downTheCountryGrp = (a:LocationGroup,b:LocationGroup) => {
   //}
 
   if(a.city === "the rest of New Zealand" || b.city === "the rest of New Zealand" || a.locationPreset.urlParam == 'all' || b.locationPreset.urlParam == 'all'){
-    return -1;
+    return 1;
   }
   
   return a?.locationPreset?.lat > b?.locationPreset?.lat ? -1 : 1

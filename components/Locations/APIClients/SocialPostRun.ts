@@ -133,7 +133,8 @@ class SocialPostRun {
             todayNZ:todayNZ(),
             startOfTodayNZ:todayNZ().startOf('day'),
             notionPageId: this.notionPageId,
-            textUrlParams: this.textUrlParams
+            textUrlParams: this.textUrlParams,
+            title: this.getTitle(this.primaryLocationGroup?.locationPreset.title ? this.primaryLocationGroup?.locationPreset.title :  'all NZ'),
         }
         
 
@@ -261,7 +262,7 @@ class SocialPostRun {
         })
 
         const res:Dictionary<LocationGroup> = {};
-        const others = new LocationGroup("Others", otherLocationPreset);
+        const others = new LocationGroup("the rest of New Zealand", otherLocationPreset);
         
         relevantLocations.forEach((l) => {
           const preset = l.getMatchingLocationPreset(relevantLocationPresets)// getMatchingLocationPreset(l, locationPresets);
