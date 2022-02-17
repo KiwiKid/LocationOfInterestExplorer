@@ -1,7 +1,7 @@
-import { GetServerSideProps, GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import {  useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
-import { getMinutesAgo, NiceFullDate, oldestLastCheckTimeFirst, subtractMinutes } from "../components/Locations/DateHandling";
+import { getMinutesAgo, NiceFullDate, oldestLastCheckTimeFirst } from "../components/Locations/DateHandling";
 import { getHardCodedUrl } from "../components/utils/utils";
 import axios from 'axios'
 import SocialPostRun from "../components/Locations/APIClients/SocialPostRun";
@@ -10,8 +10,6 @@ import { requestLocations } from "../components/Locations/MoHLocationClient/requ
 import SocialRuns from "../components/Locations/SocialRuns";
 import AutoSizeTextArea from "../components/utils/AutoSizeTextArea";
 import { mapLocationRecordToLocation } from "../components/Locations/LocationObjectHandling";
-import LocationGrid from "../components/Locations/LocationGrid";
-import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid";
 import PublishState from "../components/types/PublishState";
 
 
