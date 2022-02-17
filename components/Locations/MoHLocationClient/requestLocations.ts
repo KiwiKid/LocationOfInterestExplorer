@@ -111,12 +111,16 @@ const getAirportCities = (loi:LocationOfInterestRecord):FlightCities|undefined =
     let result;
     while ((result = getCityFromEventRegex.exec(loi.event)) !== null) {
       //let matchIndex = result.index;
+      console.log(`Airport matching: ${loi.event} ${result.toString()}`)
       if(result.length > 3){
           
         startCity = result[result.length-3]
+        
       
         finishCity = result[result.length-1]
         
+      }else{
+        console.error(`Airport Failed to match: ${loi.event} ${result.toString()}`)
       }
       //let t = result[0].length;
       //matchRanges.push(new RegRange(matchIndex, t));
