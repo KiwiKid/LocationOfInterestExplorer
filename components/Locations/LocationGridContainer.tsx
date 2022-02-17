@@ -1,4 +1,4 @@
-import LocationGrid from './LocationGrid'
+import { LocationGrid } from './LocationGrid'
 import { LocationOfInterestCalculated } from '../types/LocationOfInterestCalculated';
 import { Sort } from '../types/Sort';
 

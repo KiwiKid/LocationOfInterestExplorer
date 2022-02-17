@@ -10,6 +10,7 @@ import { startOfDayNZ } from './DateHandling';
 import LocationGridAdaptorItem from './LocationGridAdaptor';
 import { downTheCountryGrp } from './LocationObjectHandling';
 import { createLocationGroups } from './LocationGroup';
+import { LocationGroupHeader } from './LocationGrid';
 
 
 type LocationGridRawProps = {
@@ -67,27 +68,13 @@ function LocationGridRaw({locations, openLocations, setOpenLocations, sortField,
     }
 
 
-    function LocationGroupHeader({d, firstStartTime, locationCount}:any){
-        return ( 
-            <div key={`${d}_S`} className="">
-                <div className="bg-gray-300 grid grid-cols-2 md:grid-cols-5 lg:grid-cols-6 border-b-1 border-blue-800 italic">
-                    <div className="border col-span-full">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>
-                    <div className="border col-span-1 md:col-span-2 lg:col-span-2">{locationCount} Locations</div>
-                    <div className="border md:col-span-1 lg:col-span-2">Time period</div> 
-                    <div className="border col-span-2 lg:col-span-1 hidden md:block">Added</div> 
-                    <div className="border col-span-1 hidden lg:block"></div>
-                </div>
-            </div>
-        )
-    }
-
     return (
     <div className="mt-3 text-center pb-3">
         {groupedLocations.sort(downTheCountryGrp).map((d) => {
                 let firstStartTime = d.locations.sort((a,b) => a.added > b.added ? 1 : -1)[0].start
 
                 return ( 
-                    <div key={`${d}_LG`}>
+                    <div key={`${d}_LG`} className={'text-sm'}>
                         <LocationGroupHeader d={d} firstStartTime={firstStartTime} locationCount={d.locations.length}/>
                         {d.locations.map((l:LocationOfInterest) => <LocationGridAdaptorItem key={`GA_${l.id}`} loi={l} isOpen={isOpen(l)} toggleOpenLocation={toggleOpenLocation} showIds={true}/> )}
                     </div>

@@ -17,19 +17,16 @@ import ShareBar from "../utils/ShareBar";
 import CopyBox from '../utils/CopyBox';
 import useWindowSize from "../utils/useWindowSize";
 import Link from "next/link";
-import { NiceDateWithTime, NiceFullAlwaysNZDate, NiceShortTime } from "./DateHandling";
+import {  NiceFullAlwaysNZDate, NiceShortTime } from "./DateHandling";
 import AddToHomeScreenButton from "../utils/AddToHomeScreenButton";
 import dayjs from "dayjs";
 import { downTheCountry, downTheCountryPreset, metaImageURLDirect } from "./LocationObjectHandling";
 import LocationOfInterest from "../types/LocationOfInterest";
 import { LocationSummaryDateDisplay} from "./LocationSummaryDateDisplay";
-import Image from 'next/image';
-import { resetScroll } from "../utils/resetScroll";
-import LocationGrid from "./LocationGrid";
 import LocationGridRaw from "./LocationGridRaw";
 import { FacebookIcon, FacebookShareButton } from "react-share";
-import LocationPreset from "./LocationPreset";
 import PublishState from "../types/PublishState";
+import LocationPreset from "./LocationPreset";
 
 // TODO: consoidate most of this into "PageState"
 type LocationPageDrawerProps = { 

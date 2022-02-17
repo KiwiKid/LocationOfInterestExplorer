@@ -39,8 +39,8 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                             : <div className="text-right lg:text-center pr-2 text-3xl ">▼</div>: null }
                     </div>
                 {isOpen && <>
-                    <div className={`grid grid-cols-4`}>
-                        <div className="text-center p-2">{loi.location}</div>
+                    <div className={`grid grid-cols-${loi.location ? '4' :'3'}`}>
+                        {loi.location && <div className="text-center p-2">{loi.location}</div>}
                         <div className="col-span-3 text-center p-2">{loi.advice}</div>
                     </div>
                     <div className={`grid grid-cols-${loi.visibleInWebform && goToLocation ? '3' :'2'} align-middle  lg:m-auto`}>

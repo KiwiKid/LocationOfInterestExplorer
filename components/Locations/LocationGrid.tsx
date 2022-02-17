@@ -43,7 +43,23 @@ export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
     }
 }
 
-export default function LocationGrid({locations, showGrid, openLocations, setOpenLocations, sortField, goToLocation,drawerItemRefs}:LocationGridProps) {
+
+function LocationGroupHeader({d, firstStartTime, locationCount}:any){
+    return ( 
+        <div key={`${d}_S`} className="">
+            <div className="bg-gray-300 grid grid-cols-6 sm:grid-cols-7 lg:grid-cols-7 border-b-1 border-blue-800 italic">
+                <div className="border col-span-4 sm:col-span-full">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>
+                <div className="border sm:col-span-1 lg:col-span-1 hidden sm:block">Type</div> 
+                <div className="border col-span-2 sm:col-span-2 lg:col-span-2">{locationCount} Locations</div>
+                <div className="border sm:col-span-2 lg:col-span-2 hidden sm:block">Time period</div> 
+                <div className="border col-span-1 lg:col-span-1 hidden sm:block">Added</div> 
+                <div className="border col-span-1 text-right pr-2 lg:text-center hidden sm:block">Open</div> 
+            </div>
+        </div>
+    )
+}
+
+function LocationGrid({locations, showGrid, openLocations, setOpenLocations, sortField, goToLocation,drawerItemRefs}:LocationGridProps) {
 
     var groupedLocations = _.chain(locations)
             .groupBy((lc) => startOfDayNZ(lc.loi.start))
@@ -63,20 +79,6 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
     }
 
 
-    function LocationGroupHeader({d, firstStartTime, locationCount}:any){
-        return ( 
-            <div key={`${d}_S`} className="">
-                <div className="bg-gray-300 grid grid-cols-6 sm:grid-cols-7 lg:grid-cols-7 border-b-1 border-blue-800 italic">
-                    <div className="border col-span-4 sm:col-span-full">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>
-                    <div className="border sm:col-span-1 lg:col-span-1 hidden sm:block">Type</div> 
-                    <div className="border col-span-2 sm:col-span-2 lg:col-span-2">{locationCount} Locations</div>
-                    <div className="border sm:col-span-2 lg:col-span-2 hidden sm:block">Time period</div> 
-                    <div className="border col-span-1 lg:col-span-1 hidden sm:block">Added</div> 
-                    <div className="border col-span-1 text-right pr-2 lg:text-center hidden sm:block">Open</div> 
-                </div>
-            </div>
-        )
-    }
 
     return (
         <div className="mt-3 text-center pb-3">
@@ -105,3 +107,5 @@ export default function LocationGrid({locations, showGrid, openLocations, setOpe
         </div>
     );
 }
+
+export { LocationGrid, LocationGroupHeader}
