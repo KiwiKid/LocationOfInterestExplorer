@@ -66,18 +66,18 @@ class RedditClient {
 
 
             if(run.isUpdate && run.existingPostId){
-
+/*
                 this.logger.info({message: `Updating reddit comment`, obj: {
                     pageID: run.notionPageId,
                     existingPostId: run.existingPostId
-                }});
+                }});*/
 
                 await this.r.getComment(run.existingPostId)
                         .edit(text)
                             .then((res) => {
                                 //@ts-ignore
                                 const comment = res.json.data.things[0];
-                                console.log(`updated reddit comment (${comment.id})`);
+                                console.log(`REDDIT_EDIT_SUCCESS COMMENT (${comment.id})`);
                                 run.setResults(new SocialPostRunResult(true, true, false, title, comment.id, text, comment.ups))
                                 resolve(run)
                                 //return run;                
@@ -87,31 +87,29 @@ class RedditClient {
                                 reject(run);
                             });
             }else{
-
+/*
                 this.logger.info({message: `creating reddit comment`,
                 obj: {
                     existingPostId: run.existingPostId
-                }});
+                }});*/
 
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
-                    
+                    /*
                 this.logger.info({message: `Found matching threads`, obj: {
                     matchingThreads: matchingThreads.length,
                     titleQuery: run.subredditSubmissionTitleQuery,
                     existingPostId: run.existingPostId
-                }});
+                }});*/
 
-                 matchingThreads.forEach(async (thread:any) => {
-                   await this.r.getSubmission(thread).reply(text).then((res) => {
-                        console.log(`created reddit comment (${processRedditId(res.id)})`);
-                        run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
-                        resolve(run);
-                    }).catch((err) => { 
-                        run.setError(`Could not create new reddit post for ${run.subreddit}`);
-                        reject(run);
-                    });                     
-                }); 
+                await this.r.getSubmission(matchingThreads[0].id).reply(text).then((res) => {
+                    console.log(`REDDIT_CREATE_SUCCESS COMMENT (${processRedditId(res.id)})`);
+                    run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
+                    resolve(run);
+                }).catch((err) => { 
+                    run.setError(`Could not create new reddit post for ${run.subreddit}`);
+                    reject(run);
+                });                     
             }
     });
 }
@@ -171,12 +169,12 @@ class RedditClient {
                 //this.logger.info(`startOfDayString: ${startOfDayString} ${isUpdate ? '===' : '!=='} startOfTodayString: ${startOfTodayString} `)
                 
                 if(run.isUpdate && run.existingPostId){
-                    this.logger.info({message: `Reddit post - edit ${run.subreddit} ${run.existingPostId}`, obj: {}});
+                    //this.logger.info({message: `Reddit post - edit ${run.subreddit} ${run.existingPostId}`, obj: {}});
 
                    return await this.r.getSubmission(run.existingPostId)
                                         .edit(text)
                                         .then(async (sub:any) => {
-                                            this.logger.info({message: 'Reddit Submission edited'});
+                                            console.log(`REDDIT_EDIT_SUCCESS POST ${run.subreddit} ${run.existingPostId}`);
                                             run.setResults(await this.processRedditSubmission(true, true, false, run, sub.json.data.things[0].name, title));
                                             resolve(run);
                                         });
@@ -192,6 +190,7 @@ class RedditClient {
                         , flairId: run.flairId
                     }).then(async (sub:Submission) => {
                         const res = await this.processRedditSubmission(true, false, false, run, sub.name, title);
+                        console.log(`REDDIT_CREATE_SUCCESS POST ${run.subreddit} (${sub.name})`);
                         run.setResults(res);
                         resolve(run);
                     }).catch((err) => {
