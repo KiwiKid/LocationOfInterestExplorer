@@ -101,7 +101,8 @@ class RedditClient {
                     titleQuery: run.subredditSubmissionTitleQuery,
                     existingPostId: run.existingPostId
                 }});*/
-
+                console.log(`MOCK REDDIT_CREATE_SUCCESS COMMENT threadId: ${matchingThreads[0].id}`);
+/*
                 await this.r.getSubmission(matchingThreads[0].id).reply(text).then((res) => {
                     console.log(`REDDIT_CREATE_SUCCESS COMMENT (${processRedditId(res.id)})`);
                     run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
@@ -109,7 +110,7 @@ class RedditClient {
                 }).catch((err) => { 
                     run.setError(`Could not create new reddit post for ${run.subreddit}`);
                     reject(run);
-                });                     
+                });                   */  
             }
     });
 }
