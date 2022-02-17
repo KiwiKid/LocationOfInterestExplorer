@@ -111,14 +111,22 @@ class SocialPostRun {
 
         this.createdDate = new Date().toISOString();
         this.type = type
+
+
         this.postFrequency = postFrequency
         this.postFrequencyDays = postFrequency === 'day' ? 1 : postFrequency === 'week' ? 7 : postFrequency == 'fortnight' ? 14 : 0
         this.lastCheckTime = lastCheckTime;
+
+
         this.lastCreateTime = lastCreateTime;
         this.lastCreateTimeNZ = dayjs(lastCreateTime).tz('Pacific/Auckland');
 
-        this.isUpdate = isUpdate(this.lastCreateTimeNZ, this.postFrequencyDays);
-        
+        // If we don't have a create time, it can't be an update
+        if(this.lastCreateTimeNZ == null){
+            this.isUpdate = false;
+        }else{
+            this.isUpdate = isUpdate(this.lastCreateTimeNZ, this.postFrequencyDays);
+        }
         
         this.activeStartDate = !this.isUpdate ? todayNZ().startOf('day') : this.lastCreateTimeNZ.startOf('day')
         this.activeEndDate = !this.isUpdate ? todayNZ().add(this.postFrequencyDays, 'day').startOf('day') : this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day').startOf('day')
@@ -127,7 +135,6 @@ class SocialPostRun {
         this.debug = {
             isUpdate: this.isUpdate,
             lastCreateTimeNZ: this.lastCreateTimeNZ,
-            lastCreateTimeAddFreq: this.lastCreateTimeNZ.add(this.postFrequencyDays, 'day'),
             activeStartDate:this.activeStartDate,
             activeEndDate:this.activeEndDate,
             todayNZ:todayNZ(),
