@@ -49,7 +49,7 @@ class LocationGroup {
 }
 
 const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:LocationPreset[]):LocationPreset|undefined => {
-    const match = locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity === location.city))[0];// || mohCity === 'all'
+    const match = locationPreset.filter((lp) => lp.matchingMohCityString.some((mohCity) => mohCity.length > 0 && mohCity === location.city ))[0];// || mohCity === 'all'
 
     //console.log(`getMatchingLocationPreset() ${location.city} ${match ? `${match.title}` : 'No Match'} ${locationPreset.length} presets`)
     return match;
@@ -59,7 +59,7 @@ const getMatchingLocationPreset = (location:LocationOfInterest, locationPreset:L
 // This is for the "Raw" locations that aren't mappable (and often horribly disfigured)
 const createLocationGroups = (locations:LocationOfInterest[],locationPresets:LocationPreset[]):LocationGroup[] => {
     const res:Dictionary<LocationGroup> = {};
-    const others = new LocationGroup("Others", { title: 'Others', lat: -40.8248, lng: 173.7304, zoom: 5, matchingMohCityString: [], showInDrawer:false, urlParam: 'other' });
+    const others = new LocationGroup("the rest of New Zealand", { title: 'the rest of New Zealand', lat: -40.8248, lng: 173.7304, zoom: 5, matchingMohCityString: [], showInDrawer:false, urlParam: 'other' });
     
     locations.forEach((l) => {
       const preset = getMatchingLocationPreset(l, locationPresets);
