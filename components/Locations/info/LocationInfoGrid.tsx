@@ -61,6 +61,7 @@ const LocationInfoGrid = ({locations, publishSettings, locationSettings}:Locatio
                     copyText={makeLocationGroupText("", groupedLocations, publishSettings)}
                     textarea={true} 
                 />
+                <textarea defaultValue={JSON.stringify(groupedLocations, null, 4)}/>
                 {groupedLocations.map((group) => {
                     return <LocationInfoGroup 
                         publishSettings={publishSettings}
