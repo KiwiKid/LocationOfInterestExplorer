@@ -224,7 +224,7 @@ class SocialPostRun {
                 })
         }else if(this.result?.isSuccess){
             
-            await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
+            await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), this.result.postTitle || 'Error 09: no post title (this.result.postTitle)', postId ? postId : 'No post id?', getActionString(this))
                 .then((res) => {
                     logger.info({message:`Created ${postType}`, obj: { notionPageId: this.notionPageId, result: this.result }})
                 })
