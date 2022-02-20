@@ -111,7 +111,7 @@ class RedditClient {
                     existingPostId: run.existingPostId
                 }});*/
                 console.log(timmyHateThread);
-                if(!!timmyHateThread?.id){
+                if(timmyHateThread?.id == undefined){
                     console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads OR no id) ${timmyHateThread.author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThread.id}`);    
                 }else{
                     await this.r.getSubmission(timmyHateThread.id).reply(text).then((res) => {
