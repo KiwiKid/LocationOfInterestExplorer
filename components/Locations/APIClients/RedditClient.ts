@@ -104,7 +104,7 @@ class RedditClient {
                     titleQuery: run.subredditSubmissionTitleQuery,
                     existingPostId: run.existingPostId
                 }});*/
-                console.log(JSON.stringify(matchingThreads))
+                console.log(Object.keys(matchingThreads[0]));
 
                 if(timmyHateThreads.length > 0 || !!timmyHateThreads[0]?.id){
                     console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads OR no id) ${timmyHateThreads[0].author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThreads[0].id}`);    
