@@ -59,10 +59,12 @@ const applyLocationOverride = (rec:LocationOfInterest, locationOverrides:Locatio
       rec.lng = +overriddenLocation.lng;
     }
     if(overriddenLocation.city){
+      console.log(`${rec.id} - CITY OVERRIDE: ${overriddenLocation.city}`)
       rec.city = overriddenLocation.city
     }
 
     if(overriddenLocation.event){
+      console.log(`${rec.id} - EVENT OVERRIDE: ${overriddenLocation.city}`)
       rec.event = overriddenLocation.event
     }
     

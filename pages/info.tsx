@@ -67,7 +67,10 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTCString,locationSettings, h
                     <CopyBox 
                         id="copybox"
                         textarea={true}
-                        copyText={`${locations.filter((l) => l.location.toLowerCase().indexOf('flight') > 0).map((fLoc)  =>  `${fLoc.event}`).join('\n\n')}`}
+                        copyText={`${locations
+                                .filter((l) => l.event.toLowerCase().indexOf('flight') > -1)
+                                .map((fLoc)  =>  `${fLoc.event.toLowerCase()}`).join('\n')}`
+                        }
                     />
                     </>
                     : <>No Location record s</>

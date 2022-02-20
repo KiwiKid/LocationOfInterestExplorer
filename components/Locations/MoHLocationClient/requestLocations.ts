@@ -102,13 +102,14 @@ const airports:Airport[] = [{
   city: 'Tauranga'
 }]
 
-const getCityFromEventRegex = new RegExp(/(\w+)\s*(\-|to)\s*(.+)/g)
+const getCityFromEventRegex = new RegExp(/(flight \w+ )(.+)\s*(\-| to )\s*(.+)/gi)
 
 
 const getAirportCities = (loi:LocationOfInterestRecord):FlightCities|undefined => {
     let startCity:string, finishCity:string
 
     let result;
+
     while ((result = getCityFromEventRegex.exec(loi.event)) !== null) {
       //let matchIndex = result.index;
       console.log(`Airport matching: ${loi.event} ${result.toString()}`)
