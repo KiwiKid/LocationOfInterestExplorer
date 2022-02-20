@@ -95,7 +95,7 @@ class RedditClient {
 
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
-                    
+
                     console.log(Object.keys(matchingThreads[0]));
                     console.log(JSON.stringify({
                         id: matchingThreads[0].id,
@@ -103,7 +103,7 @@ class RedditClient {
                     }))
     
                 // Todo (if needed): make this generic
-                const timmyHateThreads = matchingThreads.filter((mt:Submission) => mt.author.name == 'u/TimmyHate')
+                const timmyHateThreads = matchingThreads.filter((mt:any) => mt.author.name == 'TimmyHate')
                     /*
                 this.logger.info({message: `Found matching threads`, obj: {
                     matchingThreads: matchingThreads.length,
