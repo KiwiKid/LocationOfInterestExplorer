@@ -126,7 +126,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
         return new Promise<SocialPostRun>((resolve, reject) => {
             facebookClient.updateFacebook(run, title, text)
                 .then(async (res:any) => {
-                    await run.saveResult(notionClient, res.id)
+                    await run.saveResult(notionClient, logger)
                         .then(() => logger.info({message: getActionString(run)}))
                     
                         //.then((nUpdate) => createSocialPostRunResults(run, nUpdate, true, true, false))
@@ -164,7 +164,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                                 //throw `Failed to create update/create post `
                             }
                             getLogMsg(run, 'Success in updating/creating reddit post');
-                            await run.saveResult(notionClient, logger, 'Creating/Updating post', rr.result ? rr.result.postId : undefined);
+                            await run.saveResult(notionClient, logger);
 
 
 
@@ -230,7 +230,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
                     
                 await redditClient.upsertRedditComment(run, title, text+botFeedbackMsg)
                     .then(async (rr) => {
-                        await run.saveResult(notionClient,logger, rr.result ? rr.result.postId : undefined);
+                        await run.saveResult(notionClient,logger);
                     
 
 

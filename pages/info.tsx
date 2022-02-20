@@ -1,3 +1,5 @@
+import { link } from "fs";
+import { latLng } from "leaflet";
 import { GetStaticProps, NextPage } from "next";
 import { useEffect, useState } from "react";
 import NotionClient from "../components/Locations/APIClients/NotionClient";
@@ -6,6 +8,7 @@ import { LocationInfoGrid } from "../components/Locations/info/LocationInfoGrid"
 import LocationSettingsContext from '../components/Locations/LocationSettingsContext/LocationSettingsContext';
 import LocationContext from "../components/Locations/MoHLocationClient/LocationContext";
 import PublishState from "../components/types/PublishState";
+import CopyBox from "../components/utils/CopyBox";
 import { getHardCodedUrl, getHoursAgo } from "../components/utils/utils";
 
 const { Client } = require("@notionhq/client")
@@ -60,14 +63,14 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTCString,locationSettings, h
                         publishSettings={publishSettings}
                         locationSettings={locationSettings}
                     />
-                    
-                    {/*<CopyBox 
+                    <h1>Flights: </h1>
+                    <CopyBox 
                         id="copybox"
-                        copyText=
-                        {`${locations.map(getCSVLocationOfInterestString)}`}
-                    />*/}
+                        textarea={true}
+                        copyText={`${locations.filter((l) => l.location.toLowerCase().indexOf('flight') > 0).map((fLoc)  =>  `${fLoc.event}`).join('\n\n')}`}
+                    />
                     </>
-                    : <>No Location records</>
+                    : <>No Location record s</>
                 }
             </LocationContext.Consumer>
             </> : <>No Location settings</>
