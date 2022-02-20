@@ -106,10 +106,10 @@ class RedditClient {
                 }});*/
                 console.log(JSON.stringify(timmyHateThreads))
 
-                if(timmyHateThreads.length > 0){
-                    console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads) ${timmyHateThreads[0].author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThreads[0].id}`);    
+                if(timmyHateThreads.length > 0 || !!timmyHateThreads[0]?.id){
+                    console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads OR no id) ${timmyHateThreads[0].author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThreads[0].id}`);    
                 }else{
-                    await this.r.getSubmission(timmyHateThreads[0].id).reply(text).then((res) => {
+                    await this.r.getSubmission(timmyHateThreads[0]?.id).reply(text).then((res) => {
                         console.log(`REDDIT_CREATE_SUCCESS COMMENT (${processRedditId(res.id)})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
                         resolve(run);
