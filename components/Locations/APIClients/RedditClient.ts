@@ -96,7 +96,7 @@ class RedditClient {
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
                     .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
 
-                    console.log(Object.keys(matchingThreads[0]));
+                    
                     console.log(JSON.stringify({
                         id: matchingThreads[0].id,
                         author: matchingThreads[0].author
@@ -110,7 +110,7 @@ class RedditClient {
                     titleQuery: run.subredditSubmissionTitleQuery,
                     existingPostId: run.existingPostId
                 }});*/
-
+                console.log(timmyHateThread);
                 if(!!timmyHateThread && !!timmyHateThread.id){
                     console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads OR no id) ${timmyHateThread.author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThread.id}`);    
                 }else{
