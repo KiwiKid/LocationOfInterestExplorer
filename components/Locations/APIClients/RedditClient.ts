@@ -105,6 +105,10 @@ class RedditClient {
                     existingPostId: run.existingPostId
                 }});*/
                 console.log(Object.keys(matchingThreads[0]));
+                console.log(JSON.stringify({
+                    id: matchingThreads[0].id,
+                    author: matchingThreads[0].author
+                }))
 
                 if(timmyHateThreads.length > 0 || !!timmyHateThreads[0]?.id){
                     console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads OR no id) ${timmyHateThreads[0].author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThreads[0].id}`);    
