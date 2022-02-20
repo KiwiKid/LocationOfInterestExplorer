@@ -246,7 +246,7 @@ class NotionClient {
                 checkTime = new Date();
             }
         
-            console.log(`SKIPPED/FAILED Setting check time for notionPageId: ${notionPageId}`)
+            console.log(`No reddit called made ${action} Setting check time for notionPageId: `)
 
             return this.notionClient.pages.update({
                 page_id: notionPageId,
