@@ -310,11 +310,13 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 
         const redditClient = new RedditClient();
 
+        const batchSize = process.env.REDDIT_POST_BATCH_SIZE ? +process.env.REDDIT_POST_BATCH_SIZE : 1
+
         const results = await Promise.all(redditPosts
             .filter((rp:SocialPostRun) => {
                 return notionPageId === undefined || notionPageId === rp.notionPageId;
             })
-            .sort(oldestLastCheckTimeFirst).slice(0,2).map(async (run) =>{
+            .sort(oldestLastCheckTimeFirst).slice(batchSize).map(async (run) =>{
             return new Promise<SocialPostRun>(async (resolve, reject) => {
              
                 run.setLocationGroups(locations, settings.locationPresets)//.filter((lp) => run.textUrlParams.some((tup) => tup === lp.urlParam || tup === 'all')

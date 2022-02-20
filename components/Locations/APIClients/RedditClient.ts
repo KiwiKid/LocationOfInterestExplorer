@@ -79,7 +79,7 @@ class RedditClient {
                                 const comment = res.json.data.things[0];
                                 console.log(`REDDIT_EDIT_SUCCESS COMMENT (${comment.id})`);
                                 run.setResults(new SocialPostRunResult(true, true, false, title, comment.id, text, comment.ups))
-                                resolve(run)w
+                                resolve(run)
                                 //return run;                
                             }).catch((err) => {
                                 console.error(err)
