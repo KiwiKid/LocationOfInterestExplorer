@@ -103,7 +103,7 @@ class RedditClient {
                     }))
     
                 // Todo (if needed): make this generic
-                const timmyHateThreads = matchingThreads.filter((mt:any) => mt.author.name == 'TimmyHate')
+                const timmyHateThread = matchingThreads.filter((mt:any) => mt.author.name == 'TimmyHate')[0]
                     /*
                 this.logger.info({message: `Found matching threads`, obj: {
                     matchingThreads: matchingThreads.length,
@@ -111,10 +111,10 @@ class RedditClient {
                     existingPostId: run.existingPostId
                 }});*/
 
-                if(timmyHateThreads.length > 0 || !!timmyHateThreads[0]?.id){
-                    console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads OR no id) ${timmyHateThreads[0].author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThreads[0].id}`);    
+                if(!!timmyHateThread && !!timmyHateThread.id){
+                    console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads OR no id) ${timmyHateThread.author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThread.id}`);    
                 }else{
-                    await this.r.getSubmission(timmyHateThreads[0]?.id).reply(text).then((res) => {
+                    await this.r.getSubmission(timmyHateThread.id).reply(text).then((res) => {
                         console.log(`REDDIT_CREATE_SUCCESS COMMENT (${processRedditId(res.id)})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
                         resolve(run);
