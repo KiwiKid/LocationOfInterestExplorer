@@ -1,5 +1,5 @@
 
-import snoowrap, { Submission } from 'snoowrap'
+import snoowrap, { Listing, Submission, Subreddit } from 'snoowrap'
 import getConfig from 'next/config';
 import { getNodeEnv } from '../../utils/getNodeEnv';
 import { debug, error } from 'console';
@@ -94,23 +94,31 @@ class RedditClient {
                 }});*/
 
                 const matchingThreads = await this.r.getSubreddit(run.subreddit)
-                    .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery });
+                    .search({time: 'day', sort: 'new', query: run.subredditSubmissionTitleQuery,  });
+
+                // Todo (if needed): make this generic
+                const timmyHateThreads = matchingThreads.filter((mt:Submission) => mt.author.name == 'TimmyHate')
                     /*
                 this.logger.info({message: `Found matching threads`, obj: {
                     matchingThreads: matchingThreads.length,
                     titleQuery: run.subredditSubmissionTitleQuery,
                     existingPostId: run.existingPostId
                 }});*/
-                console.log(`MOCK REDDIT_CREATE_SUCCESS COMMENT threadId: ${matchingThreads[0].id}`);
+                if(timmyHateThreads.length > 0){
+                    console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads) ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThreads[0].id}`);    
+                }else{
+                    await this.r.getSubmission(timmyHateThreads[0].id).reply(text).then((res) => {
+                        console.log(`REDDIT_CREATE_SUCCESS COMMENT (${processRedditId(res.id)})`);
+                        run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
+                        resolve(run);
+                    }).catch((err) => { 
+                        run.setError(`Could not create new reddit post for ${run.subreddit}`);
+                        reject(run);
+                    }); 
+                }
+                
 /*
-                await this.r.getSubmission(matchingThreads[0].id).reply(text).then((res) => {
-                    console.log(`REDDIT_CREATE_SUCCESS COMMENT (${processRedditId(res.id)})`);
-                    run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
-                    resolve(run);
-                }).catch((err) => { 
-                    run.setError(`Could not create new reddit post for ${run.subreddit}`);
-                    reject(run);
-                });                   */  
+                                  */  
             }
     });
 }
