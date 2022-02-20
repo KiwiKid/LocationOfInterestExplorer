@@ -79,7 +79,7 @@ class RedditClient {
                                 const comment = res.json.data.things[0];
                                 console.log(`REDDIT_EDIT_SUCCESS COMMENT (${comment.id})`);
                                 run.setResults(new SocialPostRunResult(true, true, false, title, comment.id, text, comment.ups))
-                                resolve(run)
+                                resolve(run)w
                                 //return run;                
                             }).catch((err) => {
                                 console.error(err)
@@ -115,7 +115,7 @@ class RedditClient {
                     console.log(`MOCK REDDIT_CREATE_FAILURE COMMENT (no matching threads OR no id) ${timmyHateThread.author.name} ${run.subredditSubmissionTitleQuery} (just title search based count: ${matchingThreads.length}) threadId: ${timmyHateThread.id}`);    
                 }else{
                     await this.r.getSubmission(timmyHateThread.id).reply(text).then((res) => {
-                        console.log(`REDDIT_CREATE_SUCCESS COMMENT (${processRedditId(res.id)})`);
+                        console.log(`REDDIT_CREATE_SUCCESS COMMENT https://reddit.com${timmyHateThread.permalink} (${processRedditId(res.id)})`);
                         run.setResults(new SocialPostRunResult(true, false, false, title, res.id, text))
                         resolve(run);
                     }).catch((err) => { 
