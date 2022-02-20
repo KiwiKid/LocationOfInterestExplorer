@@ -202,7 +202,7 @@ class SocialPostRun {
     }
 
 
-    async saveResult(client:NotionClient, logger:BackendLogger, postType?:string, postId?:string){
+    async saveResult(client:NotionClient, logger:BackendLogger, postType?:string){
 
 
         if(this.result?.isSuccess && this.result?.isSkipped){
@@ -215,7 +215,7 @@ class SocialPostRun {
                     logger.info({message: 'Skipped Reddit Post', obj: { notionPageId: this.notionPageId, result: this.result }})
                 })
         }else if(this.result?.isUpdate && this.result?.isSuccess){
-            await client.setSocialPostProcessedUpdated(this.notionPageId, new Date(this.result.createdDate), '', postId ? postId : 'No post id?', getActionString(this))
+            await client.setSocialPostProcessedUpdated(this.notionPageId, new Date(this.result.createdDate), this.result.postTitle || 'ERROR 10: no post title ', this.result.postId || 'ERROR 11: no post ID', getActionString(this))
                 .then((res) => {
                     logger.info({message:`Updated ${postType}`, obj: { notionPageId: this.notionPageId, result: this.result }})
                 })
@@ -224,7 +224,7 @@ class SocialPostRun {
                 })
         }else if(this.result?.isSuccess){
             
-            await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), this.result.postTitle || 'Error 09: no post title (this.result.postTitle)', postId ? postId : 'No post id?', getActionString(this))
+            await client.setSocialPostProcessedCreated(this.notionPageId, new Date(this.result.createdDate), this.result.postTitle || 'ERROR 9: no post title (this.result.postTitle)', this.result.postId ? this.result.postId : 'ERROR 12: No post id?', getActionString(this))
                 .then((res) => {
                     logger.info({message:`Created ${postType}`, obj: { notionPageId: this.notionPageId, result: this.result }})
                 })
@@ -232,7 +232,7 @@ class SocialPostRun {
                     logger.error({message: `CRITICAL - FAILED TO SAVE RESULT OF CREATE`, obj: { level: 'high', err: err }});
                 })
         }else{
-            await client.setSocialPostProcessed(this.notionPageId, new Date(), `Failed 02 - ${this.errorMsg ? this.errorMsg : 'No ErrorMsg'}`)
+            await client.setSocialPostProcessed(this.notionPageId, new Date(), `Failed 02 - ${this.errorMsg ? this.errorMsg : 'ERROR 13: No Error message?'}`)
                 .then((res) => {
                     logger.info({message:`Failed ${postType}`, obj: { notionPageId: this.notionPageId, result: this.result }})
                 })
