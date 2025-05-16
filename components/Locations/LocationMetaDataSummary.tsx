@@ -14,12 +14,12 @@ type LocationProps = {
 
 function LocationMetaDataSummary({loi, showUpdated}:LocationProps){
 
-    const addedAgoHours = getHoursAgo(loi.added);
+    const addedAgoHours = loi.added ? getHoursAgo(loi.added) : undefined;
     const updatedAgoHours = loi.updated != null ? getHoursAgo(loi.updated) : null 
 
     return (<div className="italic">
                <div className="w-36 m-auto">
-                    <div className={`${getDaysAgoClassName(addedAgoHours)} rounded-lg`}>added <NiceTimeFromNow date={loi.added}/></div>
+                    <div className={`${getDaysAgoClassName(addedAgoHours ?? 0)} rounded-lg`}>added <NiceTimeFromNow date={loi.added}/></div>
                     {showUpdated && updatedAgoHours != null && loi.updated != null ? <div className={`${getDaysAgoClassName(updatedAgoHours)} rounded-lg`}>updated <NiceTimeFromNow date={loi.updated}/></div> :null}
                 </div>
             </div>)

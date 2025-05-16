@@ -43,7 +43,7 @@ const LocationInfoGrid = ({locations, publishSettings, locationSettings}:Locatio
 
     useEffect(()=> {
         //if(locations){
-            const locationGroups = createLocationGroups(locations.filter((l) => onlyToday(l.added)), locationSettings.locationPresets);
+            const locationGroups = createLocationGroups(locations.filter((l) => onlyToday(l?.added ?? new Date())), locationSettings.locationPresets);
             setGroupedLocations(locationGroups);
             //const allLocs = new LocationGroup("New Zealand", locationSettings.locationPresets.filter((lp) => lp.urlParam === 'all')[0])
          //   allLocs.locations = locations.filter((l) => onlyToday(l.added));

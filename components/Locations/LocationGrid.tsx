@@ -22,17 +22,28 @@ type LocationGridProps = {
 }
 
 export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
-    return startOfDayNZ(loi.start);
     try{
 
         switch(sortField){
             case Sort.Added: 
+                if(!loi.added || loi.added === null) {
+                    return '0'
+                }
                 return sortFormatToNZ.format(loi.added);
             case Sort.Start: 
+                if(!loi.start || loi.start === null) {
+                    return '0'
+                }
                 return sortFormatToNZ.format(loi.start);
             case Sort.End: 
+                if(!loi.end || loi.end === null) {
+                    return '0'
+                }
                 return sortFormatToNZ.format(loi.end);
             case Sort.Updated: 
+                if(!loi.updated || loi.updated === null) {
+                    return '0'
+                }
                 return sortFormatToNZ.format(loi.updated);
             default:
                 throw 'invalid sort'
@@ -49,10 +60,10 @@ function LocationGroupHeader({d, firstStartTime, locationCount}:any){
     return ( 
         <div key={`${d}_S`} className="">
             <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
-                <div>LocationGroupHeader Error: {error.message}</div>
+                <div>Error: {error.message}</div>
             )}>
             <div className="bg-gray-300 grid grid-cols-6 sm:grid-cols-7 lg:grid-cols-7 border-b-1 border-blue-800 italic">
-                {/*<div className="border col-span-4 sm:col-span-full">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>*/}
+                {/*<div className="border col-span-4 sm:col-span-full">{/*longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>*/}
                 <div className="border sm:col-span-1 lg:col-span-1 hidden sm:block">Type</div> 
                 <div className="border col-span-2 sm:col-span-2 lg:col-span-2">{locationCount} Locations</div>
                 <div className="border sm:col-span-2 lg:col-span-2 hidden sm:block">Time period</div> 

@@ -8,24 +8,24 @@ import { LocationOfInterestRecord } from "../types/LocationOfInterestRecord";
 
 
 const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
-  return new LocationOfInterest(
-    rec.id,
-    rec.mohId,
-    rec.location,
-    rec.city,
-    rec.event,
-    new Date(rec.start),
-    new Date(rec.end),
-    new Date(rec.added),
-    rec.advice,
-    rec.lat,
-    rec.lng,
-    rec.exposureType,
-    rec.visibleInWebform,
-    rec.advice.indexOf('Omicron') > 0,
-    rec.relatedIds ? rec.relatedIds : [],
-    rec.updated ? new Date(rec.updated) : undefined
-  )
+  return new LocationOfInterest({
+    id: rec.id,
+    mohId: rec.mohId,
+    location: rec.location,
+    city: rec.city,
+    event: rec.event,
+    start: rec.start ? new Date(rec.start) : undefined,
+    end: rec.end ? new Date(rec.end) : undefined, 
+    added: rec.added ? new Date(rec.added) : undefined,
+    advice: rec.advice,
+    lat: rec.lat,
+    lng: rec.lng,
+    exposureType: rec.exposureType,
+    visibleInWebform: rec.visibleInWebform,
+    isOmicron: rec.advice.indexOf('Omicron') > 0,
+    relatedIds: rec.relatedIds ? rec.relatedIds : [],
+    updated: rec.updated ? new Date(rec.updated) : undefined
+  })
 }
 
 
@@ -111,7 +111,7 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
     exposureType: row.exposureType,
     lat: !!lat ? lat : 0,
     lng: !!lng ? lng : 0,
-    updated: !!row.updatedAt ? row.updatedAt : null,
+    updated: !!row.updatedAt ? row.updatedAt : undefined,
   }
 
   return res;
@@ -184,14 +184,14 @@ const mostRecentlyAdded = (a:LocationOfInterest,b:LocationOfInterest) => {
   if(!a || !b){
     return -1
   }
-  return a.added > b.added ? 1 : -1
+  return (a.added ?? new Date()) > (b.added ?? new Date()) ? 1 : -1
 }
 
 const inStartOrder = (a:LocationOfInterest,b:LocationOfInterest) => {
   if(!a || !b){
     return -1
   }
-  return a.start > b.start ? 1 : -1
+  return (a.start ?? new Date()) > (b.start ?? new Date()) ? 1 : -1
 }
 
 const getLocationPresetPrimaryCity = (locationPresets:LocationPreset[],mohCity:string) => {
@@ -214,7 +214,7 @@ const downTheCountryPreset = (a:LocationPreset,b:LocationPreset) => a.urlParam =
 const downTheCountry = (a:LocationOfInterest,b:LocationOfInterest) => a.lat > b.lat ? -1 : 1
 
 const byDate = (a:LocationOfInterest,b:LocationOfInterest) => {
-  if(a.start > b.start){
+  if((a.start ?? new Date()) > (b.start ?? new Date())){
     return -1
   }
   return 1;

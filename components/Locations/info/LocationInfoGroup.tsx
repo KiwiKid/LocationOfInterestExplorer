@@ -34,8 +34,8 @@ const LocationOfInterestRow = ({loi}:LocationOfInterestRowProps) => {
                 <div>{loi.mohId} {loi.mohId != loi.id ? `(${loi.id})`: ''}</div>
                 <div><NiceFullDate date={loi.added}/></div>
                 <div>{loi.updated ? <NiceFullDate date={loi.updated}/> : ''}</div>
-                <div><NiceFullDate date={loi.start}/></div>
-                <div><NiceFullDate date={loi.end}/></div>
+                <div><NiceFullDate date={loi?.start}/></div>
+                <div><NiceFullDate date={loi?.end}/></div>
                 <div>{loi.event}</div>
                 <div>{loi.location}</div>
                 <div>{loi.city}</div>
@@ -69,7 +69,7 @@ const LocationOfInterestInfoGrid = ({locations}:LocationOfInterestInfoGridProps)
                 <div>lat</div>
                 <div>lng</div>
                 {locations
-                .sort((a, b) => a.added > b.added ? -1 : 1)
+                .sort((a, b) => (a?.added ?? new Date()) > (b?.added ?? new Date()) ? -1 : 1)
                 .map((lr:LocationOfInterest) => <LocationOfInterestRow key={`${lr.id}_row`} loi={lr}/> )
                 }
                
@@ -92,7 +92,7 @@ const LocationInfoGroup = ({group, locationSettings, publishSettings}:LocationIn
             <details className={`m-4 p-4 border-4  border-${group.mostRecent ? getBorderColor(getHoursAgo(group.mostRecent)) :'' }`}>
             <summary className="">
             (after) <NiceDate date={publishSettings.publishTime}/> - {group.totalLocations()} Locations - {group.city || 'Other'} {new Intl.DateTimeFormat('en-NZ', {dateStyle: 'short'}).format(publishSettings.publishTime)}) {group.locations.some((gl:LocationOfInterest) => !gl.lat || !gl.lng) ? <div className="bg-red-500">Invalid Locations!</div>: null}
-            {mostRecent ? `(most recent was ${getHoursAgo(mostRecent?.added)} hours ago)`: ''}
+            {mostRecent && mostRecent?.added ? `(most recent was ${getHoursAgo(mostRecent?.added)} hours ago)`: ''}
                 <CopyBox 
                         id="copybox"
                         copyText=

@@ -10,7 +10,7 @@ import SocialPostRun from './APIClients/SocialPostRun'
 
 
 type DateProps = {
-    date: Date|Dayjs
+    date: Date|Dayjs|undefined
 }
 
 dayjs.extend(relativeTime);
@@ -29,18 +29,21 @@ const isBetween = (date:Dayjs, start:Dayjs, to:Dayjs) => {
     return date.isBetween(start, to);
 }
 
-const NiceDateWithTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
+const NiceDateWithTime = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).calendar(null,{}) : 'no date'}</>
 
-const NiceDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).calendar(null,{})}</>
+const NiceDate = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).calendar(null,{}) : 'no date'}</>
 
-const NiceShortTime = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('h:mm A')}</>
+const NiceShortTime = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).format('h:mm A') : 'no time'}</>
 
-const NiceFullDate = ({date}:DateProps):JSX.Element => <>{dayjs(date).format('D MMM h:mm A')}</>
+const NiceFullDate = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).format('D MMM h:mm A') : 'no date'}</>
 
 // Use when generating dates for screenshots
 const NiceFullAlwaysNZDate = ({date}:DateProps):JSX.Element => <>{date ? dayjs(date).tz('Pacific/Auckland').format('D MMM h:mm A') : 'no date'}</>
 
-const startOfDayNZ = (date:Date|Dayjs) => {
+const startOfDayNZ = (date:Date|Dayjs|undefined) => {
+    if(!date) {
+        return 'no date'
+    }
     return dayjs(date).tz("Pacific/Auckland").startOf('day').format();
 }
 
@@ -67,7 +70,10 @@ const subtractMinutes = (a:Dayjs|Date, minutes:number) => {
 }
 
 // (Debugging: allow more locations to be considered today -  "dayjs().subtract(24,'hours')")
-const onlyToday = (a:Dayjs|Date):boolean => {
+const onlyToday = (a:Dayjs|Date|undefined):boolean => {
+    if(!a){
+        return false;
+    }
     return startOfDayNZ(a) === startOfDayNZ(dayjs().tz("Pacific/Auckland"));  //subtractHours(dayjs(),24) < dayjs(a)
 };
 

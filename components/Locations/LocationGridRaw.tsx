@@ -71,7 +71,7 @@ function LocationGridRaw({locations, openLocations, setOpenLocations, sortField,
     return (
     <div className="mt-3 text-center pb-3">
         {groupedLocations.sort(downTheCountryGrp).map((d) => {
-                let firstStartTime = d.locations.sort((a,b) => a.added > b.added ? 1 : -1)[0].start
+                let firstStartTime = d.locations.sort((a,b) => (a.added ?? new Date()) > (b.added ?? new Date()) ? 1 : -1)[0].start
 
                 return ( 
                     <div key={`${d}_LG`} className={'text-sm'}>

@@ -452,7 +452,10 @@ function CovidMapSelector({
                                     onAdded={(inCircle:boolean, e:any) => {
                                         // TODO: need to debounce this update
                                         let maxPossibleHours = 14*24;
-                                        let hoursAgo = getHoursAgo(al.loi.start)
+                                        let hoursAgo = al.loi.start ? getHoursAgo(al.loi.start) : undefined;
+                                        if(hoursAgo == undefined){
+                                            hoursAgo = 0;
+                                        }
                                         let circleOpacity = (1-(hoursAgo/maxPossibleHours))+0.5;
                                        // e.target.setStyle({opacity: Math.max(circleOpacity, 0.8) });
                                         if(al.loi.isOmicron){ 

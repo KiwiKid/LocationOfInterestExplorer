@@ -299,6 +299,7 @@ const handler = async (req:NextApiRequest, res:NextApiResponse) => {
     const locations:LocationOfInterest[] = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL)
         .then((d) => d.map(mapLocationRecordToLocation))
         .then((loi) => applyLocationOverrides(loi, settings.locationOverrides))
+
     
         const todaysLocations = locations.filter((lr) => onlyToday(lr.added));
 

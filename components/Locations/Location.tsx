@@ -26,7 +26,7 @@ import { ErrorBoundary } from "react-error-boundary"
 
     export default function Location({loi,isOpen, toggleOpenLocation, showId, goToLocation}:LocationProps){
 
-        const addedDateIsRecent = getHoursAgo(loi.added) < 48;
+        const addedDateIsRecent = loi.added ? getHoursAgo(loi.added) < 48 : false;
 
         return (
             <div key={`${loi.id}_S`} id={loi.id} className="p-1" >

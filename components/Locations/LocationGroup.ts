@@ -9,19 +9,19 @@ class LocationGroup {
     locations:LocationOfInterest[];
     city:string;
     locationPreset:LocationPreset;
-    mostRecent:Date|null;
+    mostRecent:Date|undefined;
 
     constructor(city:string, locationPreset:LocationPreset){
         this.locations = [];
         this.city = city
         this.locationPreset = locationPreset;
-        this.mostRecent = null
+        this.mostRecent = undefined
     }
 
     pushLocation(location:LocationOfInterest){
         this.locations.push(location);
         const mostRecentExisting = this.locations.sort(mostRecentlyAdded)[0]
-        if(!this.mostRecent || mostRecentExisting.added > this.mostRecent){
+        if(!this.mostRecent || (mostRecentExisting.added ?? new Date()) > this.mostRecent){
             this.mostRecent = location.added;
         }
     }
@@ -35,7 +35,7 @@ class LocationGroup {
             if(!a || !b){
                 return 1 
             }
-            return a.added > b.added ? 1 : -1
+            return (a.added ?? new Date()) > (b.added ?? new Date()) ? 1 : -1
         })[0];
     }
         

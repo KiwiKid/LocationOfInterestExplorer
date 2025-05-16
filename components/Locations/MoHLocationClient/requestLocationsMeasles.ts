@@ -308,7 +308,7 @@ const requestLocationsMeasles = (url: string): Promise<LocationOfInterestRecord[
             event: locationText,
             start: startAndEndDateTimes.start,
             end: startAndEndDateTimes.end,
-            updated: null,
+            updated: undefined,
             added: new Date().toISOString(),
             advice: `${adviceText}  "Quarantine: ${quarantineText}" "Monitor: ${monitorText}"`,
             exposureType,

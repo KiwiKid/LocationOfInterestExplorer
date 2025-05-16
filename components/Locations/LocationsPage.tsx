@@ -52,7 +52,7 @@ export default function LocationsPage({rawLocations, startingPageState, publishS
 
     const inActiveDateRange = (location:LocationOfInterest) => {
       var dateFrom = getDateInPastByXDays(daysInPastShown)
-        return location.start > dateFrom;
+        return location.start && location.start > dateFrom;
     }
 
     const handleVisibleLocationsChange = (locs:LocationOfInterestCalculated[]) => {

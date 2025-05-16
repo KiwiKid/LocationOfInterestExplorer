@@ -1,15 +1,34 @@
 import {LatLng} from 'leaflet'
 
+type LocationOfInterestProps = {
+  id:string
+  mohId:string
+  location:string
+  city:string
+  event:string
+  start:Date|undefined
+  end:Date|undefined
+  added:Date|undefined
+  advice:string
+  lat:number
+  lng:number
+  exposureType:string
+  visibleInWebform:boolean
+  isOmicron:boolean
+  relatedIds:string[]
+  updated:Date|undefined
+}
+
 class LocationOfInterest {
     id: string;
     mohId:string;
     location: string;
     city: string;
     event: string;
-    start: Date;
-    end: Date;
+    start: Date|undefined;
+    end: Date|undefined;
     updated?: Date;
-    added: Date;
+    added: Date | undefined;
     advice: string;
     lat: number;
     lng: number;
@@ -20,43 +39,26 @@ class LocationOfInterest {
     isValid:boolean
     relatedIds:string[]
 
-    constructor(
-        id:string
-        , mohId: string
-        , location: string
-        , city: string
-        , event: string
-        , start: Date
-        , end: Date
-        , added: Date
-        , advice: string
-        , lat: number
-        , lng: number
-        , exposureType: string
-        , visibleInWebform: boolean
-        , isOmicron: boolean
-        , relatedIds: string[]
-        , updated?: Date
-        ){
-          this.id = id;
-          this.mohId = mohId;
-          this.location = location;
-          this.city = city;
-          this.event = event;
-          this.start = start;
-          this.end = end;
-          this.updated = updated;
-          this.added = added;
-          this.advice = advice;
-          this.city = city;
-          this.lat = lat;
-          this.lng = lng;
-          this.exposureType = exposureType;
-          this.visibleInWebform = visibleInWebform;
-          this.isOmicron = isOmicron;
-          this.relatedIds = relatedIds
+    constructor(props:LocationOfInterestProps){
+          this.id = props.id;
+          this.mohId = props.mohId;
+          this.location = props.location;
+          this.city = props.city;
+          this.event = props.event;
+          this.start = props.start;
+          this.end = props.end;
+          this.updated = props.updated;
+          this.added = props.added;
+          this.advice = props.advice;
+          this.city = props.city;
+          this.lat = props.lat;
+          this.lng = props.lng;
+          this.exposureType = props.exposureType;
+          this.visibleInWebform = props.visibleInWebform;
+          this.isOmicron = props.isOmicron;
+          this.relatedIds = props.relatedIds
 
-          this.isValid = !!lat && !!lng;
+          this.isValid = !!props.lat && !!props.lng;
           
         }
 

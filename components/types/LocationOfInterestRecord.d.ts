@@ -5,9 +5,9 @@ export type LocationOfInterestRecord = {
     mohId:string
     location: string;
     event: string;
-    start: string;
+    start: string | undefined;
     end: string | undefined;
-    updated?: string | null;
+    updated?: string | undefined;
     added: string;
     advice: string;
     exposureType: string;
