@@ -20,11 +20,15 @@ type ShareBarProps = {
 
 function ShareBar({children, url}:ShareBarProps) {
 
+    const [isInPWA, setIsInPWA] = useState(false);
+
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        setIsInPWA(localStorage.getItem('AppInstalled') === '1');
+      }
+    }, []);
 
     const title = 'Locations of Interest Explorer';
-
-    // The facebook messager dialog does not work in installed PWA mode
-    const isInPWA = localStorage.getItem('AppInstalled') === '1'
 
     return (
       <>{!url.length ? <div>Loading</div> :

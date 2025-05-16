@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "react-error-boundary"
 import LocationOfInterest from "../../types/LocationOfInterest"
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated"
 import LocationExposureTypeDisplay from "../LocationExposureTypeDisplay"
@@ -32,7 +33,11 @@ const LocationsDuplicateCirclePopup = ({l,relatedLocations,showDistance}:Locatio
                             return (
                                 <>
                                     <div className={`col-span-3 text-center mt-1 p-1`} >
-                                        <LocationSummaryDateDisplay loi={rl} includeDate={'short'} breakAfterDate={true} />
+                                        <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
+                                            <div className="text-red-500">Error: {error.message}</div>
+                                        )}>
+                                            <LocationSummaryDateDisplay loi={rl} includeDate={'short'} breakAfterDate={true} />
+                                        </ErrorBoundary>
                                         <LocationExposureTypeDisplay loi={rl} />
                                     </div>
                                     <div className={`col-span-2 mt-1`}>
@@ -48,7 +53,11 @@ const LocationsDuplicateCirclePopup = ({l,relatedLocations,showDistance}:Locatio
                         return (
                             <>
                                 <div className={`col-span-1 text-center mt-1 p-1`} >
-                                    <LocationSummaryDateDisplay loi={rl} includeDate={'short'} breakAfterDate={true} />
+                                    <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
+                                        <div>Error: {error.message}</div>
+                                    )}>
+                                        <LocationSummaryDateDisplay loi={rl} includeDate={'short'} breakAfterDate={true} />
+                                    </ErrorBoundary>
                                 </div>
                                 <div className={`text-center`}>
                                     <LocationExposureTypeDisplay loi={rl} />

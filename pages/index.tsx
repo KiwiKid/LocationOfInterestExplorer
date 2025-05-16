@@ -8,7 +8,6 @@ import LocationContext from '../components/Locations/MoHLocationClient/LocationC
 import { metaImageURLDirect } from '../components/Locations/LocationObjectHandling'
 import NotionClient from '../components/Locations/APIClients/NotionClient'
 import Loading from '../components/Locations/Loading'
-
 type HomePageProps = {
   publishTimeUTC: string // Allow for native next.js props usage
   hardcodedURL: string
@@ -25,9 +24,9 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL, locationSe
   
   const settings = useSettings(locationSettings.locationPresets);
 
-  //const { locationRecords, error, loading } = useMohLocations();
+ // const { locationRecords, error, loading } = useMohLocations();
 
- // let locationRecords = LocationContext;
+  //let locationRecords = LocationContext;
 
   const shortTitle = `NZ Covid Map ${settings.quickLink != null ? `- ${settings.quickLink.title}` : ''}`
   const mediumTitle = `NZ Covid Map ${settings.quickLink != null ? `- ${settings.quickLink.title}` : ''} - Explore Official Locations of Interest`
@@ -114,9 +113,12 @@ const Home: NextPage<HomePageProps> = ({publishTimeUTC, hardcodedURL, locationSe
 
 export const getStaticProps:GetStaticProps = async (context:any) => {
 
-  const client = new NotionClient();
+  //const client = new NotionClient();
 
-  const settings = await client.getLocationSettings();
+  const settings = {
+    locationPresets: [],
+    locationOverrides: []
+  }//await client.getLocationSettings();
   return {
     props:{
       publishTimeUTC: new Date().toUTCString(),

@@ -70,12 +70,15 @@ const Champion: NextPage<ChampionPageProps> = ({locationSettings, hardCodedURL, 
 
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
 
-    let client = new NotionClient();
+  //  let client = new NotionClient();
 
      return {
        props:{
          publishTimeUTC: new Date().toUTCString(),
-         locationSettings: await client.getLocationSettings(),
+         locationSettings: {
+            locationPresets: [],
+            locationOverrides: []
+         },
          hardCodedURL: getHardCodedUrl()
         }
      }

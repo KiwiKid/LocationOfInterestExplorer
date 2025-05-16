@@ -3,6 +3,7 @@ import { asAtDateAlwaysNZ, dayFormattedNZ, startOfDayFormattedNZ } from "./DateH
 import { LocationGroup }  from "./LocationGroup";
 import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
+import { LocationOfInterestRecord } from "../types/LocationOfInterestRecord";
 
 
 
@@ -117,7 +118,14 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
 }
 
 
-const getPrintableLocationOfInterestString = (l:LocationOfInterest,includeCity:boolean, includeDate:boolean):string => `- ${l.event}${includeCity ? ` - ${l.city}`: ''} - ${locationSummaryDateDisplayString(l, includeDate)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
+const getPrintableLocationOfInterestString = (l:LocationOfInterest,includeCity:boolean, includeDate:boolean):string => {
+  try{
+  return `- ${l.event}${includeCity ? ` - ${l.city}`: ''} - ${locationSummaryDateDisplayString(l, includeDate)} ${l.exposureType != 'Casual' ? `(${l.exposureType} contact)` : ''}\n`
+  }catch(err){
+    console.info(`Error getting printable location of interest string for ${JSON.stringify(l, null, 3)}`)
+    return ''
+  }
+}
 
 // This isn't dependable CSV conversion and it doesn't need to be (its just for debugging)
 const getCSVLocationOfInterestString = (loi:LocationOfInterest) => {

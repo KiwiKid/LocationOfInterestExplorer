@@ -8,6 +8,7 @@ import { Sort } from '../types/Sort';
 import Location from './Location';
 import { startOfDayNZ } from './DateHandling';
 import LocationGridAdaptorItem from './LocationGridAdaptor';
+import { ErrorBoundary } from 'react-error-boundary';
 
 
 type LocationGridProps = {
@@ -47,14 +48,18 @@ export const getSortDayString = (sortField:Sort, loi:LocationOfInterest) => {
 function LocationGroupHeader({d, firstStartTime, locationCount}:any){
     return ( 
         <div key={`${d}_S`} className="">
+            <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
+                <div>LocationGroupHeader Error: {error.message}</div>
+            )}>
             <div className="bg-gray-300 grid grid-cols-6 sm:grid-cols-7 lg:grid-cols-7 border-b-1 border-blue-800 italic">
-                <div className="border col-span-4 sm:col-span-full">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>
+                {/*<div className="border col-span-4 sm:col-span-full">{longDayToNZ.format(firstStartTime)} - {shortDayMonthToNZ.format(firstStartTime)}</div>*/}
                 <div className="border sm:col-span-1 lg:col-span-1 hidden sm:block">Type</div> 
                 <div className="border col-span-2 sm:col-span-2 lg:col-span-2">{locationCount} Locations</div>
                 <div className="border sm:col-span-2 lg:col-span-2 hidden sm:block">Time period</div> 
                 <div className="border col-span-1 lg:col-span-1 hidden sm:block">Added</div> 
                 <div className="border col-span-1 text-right pr-2 lg:text-center hidden sm:block">Open</div> 
             </div>
+            </ErrorBoundary>
         </div>
     )
 }

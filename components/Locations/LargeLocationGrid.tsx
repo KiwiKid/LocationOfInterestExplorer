@@ -7,6 +7,7 @@ import RegisterIncorrectLocation from "./RegisterIncorrectLocation";
 import RegisterVisit from "./RegisterVisit";
 import InternalLink from "../utils/InternalLink";
 import GoToLocation from "./GoToLocation";
+import { ErrorBoundary } from "react-error-boundary";
 
 
 type LargeLocationGridProps = {
@@ -31,7 +32,11 @@ export default function LargeLocationGrid({loi,showDistance, showHeader, isOpen,
                         <div className="text-center">{loi.city}</div>
                         <div className="">{loi.event}</div>       
                         <div className="col-span-2">
-                            <LocationSummaryDateDisplay loi={loi} includeDate={isOpen ? 'long' : undefined} />
+                            <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
+                                <div>LargeLocationGrid Error: [${JSON.stringify({ start: loi.start, end: loi.end })}] {error.message}</div>
+                            )}>
+                                <LocationSummaryDateDisplay loi={loi} includeDate={isOpen ? 'long' : undefined} />
+                            </ErrorBoundary>
                         </div>
                         <LocationMetaDataSummary loi={loi} showUpdated={isOpen}/>
                         {isOpen !== undefined ? 

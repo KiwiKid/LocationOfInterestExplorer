@@ -85,8 +85,11 @@ const Info: NextPage<InfoPageProps> = ({publishTimeUTCString,locationSettings, h
 }
 
 export const getStaticProps:GetStaticProps = async ({params, preview = false}) => {
-    const client = new NotionClient();
-    const settings = client.getLocationSettings();
+   // const client = new NotionClient();
+    const settings = {
+        locationPresets: [],
+        locationOverrides: []
+    }//client.getLocationSettings();
 
 
     return {

@@ -3,10 +3,22 @@ import { longDayToNZ, shortDateToNZ, shortDayLongMonthToNZ, shortDayMediumMonthT
 import { NiceDate } from "./DateHandling";
 
 const locationSummaryDateDisplayString = (loi:LocationOfInterest, includeDate:boolean) => {
-    const startDay = `${shortDayLongMonthToNZ.format(loi.start)}` 
-    const endDay = `${shortDayLongMonthToNZ.format(loi.end)}`
-    const startTime = shortTimeWithHourMinToNZ.format(loi.start);
-    const endTime = shortTimeWithHourMinToNZ.format(loi.end);
+    let startDay = ''
+    if (loi.start && loi.start instanceof Date && loi.start !== null) {
+        startDay = `${shortDayLongMonthToNZ.format(loi.start)}` 
+    }
+    let endDay = ''
+    if (loi.end && loi.end instanceof Date && loi.end !== null) {
+        endDay = `${shortDayLongMonthToNZ.format(loi.end)}`
+    }
+    let startTime = ''  
+    if (loi.start && loi.start instanceof Date && loi.start !== null) {
+        startTime = shortTimeWithHourMinToNZ.format(loi.start);
+    }
+    let endTime = ''
+    if (loi.end && loi.end instanceof Date && loi.end !== null) {
+        endTime = shortTimeWithHourMinToNZ.format(loi.end);
+    }
 
     const startEndSameDate = startDay === endDay;
     return startEndSameDate ? 
@@ -22,11 +34,23 @@ type LocationSummaryDateDisplayProps = {
 
 const LocationSummaryDateDisplay = ({loi,includeDate,breakAfterDate = true}:LocationSummaryDateDisplayProps) => {
 
-    
-    const startDay = includeDate == 'long' ? `${shortDayLongMonthToNZ.format(loi.start)}` : `${shortDayMediumMonthToNZ.format(loi.start)}`
-    const endDay = includeDate == 'long' ? `${shortDayLongMonthToNZ.format(loi.end)}`: `${shortDayMediumMonthToNZ.format(loi.start)}`
-    const startTime = shortTimeWithHourMinToNZ.format(loi.start);
-    const endTime = shortTimeWithHourMinToNZ.format(loi.end);
+   // return <div>LocationSummaryDateDisplay off {JSON.stringify({ start: loi.start, end: loi.end })}</div>
+    let startDay = ''
+    if (loi.start && loi.start instanceof Date && loi.start !== null) {
+        startDay = includeDate == 'long' ? `${shortDayLongMonthToNZ.format(loi.start)}` : `${shortDayMediumMonthToNZ.format(loi.start)}`
+    }
+    let endDay = ''
+    if (loi.end && loi.end instanceof Date && loi.end !== null) {
+        endDay = includeDate == 'long' ? `${shortDayLongMonthToNZ.format(loi.end)}`: `${shortDayMediumMonthToNZ.format(loi.end)}`
+    }
+    let startTime = ''
+    if (loi.start && loi.start instanceof Date && loi.start !== null) {
+        startTime = shortTimeWithHourMinToNZ.format(loi.start);
+    }
+    let endTime = ''
+    if (loi.end && loi.end instanceof Date && loi.end !== null) {
+        endTime = shortTimeWithHourMinToNZ.format(loi.end);
+    }
 
     const startEndSameDate = startDay === endDay;
     

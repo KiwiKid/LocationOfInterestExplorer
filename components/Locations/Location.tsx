@@ -10,6 +10,7 @@ import RegisterIncorrectLocation from "./RegisterIncorrectLocation"
 import RegisterVisit from "./RegisterVisit"
 import InternalLink from "../utils/InternalLink"
 import GoToLocation from "./GoToLocation"
+import { ErrorBoundary } from "react-error-boundary"
 
 
 
@@ -34,8 +35,11 @@ import GoToLocation from "./GoToLocation"
                     <div className="col-span-full p-1"><span className="float-left font-bold">{loi.event}</span> <span className="float-right">{loi.city}</span></div>
                     <LocationExposureTypeDisplay loi={loi} hideIfCasual={!isOpen}/>
                     
-                    
-                    <LocationSummaryDateDisplay loi={loi} includeDate={isOpen ? 'long' : undefined}/>
+                    <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
+                                <div>Location  Error: {error.message}</div>
+                            )}>
+                        <LocationSummaryDateDisplay loi={loi} includeDate={isOpen ? 'long' : undefined}/>
+                    </ErrorBoundary>
                     <div className="md:text-lg text-gray-600 text-center">{isOpen ? "CLOSE ▲" : "OPEN ▼"}</div>
                     {addedDateIsRecent && <div className="col-span-full"><LocationMetaDataSummary loi={loi} showUpdated={isOpen}/></div>}
                     

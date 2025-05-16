@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "react-error-boundary"
 import LocationOfInterest from "../../types/LocationOfInterest"
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated"
 import LocationExposureTypeDisplay from "../LocationExposureTypeDisplay"
@@ -33,7 +34,11 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
                                 {rl.event}
                             </div>
                             <div className={`text-center col-span-3 mt-1`} >
+                                <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
+                                <div> LocationsCirclePopup Error: {error.message}</div>
+                            )}>
                                 <LocationSummaryDateDisplay loi={rl} includeDate={'short'} />
+                                </ErrorBoundary>
                                 <LocationExposureTypeDisplay loi={rl} />
                             </div>
                             <div className="col-span-2">
@@ -52,8 +57,11 @@ const LocationsCirclePopup = ({l,relatedLocations,showDistance}:LocationsCircleP
                                     {rl.event}
                                 </div>
                                 <div className={`text-center col-span-1 mt-1`} >
-                                    <LocationSummaryDateDisplay loi={rl} includeDate={'short'} />
-                                    
+                                    <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
+                                        <div>Error: {error.message}</div>
+                                    )}>
+                                        <LocationSummaryDateDisplay loi={rl} includeDate={'short'} />
+                                    </ErrorBoundary>
                                 </div>
                                 <div className="text-center">
                                     <LocationExposureTypeDisplay loi={rl} />

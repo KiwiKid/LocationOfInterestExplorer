@@ -11,6 +11,7 @@ import SocialRuns from "../components/Locations/SocialRuns";
 import AutoSizeTextArea from "../components/utils/AutoSizeTextArea";
 import { mapLocationRecordToLocation } from "../components/Locations/LocationObjectHandling";
 import PublishState from "../components/types/PublishState";
+import { LocationOfInterestRecord } from "../components/types/LocationOfInterestRecord";
 
 
 const { Client } = require("@notionhq/client")
@@ -185,18 +186,21 @@ const SocialPosts: NextPage<SocialPostsProps> = ({locationsRecords, publishTimeU
 export const getServerSideProps:GetServerSideProps = async ({params, preview = false}) => {
     if(!process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL){ console.log('No MoH API set'); throw 'Config error 08'; }
 
-    const client = new NotionClient();
+    //const client = new NotionClient();
     const locations = await requestLocations(process.env.NEXT_PUBLIC_MOH_LOCATIONS_URL);
-    const settings = await client.getLocationSettings();
+    const settings = {
+        locationPresets: [],
+        locationOverrides: []
+    }//await client.getLocationSettings();
 
 
     const beforeDateString = dayjs().utc().subtract(10, 'minutes').toISOString()
-    const socialPostRuns = await client.getSocialPostRuns();
+   // const socialPostRuns = await client.getSocialPostRuns();
 
     const nextJSHacky:SocialPostsProps = JSON.parse(JSON.stringify({
         publishTimeUTC: new Date().toUTCString(),
         locationSettings: await settings,
-        socialPostRuns: socialPostRuns,
+        socialPostRuns: [] as SocialPostRun[], //socialPostRuns,
         reddit: process.env.SOCIAL_POST_PASS,
         hardcodedURL: getHardCodedUrl(),
          //publishTime:dayjs().utc() },

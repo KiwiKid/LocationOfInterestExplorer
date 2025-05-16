@@ -437,7 +437,7 @@ const LocationPageDrawer = ({
                           <div className="pt-2 max-w-3xl">
                             <ExternalLink
                               title="MoH Location of Interest API"
-                              href="https://github.com/minhealthnz/nz-covid-data/tree/main/locations-of-interest"
+                              href="https://info.health.nz/conditions-treatments/infectious-diseases/about-measles/measles-locations-of-interest-in-aotearoa-new-zealand#advice-for-close-contacts-7511"
                               />
                           </div>
                         </p>

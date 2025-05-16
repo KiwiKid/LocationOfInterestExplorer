@@ -9,6 +9,7 @@ import OmicronDisplay from "../OmicronDisplay";
 import InternalLink from "../../utils/InternalLink";
 import LocationOfInterest from "../../types/LocationOfInterest";
 import { LocationOfInterestCalculated } from "../../types/LocationOfInterestCalculated";
+import { ErrorBoundary } from "react-error-boundary";
 
 type LocationCirclePopupProps ={
     l: LocationOfInterestCalculated
@@ -25,8 +26,13 @@ function LocationCirclePopup({l, showDistance, goToDrawerItem}:LocationCirclePop
                         <div>
                             <div className={`grid grid-cols-1 text-center`} >
                                 <div className="font-bold">{l.loi.event}</div>
+                                <ErrorBoundary fallbackRender={({error, resetErrorBoundary}) => (
+                                <div>LocationCirclePopup Error: {error.message}</div>
+                            )}>
                                 <LocationSummaryDateDisplay loi={l.loi} includeDate={'short'} />
+                                </ErrorBoundary>
                                 <div><LocationExposureTypeDisplay loi={l.loi} /></div>
+                            
                             </div>
                         </div>
                     </div>

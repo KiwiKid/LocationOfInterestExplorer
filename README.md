@@ -29,8 +29,6 @@ Bugs:
 - [ ] "Opotiki" is showing in the preview section (it should only should locations with cases)
 
 
-
-
 There are two "mode" systems:
 
 QuickLink mode system:
@@ -134,19 +132,6 @@ Get the current "LocationPresets".
 Get the current "LocationOverrides".
 
 
-
-
-
-
-## Production Enviroment variables:
-(facebook API ID)
-NEXT_PUBLIC_FACEBOOK_APP_ID
-(Google forms feedback link)
-NEXT_PUBLIC_FEEDBACK_URL=http://google.com
-(Google URL verification tag)
-NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG=WpxXBycKmD_r57XMCpmtwkVI1hax5LFawIMUZcXzfRo
-(meta tag for verifying domain ownership with google)
-NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION_META_TAG 
 
 
 ## Trigger automatic builds:

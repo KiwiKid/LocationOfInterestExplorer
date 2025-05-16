@@ -1,6 +1,10 @@
 import { applyLocationOverrides, isRelated, mapLoITOLoIRecord } from "../LocationObjectHandling";
 import get, { AxiosResponse, AxiosPromise } from 'axios'
 import LocationOfInterest from "../../types/LocationOfInterest";
+import * as cheerio from 'cheerio';
+import fs from 'fs';
+import path from 'path';
+import { useContext } from 'react';
 import { LocationOfInterestRecord } from "../../types/LocationOfInterestRecord";
 
 const reallyBadDataFixes = (loi:LocationOfInterestRecord) => {
@@ -165,15 +169,16 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
           lng: airportCities ? airportCities.startAirport.lng: fl.lng
       }
 
+      console.log(fl)
       const destLoc:LocationOfInterestRecord = { 
         id: `${fl.id}_dest`,
         mohId: fl.id,
         location: fl.location,
         event: fl.event,
-        start: fl.start,
-        end: fl.end,
+        start: new Date().toISOString(),//fl.start,
+        end: new Date().toISOString(),//fl.end,
         updated: fl.updated,
-        added: fl.added,
+        added: new Date().toISOString(), //new Date(fl.added).toISOString(),
         advice: fl.advice,
         exposureType: fl.exposureType,
         visibleInWebform: fl.visibleInWebform,
@@ -204,31 +209,124 @@ const setRelatedLocations = (locations:LocationOfInterestRecord[]) => {
   })
   return locations;
 }
+type StartAndEndDateTimes = {
+  start: string;
+  end?: string;
+}
 
-const requestLocations = (url:string):Promise<LocationOfInterestRecord[]> => {
-
-    return new Promise<LocationOfInterestRecord[]>((resolve, reject) => {
-      try{
-        get({url: url})
-          .then(async (response:AxiosResponse<LocationOfInterestAPIResponse>) => {
-            const res = response.data.items
-                .map(mapLoITOLoIRecord)
-                .map(reallyBadDataFixes)
-
-                const allRes = createFlightLocations(res);
-
-                const actuallyAllRes = setRelatedLocations(allRes);
-            
-            resolve(
-              actuallyAllRes
-            );
-          })
-            
-        }catch(err){
-          reject(err);
-        }
-    })
+// Helper: Parse date/time from table cell
+function parseStartAndEndDateTimes(cellText: string): StartAndEndDateTimes {
+  const text = cellText.replace(/\s+/g, ' ').trim();
+  // Try to split on ' to ' (with spaces)
+  const toMatch = text.match(/^(.*?)(?:\s+to\s+)(.+)$/i);
+  if (toMatch) {
+    // If the first part looks like a date+time, keep as is; if just time, keep as is
+    return { start: toMatch[1], end: toMatch[2] };
   }
+  return { start: text, end: undefined };
+}
+
+// Helper: Extract city from location cell
+function extractCity(locationHtml: string): string {
+  const cityMatch = locationHtml.match(/<br>([^<\d]+)(\d{4})?<br?>/i);
+  if (cityMatch && cityMatch[1]) {
+    return cityMatch[1].replace(/<[^>]+>/g, '').trim();
+  }
+  const knownCities = ['Auckland', 'Wellington', 'Christchurch', 'Hamilton', 'Dunedin', 'Tauranga', 'Napier', 'Rotorua', 'Palmerston North', 'Nelson', 'New Plymouth', 'Gisborne', 'Invercargill', 'Whangarei'];
+  for (const city of knownCities) {
+    if (locationHtml.includes(city)) return city;
+  }
+  return '';
+}
+
+function cleanHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// Helper to find the closest previous h3 by traversing up the DOM
+function findClosestPrevH3($: any, elem: any): string {
+  let current = $(elem);
+  while (current.length) {
+    // Check previous siblings
+    let prev = current.prev();
+    while (prev.length) {
+      if (prev.is('h3')) return prev.text();
+      prev = prev.prev();
+    }
+    // Move up to parent
+    current = current.parent();
+  }
+  return '';
+}
+
+const requestLocationsMeasles = (url: string): Promise<LocationOfInterestRecord[]> => {
+  return new Promise<LocationOfInterestRecord[]>(async (resolve, reject) => {
+    try {
+      console.log('MOH PAGE REQUEST MOH PAGE REQUEST MOH PAGE REQUEST MOH PAGE REQUEST MOH PAGE REQUEST MOH PAGE REQUEST ')
+      const response = await get(url, { responseType: 'text' });
+      const html = response.data;
+      const $ = cheerio.load(html);
+      // Log the number of tables in the response
+      console.log('Number of tables in response:', $('table').length);
+      // Log the number of h3s in the response
+      console.log('Number of h3s in response:', $('h3').length);
+      const records: LocationOfInterestRecord[] = [];
+      // Find all tables where the first th is 'Exposure location'
+      $('table').each((tableIdx, tableElem) => {
+        const firstTh = $(tableElem).find('th').first().text().trim();
+        if (firstTh !== 'Exposure location') return;
+        // Use the robust helper to find the closest previous h3
+        const headingText = findClosestPrevH3($, tableElem);
+        console.log(`Table[${tableIdx}]: Found heading:`, headingText);
+        let exposureType: string = '';
+        if (headingText.toLowerCase().includes('close contact')) exposureType = 'Close';
+        if (headingText.toLowerCase().includes('casual contact')) exposureType = 'Casual';
+        if (!exposureType) {
+          console.log(`Table[${tableIdx}]: No exposureType found for heading:`, headingText);
+          return;
+        }
+        const rows = $(tableElem).find('tbody tr');
+        console.log(`Table[${tableIdx}]: ExposureType=${exposureType}, rows=${rows.length}`);
+        rows.each((rowIdx, row) => {
+          const cells = $(row).find('td');
+          console.log('CELLS')
+          console.log(cells)
+          const startAndEndDateTimes = parseStartAndEndDateTimes($(cells[2]).html() || '');
+          if (cells.length < 2) return;
+          const locationHtml = $(cells[0]).html() || '';
+          const locationText = cleanHtml(locationHtml);
+         // const dateTimeText = cleanHtml($(cells[1]).html() || '');
+          const quarantineText = cleanHtml($(cells[2]).html() || '');
+          const monitorText = cleanHtml($(cells[3]).html() || '');
+          const adviceText = cleanHtml($(cells[4]).html() || '');
+          const city = extractCity(locationHtml);
+          const id = `measles-${exposureType}-${rowIdx}-${locationText.substring(0, 10).replace(/\s/g, '')}`;
+          const record: LocationOfInterestRecord = {
+            id,
+            mohId: id,
+            location: locationText,
+            event: locationText,
+            start: startAndEndDateTimes.start,
+            end: startAndEndDateTimes.end,
+            updated: null,
+            added: new Date().toISOString(),
+            advice: `${adviceText}  "Quarantine: ${quarantineText}" "Monitor: ${monitorText}"`,
+            exposureType,
+            visibleInWebform: true,
+            city,
+            lat: 0,
+            lng: 0,
+            relatedIds: [],
+          };
+          records.push(record);
+        });
+      });
+      resolve(records);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 
 
-export  { requestLocations };
+export { requestLocationsMeasles, parseStartAndEndDateTimes };

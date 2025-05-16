@@ -9,7 +9,8 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "types": [
-      "facebook-js-sdk"
+      "facebook-js-sdk",
+      "jest"
     ],
     "esModuleInterop": true,
     "module": "esnext",
@@ -19,6 +20,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/measlesLocationsOfInterest_ts"],
   "exclude": ["node_modules"]
 }
