@@ -5,26 +5,49 @@ import { locationSummaryDateDisplayString } from "./LocationSummaryDateDisplay";
 import { LocationOfInterestCalculated } from "../types/LocationOfInterestCalculated";
 import { LocationOfInterestRecord } from "../types/LocationOfInterestRecord";
 
-
+/**
+ * {
+  "ID": 76,
+  "EventID": "",
+  "MohID": "",
+  "Added": "Wednesday 7 May 2025 10am to 11:45am",
+  "Event": "14 May 2025 to the end of 21 May 2025",
+  "Location": "Pak n Save, 1167/1177 New North Road, Mount Albert, Auckland 1025",
+  "City": "",
+  "Start": "2025-05-07T10:00:00",
+  "End": "2025-05-07T11:45:00",
+  "StartAndEnd": "",
+  "Advice": "Quarantine: 14 May 2025 to the end of 21 May 2025; Monitor: Wednesday 28 May; Additional: All people are close contacts",
+  "VisibleInWebform": "",
+  "ExposureType": "",
+  "Lat": 0,
+  "Lng": 0,
+  "Updated": "",
+  "Raw": "Pak n Save\n1167/1177 New North Road\nMount Albert\nAuckland 1025\nWednesday 7 May 2025 10am to 11:45am\n14 May 2025 to the end of 21 May 2025\nWednesday 28 May\nAll people are close contacts"
+}
+ */
 
 const mapLocationRecordToLocation = (rec:LocationOfInterestRecord):LocationOfInterest => {
+  debugger;
   return new LocationOfInterest({
-    id: rec.id,
-    mohId: rec.mohId,
-    location: rec.location,
-    city: rec.city,
-    event: rec.event,
-    start: rec.start ? new Date(rec.start) : undefined,
-    end: rec.end ? new Date(rec.end) : undefined, 
-    added: rec.added ? new Date(rec.added) : undefined,
-    advice: rec.advice,
-    lat: rec.lat,
-    lng: rec.lng,
-    exposureType: rec.exposureType,
-    visibleInWebform: rec.visibleInWebform,
-    isOmicron: rec.advice.indexOf('Omicron') > 0,
-    relatedIds: rec.relatedIds ? rec.relatedIds : [],
-    updated: rec.updated ? new Date(rec.updated) : undefined
+    id: rec.ID,
+    mohId: rec.MohId,
+    location: rec.Location,
+    city: rec.City,
+    event: rec.Event,
+    start: rec.Start ? new Date(rec.Start) : undefined,
+    end: rec.End ? new Date(rec.End) : undefined, 
+    startAndEnd: rec.StartAndEnd,
+    added: rec.Added ? new Date(rec.Added) : undefined,
+    advice: rec.Advice,
+    lat: rec.Lat,
+    lng: rec.Lng,
+    exposureType: rec.ExposureType,
+    visibleInWebform: rec.VisibleInWebform,
+    isOmicron: rec.Advice.indexOf('Omicron') > 0,
+    relatedIds:  [],
+    updated: rec.Updated ? new Date(rec.Updated) : undefined,
+    raw: rec.Raw
   })
 }
 
@@ -98,20 +121,22 @@ const mapLoITOLoIRecord = (row:MohLocationOfInterest):LocationOfInterestRecord =
   //let lng = row.location.longitude;//0 (!!approxCityOverride ? approxCityOverride?.lng  : row.location.longitude);
 
   let res:LocationOfInterestRecord = {
-    id: row.eventId, // This id can be postfixed for duplicate locations (flights)
-    mohId: row.eventId,
-    added: row.publishedAt,
-    event: row.eventName,
-    location: row.location.address,
-    city: row.location.city,
-    start: row.startDateTime,
-    end: row.endDateTime,
-    advice: row.publicAdvice,
-    visibleInWebform: row.visibleInWebform,
-    exposureType: row.exposureType,
-    lat: !!lat ? lat : 0,
-    lng: !!lng ? lng : 0,
-    updated: !!row.updatedAt ? row.updatedAt : undefined,
+    ID: row.eventId, // This id can be postfixed for duplicate locations (flights)
+    MohId: row.eventId,
+    Added: row.publishedAt,
+    Event: row.eventName,
+    Location: row.location.address,
+    City: row.location.city,
+    Start: row.startDateTime,
+    End: row.endDateTime,
+    StartAndEnd: row.startAndEnd,
+    Advice: row.publicAdvice,
+    VisibleInWebform: row.visibleInWebform,
+    ExposureType: row.exposureType,
+    Lat: !!lat ? lat : 0,
+    Lng: !!lng ? lng : 0,
+    Updated: !!row.updatedAt ? row.updatedAt : undefined,
+    Raw: row.raw
   }
 
   return res;
@@ -151,12 +176,12 @@ const SENSITIVITY = 5
 const isRelated = (a:LocationOfInterestRecord, b:LocationOfInterestRecord) => {
 
   
-  if(typeof(a.lat) === 'string' && typeof(a.lng) == 'string' && typeof(b.lat) === 'string' && typeof(b.lng) == 'string'){
-    console.warn(a.lat +' on the Location Interest Record is still a sting... (should be a number) ')
-    return parseFloat(a.lat).toFixed(SENSITIVITY) == parseFloat(b.lat).toFixed(SENSITIVITY) && parseFloat(a.lng).toFixed(SENSITIVITY) === parseFloat(b.lng).toFixed(SENSITIVITY)   
+  if(typeof(a.Lat) === 'string' && typeof(a.Lng) == 'string' && typeof(b.Lat) === 'string' && typeof(b.Lng) == 'string'){
+    console.warn(a.Lat +' on the Location Interest Record is still a sting... (should be a number) ')
+    return parseFloat(a.Lat).toFixed(SENSITIVITY) == parseFloat(b.Lat).toFixed(SENSITIVITY) && parseFloat(a.Lng).toFixed(SENSITIVITY) === parseFloat(b.Lng).toFixed(SENSITIVITY)   
   }
   
-  let res =  a.lat.toFixed(SENSITIVITY) === b.lat.toFixed(SENSITIVITY) && a.lng.toFixed(SENSITIVITY) === b.lng.toFixed(SENSITIVITY) 
+  let res =  a.Lat.toFixed(SENSITIVITY) === b.Lat.toFixed(SENSITIVITY) && a.Lng.toFixed(SENSITIVITY) === b.Lng.toFixed(SENSITIVITY) 
   return res;
 }
 

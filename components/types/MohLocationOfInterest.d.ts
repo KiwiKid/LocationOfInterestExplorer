@@ -9,6 +9,8 @@ type MohLocationOfInterest = {
     updatedAt?: string | undefined;
     exposureType: string;
     location: MohLocationOfInterestLocation;
+    raw: string;
+    startAndEnd: string;
 }
 
 

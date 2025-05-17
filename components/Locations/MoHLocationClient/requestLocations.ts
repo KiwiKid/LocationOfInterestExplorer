@@ -162,7 +162,9 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
           visibleInWebform: fl.visibleInWebform,
           city: airportCities ? airportCities.startAirport.city : fl.city,
           lat: airportCities ? airportCities.startAirport.lat : fl.lat,
-          lng: airportCities ? airportCities.startAirport.lng: fl.lng
+          lng: airportCities ? airportCities.startAirport.lng: fl.lng,
+          startAndEnd: fl.startAndEnd,
+          raw: fl.raw
       }
 
       const destLoc:LocationOfInterestRecord = { 
@@ -179,7 +181,9 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
         visibleInWebform: fl.visibleInWebform,
         city: airportCities ?airportCities.finishAirport.city : fl.city,
         lat: airportCities ?airportCities.finishAirport.lat: fl.lat,
-        lng: airportCities ?airportCities.finishAirport.lng: fl.lng
+        lng: airportCities ?airportCities.finishAirport.lng: fl.lng,
+        startAndEnd: fl.startAndEnd,
+        raw: fl.raw
     }
 
     

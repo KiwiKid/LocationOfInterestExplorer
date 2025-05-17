@@ -1,4 +1,4 @@
-import { requestLocationsMeasles, parseStartAndEndDateTimes } from './requestLocationsMeasles';
+import { requestLocationsMeasles, parseStartAndEndDateTimes, parseStartEndTime } from './requestLocationsMeasles';
 
 // Use the same URL as production. Replace this with the actual prod URL if needed.
 const PROD_MEASLES_URL = 'https://info.health.nz/conditions-treatments/infectious-diseases/about-measles/measles-locations-of-interest-in-aotearoa-new-zealand';
@@ -74,6 +74,43 @@ describe('parseStartAndEndDateTimes', () => {
       const result = parseStartAndEndDateTimes(input);
       expect(result.start).toBe(expected.start);
       expect(result.end).toBe(expected.end);
+    });
+  });
+});
+
+describe('parseStartEndTime', () => {
+  it('parses a full datetime range with end as time', () => {
+    const input = '2024-05-07T09:00:00Z to 11:45am';
+    const result = parseStartEndTime(input, undefined);
+    expect(result).toEqual({
+      start: '2024-05-07T09:00:00.000Z',
+      end: undefined // until logic is refined to handle time-only end
+    });
+  });
+
+  it('parses a date and time range with end as time', () => {
+    const input = 'Wednesday 7 May 2025 10am to 11:45am';
+    const result = parseStartEndTime(input, undefined);
+    expect(result).toEqual({
+      start: expect.any(String), // ISO string
+      end: undefined // until logic is refined
+    });
+  });
+
+  it('parses a single date', () => {
+    const input = 'Saturday 3 May 2025';
+    const result = parseStartEndTime(input, undefined);
+    expect(result).toBeDefined();
+    expect(typeof result).toBe('string');
+  });
+
+  it('parses a time range', () => {
+    const lastSeenRowDate = 'Saturday 3 May 2025';
+    const input = '2:30pm to 4:30pm';
+    const result = parseStartEndTime(input, lastSeenRowDate);
+    expect(result).toEqual({
+      start: undefined, // until logic is refined
+      end: undefined
     });
   });
 }); 

@@ -54,6 +54,11 @@ const LocationSummaryDateDisplay = ({loi,includeDate,breakAfterDate = true}:Loca
 
     const startEndSameDate = startDay === endDay;
     
+    if(!startDay || !endDay){
+        return <div>
+            {loi.startAndEnd}
+        </div>
+    }
 
     return (
         <>{startEndSameDate ? 

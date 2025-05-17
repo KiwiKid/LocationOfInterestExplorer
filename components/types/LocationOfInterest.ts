@@ -7,6 +7,7 @@ type LocationOfInterestProps = {
   city:string
   event:string
   start:Date|undefined
+  startAndEnd:string|undefined
   end:Date|undefined
   added:Date|undefined
   advice:string
@@ -17,6 +18,7 @@ type LocationOfInterestProps = {
   isOmicron:boolean
   relatedIds:string[]
   updated:Date|undefined
+  raw?:string
 }
 
 class LocationOfInterest {
@@ -25,6 +27,7 @@ class LocationOfInterest {
     location: string;
     city: string;
     event: string;
+    startAndEnd: string | undefined;
     start: Date|undefined;
     end: Date|undefined;
     updated?: Date;
@@ -35,7 +38,7 @@ class LocationOfInterest {
     exposureType: string;
     visibleInWebform: boolean;
     isOmicron: boolean
-    
+    raw: string | undefined;
     isValid:boolean
     relatedIds:string[]
 
@@ -46,6 +49,7 @@ class LocationOfInterest {
           this.city = props.city;
           this.event = props.event;
           this.start = props.start;
+          this.startAndEnd = props.startAndEnd;
           this.end = props.end;
           this.updated = props.updated;
           this.added = props.added;
@@ -59,6 +63,7 @@ class LocationOfInterest {
           this.relatedIds = props.relatedIds
 
           this.isValid = !!props.lat && !!props.lng;
+          this.raw = props.raw;
           
         }
 

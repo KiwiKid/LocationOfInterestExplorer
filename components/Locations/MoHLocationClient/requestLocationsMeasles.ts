@@ -6,6 +6,9 @@ import fs from 'fs';
 import path from 'path';
 import { useContext } from 'react';
 import { LocationOfInterestRecord } from "../../types/LocationOfInterestRecord";
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat);
 
 const reallyBadDataFixes = (loi:LocationOfInterestRecord) => {
   if(loi.id == 'a0l4a0000006v95AAA' && !loi.city.length){
@@ -156,6 +159,7 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
           id: `${fl.id}_source`,
           mohId: fl.id,
           location: fl.location,
+          startAndEnd: fl.startAndEnd,
           event: fl.event,
           start: fl.start,
           end: fl.end,
@@ -166,7 +170,8 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
           visibleInWebform: fl.visibleInWebform,
           city: airportCities ? airportCities.startAirport.city : fl.city,
           lat: airportCities ? airportCities.startAirport.lat : fl.lat,
-          lng: airportCities ? airportCities.startAirport.lng: fl.lng
+          lng: airportCities ? airportCities.startAirport.lng: fl.lng,
+          raw: fl.raw
       }
 
       console.log(fl)
@@ -175,6 +180,7 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
         mohId: fl.id,
         location: fl.location,
         event: fl.event,
+        startAndEnd: fl.startAndEnd,
         start: new Date().toISOString(),//fl.start,
         end: new Date().toISOString(),//fl.end,
         updated: fl.updated,
@@ -184,7 +190,8 @@ const createFlightLocations = (locations:LocationOfInterestRecord[]):LocationOfI
         visibleInWebform: fl.visibleInWebform,
         city: airportCities ?airportCities.finishAirport.city : fl.city,
         lat: airportCities ?airportCities.finishAirport.lat: fl.lat,
-        lng: airportCities ?airportCities.finishAirport.lng: fl.lng
+        lng: airportCities ?airportCities.finishAirport.lng: fl.lng,
+        raw: fl.raw
     }
 
     
@@ -259,6 +266,88 @@ function findClosestPrevH3($: any, elem: any): string {
   return '';
 }
 
+const parseStartEndTime = (startDateTimeText: string, lastSeenRowDate:string|undefined): { start: string, end: string | undefined } | undefined => {
+  if (!startDateTimeText) return undefined;
+  if (startDateTimeText.includes(' to ')) {
+    const [startRaw, endRaw] = startDateTimeText.split(' to ');
+    // 'Wednesday 7 May 2025 10am'
+    const start = dayjs(startRaw.trim(), [
+      'YYYY-MM-DDTHH:mm:ssZ',
+      'dddd D MMM YYYY h:mma',
+      'dddd D MMM YYYY ha',
+      'dddd D MMMM YYYY h:mma',
+      'dddd D MMMM YYYY ha',
+      'D MMM YYYY h:mma',
+      'D MMM YYYY ha',
+      'D MMMM YYYY h:mma',
+      'D MMMM YYYY ha',
+      'YYYY-MM-DD',
+      'dddd D MMM YYYY',
+      'dddd D MMMM YYYY',
+      'MMM D, YYYY',
+      'MMMM D, YYYY',
+      'h:mma',
+      'ha',
+      'HH:mm',
+      'h:mm a',
+      'h a',
+      'h:mm',
+      'h',
+    ], true);
+    let end;
+    // If endRaw is just a time, combine with start's date
+    const endTime = dayjs(endRaw.trim(), [
+      'h:mma', 'ha', 'HH:mm', 'h:mm a', 'h a', 'h:mm', 'h'
+    ], true);
+    if (endTime.isValid() && start.isValid()) {
+      // Compose end as same date as start, but with end time
+      end = start.set('hour', endTime.hour()).set('minute', endTime.minute()).set('second', 0).set('millisecond', 0);
+      return {
+        start: start.toISOString(),
+        end: end.toISOString(),
+      };
+    } else if (start.isValid() && dayjs(endRaw.trim()).isValid()) {
+      end = dayjs(endRaw.trim());
+      return {
+        start: start.toISOString(),
+        end: end.toISOString(),
+      };
+    } else if (start.isValid()) {
+      return {
+        start: start.toISOString(),
+        end: undefined,
+      };
+    }
+    return undefined;
+  } else {
+    const single = dayjs(startDateTimeText.trim(), [
+      'YYYY-MM-DDTHH:mm:ssZ',
+      'dddd D MMM YYYY h:mma',
+      'dddd D MMM YYYY ha',
+      'dddd D MMMM YYYY h:mma',
+      'dddd D MMMM YYYY ha',
+      'D MMM YYYY h:mma',
+      'D MMM YYYY ha',
+      'D MMMM YYYY h:mma',
+      'D MMMM YYYY ha',
+      'YYYY-MM-DD',
+      'dddd D MMM YYYY',
+      'dddd D MMMM YYYY',
+      'MMM D, YYYY',
+      'MMMM D, YYYY',
+      'h:mma',
+      'ha',
+      'HH:mm',
+      'h:mm a',
+      'h a',
+      'h:mm',
+      'h',
+    ], true);
+    if (single.isValid()) return { start: single.toISOString(), end: undefined };
+    return undefined;
+  }
+}
+
 const requestLocationsMeasles = (url: string): Promise<LocationOfInterestRecord[]> => {
   return new Promise<LocationOfInterestRecord[]>(async (resolve, reject) => {
     try {
@@ -287,15 +376,37 @@ const requestLocationsMeasles = (url: string): Promise<LocationOfInterestRecord[
         }
         const rows = $(tableElem).find('tbody tr');
         console.log(`Table[${tableIdx}]: ExposureType=${exposureType}, rows=${rows.length}`);
+        var lastSeenRowDate:string|undefined;
         rows.each((rowIdx, row) => {
           const cells = $(row).find('td');
           console.log('CELLS')
-          console.log(cells)
-          const startAndEndDateTimes = parseStartAndEndDateTimes($(cells[2]).html() || '');
+          console.log($(cells[1]).html())
           if (cells.length < 2) return;
           const locationHtml = $(cells[0]).html() || '';
           const locationText = cleanHtml(locationHtml);
-         // const dateTimeText = cleanHtml($(cells[1]).html() || '');
+          const startDateTimeText = cleanHtml($(cells[1]).html() || '');
+          let startDateTime:string|undefined;
+          let endDateTime:string|undefined;
+          if (startDateTimeText){
+            try{
+              console.log(`Parse startDateTimeText: ${startDateTimeText}`)
+                const dateTime = parseStartEndTime(startDateTimeText,lastSeenRowDate );
+                if(dateTime){
+                  startDateTime = dateTime.start;
+                  lastSeenRowDate = dateTime.start;
+                }else{
+                  console.error(`No startDateTime found for row ${rowIdx}`);
+                }
+
+                
+              
+            }catch(err){
+            
+              console.error(`Error parsing startDateTime: ${startDateTimeText}`, err);
+            }
+          }else{
+            console.error(`No startDateTimeText found for row ${rowIdx}`);
+          }
           const quarantineText = cleanHtml($(cells[2]).html() || '');
           const monitorText = cleanHtml($(cells[3]).html() || '');
           const adviceText = cleanHtml($(cells[4]).html() || '');
@@ -306,9 +417,10 @@ const requestLocationsMeasles = (url: string): Promise<LocationOfInterestRecord[
             mohId: id,
             location: locationText,
             event: locationText,
-            start: startAndEndDateTimes.start,
-            end: startAndEndDateTimes.end,
-            updated: undefined,
+            startAndEnd: startDateTimeText,
+            start: startDateTime ? startDateTime : undefined,
+            end: endDateTime ? endDateTime : undefined,
+            updated: new Date().toISOString() ,
             added: new Date().toISOString(),
             advice: `${adviceText}  "Quarantine: ${quarantineText}" "Monitor: ${monitorText}"`,
             exposureType,
@@ -317,6 +429,7 @@ const requestLocationsMeasles = (url: string): Promise<LocationOfInterestRecord[
             lat: 0,
             lng: 0,
             relatedIds: [],
+            raw: $(row).text(),
           };
           records.push(record);
         });
@@ -329,4 +442,4 @@ const requestLocationsMeasles = (url: string): Promise<LocationOfInterestRecord[
 };
 
 
-export { requestLocationsMeasles, parseStartAndEndDateTimes };
+export { requestLocationsMeasles, parseStartAndEndDateTimes, parseStartEndTime };
